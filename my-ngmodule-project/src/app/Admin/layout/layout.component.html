@@ -1,0 +1,43 @@
+<mat-toolbar color="primary">
+    <span>Admin Dashboard</span>
+  </mat-toolbar>
+  
+  <div class="layout-container">
+    <!-- Sidenav (Left Sidebar) -->
+    <mat-sidenav-container class="sidenav-container">
+      <mat-sidenav mode="side" opened class="sidenav">
+        <mat-nav-list>
+          <a mat-list-item routerLink="/arafa/dashboard" routerLinkActive="active" class="nav-item">Dashboard</a>
+          <a mat-list-item routerLink="/arafa/building" routerLinkActive="active" class="nav-item">Building</a>
+          <a mat-list-item routerLink="/arafa/users" routerLinkActive="active" class="nav-item">Users</a>
+          <a mat-list-item routerLink="/arafa/settings" routerLinkActive="active" class="nav-item">Settings</a>  <!-- Link to SettingsComponent -->
+        </mat-nav-list>
+      </mat-sidenav>
+  
+      <!-- Content (Right Side) -->
+      <mat-sidenav-content class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Content</h3>
+                </div>
+                <div class="card-body">
+                  <router-outlet></router-outlet>  <!-- Routed content will appear here -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </div>
+  
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Admin Dashboard</p>
+    </div>
+  </footer>
+  
