@@ -1,0 +1,34 @@
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: var(--mat-toolbar-background, #212121);
+    color: var(--mat-toolbar-color, #ffffff);
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+    padding: 10px 0;
+  }
+  
+  .footer-logo h3 {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: var(--mat-primary-text-color, #ffffff);
+  }
+  
+  .footer-icons a {
+    color: var(--mat-icon-color, #ffffff);
+    margin: 0 10px;
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+  
+  .footer-icons a:hover {
+    transform: scale(1.2);
+    color: var(--mat-accent-color, #3498db);
+  }
+  
+  .footer-bottom p {
+    font-size: 0.9em;
+    margin: 10px 0 0;
+  }
+  

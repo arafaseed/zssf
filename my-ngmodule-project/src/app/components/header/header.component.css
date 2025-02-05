@@ -1,0 +1,80 @@
+/* Main Header */
+.fixed-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    height: 64px;
+    display: flex;
+    justify-content: space-between;
+    background-color: #42c95a !important; /* Material success color */
+  }
+  
+  .header-content {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+  }
+  
+  .header-title {
+    font-weight: bold;
+    font-size: 1.25rem;
+    white-space: nowrap; 
+  }
+  
+  .header-contact {
+    font-size: 0.875rem;
+  }
+  
+  /* Navigation Menu */
+  .fixed-nav {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    height: 48px;
+    box-shadow: none !important;
+    background-color: #f5f5f5 !important; /* Material default color */
+    display: flex;
+    justify-content: center;
+  }
+  
+  .nav-buttons {
+    display: flex;
+    gap: 24px;
+  }
+  .logo-title-group {
+    display: flex;
+    align-items: center;
+    gap: 16px; /* Space between logo and title */
+  }
+  /* Notification Bar */
+  .notification-bar {
+    position: fixed;
+    top: 112px;
+    left: 0;
+    right: 0;
+    z-index: 998;
+    background-color: #2196F3; /* Material info color */
+    color: white;
+    padding: 8px;
+    text-align: center;
+    font-size: 0.875rem;
+  }
+  
+  .notification-text {
+    margin: 0;
+  }
+
+  .header-logo {
+    height: 68px; /* Adjust based on your logo aspect ratio */
+    margin-right: 0px;
+    margin-block-start: auto;
+    width: auto;
+    object-fit: contain;
+  }
+  

@@ -1,0 +1,134 @@
+.container {
+    
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding-top: 144px;
+  }
+  
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    justify-content: space-between;
+  }
+  
+  .header-title {
+    font-weight: bold;
+    font-size: 1.25rem;
+  }
+  
+  .header-contact {
+    font-size: 0.875rem;
+  }
+  
+  .spacer {
+    flex: 1 1 auto;
+  }
+  
+  .nav-menu {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    box-shadow: none;
+  }
+  
+  .nav-buttons {
+    display: flex;
+    gap: 16px;
+  }
+  
+  .notification-bar {
+    background-color: #2196f3;
+    color: white;
+    padding: 8px;
+    text-align: center;
+    position: fixed;
+    top: 112px;
+    left: 0;
+    right: 0;
+    z-index: 998;
+    font-size: 0.875rem;
+  }
+  #home-page .main-content {
+    /* Remove background-attachment: fixed */
+    background-image: url('/latylogo.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Change to relative */
+  }
+  
+  .content-box {
+    /* Remove position: fixed */
+    position: relative; /* Use relative/static positioning */
+    transform: none; /* Remove translate */
+    top: auto;
+    left: auto;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 32px;
+    border-radius: 8px;
+    max-width: 90%;
+    text-align: center;
+    margin: 20px; /* Add margin if needed */
+  }
+  
+  .title {
+    color: #1976d2;
+    margin-bottom: 16px;
+  }
+  
+  .subtitle {
+    color: #666;
+    margin-bottom: 32px;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+  }
+  
+  .services-section {
+    background-color: #2196f3;
+    color: white;
+    padding: 16px;
+    text-align: center;
+  }
+  
+  .services-grid {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    padding: 16px;
+    flex-wrap: wrap;
+  }
+  
+  .service-card {
+    background-color: white;
+    color: black;
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0 3px 5px -1px rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12);
+    width: 250px;
+  }
+  
+  .footer {
+    background-color: #333;
+    color: white;
+    padding: 16px;
+    text-align: center;
+    margin-top: auto; /* This does the magic */
+    position: relative;
+    /* bottom: 0; */
+    
+  }
