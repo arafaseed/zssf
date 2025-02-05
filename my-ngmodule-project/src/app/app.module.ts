@@ -9,12 +9,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { HomeComponent } from './components/home/home.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { VenueComponent } from './components/venue/venue.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FooterComponent,
-    HomeComponent
+    HomeComponent,
+    VenueComponent
   ],
   imports: [
     BrowserModule,
