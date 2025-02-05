@@ -18,6 +18,9 @@ import { LayoutComponent } from './Admin/layout/layout.component';
 import { UserComponent } from './Admin/user/user.component';
 import { SettingComponent } from './Admin/setting/setting.component';
 import { BuildingComponent } from './Admin/building/building.component';
+import { VenueFormComponent } from './Admin/venue-form/venue-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -29,7 +32,9 @@ import { BuildingComponent } from './Admin/building/building.component';
     LayoutComponent,
     UserComponent,
     SettingComponent,
+    VenueFormComponent,
     BuildingComponent
+   
 
     
   ],
@@ -46,6 +51,8 @@ import { BuildingComponent } from './Admin/building/building.component';
     MatListModule,
     MatButtonModule,
     MatIconModule,
+    ReactiveFormsModule,
+   
 
     
   ],

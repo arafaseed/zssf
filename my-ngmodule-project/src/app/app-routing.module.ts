@@ -7,6 +7,7 @@ import { LayoutComponent } from './Admin/layout/layout.component';
 import { UserComponent } from './Admin/user/user.component';  // Corrected import
 import { SettingComponent } from './Admin/setting/setting.component';
 import { BuildingComponent } from './Admin/building/building.component';
+import { VenueFormComponent } from './Admin/venue-form/venue-form.component';
 
 const routes: Routes = [
   { 
@@ -24,6 +25,7 @@ const routes: Routes = [
           { path: 'dashboard', component: DashboardComponent },
           { path: 'building', component: BuildingComponent},
           { path: 'users', component: UserComponent },
+          { path: 'Venues', component: VenueFormComponent },
           { path: 'settings', component: SettingComponent },  // Correct path for SettingsComponent
         ]
       }
