@@ -18,6 +18,13 @@ import { LayoutComponent } from './Admin/layout/layout.component';
 import { UserComponent } from './Admin/user/user.component';
 import { SettingComponent } from './Admin/setting/setting.component';
 import { BuildingComponent } from './Admin/building/building.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -35,18 +42,24 @@ import { BuildingComponent } from './Admin/building/building.component';
   ],
   imports: [
     BrowserModule,
+    MatSelectModule,
     AppRoutingModule,
     MatToolbarModule,
     HeaderComponent,
     MatButtonModule,
-
+    MatCardModule,
+    MatFormFieldModule,
     BrowserModule,
+    MatDatepickerModule,    // import MatDatepickerModule
+    MatInputModule,         // import MatInputModule for the input field
+    MatNativeDateModule,
     MatToolbarModule,
+    ReactiveFormsModule,
     MatSidenavModule,
     MatListModule,
     MatButtonModule,
     MatIconModule,
-
+    MatNativeDateModule,
     
   ],
   providers: [
