@@ -7,6 +7,9 @@ import { LayoutComponent } from './Admin/layout/layout.component';
 import { UserComponent } from './Admin/user/user.component';  // Corrected import
 import { SettingComponent } from './Admin/setting/setting.component';
 import { BuildingComponent } from './Admin/building/building.component';
+import { VenueFormComponent } from './Admin/venue-form/venue-form.component';
+import { MajengoComponent } from './Admin/majengo/majengo.component';
+
 
 const routes: Routes = [
   { 
@@ -15,6 +18,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'venue', component: VenueComponent },
       { path: 'home', component: HomeComponent },
+      {path: 'majengo',component:MajengoComponent},
       { path: 'dash', component: DashboardComponent },
 
       {
@@ -24,6 +28,7 @@ const routes: Routes = [
           { path: 'dashboard', component: DashboardComponent },
           { path: 'building', component: BuildingComponent},
           { path: 'users', component: UserComponent },
+          { path: 'Venues', component: VenueFormComponent },
           { path: 'settings', component: SettingComponent },  // Correct path for SettingsComponent
         ]
       }

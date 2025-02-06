@@ -1,0 +1,14 @@
+<div class="container mt-4">
+    <h2 class="text-center">Add Venue</h2>
+    <form [formGroup]="venueForm" (ngSubmit)="addVenue()" class="mb-3">
+      <div class="mb-3">
+        <label for="buildingName" class="form-label">Venue Name</label>
+        <input type="text" id="buildingName" class="form-control" formControlName="buildingName" required>
+      </div>
+      <div class="mb-3">
+        <label for="address" class="form-label">Address</label>
+        <input type="text" id="address" class="form-control" formControlName="address" required>
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="venueForm.invalid">Add Venue</button>
+    </form>
+  </div>

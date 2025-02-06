@@ -25,6 +25,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
+import { VenueFormComponent } from './Admin/venue-form/venue-form.component';
+import { MajengoComponent } from './Admin/majengo/majengo.component';
+import { HttpClientModule } from '@angular/common/http';
+import { BuildingService } from './building.service';
+
+
+
 
 @NgModule({
   declarations: [
@@ -36,7 +43,13 @@ import { ReactiveFormsModule } from '@angular/forms';
     LayoutComponent,
     UserComponent,
     SettingComponent,
-    BuildingComponent
+    VenueFormComponent,
+    BuildingComponent,
+    MajengoComponent,
+   
+    
+    
+   
 
     
   ],
@@ -60,11 +73,19 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatButtonModule,
     MatIconModule,
     MatNativeDateModule,
+    ReactiveFormsModule,
+    BrowserModule,
+    HttpClientModule,
+     
+    
+   
+
     
   ],
   providers: [
-    provideAnimationsAsync()
+    provideAnimationsAsync(), BuildingService, 
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  
 })
 export class AppModule { }
