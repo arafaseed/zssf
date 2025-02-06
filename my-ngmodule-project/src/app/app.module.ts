@@ -20,6 +20,11 @@ import { SettingComponent } from './Admin/setting/setting.component';
 import { BuildingComponent } from './Admin/building/building.component';
 import { VenueFormComponent } from './Admin/venue-form/venue-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MajengoComponent } from './Admin/majengo/majengo.component';
+import { HttpClientModule } from '@angular/common/http';
+import { BuildingService } from './building.service';
+
+
 
 
 @NgModule({
@@ -33,7 +38,11 @@ import { ReactiveFormsModule } from '@angular/forms';
     UserComponent,
     SettingComponent,
     VenueFormComponent,
-    BuildingComponent
+    BuildingComponent,
+    MajengoComponent,
+   
+    
+    
    
 
     
@@ -52,13 +61,18 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatButtonModule,
     MatIconModule,
     ReactiveFormsModule,
+    BrowserModule,
+    HttpClientModule,
+     
+    
    
 
     
   ],
   providers: [
-    provideAnimationsAsync()
+    provideAnimationsAsync(), BuildingService, 
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  
 })
 export class AppModule { }

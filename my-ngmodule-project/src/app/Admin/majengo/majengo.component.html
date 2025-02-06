@@ -1,0 +1,20 @@
+<form [formGroup]="majengoForm" (ngSubmit)="onSubmit()" class="container mt-4">
+    <div class="mb-3">
+      <label for="buildingName" class="form-label">Building Name</label>
+      <input id="buildingName" formControlName="buildingName" type="text" class="form-control" required />
+    </div>
+  
+    <div class="mb-3">
+      <label for="address" class="form-label">Address</label>
+      <input id="address" formControlName="address" type="text" class="form-control" required />
+    </div>
+  
+    <!-- Venue Section (No Add/Remove Buttons) -->
+    <div class="mb-3">
+      <label for="venue" class="form-label">Venue</label>
+      <input id="venue" formControlName="venue" type="text" class="form-control" required />
+    </div>
+  
+    <button type="submit" class="btn btn-success" [disabled]="majengoForm.invalid">Submit</button>
+  </form>
+  

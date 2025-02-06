@@ -8,6 +8,8 @@ import { UserComponent } from './Admin/user/user.component';  // Corrected impor
 import { SettingComponent } from './Admin/setting/setting.component';
 import { BuildingComponent } from './Admin/building/building.component';
 import { VenueFormComponent } from './Admin/venue-form/venue-form.component';
+import { MajengoComponent } from './Admin/majengo/majengo.component';
+
 
 const routes: Routes = [
   { 
@@ -16,6 +18,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'venue', component: VenueComponent },
       { path: 'home', component: HomeComponent },
+      {path: 'majengo',component:MajengoComponent},
       { path: 'dash', component: DashboardComponent },
 
       {
