@@ -9,6 +9,7 @@ import { SettingComponent } from './Admin/setting/setting.component';
 import { BuildingComponent } from './Admin/building/building.component';
 import { VenueFormComponent } from './Admin/venue-form/venue-form.component';
 import { MajengoComponent } from './Admin/majengo/majengo.component';
+import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 
 
 const routes: Routes = [
@@ -29,6 +30,7 @@ const routes: Routes = [
           { path: 'building', component: BuildingComponent},
           { path: 'users', component: UserComponent },
           {path: 'majengo',component:MajengoComponent},
+          {path: 'leasepackage',component:LeasePackageFormComponent},
           { path: 'Venues', component: VenueFormComponent },
           { path: 'settings', component: SettingComponent },  // Correct path for SettingsComponent
         ]
