@@ -1,0 +1,10 @@
+.card {
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+  }
+  .carousel img {
+    height: 250px; /* Adjust height as needed */
+    object-fit: cover;
+  }
+  

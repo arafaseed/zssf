@@ -19,7 +19,9 @@ const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'venue', component: VenueComponent },
       { path: 'home', component: HomeComponent },
-      
+     
+  { path: 'reservation', component: HomeComponent }, // Create this component for the reservation page
+
       { path: 'dash', component: DashboardComponent },
 
       {

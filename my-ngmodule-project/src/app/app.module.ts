@@ -29,7 +29,12 @@ import { VenueFormComponent } from './Admin/venue-form/venue-form.component';
 import { MajengoComponent } from './Admin/majengo/majengo.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BuildingService } from './building.service';
+<<<<<<< HEAD
 import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
+=======
+import { MatDialogModule } from '@angular/material/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+>>>>>>> e6247c4a19b5744b74d3bee9a701e4004564ffaa
 
 
 
@@ -78,6 +83,9 @@ import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-pack
     ReactiveFormsModule,
     BrowserModule,
     HttpClientModule,
+    BrowserAnimationsModule, // ✅ Required for Angular Material
+    MatDialogModule, // ✅ Import Dialog Module
+    MatButtonModule, 
      
     
    

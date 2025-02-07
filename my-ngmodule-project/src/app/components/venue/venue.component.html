@@ -1,1 +1,28 @@
-<p>venue works!</p>
+<div class="container mt-5">
+    <div class="row">
+      <div class="col-md-4" *ngFor="let venue of venues">
+        <div class="card">
+          <div id="carousel{{ venue.title }}" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item" *ngFor="let img of venue.image; let i = index" [ngClass]="{'active': i === 0}">
+                <img [src]="img" class="d-block w-100" alt="Venue Image" />
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel' + venue.title" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </button>
+            <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#carousel' + venue.title" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </button>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">{{ venue.title }}</h5>
+            <p class="card-text">{{ venue.description }}</p>
+            <button mat-button color="primary" (click)="openDetails(venue)">Details</button>
+            <button mat-raised-button color="accent" (click)="makeReservation()">Make Reservation</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
