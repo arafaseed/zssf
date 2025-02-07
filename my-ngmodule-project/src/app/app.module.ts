@@ -29,6 +29,8 @@ import { VenueFormComponent } from './Admin/venue-form/venue-form.component';
 import { MajengoComponent } from './Admin/majengo/majengo.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BuildingService } from './building.service';
+import { MatDialogModule } from '@angular/material/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -76,6 +78,9 @@ import { BuildingService } from './building.service';
     ReactiveFormsModule,
     BrowserModule,
     HttpClientModule,
+    BrowserAnimationsModule, // ✅ Required for Angular Material
+    MatDialogModule, // ✅ Import Dialog Module
+    MatButtonModule, 
      
     
    
