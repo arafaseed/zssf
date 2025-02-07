@@ -1,20 +1,25 @@
-<form [formGroup]="majengoForm" (ngSubmit)="onSubmit()" class="container mt-4">
-    <div class="mb-3">
-      <label for="buildingName" class="form-label">Building Name</label>
-      <input id="buildingName" formControlName="buildingName" type="text" class="form-control" required />
+<mat-card class="form-container">
+  <mat-card-title class="title">🏢 Register a Building</mat-card-title>
+  <form [formGroup]="majengoForm" (ngSubmit)="onSubmit()">
+    <div class="form-grid">
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Building Name</mat-label>
+        <input matInput id="buildingName" formControlName="buildingName" required />
+      </mat-form-field>
+
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Address</mat-label>
+        <input matInput id="address" formControlName="address" required />
+      </mat-form-field>
+
+      <mat-form-field class="form-field full-width" appearance="outline">
+        <mat-label>Venue</mat-label>
+        <input matInput id="venue" formControlName="venue" required />
+      </mat-form-field>
     </div>
-  
-    <div class="mb-3">
-      <label for="address" class="form-label">Address</label>
-      <input id="address" formControlName="address" type="text" class="form-control" required />
-    </div>
-  
-    <!-- Venue Section (No Add/Remove Buttons) -->
-    <div class="mb-3">
-      <label for="venue" class="form-label">Venue</label>
-      <input id="venue" formControlName="venue" type="text" class="form-control" required />
-    </div>
-  
-    <button type="submit" class="btn btn-success" [disabled]="majengoForm.invalid">Submit</button>
+
+    <button mat-raised-button color="accent" class="submit-btn" type="submit" [disabled]="majengoForm.invalid">
+      🚀 Submit
+    </button>
   </form>
-  
+</mat-card>

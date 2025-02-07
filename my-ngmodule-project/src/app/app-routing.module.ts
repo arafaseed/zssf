@@ -18,7 +18,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'venue', component: VenueComponent },
       { path: 'home', component: HomeComponent },
-      {path: 'majengo',component:MajengoComponent},
+      
       { path: 'dash', component: DashboardComponent },
 
       {
@@ -28,6 +28,7 @@ const routes: Routes = [
           { path: 'dashboard', component: DashboardComponent },
           { path: 'building', component: BuildingComponent},
           { path: 'users', component: UserComponent },
+          {path: 'majengo',component:MajengoComponent},
           { path: 'Venues', component: VenueFormComponent },
           { path: 'settings', component: SettingComponent },  // Correct path for SettingsComponent
         ]
