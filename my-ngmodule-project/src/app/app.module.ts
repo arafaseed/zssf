@@ -29,10 +29,15 @@ import { VenueFormComponent } from './Admin/venue-form/venue-form.component';
 import { MajengoComponent } from './Admin/majengo/majengo.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BuildingService } from './building.service';
+<<<<<<< HEAD
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BookingFormComponent } from './booking-form/booking-form.component';
 
+=======
+import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
+import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
+>>>>>>> bbfe0040e4455efd7a7121826c6d49f3bf0d90b8
 
 
 
@@ -49,9 +54,15 @@ import { BookingFormComponent } from './booking-form/booking-form.component';
     VenueFormComponent,
     BuildingComponent,
     MajengoComponent,
+<<<<<<< HEAD
     
    
     
+=======
+    LeasePackageFormComponent,
+    RegisterVenueComponent,
+ 
+>>>>>>> bbfe0040e4455efd7a7121826c6d49f3bf0d90b8
     
    
 
@@ -67,6 +78,7 @@ import { BookingFormComponent } from './booking-form/booking-form.component';
     MatCardModule,
     MatFormFieldModule,
     BrowserModule,
+    MatInputModule,
     MatDatepickerModule,    // import MatDatepickerModule
     MatInputModule,         // import MatInputModule for the input field
     MatNativeDateModule,
@@ -80,8 +92,6 @@ import { BookingFormComponent } from './booking-form/booking-form.component';
     ReactiveFormsModule,
     BrowserModule,
     HttpClientModule,
-    BrowserAnimationsModule, // ✅ Required for Angular Material
-    MatDialogModule, // ✅ Import Dialog Module
     MatButtonModule, 
     BookingFormComponent,
     

@@ -57,20 +57,26 @@
     z-index: 1000;
   }
   
-  /* Content (Right Side) */
-  .mat-sidenav-content {
-    margin-left: 250px; /* Space for sidenav */
-    padding-top: 20px; /* Space below the toolbar */
-    padding-left: 20px;
-    padding-right: 20px;
-    flex-grow: 1;
-    overflow-y: auto;
-  }
+/* Content (Right Side) */
+.mat-sidenav-content {
+  margin-left: 250px; /* Space for sidenav */
+  padding-top: 0px; /* Space below the toolbar */
+  padding-left: 20px;
+  padding-right: 20px;
+  flex-grow: 1;
+  width: calc(100vw - 250px); /* Adjust width dynamically based on screen size */
+  height: 100vh; /* Full viewport height */
+  overflow-y: auto; /* Allow scrolling if content exceeds screen height */
+  display: flex;
+  flex-direction: column;
+}
+
   
   /* Style for the card container */
   .card {
     margin-bottom: 20px;
     border-radius: 8px;
+    height: 800px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   

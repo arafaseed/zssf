@@ -1,0 +1,55 @@
+/* Ensure full-page centering */
+.full-screen-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:100vh; /* Full viewport height */
+    background-color: #f8f9fa; /* Light gray background */
+    margin-left: 70rem;
+    margin-left: 50px;
+    
+  }
+  
+  /* Styling the card */
+  .card {
+    width: 600px; /* Adjust width */
+    height: 400px;
+    padding: 30px;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+    margin-left: 35rem;
+    margin-top: 60px;
+    align-items: center;
+    align-content: center;
+
+  }
+  .title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #1976d2;
+    margin-top: 5px;
+    text-transform: uppercase;
+    align-items: center;
+    margin-left: 170px;
+  }
+  
+  .card:hover {
+    transform: scale(1.02); /* Slight scale effect on hover */
+  }
+  
+  /* Ensure form fields are full width */
+  mat-form-field {
+    width: 100%;
+  }
+  
+  /* Full-width button with some styling */
+  button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
