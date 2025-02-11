@@ -31,6 +31,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BuildingService } from './building.service';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BookingFormComponent } from './booking-form/booking-form.component';
 
 
 
@@ -48,6 +49,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     VenueFormComponent,
     BuildingComponent,
     MajengoComponent,
+    
    
     
     
@@ -81,7 +83,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserAnimationsModule, // ✅ Required for Angular Material
     MatDialogModule, // ✅ Import Dialog Module
     MatButtonModule, 
-     
+    BookingFormComponent,
     
    
 
