@@ -24,7 +24,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { VenueFormComponent } from './Admin/venue-form/venue-form.component';
 import { MajengoComponent } from './Admin/majengo/majengo.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -80,6 +80,8 @@ import { RegisterVenueComponent } from './Admin/register-venue/register-venue.co
     BrowserModule,
     HttpClientModule,
     MatButtonModule, 
+    FormsModule,
+    MatSelectModule,
      
     
    
