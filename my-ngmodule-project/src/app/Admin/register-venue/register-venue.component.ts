@@ -50,27 +50,49 @@ export class RegisterVenueComponent implements OnInit {
     if (this.venueForm.valid) {
       const formData = new FormData();
       const formValue = this.venueForm.value;
+      
+      const leasePackageIds = Array.isArray(formValue.leasePackageIds) 
+        ? formValue.leasePackageIds 
+        : [formValue.leasePackageIds];
+  
       const venueData = {
         venueName: formValue.venueName,
         capacity: formValue.capacity,
         description: formValue.description,
-        building: { buildingId: formValue.buildingId }, // Ensure nested "building" object
-        leasePackages: formValue.leasePackageIds.map((id: number) => ({ leaseId: id })) // Array of { leaseId }
+        building: { buildingId: formValue.buildingId },
+        leasePackages: leasePackageIds.map((id: number) => ({ leaseId: id }))
       };
+  
+      // Append the venue data to FormData
       formData.append("venue", JSON.stringify(venueData));
+  
+      // Log the FormData to check the content
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
+  
       if (this.selectedFiles) {
         this.selectedFiles.forEach(file => {
           formData.append("images", file);
         });
       }
+  
+      // Log files being appended (optional)
+      if (this.selectedFiles) {
+        console.log("Files being sent:", this.selectedFiles);
+      }
+  
       this.venueService.registerVenue(formData).subscribe(
-        (        response: any) => {
+        (response: any) => {
           console.log("Venue registered successfully:", response);
           this.venueForm.reset();
           this.selectedFiles = null;
         },
-        (        error: any) => console.error("Error registering venue:", error)
+        (error: any) => {
+          console.error("Error registering venue:", error);
+        }
       );
     }
   }
+  
 }
