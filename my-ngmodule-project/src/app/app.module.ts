@@ -32,8 +32,8 @@ import { BuildingService } from './building.service';
 import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-
+import { BookingFormComponent } from './booking-form/booking-form.component';
+import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
 
 
 
@@ -51,8 +51,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BuildingComponent,
     MajengoComponent,
     LeasePackageFormComponent,
-   
-    
+    RegisterVenueComponent,
+ 
     
    
 
@@ -68,6 +68,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatCardModule,
     MatFormFieldModule,
     BrowserModule,
+    MatInputModule,
     MatDatepickerModule,    // import MatDatepickerModule
     MatInputModule,         // import MatInputModule for the input field
     MatNativeDateModule,
@@ -81,10 +82,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ReactiveFormsModule,
     BrowserModule,
     HttpClientModule,
-    BrowserAnimationsModule, // ✅ Required for Angular Material
-    MatDialogModule, // ✅ Import Dialog Module
     MatButtonModule, 
-     
+    BookingFormComponent,
     
    
 

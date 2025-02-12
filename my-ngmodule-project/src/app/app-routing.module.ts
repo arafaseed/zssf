@@ -9,7 +9,11 @@ import { SettingComponent } from './Admin/setting/setting.component';
 import { BuildingComponent } from './Admin/building/building.component';
 import { VenueFormComponent } from './Admin/venue-form/venue-form.component';
 import { MajengoComponent } from './Admin/majengo/majengo.component';
+import { BookingFormComponent } from './booking-form/booking-form.component';
 import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
+import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
+
+
 
 
 const routes: Routes = [
@@ -23,6 +27,8 @@ const routes: Routes = [
   { path: 'reservation', component: HomeComponent }, // Create this component for the reservation page
 
       { path: 'dash', component: DashboardComponent },
+      { path: 'booking', component: BookingFormComponent },
+
 
       {
         path: 'arafa',
@@ -30,9 +36,10 @@ const routes: Routes = [
         children: [
           { path: 'dashboard', component: DashboardComponent },
           { path: 'building', component: BuildingComponent},
-          { path: 'users', component: UserComponent },
+          { path: 'users', component: VenueComponent },
           {path: 'majengo',component:MajengoComponent},
           {path: 'leasepackage',component:LeasePackageFormComponent},
+          {path: 'regvenues',component:RegisterVenueComponent},
           { path: 'Venues', component: VenueFormComponent },
           { path: 'settings', component: SettingComponent },  // Correct path for SettingsComponent
         ]
