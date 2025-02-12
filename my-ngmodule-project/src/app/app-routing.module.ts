@@ -9,10 +9,14 @@ import { SettingComponent } from './Admin/setting/setting.component';
 import { BuildingComponent } from './Admin/building/building.component';
 import { VenueFormComponent } from './Admin/venue-form/venue-form.component';
 import { MajengoComponent } from './Admin/majengo/majengo.component';
+<<<<<<< HEAD
+import { BookingFormComponent } from './booking-form/booking-form.component';
+=======
 import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
 
 
+>>>>>>> bbfe0040e4455efd7a7121826c6d49f3bf0d90b8
 
 
 const routes: Routes = [
@@ -26,6 +30,8 @@ const routes: Routes = [
   { path: 'reservation', component: HomeComponent }, // Create this component for the reservation page
 
       { path: 'dash', component: DashboardComponent },
+      { path: 'booking', component: BookingFormComponent },
+
 
       {
         path: 'arafa',
