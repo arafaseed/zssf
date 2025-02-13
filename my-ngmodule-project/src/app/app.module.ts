@@ -39,6 +39,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
 import { LeasePackageTableComponent } from './Table/lease-package-table/lease-package-table.component';
+import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/lease-package-edit-form.component';
 
 
 
@@ -59,6 +60,7 @@ import { LeasePackageTableComponent } from './Table/lease-package-table/lease-pa
     LeasePackageFormComponent,
     RegisterVenueComponent,
     LeasePackageTableComponent,
+    LeasePackageEditFormComponent,
  
     
    

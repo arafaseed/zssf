@@ -13,6 +13,7 @@ import { BookingFormComponent } from './booking-form/booking-form.component';
 import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
 import { LeasePackageTableComponent } from './Table/lease-package-table/lease-package-table.component';
+import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/lease-package-edit-form.component';
 
 
 
@@ -37,6 +38,7 @@ const routes: Routes = [
 
       { path: 'dash', component: DashboardComponent },
       { path: 'booking', component: BookingFormComponent },
+      { path: 'edit-lease-package/:id', component: LeasePackageEditFormComponent },
 
 
       {

@@ -27,18 +27,20 @@ export class LeasePackageTableComponent implements OnInit {
       this.leasePackages = data;
     });
   }
-  openAddModal(): void {
-    // Logic to open the modal for adding a lease package
-    console.log('Open Add Modal');
-  }
+  
 
-  deleteLeasePackage(id: number) {
-    this.leasePackageService.deleteLeasePackage(id).subscribe(() => {
-      this.loadLeasePackages();
-    });
+  deleteLeasePackage(id: number): void {
+    const confirmDelete = window.confirm('Are you sure you want to delete this lease package?');
+    
+    if (confirmDelete) {
+      this.leasePackageService.deleteLeasePackage(id).subscribe(() => {
+        this.loadLeasePackages();
+      });
+    }
   }
+  
 
   editLeasePackage(leasePackage: any) {
-    // Logic for editing the lease package
+   
   }
 }
