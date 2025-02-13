@@ -55,9 +55,7 @@ import { LeasePackageTableComponent } from './Table/lease-package-table/lease-pa
     VenueFormComponent,
     BuildingComponent,
     MajengoComponent,
-    
    
-    
     LeasePackageFormComponent,
     RegisterVenueComponent,
     LeasePackageTableComponent,
