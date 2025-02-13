@@ -1,51 +1,34 @@
 <div class="container mt-4">
-    <h2 class="mb-4">Register New Venue</h2>
-    <form [formGroup]="venueForm" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
-
-      <!-- Venue Name and Capacity -->
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Venue Name</mat-label>
-            <input matInput formControlName="venueName" required>
-            <mat-error *ngIf="venueForm.get('venueName')?.hasError('required')">
-              Venue name is required
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div class="col-md-6 mb-3">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Capacity</mat-label>
-            <input matInput type="number" formControlName="capacity" required>
-            <mat-error *ngIf="venueForm.get('capacity')?.hasError('required')">
-              Capacity is required
-            </mat-error>
-          </mat-form-field>
-        </div>
+  <h2 class="mb-4">Register New Venue</h2>
+  <form [formGroup]="venueForm" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
+    <!-- Venue Name and Capacity -->
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Venue Name</mat-label>
+          <input matInput formControlName="venueName" required>
+          <mat-error *ngIf="venueForm.get('venueName')?.hasError('required')">
+            Venue name is required
+          </mat-error>
+        </mat-form-field>
       </div>
-
-      <!-- Description -->
-      <div class="row">
-        <div class="col-12 mb-3">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Description</mat-label>
-            <textarea matInput formControlName="description" rows="3"></textarea>
-          </mat-form-field>
-        </div>
+      <div class="col-md-6 mb-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Capacity</mat-label>
+          <input matInput type="number" formControlName="capacity" required>
+          <mat-error *ngIf="venueForm.get('capacity')?.hasError('required')">
+            Capacity is required
+          </mat-error>
+        </mat-form-field>
       </div>
-
-      <!-- Building Selection -->
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Building</mat-label>
-            <mat-select formControlName="buildingId" required>
-              <mat-option *ngFor="let building of buildings" [value]="building.buildingId">
-                {{ building.buildingName }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+    </div>
+    <!-- Description -->
+    <div class="row">
+      <div class="col-12 mb-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description" rows="3"></textarea>
+        </mat-form-field>
       </div>
 
       <!-- Lease Packages Multi-Select -->
@@ -69,16 +52,51 @@
             {{ selectedFiles.length }} file(s) selected
           </span>
         </div>
+    </div>
+    <!-- Building Selection -->
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Building</mat-label>
+          <mat-select formControlName="buildingId" required>
+            <mat-option *ngFor="let building of buildings" [value]="building.buildingId">
+              {{ building.buildingName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
-
-      <!-- Submit Button -->
-      <div class="row">
-        <div class="col-12 text-right">
-          <button mat-raised-button color="accent" type="submit" [disabled]="!venueForm.valid">
-            Register Venue
-          </button>
-        </div>
+    </div>
+    <!-- Lease Packages Multi-Select -->
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Lease Packages</mat-label>
+      <mat-select formControlName="leasePackageIds" required>
+        <mat-option *ngFor="let package of leasePackages" [value]="package.leaseId">
+          {{ package.category }} available for Tzs {{ package.price }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    
+    
+    <!-- Image Upload -->
+    <div class="row">
+      <div class="col-12 mb-3">
+        <input type="file" #fileInput (change)="onFileSelected($event)" multiple accept="image/*" hidden>
+        <button mat-raised-button color="primary" type="button" (click)="fileInput.click()">
+          <mat-icon>upload</mat-icon> Upload Images
+        </button>
+        <span class="ml-2" *ngIf="selectedFiles && selectedFiles.length > 0">
+          {{ selectedFiles.length }} file(s) selected
+        </span>
       </div>
-
-    </form>
+    </div>
+    <!-- Submit Button -->
+    <div class="row">
+      <div class="col-12 text-right">
+        <button mat-raised-button color="accent" type="submit" [disabled]="!venueForm.valid">
+          Register Venue
+        </button>
+      </div>
+    </div>
+ 
 </div>
+</form>

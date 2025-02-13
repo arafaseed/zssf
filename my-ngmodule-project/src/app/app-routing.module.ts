@@ -40,7 +40,7 @@ const routes: Routes = [
           {path: 'majengo',component:MajengoComponent},
           {path: 'leasepackage',component:LeasePackageFormComponent},
           {path: 'regvenues',component:RegisterVenueComponent},
-          { path: 'Venues', component: VenueFormComponent },
+          // { path: 'Venues', component: VenueFormComponent },
           { path: 'settings', component: SettingComponent },  // Correct path for SettingsComponent
         ]
       }
