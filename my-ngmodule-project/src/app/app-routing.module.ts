@@ -42,7 +42,7 @@ const routes: Routes = [
 
 
       {
-        path: 'arafa',
+        path: 'admin',
         component: LayoutComponent,
         children: [
           { path: 'dashboard', component: DashboardComponent },
