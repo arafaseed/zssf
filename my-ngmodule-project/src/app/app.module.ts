@@ -32,9 +32,13 @@ import { BuildingService } from './building.service';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BookingFormComponent } from './booking-form/booking-form.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+
 
 import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
+import { LeasePackageTableComponent } from './Table/lease-package-table/lease-package-table.component';
 
 
 
@@ -54,6 +58,7 @@ import { RegisterVenueComponent } from './Admin/register-venue/register-venue.co
    
     LeasePackageFormComponent,
     RegisterVenueComponent,
+    LeasePackageTableComponent,
  
     
    
@@ -86,7 +91,8 @@ import { RegisterVenueComponent } from './Admin/register-venue/register-venue.co
     HttpClientModule,
     MatButtonModule, 
     FormsModule,
-   
+    MatTableModule,
+    MatSortModule,
      
     BookingFormComponent,
     
