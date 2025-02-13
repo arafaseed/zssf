@@ -29,15 +29,8 @@ import { VenueFormComponent } from './Admin/venue-form/venue-form.component';
 import { MajengoComponent } from './Admin/majengo/majengo.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BuildingService } from './building.service';
-<<<<<<< HEAD
-import { MatDialogModule } from '@angular/material/dialog';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BookingFormComponent } from './booking-form/booking-form.component';
-
-=======
 import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
->>>>>>> bbfe0040e4455efd7a7121826c6d49f3bf0d90b8
 
 
 
@@ -54,15 +47,9 @@ import { RegisterVenueComponent } from './Admin/register-venue/register-venue.co
     VenueFormComponent,
     BuildingComponent,
     MajengoComponent,
-<<<<<<< HEAD
-    
-   
-    
-=======
     LeasePackageFormComponent,
     RegisterVenueComponent,
  
->>>>>>> bbfe0040e4455efd7a7121826c6d49f3bf0d90b8
     
    
 
@@ -93,13 +80,7 @@ import { RegisterVenueComponent } from './Admin/register-venue/register-venue.co
     BrowserModule,
     HttpClientModule,
     MatButtonModule, 
-<<<<<<< HEAD
-    FormsModule,
-    MatSelectModule,
-     
-=======
-    BookingFormComponent,
->>>>>>> dfb172140e6983f3637293aee31e6b741c634007
+    
     
    
 
