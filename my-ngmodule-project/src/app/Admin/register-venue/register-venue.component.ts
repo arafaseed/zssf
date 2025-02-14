@@ -5,7 +5,7 @@ import { VenueService } from '../../venue-service.service';
   selector: 'app-register-venue',
   standalone: false,
   templateUrl: './register-venue.component.html',
-  styleUrls: ['./register-venue.component.scss']
+  styleUrls: ['./register-venue.component.css']
 })
 export class RegisterVenueComponent implements OnInit {
   venueForm!: FormGroup;
