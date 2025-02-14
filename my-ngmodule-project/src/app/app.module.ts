@@ -26,7 +26,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { VenueFormComponent } from './Admin/venue-form/venue-form.component';
-import { MajengoComponent } from './Admin/majengo/majengo.component';
+
 import { HttpClientModule } from '@angular/common/http';
 import { BuildingService } from './building.service';
 
@@ -44,10 +44,11 @@ import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/le
 import { BuildinglistComponent } from './Admin/buildinglist/buildinglist.component';
 import { VenueViewComponent } from './Admin/venue-view/venue-view.component';
 import { ViewVenuesComponent } from './Admin/view-venues/view-venues.component';
+import { MatError } from '@angular/material/form-field';
 
 
 
-
+import { CommonModule } from '@angular/common';
 
 
 @NgModule({
@@ -62,9 +63,8 @@ import { ViewVenuesComponent } from './Admin/view-venues/view-venues.component';
     SettingComponent,
     VenueFormComponent,
     BuildingComponent,
-    MajengoComponent,
+  
    
-    LeasePackageFormComponent,
     RegisterVenueComponent,
     LeasePackageTableComponent,
     LeasePackageEditFormComponent,
@@ -92,6 +92,7 @@ import { ViewVenuesComponent } from './Admin/view-venues/view-venues.component';
     MatInputModule,         // import MatInputModule for the input field
     MatNativeDateModule,
     MatToolbarModule,
+    CommonModule,
     ReactiveFormsModule,
     MatDialogModule,
     MatSidenavModule,
@@ -99,6 +100,7 @@ import { ViewVenuesComponent } from './Admin/view-venues/view-venues.component';
     MatButtonModule,
     MatIconModule,
     MatNativeDateModule,
+    MatError,
     ReactiveFormsModule,
     BrowserModule,
     HttpClientModule,
