@@ -1,0 +1,75 @@
+/* General Styling */
+.container {
+    max-width: 900px;
+    margin: auto;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Title Styling */
+h2 {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Add Button */
+.d-flex {
+    display: flex;
+    justify-content: flex-end;
+}
+
+button {
+    font-weight: bold;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+/* Material Table Styling */
+mat-table {
+    width: 100%;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+}
+
+mat-header-cell {
+    font-size: 16px;
+    font-weight: bold;
+    background: #007bff;
+    color: white;
+    text-transform: uppercase;
+    padding: 12px;
+}
+
+mat-cell {
+    font-size: 14px;
+    color: #333;
+    padding: 12px;
+}
+
+/* Actions Column */
+mat-cell button {
+    margin-right: 10px;
+}
+
+/* Delete Button */
+mat-icon {
+    color: red;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+mat-icon:hover {
+    color: darkred;
+    transform: scale(1.2);
+}

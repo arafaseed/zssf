@@ -41,6 +41,10 @@ import { RegisterVenueComponent } from './Admin/register-venue/register-venue.co
 import { LeasePackageTableComponent } from './Table/lease-package-table/lease-package-table.component';
 import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/lease-package-edit-form.component';
 import { BuildinglistComponent } from './Admin/buildinglist/buildinglist.component';
+import { VenueViewComponent } from './Admin/venue-view/venue-view.component';
+
+
+
 
 
 
@@ -63,6 +67,7 @@ import { BuildinglistComponent } from './Admin/buildinglist/buildinglist.compone
     LeasePackageTableComponent,
     LeasePackageEditFormComponent,
     BuildinglistComponent,
+    VenueViewComponent,
  
     
    
@@ -85,6 +90,7 @@ import { BuildinglistComponent } from './Admin/buildinglist/buildinglist.compone
     MatNativeDateModule,
     MatToolbarModule,
     ReactiveFormsModule,
+    MatDialogModule,
     MatSidenavModule,
     MatListModule,
     MatButtonModule,

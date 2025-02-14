@@ -1,0 +1,100 @@
+/* Container for the dashboard */
+.dashboard-container {
+    padding: 20px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Header styles */
+  .dashboard-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .dashboard-header h1 {
+    font-size: 32px;
+    color: #007bff;
+  }
+  
+  .dashboard-header p {
+    font-size: 18px;
+    color: #555;
+  }
+  
+  /* Dashboard cards container */
+  .dashboard-cards {
+    display: flex;
+    justify-content: space-between; /* This ensures space between left, center, and right cards */
+    gap: 30px; /* Adds space between the cards */
+  }
+  
+  .card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    height: 200px; /* Reduced height */
+    width: 30%; /* Set the width to make sure they fit within the flex container */
+  }
+  
+  .card h3 {
+    font-size: 22px;
+    color: #333;
+  }
+  
+  .card .card-value {
+    font-size: 36px;
+    color: #007bff;
+    margin: 10px 0;
+  }
+  
+  .card button {
+    margin-top: 15px;
+  }
+  
+  /* Recent activity section */
+  .recent-activity {
+    margin-top: 40px;
+  }
+  
+  .recent-activity h3 {
+    font-size: 24px;
+    color: #007bff;
+  }
+  
+  .recent-activity table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .recent-activity th,
+  .recent-activity td {
+    padding: 12px;
+    text-align: left;
+  }
+  
+  .recent-activity th {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .recent-activity tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .dashboard-cards {
+      flex-direction: column; /* Stack cards vertically on small screens */
+      align-items: center;
+    }
+  
+    .card {
+      width: 80%; /* Make the cards wider on smaller screens */
+      margin-bottom: 20px;
+    }
+  }
+  
