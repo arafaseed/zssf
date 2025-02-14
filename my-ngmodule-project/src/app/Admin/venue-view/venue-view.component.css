@@ -1,14 +1,36 @@
 .card {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-header {
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 18px;
+  }
+  
+  .card-body {
+    padding: 20px;
   }
   
   .carousel-inner img {
     height: 300px;
     object-fit: cover;
+    border-radius: 8px;
   }
   
   button {
     margin-top: 10px;
+    width: 100%;
   }
   
   button:focus {
@@ -26,5 +48,11 @@
   
   .carousel-item img {
     width: 100%;
+  }
+  
+  @media (max-width: 768px) {
+    .col-md-4 {
+      flex: 0 0 100%;
+    }
   }
   

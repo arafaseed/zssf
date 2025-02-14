@@ -42,6 +42,7 @@ import { LeasePackageTableComponent } from './Table/lease-package-table/lease-pa
 import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/lease-package-edit-form.component';
 import { BuildinglistComponent } from './Admin/buildinglist/buildinglist.component';
 import { VenueViewComponent } from './Admin/venue-view/venue-view.component';
+import { ViewVenuesComponent } from './Admin/view-venues/view-venues.component';
 
 
 
@@ -68,6 +69,7 @@ import { VenueViewComponent } from './Admin/venue-view/venue-view.component';
     LeasePackageEditFormComponent,
     BuildinglistComponent,
     VenueViewComponent,
+    ViewVenuesComponent,
  
     
    

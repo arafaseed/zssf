@@ -14,4 +14,5 @@ export class ViewVenueService {
   getAllVenues(): Observable<any> {
     return this.http.get(this.apiUrl);
   }
+  
 }

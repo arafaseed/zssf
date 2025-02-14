@@ -1,13 +1,15 @@
+<app-header></app-header>
 <div class="container mt-4">
     <div class="row">
-      <div class="col-md-4" *ngFor="let venue of venues">
-        <div class="card">
-          <div class="card-header">
+      <div class="col-md-4 mb-4" *ngFor="let venue of venues; let i = index">
+        <!-- Card for each venue -->
+        <div class="card shadow">
+          <div class="card-header text-center">
             <h5>{{ venue.venueName }}</h5>
           </div>
           <div class="card-body">
             <!-- Slideshow -->
-            <div class="carousel slide" data-bs-ride="carousel" *ngIf="venue.venueImages?.length > 1">
+            <div *ngIf="venue.venueImages?.length > 1" class="carousel slide" data-bs-ride="carousel">
               <div class="carousel-inner">
                 <div class="carousel-item" *ngFor="let image of venue.venueImages; let i = index" [ngClass]="{'active': i === 0}">
                   <img class="d-block w-100" [src]="image" alt="Venue image">
@@ -23,6 +25,12 @@
   
             <!-- Venue description -->
             <p class="card-text">{{ venue.description }}</p>
+  
+            <!-- Additional Data from Related Table (Example: Reviews or Facilities) -->
+            <div *ngIf="venue.relatedData">
+              <p><strong>Facility:</strong> {{ venue.relatedData.facility }}</p>
+              <p><strong>Rating:</strong> {{ venue.relatedData.rating }} / 5</p>
+            </div>
   
             <!-- See More Button -->
             <button mat-raised-button color="primary" (click)="openGallery(venue)">
