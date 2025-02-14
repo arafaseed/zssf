@@ -29,11 +29,18 @@ import { VenueFormComponent } from './Admin/venue-form/venue-form.component';
 import { MajengoComponent } from './Admin/majengo/majengo.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BuildingService } from './building.service';
-import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
+
 import { BookingFormComponent } from './booking-form/booking-form.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+
+
+import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
+import { LeasePackageTableComponent } from './Table/lease-package-table/lease-package-table.component';
+import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/lease-package-edit-form.component';
 
 
 
@@ -50,11 +57,11 @@ import { RegisterVenueComponent } from './Admin/register-venue/register-venue.co
     VenueFormComponent,
     BuildingComponent,
     MajengoComponent,
-    
    
-    
     LeasePackageFormComponent,
     RegisterVenueComponent,
+    LeasePackageTableComponent,
+    LeasePackageEditFormComponent,
  
     
    
@@ -87,7 +94,8 @@ import { RegisterVenueComponent } from './Admin/register-venue/register-venue.co
     HttpClientModule,
     MatButtonModule, 
     FormsModule,
-   
+    MatTableModule,
+    MatSortModule,
      
     BookingFormComponent,
     
