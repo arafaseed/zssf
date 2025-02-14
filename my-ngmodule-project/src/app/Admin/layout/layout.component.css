@@ -9,7 +9,7 @@
   
   /* Sidenav (Left Sidebar) */
   .sidenav {
-    background-color: #343a40;
+    background-color: #a4aaaf;
     color: white;
     width: 250px;
     height: 100%; /* Cover the full height of the container */
@@ -92,7 +92,7 @@
   
   /* Footer styling */
   .footer {
-    background-color: #343a40;
+    background-color: #0d4b88;
     color: white;
     position: fixed;
     bottom: 0;

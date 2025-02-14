@@ -14,6 +14,7 @@ import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-pack
 import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
 import { LeasePackageTableComponent } from './Table/lease-package-table/lease-package-table.component';
 import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/lease-package-edit-form.component';
+import { BuildinglistComponent } from './Admin/buildinglist/buildinglist.component';
 
 
 
@@ -47,6 +48,7 @@ const routes: Routes = [
         children: [
           { path: 'dashboard', component: DashboardComponent },
           { path: 'building', component: BuildingComponent},
+          { path: 'buildings', component: BuildinglistComponent },
           { path: 'users', component: VenueComponent },
           {path: 'majengo',component:MajengoComponent},
           {path: 'leasepackage',component:LeasePackageFormComponent},
