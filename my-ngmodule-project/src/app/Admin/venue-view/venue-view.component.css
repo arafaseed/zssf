@@ -1,0 +1,30 @@
+.card {
+    margin-bottom: 20px;
+  }
+  
+  .carousel-inner img {
+    height: 300px;
+    object-fit: cover;
+  }
+  
+  button {
+    margin-top: 10px;
+  }
+  
+  button:focus {
+    outline: none;
+  }
+  
+  .carousel-control-prev-icon,
+  .carousel-control-next-icon {
+    background-color: black;
+  }
+  
+  mat-dialog-content {
+    padding: 20px;
+  }
+  
+  .carousel-item img {
+    width: 100%;
+  }
+  
