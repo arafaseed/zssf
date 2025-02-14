@@ -14,6 +14,9 @@ import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-pack
 import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
 import { LeasePackageTableComponent } from './Table/lease-package-table/lease-package-table.component';
 import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/lease-package-edit-form.component';
+import { BuildinglistComponent } from './Admin/buildinglist/buildinglist.component';
+import { VenueViewComponent } from './Admin/venue-view/venue-view.component';
+import { ViewVenuesComponent } from './Admin/view-venues/view-venues.component';
 
 
 
@@ -31,14 +34,11 @@ const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'venue', component: VenueComponent },
       { path: 'home', component: HomeComponent },
-      { path: 'Table', component: LeasePackageTableComponent },
+      {path: 'viewVenue',component:VenueViewComponent},//user venue list
+      { path: 'reservation', component: HomeComponent }, // Create this component for the reservation page
 
-     
-  { path: 'reservation', component: HomeComponent }, // Create this component for the reservation page
-
-      { path: 'dash', component: DashboardComponent },
       { path: 'booking', component: BookingFormComponent },
-      { path: 'edit-lease-package/:id', component: LeasePackageEditFormComponent },
+     
 
 
       {
@@ -46,12 +46,24 @@ const routes: Routes = [
         component: LayoutComponent,
         children: [
           { path: 'dashboard', component: DashboardComponent },
+
+
           { path: 'building', component: BuildingComponent},
-          { path: 'users', component: VenueComponent },
+          { path: 'buildings', component: BuildinglistComponent },
+
+
+          {path: 'users', component: VenueComponent },
           {path: 'majengo',component:MajengoComponent},
+
+
           {path: 'leasepackage',component:LeasePackageFormComponent},
+          { path: 'leasepackagetable', component: LeasePackageTableComponent },
+          { path: 'edit-lease-package/:id', component: LeasePackageEditFormComponent },
+
+          
           {path: 'regvenues',component:RegisterVenueComponent},
-          // { path: 'Venues', component: VenueFormComponent },
+          {path: 'venueView',component:ViewVenuesComponent},
+          
           { path: 'settings', component: SettingComponent },  // Correct path for SettingsComponent
         ]
       }

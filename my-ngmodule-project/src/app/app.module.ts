@@ -29,9 +29,10 @@ import { VenueFormComponent } from './Admin/venue-form/venue-form.component';
 import { MajengoComponent } from './Admin/majengo/majengo.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BuildingService } from './building.service';
+
+import { BookingFormComponent } from './booking-form/booking-form.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BookingFormComponent } from './booking-form/booking-form.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 
@@ -40,6 +41,12 @@ import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-pack
 import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
 import { LeasePackageTableComponent } from './Table/lease-package-table/lease-package-table.component';
 import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/lease-package-edit-form.component';
+import { BuildinglistComponent } from './Admin/buildinglist/buildinglist.component';
+import { VenueViewComponent } from './Admin/venue-view/venue-view.component';
+import { ViewVenuesComponent } from './Admin/view-venues/view-venues.component';
+
+
+
 
 
 
@@ -61,6 +68,9 @@ import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/le
     RegisterVenueComponent,
     LeasePackageTableComponent,
     LeasePackageEditFormComponent,
+    BuildinglistComponent,
+    VenueViewComponent,
+    ViewVenuesComponent,
  
     
    
@@ -83,6 +93,7 @@ import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/le
     MatNativeDateModule,
     MatToolbarModule,
     ReactiveFormsModule,
+    MatDialogModule,
     MatSidenavModule,
     MatListModule,
     MatButtonModule,

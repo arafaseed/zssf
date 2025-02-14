@@ -1,0 +1,66 @@
+<app-header></app-header>
+<div class="container mt-4">
+    <div class="row">
+      <div class="col-md-4 mb-4" *ngFor="let venue of venues; let i = index">
+        <!-- Card for each venue -->
+        <div class="card shadow">
+          <div class="card-header text-center">
+            <h5>{{ venue.venueName }}</h5>
+          </div>
+          <div class="card-body">
+            <!-- Slideshow -->
+            <div *ngIf="venue.venueImages?.length > 1" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-inner">
+                <div class="carousel-item" *ngFor="let image of venue.venueImages; let i = index" [ngClass]="{'active': i === 0}">
+                  <img class="d-block w-100" [src]="image" alt="Venue image">
+                </div>
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              </button>
+            </div>
+  
+            <!-- Venue description -->
+            <p class="card-text">{{ venue.description }}</p>
+  
+            <!-- Additional Data from Related Table (Example: Reviews or Facilities) -->
+            <div *ngIf="venue.relatedData">
+              <p><strong>Facility:</strong> {{ venue.relatedData.facility }}</p>
+              <p><strong>Rating:</strong> {{ venue.relatedData.rating }} / 5</p>
+            </div>
+  
+            <!-- See More Button -->
+            <button mat-raised-button color="primary" (click)="openGallery(venue)">
+              See More
+            </button>
+  
+            <!-- Book Button -->
+            <button mat-raised-button color="accent" (click)="bookVenue(venue)">
+              Book Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal for images -->
+  <mat-dialog-content *ngIf="selectedVenue">
+    <div class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item" *ngFor="let image of selectedVenue.venueImages; let i = index" [ngClass]="{'active': i === 0}">
+          <img class="d-block w-100" [src]="image" alt="Venue image">
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" (click)="prevImage()">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      </button>
+      <button class="carousel-control-next" type="button" (click)="nextImage()">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      </button>
+    </div>
+  </mat-dialog-content>
+  
