@@ -37,7 +37,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 
 
-import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
+
 import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
 import { LeasePackageTableComponent } from './Table/lease-package-table/lease-package-table.component';
 import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/lease-package-edit-form.component';
@@ -50,6 +50,7 @@ import { MatError } from '@angular/material/form-field';
 
 import { CommonModule } from '@angular/common';
 import { MajengoComponent } from './Admin/majengo/majengo.component';
+
 
 
 @NgModule({
@@ -71,7 +72,11 @@ import { MajengoComponent } from './Admin/majengo/majengo.component';
     BuildinglistComponent,
     VenueViewComponent,
     ViewVenuesComponent,
+<<<<<<< HEAD
     LeasePackageFormComponent,
+=======
+    
+>>>>>>> 54d52b7907f2f88ecaaa3db9a643f3eb192137b6
  
     
    

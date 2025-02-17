@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ViewVenueService {
+  [x: string]: any;
 
   private apiUrl = 'http://localhost:8080/api/venues/all';
   

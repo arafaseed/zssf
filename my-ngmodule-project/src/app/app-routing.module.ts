@@ -13,6 +13,13 @@ import { BookingFormComponent } from './booking-form/booking-form.component';
 import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
 import { VenueDisplayComponent } from './Admin/venue-display/venue-display.component';
+<<<<<<< HEAD
+=======
+;
+import { BookingFormComponent } from './booking-form/booking-form.component';
+
+import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
+>>>>>>> 54d52b7907f2f88ecaaa3db9a643f3eb192137b6
 import { LeasePackageTableComponent } from './Table/lease-package-table/lease-package-table.component';
 import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/lease-package-edit-form.component';
 import { BuildinglistComponent } from './Admin/buildinglist/buildinglist.component';
@@ -22,6 +29,10 @@ import { ViewVenuesComponent } from './Admin/view-venues/view-venues.component';
 
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 54d52b7907f2f88ecaaa3db9a643f3eb192137b6
 
 
 
@@ -35,12 +46,32 @@ const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'venue', component: VenueComponent },
       { path: 'home', component: HomeComponent },
+<<<<<<< HEAD
+=======
+     
+      { path: 'reservation', component: HomeComponent }, // Create this component for the reservation page
+      { path: 'Venueslists', component: VenueDisplayComponent },
+      { path: 'dash', component: DashboardComponent },
+      { path: 'booking', component: BookingFormComponent },
+
+
+      {
+        path: 'arafa',
+        component: LayoutComponent,
+        children: [
+          { path: 'dashboard', component: DashboardComponent },
+          { path: 'building', component: BuildingComponent},
+          { path: 'users', component: VenueComponent },
+          {path: 'majengo',component:MajengoComponent},
+          {path: 'leasepackage',component:LeasePackageFormComponent},
+          {path: 'regvenues',component:RegisterVenueComponent},
+          { path: 'Venueslist', component: VenueDisplayComponent },
+>>>>>>> 54d52b7907f2f88ecaaa3db9a643f3eb192137b6
       {path: 'viewVenue',component:VenueViewComponent},//user venue list
       { path: 'reservation', component: HomeComponent }, // Create this component for the reservation page
 
       { path: 'booking', component: BookingFormComponent },
-     
-
+  
 
       {
         path: 'admin',
@@ -57,7 +88,6 @@ const routes: Routes = [
         
 
 
-          {path: 'leasepackage',component:LeasePackageFormComponent},
           { path: 'leasepackagetable', component: LeasePackageTableComponent },
           { path: 'edit-lease-package/:id', component: LeasePackageEditFormComponent },
 
