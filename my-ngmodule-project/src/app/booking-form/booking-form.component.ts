@@ -9,8 +9,12 @@ import { CommonModule } from '@angular/common';
   selector: 'app-booking-form',
   templateUrl: './booking-form.component.html',
   styleUrls: ['./booking-form.component.css'],
+<<<<<<< HEAD
+  standalone: false, 
+=======
   imports: [FormsModule, CommonModule],
   standalone: true, // Use this if your project supports standalone components
+>>>>>>> c74caa8baa1527cb681a91f38722b98634cde0bc
 })
 export class BookingFormComponent implements OnInit, AfterViewInit {
   @ViewChild('calendar', { static: false }) calendarEl!: ElementRef;
@@ -18,13 +22,23 @@ export class BookingFormComponent implements OnInit, AfterViewInit {
   booking: any = {};
 
   ngOnInit() {
+<<<<<<< HEAD
+=======
     // Initialize booking object
+>>>>>>> c74caa8baa1527cb681a91f38722b98634cde0bc
     this.booking = {
       name: '',
       email: '',
       phone: '',
+<<<<<<< HEAD
+      Startdate: '',
+      Enddate:'',
+      Starttime: '',
+      Endtime:''
+=======
       date: '',
       time: ''
+>>>>>>> c74caa8baa1527cb681a91f38722b98634cde0bc
     };
   }
 
@@ -43,11 +57,19 @@ export class BookingFormComponent implements OnInit, AfterViewInit {
   }
 
   handleDateClick(info: any) {
+<<<<<<< HEAD
+    this.booking.date = info.dateStr; // Set selected date in form
+  }
+
+  submitForm() {
+    console.log("Booking Data:", this.booking);
+=======
     this.booking.date = info.dateStr; // Set selected date in the form
   }
 
   submitForm() {
     console.log("Booking data:", this.booking);
+>>>>>>> c74caa8baa1527cb681a91f38722b98634cde0bc
     alert("Reservation submitted successfully!");
   }
 }

@@ -5,7 +5,11 @@ import { VenueService } from '../../venue-service.service';
   selector: 'app-register-venue',
   standalone: false,
   templateUrl: './register-venue.component.html',
+<<<<<<< HEAD
+  styleUrls: ['./register-venue.component.scss']
+=======
   styleUrls: ['./register-venue.component.css']
+>>>>>>> c74caa8baa1527cb681a91f38722b98634cde0bc
 })
 export class RegisterVenueComponent implements OnInit {
   venueForm!: FormGroup;
@@ -94,7 +98,10 @@ export class RegisterVenueComponent implements OnInit {
       );
     }
   }
+<<<<<<< HEAD
+=======
 
   
+>>>>>>> c74caa8baa1527cb681a91f38722b98634cde0bc
   
 }
