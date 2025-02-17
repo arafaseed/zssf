@@ -1,43 +1,75 @@
 <mat-card class="table-container">
-    <mat-card-title class="title">🏢 Registered Buildings</mat-card-title>
-  
-    <table mat-table [dataSource]="buildings" class="mat-elevation-z8">
-      <!-- ID Column -->
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef> ID </th>
-        <td mat-cell *matCellDef="let building"> {{ building.id }} </td>
-      </ng-container>
-  
-      <!-- Name Column -->
-      <ng-container matColumnDef="buildingName">
-        <th mat-header-cell *matHeaderCellDef> Name </th>
-        <td mat-cell *matCellDef="let building"> {{ building.buildingName }} </td>
-      </ng-container>
-  
-      <!-- Address Column -->
-      <ng-container matColumnDef="address">
-        <th mat-header-cell *matHeaderCellDef> Address </th>
-        <td mat-cell *matCellDef="let building"> {{ building.address }} </td>
-      </ng-container>
-  
-      <!-- Venue Column -->
-      <ng-container matColumnDef="venue">
-        <th mat-header-cell *matHeaderCellDef> Venue </th>
-        <td mat-cell *matCellDef="let building"> {{ building.venue }} </td>
-      </ng-container>
-  
-      <!-- Actions Column -->
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef> Actions </th>
-        <td mat-cell *matCellDef="let building">
-          <button mat-icon-button color="warn" (click)="deleteBuilding(building.id)">
-            🗑️
+  <!-- Card Header with Title -->
+  <mat-card-title class="title text-center mb-4">
+    <h3>🏢 Registered Buildings</h3>
+  </mat-card-title>
+
+  <!-- Add Button -->
+  <div class="text-center mb-4">
+    <button mat-raised-button color="primary" (click)="openPopup()">
+      Add New Building
+    </button>
+  </div>
+
+  <!-- Popup Form -->
+  <div *ngIf="showPopup" class="popup-container">
+    <mat-card class="popup-card">
+      <mat-card-title class="text-center">
+        <h3>Add New Building</h3>
+      </mat-card-title>
+
+      <form [formGroup]="buildingForm">
+        <mat-form-field class="full-width">
+          <mat-label>Building Name</mat-label>
+          <input matInput formControlName="buildingName" required>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Address</mat-label>
+          <input matInput formControlName="address" required>
+        </mat-form-field>
+
+      
+
+        <div class="button-group">
+          <button mat-raised-button color="primary" (click)="addBuilding()" [disabled]="buildingForm.invalid">
+            Save
           </button>
-        </td>
-      </ng-container>
-  
-      <tr mat-header-row *matHeaderRowDef="['id', 'buildingName', 'address', 'venue', 'actions']"></tr>
-      <tr mat-row *matRowDef="let row; columns: ['id', 'buildingName', 'address', 'venue', 'actions'];"></tr>
-    </table>
-  </mat-card>
-  
+          <button mat-raised-button color="warn" (click)="closePopup()">Cancel</button>
+        </div>
+      </form>
+    </mat-card>
+  </div>
+
+  <!-- Buildings Table -->
+  <table mat-table [dataSource]="buildings" class="mat-elevation-z8">
+
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="buildingName">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let building"> {{ building.buildingName }} </td>
+    </ng-container>
+
+    <!-- Address Column -->
+    <ng-container matColumnDef="address">
+      <th mat-header-cell *matHeaderCellDef> Address </th>
+      <td mat-cell *matCellDef="let building"> {{ building.address }} </td>
+    </ng-container>
+
+    
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let building">
+        <button mat-icon-button color="warn" (click)="deleteBuilding(building.id)">
+          🗑️
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="[ 'buildingName', 'address',  'actions']"></tr>
+    <tr mat-row *matRowDef="let row; columns: [ 'buildingName', 'address',  'actions'];"></tr>
+  </table>
+</mat-card>

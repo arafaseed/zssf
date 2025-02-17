@@ -25,9 +25,13 @@
     "@fullcalendar/interaction": "^6.1.15",
     "@types/fullcalendar": "^3.8.0",
     "bootstrap": "^5.3.3",
+<<<<<<< HEAD
+    "my-ngmodule-project": "file:",
+=======
     "chart.js": "^4.4.7",
     "my-ngmodule-project": "file:",
     "ng2-charts": "^8.0.0",
+>>>>>>> c74caa8baa1527cb681a91f38722b98634cde0bc
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
@@ -45,4 +49,8 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.7.2"
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> c74caa8baa1527cb681a91f38722b98634cde0bc

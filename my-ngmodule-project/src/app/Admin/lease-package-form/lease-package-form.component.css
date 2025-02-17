@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* Ensure full-page centering */
 .full-screen-container {
     display: flex;
@@ -22,7 +23,6 @@
     margin-left: 35rem;
     margin-top: 60px;
     align-items: center;
-    justify-content: center;
     align-content: center;
 
   }
@@ -54,3 +54,47 @@
     font-weight: bold;
   }
   
+=======
+.container {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+}
+.card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.form-label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+.btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+.btn-primary:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+>>>>>>> c74caa8baa1527cb681a91f38722b98634cde0bc

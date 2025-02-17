@@ -8,7 +8,14 @@ import { UserComponent } from './Admin/user/user.component';  // Corrected impor
 import { SettingComponent } from './Admin/setting/setting.component';
 import { BuildingComponent } from './Admin/building/building.component';
 import { VenueFormComponent } from './Admin/venue-form/venue-form.component';
+<<<<<<< HEAD
 import { MajengoComponent } from './Admin/majengo/majengo.component';
+import { BookingFormComponent } from './booking-form/booking-form.component';
+import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
+import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
+import { VenueDisplayComponent } from './Admin/venue-display/venue-display.component';
+=======
+;
 import { BookingFormComponent } from './booking-form/booking-form.component';
 import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
@@ -21,6 +28,7 @@ import { ViewVenuesComponent } from './Admin/view-venues/view-venues.component';
 
 
 
+>>>>>>> c74caa8baa1527cb681a91f38722b98634cde0bc
 
 
 
@@ -34,6 +42,26 @@ const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'venue', component: VenueComponent },
       { path: 'home', component: HomeComponent },
+<<<<<<< HEAD
+     
+      { path: 'reservation', component: HomeComponent }, // Create this component for the reservation page
+      { path: 'Venueslists', component: VenueDisplayComponent },
+      { path: 'dash', component: DashboardComponent },
+      { path: 'booking', component: BookingFormComponent },
+
+
+      {
+        path: 'arafa',
+        component: LayoutComponent,
+        children: [
+          { path: 'dashboard', component: DashboardComponent },
+          { path: 'building', component: BuildingComponent},
+          { path: 'users', component: VenueComponent },
+          {path: 'majengo',component:MajengoComponent},
+          {path: 'leasepackage',component:LeasePackageFormComponent},
+          {path: 'regvenues',component:RegisterVenueComponent},
+          { path: 'Venueslist', component: VenueDisplayComponent },
+=======
       {path: 'viewVenue',component:VenueViewComponent},//user venue list
       { path: 'reservation', component: HomeComponent }, // Create this component for the reservation page
 
@@ -53,7 +81,7 @@ const routes: Routes = [
 
 
           {path: 'users', component: VenueComponent },
-          {path: 'majengo',component:MajengoComponent},
+        
 
 
           {path: 'leasepackage',component:LeasePackageFormComponent},
@@ -64,6 +92,7 @@ const routes: Routes = [
           {path: 'regvenues',component:RegisterVenueComponent},
           {path: 'venueView',component:ViewVenuesComponent},
           
+>>>>>>> c74caa8baa1527cb681a91f38722b98634cde0bc
           { path: 'settings', component: SettingComponent },  // Correct path for SettingsComponent
         ]
       }

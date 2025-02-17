@@ -1,5 +1,64 @@
 /* Full layout container */
 .layout-container {
+<<<<<<< HEAD
+    display: flex;
+    height: calc(100vh - 64px); /* Adjust the height to account for the toolbar */
+    flex-direction: row;
+    margin-top: 64px; /* Offset the content for the fixed header */
+    margin-bottom: 60px; /* Space for footer */
+  }
+  
+  /* Sidenav (Left Sidebar) */
+  .sidenav {
+    background-color: #343a40;
+    color: white;
+    width: 250px;
+    height: 100%; /* Cover the full height of the container */
+    position: fixed; /* Fixed positioning on the left */
+    top: 64px; /* Position below the fixed toolbar */
+    bottom: 60px; /* Ensure it doesn't overlap with footer */
+    padding-top: 20px;
+  }
+  
+  /* Navigation list items */
+  .sidenav .mat-nav-list {
+    padding-left: 0;
+  }
+  
+  /* Style for each navigation item */
+  .nav-item {
+    color: white;
+    font-size: 16px;
+    padding: 15px;
+    border-bottom: 1px solid #555;
+    transition: background-color 0.3s ease, padding-left 0.3s ease;
+  }
+  
+  /* Hover effect for the nav items */
+  .nav-item:hover {
+    background-color: #007bff;
+    padding-left: 30px;
+    cursor: pointer;
+  }
+  
+  /* Active link */
+  .nav-item.mat-list-item.mat-list-item-selected {
+    background-color: #0056b3;
+    color: white;
+  }
+  
+  /* Toolbar (Header) */
+  mat-toolbar {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+  }
+  
+=======
   display: flex;
   height: calc(100vh - 64px); /* Adjust the height to account for the toolbar */
   flex-direction: row;
@@ -58,6 +117,7 @@ mat-toolbar {
   z-index: 1000;
 }
 
+>>>>>>> c74caa8baa1527cb681a91f38722b98634cde0bc
 /* Content (Right Side) */
 .mat-sidenav-content {
   margin-left: 250px; /* Space for sidenav */
@@ -72,6 +132,62 @@ mat-toolbar {
   flex-direction: column;
 }
 
+<<<<<<< HEAD
+  
+  /* Style for the card container */
+  .card {
+    margin-bottom: 20px;
+    border-radius: 8px;
+    height: 800px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-header {
+    background-color: #f8f9fa;
+    font-size: 18px;
+  }
+  
+  .card-body {
+    font-size: 14px;
+    color: #495057;
+  }
+  
+  /* Footer styling */
+  .footer {
+    background-color: #343a40;
+    color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    z-index: 100;
+  }
+  
+  .container {
+    max-width: 100%;
+    padding: 0 10px;
+  }
+  
+  @media (max-width: 768px) {
+    /* On smaller screens, make the sidenav full width and stack layout */
+    .sidenav {
+      width: 100%;
+      position: relative;
+      top: 0;
+      bottom: 0;
+    }
+  
+    .mat-sidenav-content {
+      margin-left: 0;
+    }
+  
+    mat-toolbar {
+      position: relative;
+    }
+  }
+  
+=======
 /* Style for the card container */
 .card {
   margin-bottom: 20px;
@@ -127,3 +243,4 @@ mat-toolbar {
     position: relative;
   }
 }
+>>>>>>> c74caa8baa1527cb681a91f38722b98634cde0bc
