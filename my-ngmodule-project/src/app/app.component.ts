@@ -7,6 +7,6 @@ import { Component } from '@angular/core';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'my-ngmodule-project';
+  title = 'zssf-project';
   
 }
