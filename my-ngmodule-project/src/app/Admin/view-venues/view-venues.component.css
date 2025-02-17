@@ -1,0 +1,21 @@
+.venue-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+  
+  table {
+    width: 100%;
+  }
+  
+  td, th {
+    padding: 8px;
+    text-align: left;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  

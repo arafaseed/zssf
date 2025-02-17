@@ -26,6 +26,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { VenueFormComponent } from './Admin/venue-form/venue-form.component';
+<<<<<<< HEAD
 import { MajengoComponent } from './Admin/majengo/majengo.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BuildingService } from './building.service';
@@ -42,6 +43,31 @@ import { ReservationComponent } from './Admin/reservation/reservation.component'
 
 
 
+=======
+
+import { HttpClientModule } from '@angular/common/http';
+import { BuildingService } from './building.service';
+
+import { BookingFormComponent } from './booking-form/booking-form.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+
+
+import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
+import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
+import { LeasePackageTableComponent } from './Table/lease-package-table/lease-package-table.component';
+import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/lease-package-edit-form.component';
+import { BuildinglistComponent } from './Admin/buildinglist/buildinglist.component';
+import { VenueViewComponent } from './Admin/venue-view/venue-view.component';
+import { ViewVenuesComponent } from './Admin/view-venues/view-venues.component';
+import { MatError } from '@angular/material/form-field';
+
+
+
+import { CommonModule } from '@angular/common';
+>>>>>>> c74caa8baa1527cb681a91f38722b98634cde0bc
 
 
 @NgModule({
@@ -56,6 +82,7 @@ import { ReservationComponent } from './Admin/reservation/reservation.component'
     SettingComponent,
     VenueFormComponent,
     BuildingComponent,
+<<<<<<< HEAD
     MajengoComponent,
     BookingFormComponent,
     LeasePackageFormComponent,
@@ -63,6 +90,17 @@ import { ReservationComponent } from './Admin/reservation/reservation.component'
     ReservationComponent,
   
   
+=======
+  
+   
+    RegisterVenueComponent,
+    LeasePackageTableComponent,
+    LeasePackageEditFormComponent,
+    BuildinglistComponent,
+    VenueViewComponent,
+    ViewVenuesComponent,
+ 
+>>>>>>> c74caa8baa1527cb681a91f38722b98634cde0bc
     
    
 
@@ -83,22 +121,40 @@ import { ReservationComponent } from './Admin/reservation/reservation.component'
     MatInputModule,         // import MatInputModule for the input field
     MatNativeDateModule,
     MatToolbarModule,
+<<<<<<< HEAD
     ReactiveFormsModule,
+=======
+    CommonModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+>>>>>>> c74caa8baa1527cb681a91f38722b98634cde0bc
     MatSidenavModule,
     MatListModule,
     MatButtonModule,
     MatIconModule,
     MatNativeDateModule,
+<<<<<<< HEAD
     ReactiveFormsModule,
     CommonModule,
+=======
+    MatError,
+    ReactiveFormsModule,
+>>>>>>> c74caa8baa1527cb681a91f38722b98634cde0bc
     BrowserModule,
     HttpClientModule,
     MatButtonModule, 
     FormsModule,
+<<<<<<< HEAD
     
    
      
     
+=======
+    MatTableModule,
+    MatSortModule,
+     
+    BookingFormComponent,
+>>>>>>> c74caa8baa1527cb681a91f38722b98634cde0bc
     
    
 
