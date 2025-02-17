@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ViewVenueService } from '../../view-venue.service';
+import { Router } from '@angular/router';  // Import Router for navigation
 
 @Component({
   selector: 'app-venue-view',
@@ -13,7 +14,7 @@ export class VenueViewComponent implements OnInit {
   selectedVenue: any;
   currentImageIndex: number = 0;
 
-  constructor(private venueService: ViewVenueService) {}
+  constructor(private venueService: ViewVenueService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadVenues();
@@ -47,6 +48,8 @@ export class VenueViewComponent implements OnInit {
   }
 
   bookVenue(venue: any): void {
-    // Logic to handle venue booking
+    // Navigate to booking page with the venue ID as a route parameter
+    this.router.navigate(['/booking', venue.venueId]);  // Assuming /booking/:id route in your Angular routing configuration
   }
+  
 }

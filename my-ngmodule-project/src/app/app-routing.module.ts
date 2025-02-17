@@ -10,13 +10,14 @@ import { BuildingComponent } from './Admin/building/building.component';
 import { VenueFormComponent } from './Admin/venue-form/venue-form.component';
 ;
 import { BookingFormComponent } from './booking-form/booking-form.component';
-import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
+
 import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
 import { LeasePackageTableComponent } from './Table/lease-package-table/lease-package-table.component';
 import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/lease-package-edit-form.component';
 import { BuildinglistComponent } from './Admin/buildinglist/buildinglist.component';
 import { VenueViewComponent } from './Admin/venue-view/venue-view.component';
 import { ViewVenuesComponent } from './Admin/view-venues/view-venues.component';
+
 
 
 
@@ -38,8 +39,7 @@ const routes: Routes = [
       { path: 'reservation', component: HomeComponent }, // Create this component for the reservation page
 
       { path: 'booking', component: BookingFormComponent },
-     
-
+  
 
       {
         path: 'admin',
@@ -56,7 +56,6 @@ const routes: Routes = [
         
 
 
-          {path: 'leasepackage',component:LeasePackageFormComponent},
           { path: 'leasepackagetable', component: LeasePackageTableComponent },
           { path: 'edit-lease-package/:id', component: LeasePackageEditFormComponent },
 

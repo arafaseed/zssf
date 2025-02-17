@@ -37,7 +37,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 
 
-import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
+
 import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
 import { LeasePackageTableComponent } from './Table/lease-package-table/lease-package-table.component';
 import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/lease-package-edit-form.component';
@@ -49,6 +49,7 @@ import { MatError } from '@angular/material/form-field';
 
 
 import { CommonModule } from '@angular/common';
+
 
 
 @NgModule({
@@ -71,6 +72,7 @@ import { CommonModule } from '@angular/common';
     BuildinglistComponent,
     VenueViewComponent,
     ViewVenuesComponent,
+    
  
     
    
