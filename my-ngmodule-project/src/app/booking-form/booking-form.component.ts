@@ -9,8 +9,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-booking-form',
   templateUrl: './booking-form.component.html',
   styleUrls: ['./booking-form.component.css'],
-  imports: [FormsModule, CommonModule],
-  standalone: true, // Use this if your project supports standalone components
+  standalone: false, 
 })
 export class BookingFormComponent implements OnInit, AfterViewInit {
   @ViewChild('calendar', { static: false }) calendarEl!: ElementRef;
@@ -18,13 +17,14 @@ export class BookingFormComponent implements OnInit, AfterViewInit {
   booking: any = {};
 
   ngOnInit() {
-    // Initialize booking object
     this.booking = {
       name: '',
       email: '',
       phone: '',
-      date: '',
-      time: ''
+      Startdate: '',
+      Enddate:'',
+      Starttime: '',
+      Endtime:''
     };
   }
 
@@ -43,11 +43,11 @@ export class BookingFormComponent implements OnInit, AfterViewInit {
   }
 
   handleDateClick(info: any) {
-    this.booking.date = info.dateStr; // Set selected date in the form
+    this.booking.date = info.dateStr; // Set selected date in form
   }
 
   submitForm() {
-    console.log("Booking data:", this.booking);
+    console.log("Booking Data:", this.booking);
     alert("Reservation submitted successfully!");
   }
 }

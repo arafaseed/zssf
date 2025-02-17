@@ -35,6 +35,12 @@ import { BookingFormComponent } from './booking-form/booking-form.component';
 
 import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
+import { CommonModule } from '@angular/common';
+import { ReservationComponent } from './Admin/reservation/reservation.component';
+
+
+
+
 
 
 
@@ -51,12 +57,12 @@ import { RegisterVenueComponent } from './Admin/register-venue/register-venue.co
     VenueFormComponent,
     BuildingComponent,
     MajengoComponent,
-    
-   
-    
+    BookingFormComponent,
     LeasePackageFormComponent,
     RegisterVenueComponent,
- 
+    ReservationComponent,
+  
+  
     
    
 
@@ -84,13 +90,15 @@ import { RegisterVenueComponent } from './Admin/register-venue/register-venue.co
     MatIconModule,
     MatNativeDateModule,
     ReactiveFormsModule,
+    CommonModule,
     BrowserModule,
     HttpClientModule,
     MatButtonModule, 
     FormsModule,
+    
    
      
-    BookingFormComponent,
+    
     
    
 

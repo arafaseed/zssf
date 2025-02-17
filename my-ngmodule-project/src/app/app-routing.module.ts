@@ -12,6 +12,9 @@ import { MajengoComponent } from './Admin/majengo/majengo.component';
 import { BookingFormComponent } from './booking-form/booking-form.component';
 import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
+import { VenueDisplayComponent } from './Admin/venue-display/venue-display.component';
+
+
 
 
 
@@ -24,8 +27,8 @@ const routes: Routes = [
       { path: 'venue', component: VenueComponent },
       { path: 'home', component: HomeComponent },
      
-  { path: 'reservation', component: HomeComponent }, // Create this component for the reservation page
-
+      { path: 'reservation', component: HomeComponent }, // Create this component for the reservation page
+      { path: 'Venueslists', component: VenueDisplayComponent },
       { path: 'dash', component: DashboardComponent },
       { path: 'booking', component: BookingFormComponent },
 
@@ -40,7 +43,7 @@ const routes: Routes = [
           {path: 'majengo',component:MajengoComponent},
           {path: 'leasepackage',component:LeasePackageFormComponent},
           {path: 'regvenues',component:RegisterVenueComponent},
-          // { path: 'Venues', component: VenueFormComponent },
+          { path: 'Venueslist', component: VenueDisplayComponent },
           { path: 'settings', component: SettingComponent },  // Correct path for SettingsComponent
         ]
       }
