@@ -72,11 +72,7 @@ import { MajengoComponent } from './Admin/majengo/majengo.component';
     BuildinglistComponent,
     VenueViewComponent,
     ViewVenuesComponent,
-<<<<<<< HEAD
-    LeasePackageFormComponent,
-=======
     
->>>>>>> 54d52b7907f2f88ecaaa3db9a643f3eb192137b6
  
     
    

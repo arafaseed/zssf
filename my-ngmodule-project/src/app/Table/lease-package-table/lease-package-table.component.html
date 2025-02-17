@@ -2,28 +2,28 @@
     <h2 class="text-center">Lease Packages</h2>
   
     <div class="d-flex justify-content-between mb-3">
-        <button mat-raised-button color="primary" [routerLink]="['/arafa/leasepackage']">Add Lease Package</button>
+        <button mat-raised-button color="primary" [routerLink]="['/admin/leasepackageform']">Add Lease Package</button>
       </div>
       
   
     <mat-table [dataSource]="leasePackages">
       <ng-container matColumnDef="leaseId">
-        <mat-header-cell *matHeaderCellDef> Lease ID </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef class="black-text"> Lease ID </mat-header-cell>
         <mat-cell *matCellDef="let lease"> {{lease.leaseId}} </mat-cell>
       </ng-container>
   
       <ng-container matColumnDef="category">
-        <mat-header-cell *matHeaderCellDef> Category </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef class="black-text"> Category </mat-header-cell>
         <mat-cell *matCellDef="let lease"> {{lease.category}} </mat-cell>
       </ng-container>
   
       <ng-container matColumnDef="price">
-        <mat-header-cell *matHeaderCellDef> Price </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef class="black-text"> Price </mat-header-cell>
         <mat-cell *matCellDef="let lease"> {{lease.price | currency:'TZS':true}} </mat-cell>
       </ng-container>
   
       <ng-container matColumnDef="actions">
-        <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef class="black-text"> Actions </mat-header-cell>
         <mat-cell *matCellDef="let lease">
           <button mat-raised-button color="accent" [routerLink]="['/edit-lease-package', lease.id]">Edit</button>
             
