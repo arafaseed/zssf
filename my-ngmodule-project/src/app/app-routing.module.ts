@@ -21,6 +21,7 @@ import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/le
 import { BuildinglistComponent } from './Admin/buildinglist/buildinglist.component';
 import { VenueViewComponent } from './Admin/venue-view/venue-view.component';
 import { ViewVenuesComponent } from './Admin/view-venues/view-venues.component';
+import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 
 
 
@@ -61,7 +62,7 @@ const routes: Routes = [
 
 
           { path: 'leasepackagetable', component: LeasePackageTableComponent },
-          { path: 'leasepackageform', component: MajengoComponent },
+          { path: 'leasepackageform', component: LeasePackageFormComponent },
 
           { path: 'edit-lease-package/:id', component: LeasePackageEditFormComponent },
 

@@ -49,7 +49,7 @@ import { MatError } from '@angular/material/form-field';
 
 import { CommonModule } from '@angular/common';
 import { MajengoComponent } from './Admin/majengo/majengo.component';
-import { BookingFormComponent } from './booking-form/booking-form.component';
+import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 
 
 
@@ -73,7 +73,9 @@ import { BookingFormComponent } from './booking-form/booking-form.component';
     BuildinglistComponent,
     VenueViewComponent,
     ViewVenuesComponent,
-    BookingFormComponent,
+    LeasePackageFormComponent,
+  
+   
     
  
     

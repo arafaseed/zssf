@@ -23,7 +23,7 @@ export class LeasePackageService {
     return this.http.put<any>(`${this.apiUrl}/update/${id}`, leasePackage);
     
   }
-  getLeasePackageById(id: number): Observable<any> {
+  getLeasePackageById(id:number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/get/${id}`);
   }
   deleteLeasePackage(id: number): Observable<void> {
