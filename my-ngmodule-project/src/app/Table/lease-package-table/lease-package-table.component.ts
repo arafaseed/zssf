@@ -14,6 +14,7 @@ export class LeasePackageTableComponent implements OnInit {
   displayedColumns: string[] = ['leaseId', 'category', 'price', 'actions']; 
   
   dataSource = [];
+  router: any;
   
 
   constructor(private leasePackageService: LeasePackageService) { }
@@ -40,7 +41,7 @@ export class LeasePackageTableComponent implements OnInit {
   }
   
 
-  editLeasePackage(leasePackage: any) {
-   
+  editLeasePackage(id: number): void {
+    this.router.navigate(['/edit-lease-package', id]);
   }
 }
