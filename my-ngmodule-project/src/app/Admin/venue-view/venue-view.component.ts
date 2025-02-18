@@ -51,8 +51,13 @@ export class VenueViewComponent implements OnInit {
     // Navigate to booking page with the venue ID as a route parameter
     this.router.navigate(['/booking', venue.venueId]);  // Assuming /booking/:id route in your Angular routing configuration
   }
-  goToBookingPage(venueId: number): void {
-    this.router.navigate(['/booking', venueId]);  // Navigate to the booking page with the venue ID
-}
+  goToBookingPage(venueId: number | undefined): void {
+    if (venueId !== undefined && venueId !== null) {
+      this.router.navigate(['/booking', venueId]);
+    } else {
+      console.error('Venue ID is undefined:', venueId);
+    }
+  }
+  
   
 }

@@ -38,7 +38,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'venue', component: VenueViewComponent },
       { path: 'home', component: HomeComponent },
-     
+      { path: 'booking/:id', component: BookingFormComponent },
       { path: 'reservation', component: HomeComponent }, // Create this component for the reservation page
       { path: 'Venueslists', component: VenueDisplayComponent },
       { path: 'dash', component: DashboardComponent },

@@ -30,7 +30,6 @@ import { VenueFormComponent } from './Admin/venue-form/venue-form.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BuildingService } from './building.service';
 
-import { BookingFormComponent } from './booking-form/booking-form.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
@@ -50,6 +49,8 @@ import { MatError } from '@angular/material/form-field';
 
 import { CommonModule } from '@angular/common';
 import { MajengoComponent } from './Admin/majengo/majengo.component';
+import { BookingFormComponent } from './booking-form/booking-form.component';
+
 
 
 
@@ -72,6 +73,7 @@ import { MajengoComponent } from './Admin/majengo/majengo.component';
     BuildinglistComponent,
     VenueViewComponent,
     ViewVenuesComponent,
+    BookingFormComponent,
     
  
     
@@ -121,7 +123,11 @@ import { MajengoComponent } from './Admin/majengo/majengo.component';
     MatTableModule,
     MatSortModule,
     MatLabel, 
-    BookingFormComponent,
+    
+    FormsModule,
+    CommonModule,
+    BrowserModule,
+     
     
     
    
