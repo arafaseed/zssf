@@ -50,6 +50,8 @@ import { MatError } from '@angular/material/form-field';
 
 import { CommonModule } from '@angular/common';
 import { MajengoComponent } from './Admin/majengo/majengo.component';
+import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
+
 
 
 
@@ -72,6 +74,9 @@ import { MajengoComponent } from './Admin/majengo/majengo.component';
     BuildinglistComponent,
     VenueViewComponent,
     ViewVenuesComponent,
+    LeasePackageFormComponent,
+  
+   
     
  
     
