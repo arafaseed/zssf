@@ -1,100 +1,139 @@
 /* Container for the dashboard */
 .dashboard-container {
-    padding: 20px;
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  /* Header styles */
-  .dashboard-header {
-    text-align: center;
-    margin-bottom: 30px;
-  }
-  
-  .dashboard-header h1 {
-    font-size: 32px;
-    color: #007bff;
-  }
-  
-  .dashboard-header p {
-    font-size: 18px;
-    color: #555;
-  }
-  
-  /* Dashboard cards container */
+  padding: 20px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f9fa; /* Light background for a clean look */
+  min-height: 100vh;
+}
+
+/* Header styles */
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.dashboard-header h1 {
+  font-size: 32px;
+  color: #007bff;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.dashboard-header p {
+  font-size: 18px;
+  color: #444;
+}
+
+/* Dashboard cards container */
+.dashboard-cards {
+  display: flex;
+  justify-content: space-between; /* Ensures space between left, center, and right cards */
+  gap: 30px; /* Adds space between the cards */
+}
+
+/* Individual Cards */
+.card {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  height: 220px; /* Adjusted height */
+  width: 30%; /* Set width for balanced layout */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.2);
+}
+
+.card h3 {
+  font-size: 22px;
+  color: #333;
+  font-weight: 600;
+}
+
+.card .card-value {
+  font-size: 40px;
+  color: #007bff;
+  font-weight: bold;
+  margin: 12px 0;
+}
+
+/* Improved Button Styles */
+.card button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 3px 10px rgba(0, 123, 255, 0.2);
+}
+
+.card button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+/* Recent activity section */
+.recent-activity {
+  margin-top: 50px;
+}
+
+.recent-activity h3 {
+  font-size: 24px;
+  color: #007bff;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.recent-activity table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.recent-activity th,
+.recent-activity td {
+  padding: 14px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.recent-activity th {
+  background-color: #007bff;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.recent-activity tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.recent-activity tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
   .dashboard-cards {
-    display: flex;
-    justify-content: space-between; /* This ensures space between left, center, and right cards */
-    gap: 30px; /* Adds space between the cards */
-  }
-  
-  .card {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    height: 200px; /* Reduced height */
-    width: 30%; /* Set the width to make sure they fit within the flex container */
-  }
-  
-  .card h3 {
-    font-size: 22px;
-    color: #333;
-  }
-  
-  .card .card-value {
-    font-size: 36px;
-    color: #007bff;
-    margin: 10px 0;
-  }
-  
-  .card button {
-    margin-top: 15px;
-  }
-  
-  /* Recent activity section */
-  .recent-activity {
-    margin-top: 40px;
-  }
-  
-  .recent-activity h3 {
-    font-size: 24px;
-    color: #007bff;
-  }
-  
-  .recent-activity table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  
-  .recent-activity th,
-  .recent-activity td {
-    padding: 12px;
-    text-align: left;
-  }
-  
-  .recent-activity th {
-    background-color: #007bff;
-    color: #fff;
-  }
-  
-  .recent-activity tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  
-  /* Responsive Styles */
-  @media (max-width: 768px) {
-    .dashboard-cards {
       flex-direction: column; /* Stack cards vertically on small screens */
       align-items: center;
-    }
-  
-    .card {
-      width: 80%; /* Make the cards wider on smaller screens */
-      margin-bottom: 20px;
-    }
   }
-  
+
+  .card {
+      width: 90%; /* Make the cards wider on smaller screens */
+      margin-bottom: 20px;
+  }
+}

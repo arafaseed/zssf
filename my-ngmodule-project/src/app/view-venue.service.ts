@@ -15,5 +15,10 @@ export class ViewVenueService {
   getAllVenues(): Observable<any> {
     return this.http.get(this.apiUrl);
   }
+
+  deleteVenue(venueId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${venueId}`);
+  }
+  
   
 }

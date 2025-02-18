@@ -3,56 +3,62 @@
     border-radius: 10px;
     overflow: hidden;
     transition: transform 0.3s ease-in-out;
-  }
-  
-  .card:hover {
+    height: 100%; /* Ensures the card takes full available height */
+}
+
+.card:hover {
     transform: translateY(-10px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  }
-  
-  .card-header {
+}
+
+.card-header {
     background-color: #007bff;
     color: white;
     text-align: center;
     padding: 20px 0;
     font-size: 18px;
-  }
-  
-  .card-body {
-    padding: 20px;
-  }
-  
-  .carousel-inner img {
-    height: 300px;
-    object-fit: cover;
+}
+
+.card-body {
+    padding: 20px; /* Adjusted padding for a more compact look */
+    height: auto; /* Allows content to stretch without breaking the layout */
+}
+
+.image-placeholder {
+    background-color: #f0f0f0;
+    width: 100%;
+    height: 200px;
     border-radius: 8px;
-  }
-  
-  button {
+    margin-bottom: 15px;
+}
+
+button {
     margin-top: 10px;
     width: 100%;
-  }
-  
-  button:focus {
+}
+
+button:focus {
     outline: none;
-  }
-  
-  .carousel-control-prev-icon,
-  .carousel-control-next-icon {
-    background-color: black;
-  }
-  
-  mat-dialog-content {
-    padding: 20px;
-  }
-  
-  .carousel-item img {
-    width: 100%;
-  }
-  
-  @media (max-width: 768px) {
-    .col-md-4 {
-      flex: 0 0 100%;
+}
+
+/* Ensures the cards stretch to the full available width */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col-12, .col-md-4, .col-lg-3 {
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .row {
+        display: block; /* Makes the cards stack vertically on small devices */
     }
-  }
-  
+
+    .card-body {
+        padding: 200px;
+    }
+}
