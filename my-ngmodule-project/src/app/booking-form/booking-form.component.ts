@@ -1,8 +1,6 @@
-import { Component } from '@angular/core';
-interface CalendarDay {
-  date: number;
-  available: boolean;
-}
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { BookingService } from '../booking.service';
 
 @Component({
   selector: 'app-booking-form',
@@ -10,89 +8,114 @@ interface CalendarDay {
   standalone: false,
   styleUrls: ['./booking-form.component.css']
 })
-export class BookingFormComponent {
-  // Booking model to store form data
-  booking = {
+export class BookingFormComponent implements OnInit {
+  venueId?: number;
+
+  booking: {
+    fullName: string;
+    phoneNumber: string;
+    startDate: string;
+    endDate: string;
+    startTime: string;
+    endTime: string;
+    venueId?: number;
+  } = {
     fullName: '',
     phoneNumber: '',
     startDate: '',
-    startTime: '',
     endDate: '',
+    startTime: '',
     endTime: '',
-    venueId: null
+    venueId: undefined
   };
 
-  venues = [
-    { id: 1, name: 'Venue A' },
-    { id: 2, name: 'Venue B' },
-    { id: 3, name: 'Venue C' }
+  // Calendar properties
+  monthNames: string[] = [
+    'January', 'February', 'March', 'April', 'May', 'June', 
+    'July', 'August', 'September', 'October', 'November', 'December'
   ];
+  daysOfWeek: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  
+  currentDate: Date = new Date();
+  month: number = this.currentDate.getMonth();
+  year: number = this.currentDate.getFullYear();
+  calendarDays: { date: number; available: boolean }[] = [];
 
-  calendarDays: CalendarDay[] = [];
-  selectedStartDate: any = null;
-  selectedEndDate: any = null;
-  month: number = new Date().getMonth(); // current month
-  year: number = new Date().getFullYear();
-  daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  constructor(
+    private route: ActivatedRoute,
+    private bookingService: BookingService
+  ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      const venueIdParam = params['venueId'];
+      if (venueIdParam) {
+        this.venueId = +venueIdParam; // Convert string to number
+        this.booking.venueId = this.venueId;
+      }
+    });
     this.generateCalendar();
   }
 
-  generateCalendar() {
-    const firstDayOfMonth = new Date(this.year, this.month, 1).getDay();
-    const daysInMonth = new Date(this.year, this.month + 1, 0).getDate();
-    this.calendarDays = [];
-
-    for (let i = 1; i <= daysInMonth; i++) {
-      const day: CalendarDay = {
-        date: i,
-        available: i % 2 === 0 // Example: make every even date available
-      };
-      this.calendarDays.push(day);
-    }
-  }
-
-  onDateSelect(day: CalendarDay) {
-    if (day.available) {
-      if (!this.selectedStartDate) {
-        this.selectedStartDate = day;
-        this.booking.startDate = `${this.year}-${this.month + 1}-${day.date}`;
-      } else if (!this.selectedEndDate && day.date > this.selectedStartDate.date) {
-        this.selectedEndDate = day;
-        this.booking.endDate = `${this.year}-${this.month + 1}-${day.date}`;
-      } else {
-        this.selectedStartDate = day;
-        this.selectedEndDate = null;
-        this.booking.startDate = `${this.year}-${this.month + 1}-${day.date}`;
-        this.booking.endDate = '';
-      }
-    }
-  }
-
-  isDateSelected(day: CalendarDay): boolean {
-    return day === this.selectedStartDate || day === this.selectedEndDate;
-  }
-
-  changeMonth(direction: number) {
-    this.month += direction;
-    if (this.month > 11) {
-      this.month = 0;
-      this.year++;
-    } else if (this.month < 0) {
+  // Method to change the month
+  changeMonth(step: number): void {
+    this.month += step;
+    if (this.month < 0) {
       this.month = 11;
       this.year--;
+    } else if (this.month > 11) {
+      this.month = 0;
+      this.year++;
     }
     this.generateCalendar();
   }
 
-  submitForm() {
-    if (this.booking.startDate && this.booking.endDate && this.booking.startTime && this.booking.endTime) {
-      console.log('Booking Details:', this.booking);
-      // Handle booking submission (e.g., API call)
-    } else {
-      console.log('Please fill all required fields.');
+  // Generate the calendar days for the current month
+  generateCalendar(): void {
+    const daysInMonth = new Date(this.year, this.month + 1, 0).getDate();
+
+    this.calendarDays = [];
+    for (let i = 1; i <= daysInMonth; i++) {
+      this.calendarDays.push({ date: i, available: true });
     }
+  }
+
+  // Check if a date is selected
+  isDateSelected(day: { date: number }): boolean {
+    return this.booking.startDate === this.formatDate(new Date(this.year, this.month, day.date));
+  }
+
+  // Handle date selection
+  onDateSelect(day: { date: number }): void {
+    const selectedDate = this.formatDate(new Date(this.year, this.month, day.date));
+    this.booking.startDate = selectedDate;
+    this.booking.endDate = selectedDate; // Assuming same start & end date
+  }
+
+  // Format date as YYYY-MM-DD
+  formatDate(date: Date): string {
+    return date.toISOString().split('T')[0];
+  }
+
+  // Format time (for consistency)
+  formatTime(time: string): string {
+    return time ? new Date(`1970-01-01T${time}`).toTimeString().split(' ')[0] : '';
+  }
+
+  submitForm(): void {
+    const formattedBooking = {
+      ...this.booking,
+      startDate: this.formatDate(new Date(this.booking.startDate)),
+      endDate: this.formatDate(new Date(this.booking.endDate)),
+      startTime: this.formatTime(this.booking.startTime),
+      endTime: this.formatTime(this.booking.endTime),
+    };
+
+    console.log("Booking Request Payload:", formattedBooking);
+
+    this.bookingService.registerBooking(formattedBooking).subscribe(
+      response => console.log('Booking successful!', response),
+      error => console.error('Error booking:', error)
+    );
   }
 }

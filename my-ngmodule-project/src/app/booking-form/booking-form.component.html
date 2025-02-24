@@ -1,7 +1,6 @@
 <div class="container">
   <div class="row">
     <div class="col-md-6">
-      <!-- Calendar -->
       <div class="calendar">
         <div class="calendar-header">
           <button (click)="changeMonth(-1)" class="btn btn-secondary">&lt;</button>
@@ -17,7 +16,8 @@
           <div class="days">
             <div *ngFor="let day of calendarDays" 
                  class="day" 
-                 [ngClass]="{'available': day.available, 'selected': isDateSelected(day)}"
+                 [class.available]="day.available" 
+                 [class.selected]="isDateSelected(day)"
                  (click)="onDateSelect(day)">
               {{ day.date }}
             </div>
@@ -27,30 +27,39 @@
     </div>
 
     <div class="col-md-6">
-      <!-- Booking Form -->
       <form (ngSubmit)="submitForm()">
         <div class="form-group">
           <label for="fullName">Full Name:</label>
           <input type="text" class="form-control" id="fullName" [(ngModel)]="booking.fullName" name="fullName" required>
         </div>
+
         <div class="form-group">
           <label for="phoneNumber">Phone Number:</label>
           <input type="tel" class="form-control" id="phoneNumber" [(ngModel)]="booking.phoneNumber" name="phoneNumber" required>
         </div>
+
         <div class="form-group">
           <label for="startDate">Start Date:</label>
           <input type="text" class="form-control" id="startDate" [(ngModel)]="booking.startDate" name="startDate" readonly required>
         </div>
+
+        <div class="form-group">
+          <label for="startTime">Start Time:</label>
+          <input type="time" class="form-control" id="startTime" [(ngModel)]="booking.startTime" name="startTime" required>
+        </div>
+
         <div class="form-group">
           <label for="endDate">End Date:</label>
           <input type="text" class="form-control" id="endDate" [(ngModel)]="booking.endDate" name="endDate" readonly required>
         </div>
+
         <div class="form-group">
-          <label for="venue">Venue:</label>
-          <select class="form-control" id="venue" [(ngModel)]="booking.venueId" name="venue" required>
-            <option *ngFor="let venue of venues" [value]="venue.id">{{ venue.name }}</option>
-          </select>
+          <label for="endTime">End Time:</label>
+          <input type="time" class="form-control" id="endTime" [(ngModel)]="booking.endTime" name="endTime" required>
         </div>
+
+       
+
         <button type="submit" class="btn btn-primary">Make Reservation</button>
       </form>
     </div>
