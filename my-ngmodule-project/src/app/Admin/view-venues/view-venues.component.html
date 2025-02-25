@@ -7,7 +7,7 @@
 
   <!-- Add Venue Button (Aligned Right) -->
   <div class="add-venue-btn">
-    <button class="btn btn-primary" (click)="addVenue()">Add New Venue</button>
+    <button mat-raised-button color="primary" [routerLink]="['/admin/regvenues']">Add New Venue</button>
   </div>
 
   <table mat-table [dataSource]="venues" class="mat-elevation-z8">

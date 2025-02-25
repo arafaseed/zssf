@@ -28,10 +28,7 @@ export class ViewVenuesComponent implements OnInit {
       );
     }
 
-    addVenue(): void {
-      // Open modal or navigate to add venue page
-      console.log("Add Venue clicked!");
-    }
+    
 
     editVenue(venue: any): void {
       // Open modal or navigate to edit page with venue details
