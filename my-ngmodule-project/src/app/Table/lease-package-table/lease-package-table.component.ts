@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LeasePackageService } from '../../packages.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -14,10 +15,10 @@ export class LeasePackageTableComponent implements OnInit {
   displayedColumns: string[] = ['leaseId', 'category', 'price', 'actions']; 
   
   dataSource = [];
-  router: any;
+
   
 
-  constructor(private leasePackageService: LeasePackageService) { }
+  constructor(private leasePackageService: LeasePackageService, private router: Router) { }
 
   ngOnInit(): void {
     this.loadLeasePackages();
@@ -41,7 +42,9 @@ export class LeasePackageTableComponent implements OnInit {
   }
   
 
+ 
   editLeasePackage(id: number): void {
+    console.log("Navigating to: ", `/edit-lease-package/${id}`);
     this.router.navigate(['/edit-lease-package', id]);
   }
 }
