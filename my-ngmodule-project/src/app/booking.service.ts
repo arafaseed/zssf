@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
+<<<<<<< HEAD
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BookingFormComponent } from './booking-form/booking-form.component';
+=======
+import { HttpClient } from '@angular/common/http';
+import { catchError, Observable, throwError } from 'rxjs';
+>>>>>>> d9ec543c6884fd56a94502c2facba1810118c7a3
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +16,7 @@ export class BookingService {
 
   constructor(private http: HttpClient) { }
 
+<<<<<<< HEAD
   // createBooking(booking: BookingFormComponent): Observable<BookingFormComponent> {
   //   return this.http.post<BookingFormComponent>(`${this.apiUrl}/create`, booking); // Fixed syntax here
   // }
@@ -52,5 +58,16 @@ const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.get<boolean>(`${this.apiUrl}/check-availability`, {
       params: { venueId: venueId.toString(), startDate, startTime },
     });
+=======
+  // Method to register a new booking
+  registerBooking(bookingData: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/add`, bookingData).pipe(
+      catchError(error => {
+        console.error('Error booking:', error);
+        return throwError(() => new Error('Booking failed. Try again.'));
+      })
+    );
+>>>>>>> d9ec543c6884fd56a94502c2facba1810118c7a3
   }
+  
 }
