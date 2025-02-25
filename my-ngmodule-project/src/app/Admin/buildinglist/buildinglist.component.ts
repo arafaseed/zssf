@@ -14,6 +14,7 @@ export class BuildinglistComponent implements OnInit {
   buildings: any[] = [];
   buildingForm: FormGroup;
   showPopup: boolean = false;
+  http: any;
 
   constructor(
     private buildingService: BuildinglistService,
@@ -26,17 +27,22 @@ export class BuildinglistComponent implements OnInit {
      
     });
   }
-
-  ngOnInit(): void {
-    this.getBuildings();
-  }
-
-  // Fetch all buildings from API
-  getBuildings(): void {
+  loadLeasePackages() {
     this.buildingService.getBuildings().subscribe((data: any[]) => {
       this.buildings = data;
     });
   }
+
+  ngOnInit(): void {
+    this.loadLeasePackages();
+  }
+
+  // Fetch all buildings from API
+  // getBuildings(): void {
+  //   this.buildingService.getBuildings().subscribe((data: any[]) => {
+  //     this.buildings = data;
+  //   });
+  // }
 
   // Open the popup form
   openPopup(): void {
@@ -55,7 +61,7 @@ export class BuildinglistComponent implements OnInit {
       this.buildingService.addBuilding(this.buildingForm.value).subscribe(
         () => {
           this.snackBar.open('Building added successfully!', 'Close', { duration: 3000 });
-          this.getBuildings(); // Refresh the list
+          this.loadLeasePackages(); // Refresh the list
           this.closePopup();
         },
         () => {
@@ -66,12 +72,15 @@ export class BuildinglistComponent implements OnInit {
   }
 
   // Delete a building
-  deleteBuilding(id: number): void {
-    if (confirm('Are you sure you want to delete this building?')) {
+  deleteLeasePackage(id: number): void {
+    const confirmDelete = window.confirm('Are you sure you want to delete this building?');
+    
+    if (confirmDelete) {
       this.buildingService.deleteBuilding(id).subscribe(() => {
-        this.snackBar.open('Building deleted successfully!', 'Close', { duration: 3000 });
-        this.getBuildings(); // Refresh list
+        this.loadLeasePackages();
       });
     }
   }
+  
+  
 }

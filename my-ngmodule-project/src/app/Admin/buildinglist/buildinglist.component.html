@@ -1,7 +1,7 @@
 <mat-card class="table-container">
   <!-- Card Header with Title -->
   <mat-card-title class="title text-center mb-4">
-    <h3>🏢 Registered Buildings</h3>
+    <h3>🏢 Registered  Buildings</h3>
   </mat-card-title>
 
   <!-- Add Button -->
@@ -63,9 +63,10 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef> Actions </th>
       <td mat-cell *matCellDef="let building">
-        <button mat-icon-button color="warn" (click)="deleteBuilding(building.id)">
+        <button mat-icon-button color="warn" (click)="deleteLeasePackage(building.buildingId)">
           🗑️
         </button>
+        
       </td>
     </ng-container>
 
