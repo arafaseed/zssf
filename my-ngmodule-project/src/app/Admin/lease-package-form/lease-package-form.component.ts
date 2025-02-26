@@ -18,7 +18,7 @@ export class LeasePackageFormComponent implements OnInit {
   ) {
     // Initialize the form in the constructor
     this.leaseForm = this.fb.group({
-      category: ['', [Validators.required]],
+      description: ['', [Validators.required]],
       price: ['', [Validators.required, Validators.min(0)]]
     });
   }

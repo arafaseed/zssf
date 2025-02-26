@@ -1,98 +1,60 @@
-import { Component } from '@angular/core';
-interface CalendarDay {
-  date: number;
-  available: boolean;
-}
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+import { CalendarOptions } from '@fullcalendar/core';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import { BookingService } from '../booking.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-booking-form',
   templateUrl: './booking-form.component.html',
-  standalone: false,
+  standalone:false,
   styleUrls: ['./booking-form.component.css']
 })
-export class BookingFormComponent {
-  // Booking model to store form data
-  booking = {
-    fullName: '',
-    phoneNumber: '',
-    startDate: '',
-    startTime: '',
-    endDate: '',
-    endTime: '',
-    venueId: null
-  };
+export class BookingFormComponent implements OnInit {
+  bookingForm: FormGroup;
 
-  venues = [
-    { id: 1, name: 'Venue A' },
-    { id: 2, name: 'Venue B' },
-    { id: 3, name: 'Venue C' }
-  ];
-
-  calendarDays: CalendarDay[] = [];
-  selectedStartDate: any = null;
-  selectedEndDate: any = null;
-  month: number = new Date().getMonth(); // current month
-  year: number = new Date().getFullYear();
-  daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-  ngOnInit() {
-    this.generateCalendar();
+  constructor(private fb: FormBuilder, private bookingService: BookingService) {
+    this.bookingForm = this.fb.group({
+      fullName: ['', Validators.required],
+      phoneNumber: ['', Validators.required],
+      startDate: [null, Validators.required],
+      startTime: [null, Validators.required],
+      endDate: [null, Validators.required],
+      endTime: [null, Validators.required],
+      venueId: [null, Validators.required],
+      status: ['PENDING', Validators.required]  // Default status is 'PENDING'
+    });
+  }
+  ngOnInit(): void {
+    
   }
 
-  generateCalendar() {
-    const firstDayOfMonth = new Date(this.year, this.month, 1).getDay();
-    const daysInMonth = new Date(this.year, this.month + 1, 0).getDate();
-    this.calendarDays = [];
-
-    for (let i = 1; i <= daysInMonth; i++) {
-      const day: CalendarDay = {
-        date: i,
-        available: i % 2 === 0 // Example: make every even date available
-      };
-      this.calendarDays.push(day);
-    }
-  }
-
-  onDateSelect(day: CalendarDay) {
-    if (day.available) {
-      if (!this.selectedStartDate) {
-        this.selectedStartDate = day;
-        this.booking.startDate = `${this.year}-${this.month + 1}-${day.date}`;
-      } else if (!this.selectedEndDate && day.date > this.selectedStartDate.date) {
-        this.selectedEndDate = day;
-        this.booking.endDate = `${this.year}-${this.month + 1}-${day.date}`;
-      } else {
-        this.selectedStartDate = day;
-        this.selectedEndDate = null;
-        this.booking.startDate = `${this.year}-${this.month + 1}-${day.date}`;
-        this.booking.endDate = '';
-      }
-    }
-  }
-
-  isDateSelected(day: CalendarDay): boolean {
-    return day === this.selectedStartDate || day === this.selectedEndDate;
-  }
-
-  changeMonth(direction: number) {
-    this.month += direction;
-    if (this.month > 11) {
-      this.month = 0;
-      this.year++;
-    } else if (this.month < 0) {
-      this.month = 11;
-      this.year--;
-    }
-    this.generateCalendar();
-  }
-
-  submitForm() {
-    if (this.booking.startDate && this.booking.endDate && this.booking.startTime && this.booking.endTime) {
-      console.log('Booking Details:', this.booking);
-      // Handle booking submission (e.g., API call)
-    } else {
-      console.log('Please fill all required fields.');
+  onSubmit(): void {
+    if (this.bookingForm.valid) {
+      const booking: BookingService = this.bookingForm.value;
+      this.bookingService.createBooking(booking).subscribe(response => {
+        console.log('Booking created:', response);
+        alert('Booking successfully created!');
+      }, error => {
+        console.error('Error creating booking:', error);
+        alert('An error occurred while creating the booking.');
+      });
     }
   }
 }
+
+  // Check availability of the venue before submitting the booking
+  // checkAvailability(): void {
+  //   const { venueId, startDate, startTime } = this.bookingForm.value;
+  //   this.bookingService.checkVenueAvailability(venueId, startDate, startTime).subscribe(isAvailable => {
+  //     if (isAvailable) {
+  //       this.submitBooking();
+  //     } else {
+  //       alert('Venue is not available at this time.');
+  //     }
+  //   });
+  // }
+

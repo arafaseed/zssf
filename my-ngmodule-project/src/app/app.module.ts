@@ -50,6 +50,8 @@ import { MatError } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { MajengoComponent } from './Admin/majengo/majengo.component';
 import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
+import { BookingFormComponent } from './booking-form/booking-form.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 
 
@@ -74,6 +76,7 @@ import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-pack
     VenueViewComponent,
     ViewVenuesComponent,
     LeasePackageFormComponent,
+    BookingFormComponent,
   
    
     
@@ -84,8 +87,7 @@ import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-pack
     
   ],
   imports: [
-
-
+    FullCalendarModule,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
@@ -125,10 +127,10 @@ import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-pack
     MatTableModule,
     MatSortModule,
     MatLabel, 
-    
     FormsModule,
     CommonModule,
-    BrowserModule,
+    BrowserModule
+    
      
     
     

@@ -32,7 +32,7 @@
       <td mat-cell *matCellDef="let venue">
         <ul>
           <li *ngFor="let package of venue.leasePackages">
-            {{ package.category }} - Tzs {{ package.price }}
+            {{ package.description }} Tzs {{ package.price }}
           </li>
         </ul>
       </td>
@@ -44,7 +44,7 @@
       <td mat-cell *matCellDef="let venue">
         <div class="action-buttons">
           <button class="btn btn-warning btn-sm" (click)="editVenue(venue)">Edit</button>
-          <button class="btn btn-danger btn-sm" (click)="deleteVenue(venue.id)">Delete</button>
+          <button mat-icon-button color="warn" (click)="deleteVenue(venue.venueId)">🗑️</button>
         </div>
       </td>
     </ng-container>

@@ -5,11 +5,11 @@
       <form [formGroup]="leaseForm" (ngSubmit)="onSubmit()">
   
         <div class="mb-3">
-          <label for="category" class="form-label">Category</label>
-          <input id="category" type="text" class="form-control" formControlName="category" placeholder="Enter category" required>
-          <div class="error" *ngIf="leaseForm?.get('category')?.invalid">Category is required</div>
+          <label for="description" class="form-label">Description</label>
+          <input id="description" type="text" class="form-control" formControlName="description" placeholder="Enter description" required>
+          <div class="error" *ngIf="leaseForm?.get('description')?.invalid">Description is required</div>
         </div>
-  
+        
         <div class="mb-3">
           <label for="price" class="form-label">Price</label>
           <input id="price" type="number" class="form-control" formControlName="price" placeholder="Enter price" required>

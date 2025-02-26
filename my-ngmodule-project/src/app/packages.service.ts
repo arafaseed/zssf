@@ -16,12 +16,12 @@ export class LeasePackageService {
   }
 
   addLeasePackage(leasePackage: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/add`, leasePackage);
+    return this.http.post(`${this.apiUrl}/add`, leasePackage);
   }
 
   updateLeasePackage(id: number, leasePackage: any): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/update/${id}`, leasePackage);
-    
+
   }
   getLeasePackageById(id:number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/get/${id}`);

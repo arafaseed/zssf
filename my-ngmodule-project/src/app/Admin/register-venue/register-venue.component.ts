@@ -21,7 +21,7 @@ export class RegisterVenueComponent implements OnInit {
   initializeForm(): void {
     this.venueForm = this.fb.group({
       venueName: ['', Validators.required],
-      capacity: ['', [Validators.required, Validators.min(1)]],
+      // capacity: ['', [Validators.required, Validators.min(1)]],
       description: [''],
       buildingId: ['', Validators.required],
       leasePackageIds: [[]],
@@ -47,54 +47,96 @@ export class RegisterVenueComponent implements OnInit {
     }
   }
   onSubmit(): void {
-    if (this.venueForm.valid) {
-      const formData = new FormData();
-      const formValue = this.venueForm.value;
-      
-      const leasePackageIds = Array.isArray(formValue.leasePackageIds) 
+
+      if (this.venueForm.valid) {
+        const formData = new FormData();
+        const formValue = this.venueForm.value;
+        const leasePackageIds = Array.isArray(formValue.leasePackageIds) 
         ? formValue.leasePackageIds 
         : [formValue.leasePackageIds];
-  
-      const venueData = {
-        venueName: formValue.venueName,
-        capacity: formValue.capacity,
-        description: formValue.description,
-        building: { buildingId: formValue.buildingId },
-        leasePackages: leasePackageIds.map((id: number) => ({ leaseId: id }))
-      };
-  
-      // Append the venue data to FormData
-      formData.append("venue", JSON.stringify(venueData));
-  
-      // Log the FormData to check the content
-      for (let [key, value] of formData.entries()) {
-        console.log(key, value);
-      }
-  
-      if (this.selectedFiles) {
-        this.selectedFiles.forEach(file => {
-          formData.append("images", file);
-        });
-      }
-  
-      // Log files being appended (optional)
-      if (this.selectedFiles) {
-        console.log("Files being sent:", this.selectedFiles);
-      }
-  
-      this.venueService.registerVenue(formData).subscribe(
-        (response: any) => {
-          console.log("Venue registered successfully:", response);
-          this.venueForm.reset();
-          this.selectedFiles = null;
-        },
-        (error: any) => {
-          console.error("Error registering venue:", error);
+        const venueData = {
+                  venueName: formValue.venueName,
+                  // capacity: formValue.capacity,
+                  description: formValue.description,
+                  building: { buildingId: formValue.buildingId },
+                  leasePackages: leasePackageIds.map((id: number) => ({ leaseId: id }))
+                };
+        // Form data preparation...
+        
+        // Append venue data
+        formData.append("venue", JSON.stringify(venueData));
+    
+        // Append files
+        if (this.selectedFiles) {
+          this.selectedFiles.forEach(file => {
+            formData.append("images", file);
+          });
         }
-      );
+    
+        // Remove any manually set Content-Type header if you had it
+        this.venueService.registerVenue(formData).subscribe(
+          (response: any) => {
+            console.log("Venue registered successfully:", response);
+            this.venueForm.reset();
+            this.selectedFiles = null;
+          },
+          (error: any) => {
+            console.error("Error registering venue:", error);
+          }
+        );
+      }
     }
   }
 
+
+//     if (this.venueForm.valid) {
+//       const formData = new FormData();
+//       const formValue = this.venueForm.value;
+      
+//       const leasePackageIds = Array.isArray(formValue.leasePackageIds) 
+//         ? formValue.leasePackageIds 
+//         : [formValue.leasePackageIds];
+  
+//       const venueData = {
+//         venueName: formValue.venueName,
+//         capacity: formValue.capacity,
+//         description: formValue.description,
+//         building: { buildingId: formValue.buildingId },
+//         leasePackages: leasePackageIds.map((id: number) => ({ leaseId: id }))
+//       };
+  
+//       // Append the venue data to FormData
+//       formData.append("venue", JSON.stringify(venueData));
+  
+//       // Log the FormData to check the content
+//       for (let [key, value] of formData.entries()) {
+//         console.log(key, value);
+//       }
+  
+//       if (this.selectedFiles) {
+//         this.selectedFiles.forEach(file => {
+//           formData.append("images", file);
+//         });
+//       }
+  
+//       // Log files being appended (optional)
+//       if (this.selectedFiles) {
+//         console.log("Files being sent:", this.selectedFiles);
+//       }
+  
+//       this.venueService.registerVenue(formData).subscribe(
+//         (response: any) => {
+//           console.log("Venue registered successfully:", response);
+//           this.venueForm.reset();
+//           this.selectedFiles = null;
+//         },
+//         (error: any) => {
+//           console.error("Error registering venue:", error);
+//         }
+//       );
+//     }
+//   }
+
   
   
-}
+// }

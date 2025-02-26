@@ -1,58 +1,40 @@
-<!-- <div class="container">
-  <div class="row">
-    <div class="col-md-6"> -->
-      <!-- Calendar -->
-      <!-- <div class="calendar">
-        <div class="calendar-header">
-          <button (click)="changeMonth(-1)" class="btn btn-secondary">&lt;</button>
-          <span>{{ monthNames[month] }} {{ year }}</span>
-          <button (click)="changeMonth(1)" class="btn btn-secondary">&gt;</button>
-        </div>
+<form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>Full Name</mat-label>
+    <input matInput formControlName="fullName" placeholder="Enter full name">
+  </mat-form-field>
 
-        <div class="calendar-body">
-          <div class="week-days">
-            <div *ngFor="let day of daysOfWeek" class="week-day">{{ day }}</div>
-          </div>
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>Phone Number</mat-label>
+    <input matInput formControlName="phoneNumber" placeholder="Enter phone number">
+  </mat-form-field>
 
-          <div class="days">
-            <div *ngFor="let day of calendarDays" 
-                 class="day" 
-                 [ngClass]="{'available': day.available, 'selected': isDateSelected(day)}"
-                 (click)="onDateSelect(day)">
-              {{ day.date }}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>Start Date</mat-label>
+    <input matInput [matDatepicker]="startPicker" formControlName="startDate" placeholder="Select start date">
+    <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+    <mat-datepicker #startPicker></mat-datepicker>
+  </mat-form-field>
+    <mat-label>Start Time</mat-label>
+    <input matInput formControlName="startTime" type="time" placeholder="Select start time">n
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>End Date</mat-label>
+    <input matInput [matDatepicker]="endPicker" formControlName="endDate" placeholder="Select end date">
+    <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+    <mat-datepicker #endPicker></mat-datepicker>
+  </mat-form-field>
 
-    <div class="col-md-6">
-      <! -- Booking Form -->
-      <!-- <form (ngSubmit)="submitForm()">
-        <div class="form-group">
-          <label for="fullName">Full Name:</label>
-          <input type="text" class="form-control" id="fullName" [(ngModel)]="booking.fullName" name="fullName" required>
-        </div>
-        <div class="form-group">
-          <label for="phoneNumber">Phone Number:</label>
-          <input type="tel" class="form-control" id="phoneNumber" [(ngModel)]="booking.phoneNumber" name="phoneNumber" required>
-        </div>
-        <div class="form-group">
-          <label for="startDate">Start Date:</label>
-          <input type="text" class="form-control" id="startDate" [(ngModel)]="booking.startDate" name="startDate" readonly required>
-        </div>
-        <div class="form-group">
-          <label for="endDate">End Date:</label>
-          <input type="text" class="form-control" id="endDate" [(ngModel)]="booking.endDate" name="endDate" readonly required>
-        </div>
-        <div class="form-group">
-          <label for="venue">Venue:</label>
-          <select class="form-control" id="venue" [(ngModel)]="booking.venueId" name="venue" required>
-            <option *ngFor="let venue of venues" [value]="venue.id">{{ venue.name }}</option>
-          </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Make Reservation</button>
-      </form>
-    </div>
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>End Time</mat-label>
+    <input matInput formControlName="endTime" type="time" placeholder="Select end time">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>Venue</mat-label>
+    <input matInput formControlName="venueId" placeholder="Enter venue ID">
+  </mat-form-field>
+
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary" [disabled]="bookingForm.invalid">Submit</button>
   </div>
-</div> --> 
+</form>
