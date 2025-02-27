@@ -1,43 +1,73 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LeasePackageService } from '../../packages.service';
 
 @Component({
   selector: 'app-lease-package-form',
-  templateUrl: './lease-package-form.component.html',
   standalone: false,
+  templateUrl: './lease-package-form.component.html',
   styleUrls: ['./lease-package-form.component.css']
 })
 export class LeasePackageFormComponent implements OnInit {
   leaseForm: FormGroup;
-  errorMessage: string | null = null;
+  leaseId: number | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private leasePackageService: LeasePackageService
+    private leasePackageService: LeasePackageService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
-    // Initialize the form in the constructor
     this.leaseForm = this.fb.group({
-      category: ['', [Validators.required]],
+      category: ['', Validators.required],
       price: ['', [Validators.required, Validators.min(0)]]
     });
   }
 
   ngOnInit(): void {
-    // Additional initialization if needed
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id'); // Ensure this matches your route param name
+      if (id) {
+        this.leaseId = +id; // Convert to number
+        this.loadLeasePackage(this.leaseId);
+      }
+    });
+  }
+
+  loadLeasePackage(id: number): void {
+    this.leasePackageService.getLeasePackageById(id).subscribe(data => {
+      if (data) {
+        this.leaseForm.patchValue({
+          category: data.category,
+          price: data.price
+        });
+      }
+    }, error => {
+      console.error('Error fetching lease package:', error);
+    });
   }
 
   onSubmit(): void {
     if (this.leaseForm.valid) {
-      this.leasePackageService.addLeasePackage(this.leaseForm.value).subscribe({
-        next: (response) => {
-          console.log('Lease package added successfully', response);
-          this.leaseForm.reset();
-        },
-        error: (error) => {
-          this.errorMessage = error.message;
-        }
-      });
+      const leaseData = this.leaseForm.value;
+      if (this.leaseId) {
+        // Update existing lease package
+        this.leasePackageService.updateLeasePackage(this.leaseId, leaseData).subscribe(() => {
+          alert('Lease Package Updated Successfully');
+          this.router.navigate(['/admin/lease-packages']);
+        }, error => {
+          console.error('Error updating lease package:', error);
+        });
+      } else {
+        // Create new lease package
+        this.leasePackageService.addLeasePackage(leaseData).subscribe(() => {
+          alert('Lease Package Added Successfully');
+          this.router.navigate(['/admin/lease-packages']);
+        }, error => {
+          console.error('Error adding lease package:', error);
+        });
+      }
     }
   }
 }
