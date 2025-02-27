@@ -21,7 +21,7 @@ export class RegisterVenueComponent implements OnInit {
   initializeForm(): void {
     this.venueForm = this.fb.group({
       venueName: ['', Validators.required],
-      // capacity: ['', [Validators.required, Validators.min(1)]],
+     capacity: ['', [Validators.required, Validators.min(1)]],
       description: [''],
       buildingId: ['', Validators.required],
       leasePackageIds: [[]],

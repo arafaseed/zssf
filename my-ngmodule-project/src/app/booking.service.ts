@@ -1,69 +1,20 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
-
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class BookingService {
-  private apiUrl = '  http://localhost:8080/api/bookings';  // Adjust API URL as needed
+  private apiUrl = 'http://localhost:8080/api/bookings';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-
-  // createBooking(booking: BookingFormComponent): Observable<BookingFormComponent> {
-  //   return this.http.post<BookingFormComponent>(`${this.apiUrl}/create`, booking); // Fixed syntax here
-  // }
-
-  // Create a new booking
   createBooking(bookingData: any): Observable<any> {
-const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-   return this.http.post<any>(`${this.apiUrl}/create`, bookingData,{ headers });
-
-}
-
-  // Get all bookings
-  getAllBookings(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/all`);
+    return this.http.post(`${this.apiUrl}/create`, bookingData);
   }
 
-  // Get booking by ID
-  getBookingById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  getVenues(): Observable<any> {
+    return this.http.get('http://localhost:8080/api/venues/all');
   }
-
-  // Update booking
-  updateBooking(id: number, bookingData: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/update/${id}`, bookingData);
-  }
-
-  // Delete booking
-  deleteBooking(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/delete/${id}`);
-  }
-
-  // Get bookings by venue
-  getBookingsByVenue(venueId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/venue/${venueId}`);
-  }
-
-  // Check venue availability
-  checkVenueAvailability(venueId: number, startDate: string, startTime: string): Observable<boolean> {
-    return this.http.get<boolean>(`${this.apiUrl}/check-availability`, {
-      params: { venueId: venueId.toString(), startDate, startTime },
-    });
-
-  // Method to register a new booking
-  // registerBooking(bookingData: any): Observable<any> {
-  //   return this.http.post<any>(`${this.apiUrl}/add`, bookingData).pipe(
-  //     catchError(error => {
-  //       console.error('Error booking:', error);
-  //       return throwError(() => new Error('Booking failed. Try again.'));
-  //     })
-  //   );
-
-  // }
- 
-}
 }

@@ -1,40 +1,56 @@
-<form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
-  <mat-form-field appearance="fill" class="w-100">
-    <mat-label>Full Name</mat-label>
-    <input matInput formControlName="fullName" placeholder="Enter full name">
-  </mat-form-field>
+<div class="container mt-4">
+  <mat-card class="booking-card">
+    <mat-card-title>Venue Booking Form</mat-card-title>
+    <form [formGroup]="bookingForm" (ngSubmit)="submitBooking()">
+      
+      <!-- Full Name -->
+      <mat-form-field class="full-width">
+        <mat-label>Full Name</mat-label>
+        <input matInput formControlName="fullName" required>
+        <mat-error *ngIf="bookingForm.get('fullName')?.invalid && bookingForm.get('fullName')?.touched">
+          Full Name is required.
+        </mat-error>
+        
+      </mat-form-field>
 
-  <mat-form-field appearance="fill" class="w-100">
-    <mat-label>Phone Number</mat-label>
-    <input matInput formControlName="phoneNumber" placeholder="Enter phone number">
-  </mat-form-field>
+      <!-- Phone Number -->
+      <mat-form-field class="full-width">
+        <mat-label>Phone Number</mat-label>
+        <input matInput formControlName="phoneNumber" type="tel" required>
+        <mat-error *ngIf="bookingForm.get('phoneNumber')?.invalid && bookingForm.get('phoneNumber')?.touched">
+          Valid phone number is required.
+        </mat-error>
+      </mat-form-field>
 
-  <mat-form-field appearance="fill" class="w-100">
-    <mat-label>Start Date</mat-label>
-    <input matInput [matDatepicker]="startPicker" formControlName="startDate" placeholder="Select start date">
-    <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-    <mat-datepicker #startPicker></mat-datepicker>
-  </mat-form-field>
-    <mat-label>Start Time</mat-label>
-    <input matInput formControlName="startTime" type="time" placeholder="Select start time">n
-  <mat-form-field appearance="fill" class="w-100">
-    <mat-label>End Date</mat-label>
-    <input matInput [matDatepicker]="endPicker" formControlName="endDate" placeholder="Select end date">
-    <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-    <mat-datepicker #endPicker></mat-datepicker>
-  </mat-form-field>
+      <!-- Start Date -->
+      <mat-form-field class="full-width">
+        <mat-label>Start Date</mat-label>
+        <input matInput [matDatepicker]="startPicker" formControlName="startDate" required>
+        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+        <mat-datepicker #startPicker></mat-datepicker>
+      </mat-form-field>
 
-  <mat-form-field appearance="fill" class="w-100">
-    <mat-label>End Time</mat-label>
-    <input matInput formControlName="endTime" type="time" placeholder="Select end time">
-  </mat-form-field>
+      <!-- End Date -->
+      <mat-form-field class="full-width">
+        <mat-label>End Date</mat-label>
+        <input matInput [matDatepicker]="endPicker" formControlName="endDate" required>
+        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+        <mat-datepicker #endPicker></mat-datepicker>
+      </mat-form-field>
 
-  <mat-form-field appearance="fill" class="w-100">
-    <mat-label>Venue</mat-label>
-    <input matInput formControlName="venueId" placeholder="Enter venue ID">
-  </mat-form-field>
+      <!-- Venue -->
+      <mat-form-field class="full-width">
+        <mat-label>Select Venue</mat-label>
+        <mat-select formControlName="venueId" required>
+          <mat-option *ngFor="let venue of venues" [value]="venue.id">{{ venue.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-  <div class="form-group">
-    <button type="submit" class="btn btn-primary" [disabled]="bookingForm.invalid">Submit</button>
-  </div>
-</form>
+      <!-- Submit Button -->
+      <button mat-raised-button color="primary" type="submit" [disabled]="bookingForm.invalid">
+        Book Now
+      </button>
+
+    </form>
+  </mat-card>
+</div>
