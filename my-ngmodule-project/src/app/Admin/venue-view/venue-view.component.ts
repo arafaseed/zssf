@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ViewVenueService } from '../../view-venue.service';
-import { Router } from '@angular/router';  // Import Router for navigation
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-venue-view',
@@ -22,35 +22,33 @@ export class VenueViewComponent implements OnInit {
 
   loadVenues(): void {
     this.venueService.getAllVenues().subscribe((data: any[]) => {
-      this.venues = data;
+      this.venues = data.map(venue => ({ ...venue, showDescription: false })); // Add showDescription property
     });
   }
 
   openGallery(venue: any): void {
     this.selectedVenue = venue;
-    this.currentImageIndex = 0; // Start with the first image
+    this.currentImageIndex = 0;
   }
 
   prevImage(): void {
-    if (this.currentImageIndex > 0) {
-      this.currentImageIndex--;
-    } else {
-      this.currentImageIndex = this.selectedVenue.venueImages.length - 1; // Loop to the last image
+    if (this.selectedVenue?.venueImages?.length) {
+      this.currentImageIndex =
+        this.currentImageIndex > 0 ? this.currentImageIndex - 1 : this.selectedVenue.venueImages.length - 1;
     }
   }
 
   nextImage(): void {
-    if (this.currentImageIndex < this.selectedVenue.venueImages.length - 1) {
-      this.currentImageIndex++;
-    } else {
-      this.currentImageIndex = 0; // Loop to the first image
+    if (this.selectedVenue?.venueImages?.length) {
+      this.currentImageIndex =
+        this.currentImageIndex < this.selectedVenue.venueImages.length - 1 ? this.currentImageIndex + 1 : 0;
     }
   }
 
-  bookVenue(venue: any): void {
-    // Navigate to booking page with the venue ID as a route parameter
-    this.router.navigate(['/booking', venue.venueId]);  // Assuming /booking/:id route in your Angular routing configuration
+  toggleDescription(venue: any): void {
+    venue.showDescription = !venue.showDescription;
   }
+
   goToBookingPage(venueId: number | undefined): void {
     if (venueId !== undefined && venueId !== null) {
       this.router.navigate(['/booking', venueId]);
@@ -58,6 +56,85 @@ export class VenueViewComponent implements OnInit {
       console.error('Venue ID is undefined:', venueId);
     }
   }
-  
-  
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import { Component, OnInit } from '@angular/core';
+// import { ViewVenueService } from '../../view-venue.service';
+// import { Router } from '@angular/router';  // Import Router for navigation
+
+// @Component({
+//   selector: 'app-venue-view',
+//   standalone: false,
+//   templateUrl: './venue-view.component.html',
+//   styleUrls: ['./venue-view.component.css']
+// })
+// export class VenueViewComponent implements OnInit {
+
+//   venues: any[] = [];
+//   selectedVenue: any;
+//   currentImageIndex: number = 0;
+
+//   constructor(private venueService: ViewVenueService, private router: Router) {}
+
+//   ngOnInit(): void {
+//     this.loadVenues();
+//   }
+
+//   loadVenues(): void {
+//     this.venueService.getAllVenues().subscribe((data: any[]) => {
+//       this.venues = data;
+//     });
+//   }
+
+//   openGallery(venue: any): void {
+//     this.selectedVenue = venue;
+//     this.currentImageIndex = 0; // Start with the first image
+//   }
+
+//   prevImage(): void {
+//     if (this.currentImageIndex > 0) {
+//       this.currentImageIndex--;
+//     } else {
+//       this.currentImageIndex = this.selectedVenue.venueImages.length - 1; // Loop to the last image
+//     }
+//   }
+
+//   nextImage(): void {
+//     if (this.currentImageIndex < this.selectedVenue.venueImages.length - 1) {
+//       this.currentImageIndex++;
+//     } else {
+//       this.currentImageIndex = 0; // Loop to the first image
+//     }
+//   }
+
+//   bookVenue(venue: any): void {
+//     // Navigate to booking page with the venue ID as a route parameter
+//     this.router.navigate(['/booking', venue.venueId]);  // Assuming /booking/:id route in your Angular routing configuration
+//   }
+//   goToBookingPage(venueId: number | undefined): void {
+//     if (venueId !== undefined && venueId !== null) {
+//       this.router.navigate(['/booking', venueId]);
+//     } else {
+//       console.error('Venue ID is undefined:', venueId);
+//     }
+//   }
+  
+  
+// }

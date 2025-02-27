@@ -35,7 +35,7 @@
         <!-- Lease Packages Multi-Select -->
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>Lease Packages</mat-label>
-      <mat-select formControlName="leasePackageIds" required>
+      <mat-select formControlName="leasePackageIds" >
         <mat-option *ngFor="let package of leasePackages" [value]="package.leaseId">
           {{ package.category }} available for Tzs {{ package.price }}
         </mat-option>

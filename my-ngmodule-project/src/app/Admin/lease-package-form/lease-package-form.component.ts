@@ -20,20 +20,16 @@ export class LeasePackageFormComponent implements OnInit {
     private router: Router
   ) {
     this.leaseForm = this.fb.group({
-<<<<<<< HEAD
-      category: ['', Validators.required],
-=======
       description: ['', [Validators.required]],
->>>>>>> a25b6339b2dcd4d7d13997d0265b6ca46d07b3cf
       price: ['', [Validators.required, Validators.min(0)]]
     });
   }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      const id = params.get('id'); // Ensure this matches your route param name
+      const id = params.get('id');
       if (id) {
-        this.leaseId = +id; // Convert to number
+        this.leaseId = +id;
         this.loadLeasePackage(this.leaseId);
       }
     });
@@ -43,7 +39,7 @@ export class LeasePackageFormComponent implements OnInit {
     this.leasePackageService.getLeasePackageById(id).subscribe(data => {
       if (data) {
         this.leaseForm.patchValue({
-          category: data.category,
+          description: data.description,
           price: data.price
         });
       }
@@ -55,8 +51,8 @@ export class LeasePackageFormComponent implements OnInit {
   onSubmit(): void {
     if (this.leaseForm.valid) {
       const leaseData = this.leaseForm.value;
+
       if (this.leaseId) {
-        // Update existing lease package
         this.leasePackageService.updateLeasePackage(this.leaseId, leaseData).subscribe(() => {
           alert('Lease Package Updated Successfully');
           this.router.navigate(['/admin/lease-packages']);
@@ -64,7 +60,6 @@ export class LeasePackageFormComponent implements OnInit {
           console.error('Error updating lease package:', error);
         });
       } else {
-        // Create new lease package
         this.leasePackageService.addLeasePackage(leaseData).subscribe(() => {
           alert('Lease Package Added Successfully');
           this.router.navigate(['/admin/lease-packages']);

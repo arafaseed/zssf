@@ -10,7 +10,6 @@
         <mat-error *ngIf="bookingForm.get('fullName')?.invalid && bookingForm.get('fullName')?.touched">
           Full Name is required.
         </mat-error>
-        
       </mat-form-field>
 
       <!-- Phone Number -->
@@ -42,7 +41,7 @@
       <mat-form-field class="full-width">
         <mat-label>Select Venue</mat-label>
         <mat-select formControlName="venueId" required>
-          <mat-option *ngFor="let venue of venues" [value]="venue.id">{{ venue.name }}</mat-option>
+          <mat-option *ngFor="let venue of venues" [value]="venue.venueId">{{ venue.venueName }}</mat-option>
         </mat-select>
       </mat-form-field>
 
