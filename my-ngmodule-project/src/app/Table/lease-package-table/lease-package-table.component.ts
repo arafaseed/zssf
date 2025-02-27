@@ -12,7 +12,9 @@ import { Router } from '@angular/router';
 export class LeasePackageTableComponent implements OnInit {
 
   leasePackages: any[] = [];
-  displayedColumns: string[] = ['leaseId', 'category', 'price', 'actions']; 
+  displayedColumns: string[] = ['leaseId', 'description', 'price', 'actions']; 
+
+
   
   dataSource = [];
 

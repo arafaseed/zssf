@@ -1,26 +1,35 @@
 import { Injectable } from '@angular/core';
+<<<<<<< HEAD
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BookingFormComponent } from './booking-form/booking-form.component';
 
 import { catchError, Observable, throwError } from 'rxjs';
+=======
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+>>>>>>> a25b6339b2dcd4d7d13997d0265b6ca46d07b3cf
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class BookingService {
-  private apiUrl = '  http://localhost:8080/api/bookings';  // Adjust API URL as needed
+  private apiUrl = 'http://localhost:8080/api/bookings';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
+<<<<<<< HEAD
   // createBooking(booking: BookingFormComponent): Observable<BookingFormComponent> {
   //   return this.http.post<BookingFormComponent>(`${this.apiUrl}/create`, booking); // Fixed syntax here
   // }
 
   // Create a new booking
+=======
+>>>>>>> a25b6339b2dcd4d7d13997d0265b6ca46d07b3cf
   createBooking(bookingData: any): Observable<any> {
-const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-   return this.http.post<any>(`${this.apiUrl}/create`, bookingData,{ headers });
+    return this.http.post(`${this.apiUrl}/create`, bookingData);
+  }
 
+<<<<<<< HEAD
 }
 
   // Get all bookings
@@ -63,5 +72,10 @@ const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
   //   );
   // }
   
+=======
+  getVenues(): Observable<any> {
+    return this.http.get('http://localhost:8080/api/venues/all');
+  }
+>>>>>>> a25b6339b2dcd4d7d13997d0265b6ca46d07b3cf
 }
 }

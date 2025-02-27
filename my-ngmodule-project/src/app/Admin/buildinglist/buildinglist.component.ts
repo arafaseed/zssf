@@ -81,20 +81,21 @@ export class BuildinglistComponent implements OnInit {
       });
     }
 
-    // Use HttpClient for the API call
-    this.httpClient.delete(`http://localhost:8080/api/buildings/delete/${id}`)
-      .subscribe({
-        next: () => {
-          console.log("Building deleted successfully");
-          //  // Refresh list
-          this.snackBar.open('Building deleted successfully!', 'Close', { duration: 3000 });
-        },
-        error: (error: any) => {
-          console.error("Error deleting building:", error);
-          this.snackBar.open('Failed to delete building!', 'Close', { duration: 3000 });
-        }
-      });
-  }
+  //   // Use HttpClient for the API call
+  //   this.httpClient.delete(`http://localhost:8080/api/buildings/delete/${id}`)
+  //     .subscribe({
+  //       next: () => {
+  //         console.log("Building deleted successfully");
+  //         //  // Refresh list
+  //         this.snackBar.open('Building deleted successfully!', 'Close', { duration: 3000 });
+  //       },
+  //       error: (error: any) => {
+  //         console.error("Error deleting building:", error);
+  //         this.snackBar.open('Failed to delete building!', 'Close', { duration: 3000 });
+  //       }
+  //     });
+  // }
   
   
+}
 }

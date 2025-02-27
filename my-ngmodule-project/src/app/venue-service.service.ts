@@ -16,5 +16,7 @@ export class VenueService {
   getLeasePackages(): Observable<any> {
     return this.http.get('http://localhost:8080/api/lease-packages/all');
   }
-  
+  deleteVenue(venueId: number) {
+    return this.http.delete(`api/venues/${venueId}`);
+  }
 }

@@ -20,7 +20,11 @@ export class LeasePackageFormComponent implements OnInit {
     private router: Router
   ) {
     this.leaseForm = this.fb.group({
+<<<<<<< HEAD
       category: ['', Validators.required],
+=======
+      description: ['', [Validators.required]],
+>>>>>>> a25b6339b2dcd4d7d13997d0265b6ca46d07b3cf
       price: ['', [Validators.required, Validators.min(0)]]
     });
   }
