@@ -8,16 +8,18 @@ import { Observable } from 'rxjs';
 export class ViewVenueService {
   [x: string]: any;
 
-  private apiUrl = 'http://localhost:8080/api/venues/view/all';
+  private venueApiUrl ='http://localhost:8080/api/venues';
+
   
   constructor(private http: HttpClient) {}
 
   getAllVenues(): Observable<any> {
-    return this.http.get(this.apiUrl);
+    return this.http.get (`${this.venueApiUrl}/view/all`);
+
   }
 
   deleteVenue(venueId: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${venueId}`);
+    return this.http.delete(`${this.venueApiUrl}/${venueId}`);
   }
   
   
