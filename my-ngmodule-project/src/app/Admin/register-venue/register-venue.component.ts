@@ -13,9 +13,9 @@ export class RegisterVenueComponent implements OnInit {
   selectedFiles: File[] | null = null;
   buildings: any[] = [];
   leasePackages: any[] = [];
-  isLoading = false; // For loading state during API requests
-  successMessage: string | null = null; // To show success message
-  errorMessage: string | null = null; // To show error message
+  isLoading = false;
+  successMessage: string | null = null;
+  errorMessage: string | null = null;
 
   constructor(private fb: FormBuilder, private venueService: VenueService) {}
 
@@ -25,10 +25,10 @@ export class RegisterVenueComponent implements OnInit {
     this.loadLeasePackages();
   }
 
-  // Initialize the form with validation
+  // Initialize the form with proper validation
   initializeForm(): void {
     this.venueForm = this.fb.group({
-      venueName: ['', Validators.required],
+      venueName: ['', [Validators.required, Validators.minLength(3)]],
       capacity: ['', [Validators.required, Validators.min(1)]],
       description: [''],
       buildingId: ['', Validators.required],
@@ -36,25 +36,19 @@ export class RegisterVenueComponent implements OnInit {
     });
   }
 
-  // Load the available buildings from the service
+  // Fetch buildings from API
   loadBuildings(): void {
     this.venueService.getBuildings().subscribe(
       (data: any[]) => this.buildings = data,
-      (error: any) => console.error('Error fetching buildings:', error)
+      (error: any) => this.handleError('Failed to load buildings', error)
     );
   }
 
-  // Load lease packages from the service
+  // Fetch lease packages from API
   loadLeasePackages(): void {
     this.venueService.getLeasePackages().subscribe(
-      (data: any[]) => {
-        console.log('Lease Packages from API:', data);
-        this.leasePackages = data;
-      },
-      (error: any) => {
-        console.error('Error fetching lease packages:', error);
-        this.errorMessage = 'Failed to load lease packages. Please try again later.';
-      }
+      (data: any[]) => this.leasePackages = data,
+      (error: any) => this.handleError('Failed to load lease packages', error)
     );
   }
 
@@ -62,53 +56,75 @@ export class RegisterVenueComponent implements OnInit {
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input?.files) {
-      this.selectedFiles = Array.from(input.files);
+      const files = Array.from(input.files);
+  
+      // Check file size (5MB max per file)
+      const maxSize = 5 * 1024 * 1024; // 5MB
+      for (const file of files) {
+        if (file.size > maxSize) {
+          this.errorMessage = `File ${file.name} is too large. Max allowed size is 5MB.`;
+          return;
+        }
+      }
+  
+      this.selectedFiles = files;
     }
   }
+  
 
   // Handle form submission
   onSubmit(): void {
-    if (this.venueForm.valid) {
-      this.isLoading = true; // Start loading
-      const formData = new FormData();
-      const formValue = this.venueForm.value;
-      const leasePackageIds = Array.isArray(formValue.leasePackageIds)
-        ? formValue.leasePackageIds
-        : [formValue.leasePackageIds];
-
-      const venueData = {
-        venueName: formValue.venueName,
-        capacity: formValue.capacity,
-        description: formValue.description,
-        building: { buildingId: formValue.buildingId },
-        leasePackages: leasePackageIds.map((id: number) => ({ leaseId: id }))
-      };
-
-      formData.append('venue', JSON.stringify(venueData));
-
-      // Append selected files if any
-      if (this.selectedFiles) {
-        this.selectedFiles.forEach(file => {
-          formData.append('images', file, file.name);
-        });
-      }
-
-      // Make the API request to register the venue
-      this.venueService.registerVenue(formData).subscribe(
-        (response: any) => {
-          console.log('Venue registered successfully:', response);
-          this.successMessage = 'Venue registered successfully!';
-          this.venueForm.reset();
-          this.selectedFiles = null;
-        },
-        (error: any) => {
-          console.error('Error registering venue:', error);
-          this.errorMessage = 'Failed to register venue. Please try again.';
-        },
-        () => {
-          this.isLoading = false; // Stop loading after the request completes
-        }
-      );
+    if (this.venueForm.invalid) {
+      this.errorMessage = 'Please fill in all required fields correctly!';
+      return;
     }
+
+    this.isLoading = true;
+    this.errorMessage = null;
+    this.successMessage = null;
+
+    const formData = new FormData();
+    const formValue = this.venueForm.value;
+
+    const leasePackageIds = Array.isArray(formValue.leasePackageIds)
+      ? formValue.leasePackageIds
+      : [formValue.leasePackageIds];
+
+    const venueData = {
+      venueName: formValue.venueName,
+      capacity: formValue.capacity,
+      description: formValue.description,
+      building: { buildingId: formValue.buildingId },
+      leasePackages: leasePackageIds.map((id: number) => ({ leaseId: id }))
+    };
+
+    formData.append('venue', JSON.stringify(venueData));
+
+    // Append files
+    if (this.selectedFiles) {
+      this.selectedFiles.forEach(file => formData.append('images', file, file.name));
+    }
+
+    // Send request to API
+    this.venueService.registerVenue(formData).subscribe(
+      (response: any) => {
+        this.successMessage = 'Venue registered successfully!';
+        this.venueForm.reset();
+        this.selectedFiles = null;
+      },
+      (error: any) => {
+        this.handleError('Failed to register venue', error);
+      },
+      () => {
+        this.isLoading = false;
+      }
+    );
+  }
+
+  // Handle errors
+  private handleError(message: string, error: any) {
+    console.error(message, error);
+    this.errorMessage = message;
+    this.isLoading = false;
   }
 }
