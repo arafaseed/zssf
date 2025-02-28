@@ -30,19 +30,18 @@
           <textarea matInput formControlName="description" rows="3"></textarea>
         </mat-form-field>
       </div>
-    </div>
- <!-- Lease Packages Single Select -->
-<mat-form-field appearance="outline" class="w-100">
-  <mat-label>Lease Package</mat-label>
-  <mat-select formControlName="leasePackageIds" required>
-    <mat-option *ngFor="let package of leasePackages" [value]="package.leaseId">
-      {{ package.category }} available for Tzs {{ package.price }}
-    </mat-option>
-  </mat-select>
-  <mat-error *ngIf="venueForm.get('leasePackageIds')?.hasError('required')">
-    A lease package must be selected
-  </mat-error>
-</mat-form-field>
+
+  
+        <!-- Lease Packages Multi-Select -->
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Lease Packages</mat-label>
+      <mat-select formControlName="leasePackageIds" >
+        <mat-option *ngFor="let package of leasePackages" [value]="package.leaseId">
+          {{ package.category }} available for Tzs {{ package.price }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  
     <!-- Building Selection -->
     <div class="row">
       <div class="col-md-6 mb-3">
@@ -78,5 +77,4 @@
         </button>
       </div>
     </div>
-  </form>
 </div>

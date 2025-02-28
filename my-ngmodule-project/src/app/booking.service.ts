@@ -1,20 +1,25 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { catchError, Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BookingService {
-  private apiUrl = 'http://localhost:8080/api/bookings';
+
 
   constructor(private http: HttpClient) {}
 
   createBooking(bookingData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/create`, bookingData);
+    // const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post('http://localhost:8080/api/bookings/create', bookingData);
   }
+
+  
+
 
   getVenues(): Observable<any> {
     return this.http.get('http://localhost:8080/api/venues/all');
   }
 }
+
