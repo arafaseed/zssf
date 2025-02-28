@@ -35,13 +35,17 @@ export class LeasePackageTableComponent implements OnInit {
 
   deleteLeasePackage(id: number): void {
     const confirmDelete = window.confirm('Are you sure you want to delete this lease package?');
-    
+  
     if (confirmDelete) {
-      this.leasePackageService.deleteLeasePackage(id).subscribe(() => {
-        this.loadLeasePackages();
+      this.leasePackageService.deleteLeasePackage(id).subscribe(response => {
+        console.log(response); // Optional: Log the success message
+        this.loadLeasePackages(); // Refresh the list
+      }, error => {
+        console.error('Error deleting lease package:', error);
       });
     }
   }
+  
   
 
  

@@ -29,12 +29,14 @@ export class LeasePackageService {
     return this.http.get<any>(`${this.apiUrl}/get/${id}`);
   }
 
-  deleteLeasePackage(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
+  deleteLeasePackage(id: number): Observable<string> {
+    return this.http.delete(`${this.apiUrl}/delete/${id}`, { responseType: 'text' });
   }
+  
 
   // Venue Operations (Added)
   getVenues(): Observable<any[]> {
     return this.http.get<any[]>(`${this.venueApiUrl}/view/all`);
   }
 }
+

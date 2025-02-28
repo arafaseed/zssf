@@ -1,25 +1,33 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BookingService {
-
+  private apiUrl = 'http://localhost:8080/api/bookings'; // Adjust the URL as needed
 
   constructor(private http: HttpClient) {}
 
-  createBooking(bookingData: any): Observable<any> {
-    // const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post('http://localhost:8080/api/bookings/create', bookingData);
+  createBooking(booking: any): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post<any>(`${this.apiUrl}/create`, booking, { headers });
   }
 
-  
+  getAllBookings(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/all`);
+  }
 
+  getBookingById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  }
 
-  getVenues(): Observable<any> {
-    return this.http.get('http://localhost:8080/api/venues/all');
+  updateBooking(id: number, booking: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/update/${id}`, booking);
+  }
+
+  deleteBooking(id: number): Observable<string> {
+    return this.http.delete<string>(`${this.apiUrl}/delete/${id}`);
   }
 }
-

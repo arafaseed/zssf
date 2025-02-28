@@ -10,6 +10,8 @@ export class VenueService {
 
   constructor(private http: HttpClient) {}
 
+  
+
   registerVenue(formData: FormData): Observable<any> {
     return this.http.post(`${this.apiUrl}/add`, formData);
   }

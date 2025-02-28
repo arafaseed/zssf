@@ -20,7 +20,7 @@
         <label for="venue" class="form-label">Venue</label>
         <select id="venue" class="form-control" formControlName="venueId" required>
           <option value="" disabled selected>Select Venue</option>
-          <option *ngFor="let venue of venues" [ngValue]="venue.venueId">{{venue.venueId}}</option>
+          <option *ngFor="let venue of venues" [ngValue]="venue.venueId">{{venue.venueName}}</option>
           <!-- <option *ngFor="let venue of venues" [ngValue]="venue.venue">{{venue.venueId}}</option> -->
         </select>
         <div class="error" *ngIf="leaseForm?.get('venueId')?.invalid">Venue selection is required</div>
