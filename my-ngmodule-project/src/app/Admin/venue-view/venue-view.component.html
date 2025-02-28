@@ -16,6 +16,7 @@
                                 <img class="d-block w-100" [src]="image" alt="Venue image">
                             </div>
                         </div>
+                        <!-- Carousel Controls -->
                         <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel' + i" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         </button>
@@ -26,14 +27,14 @@
 
                     <!-- Venue description toggle -->
                     <div *ngIf="venue.showDescription">
-                        <p><strong>Category:</strong> {{ venue.venueName }}</p>
+                        <p><strong>Venue name:</strong> {{ venue.venueName }}</p>
                         <p><strong>Price:</strong> {{ venue.capacity }}</p>
                         <p><strong>Description:</strong> {{ venue.description }}</p>
                     </div>
 
                     <!-- Buttons inside card body -->
                     <div class="d-flex justify-content-between mt-3">
-                        <button mat-raised-button color="primary" (click)="venue.showDescription = !venue.showDescription">
+                        <button mat-raised-button color="primary" (click)="toggleDescription(venue)">
                             {{ venue.showDescription ? 'Hide Details' : 'See More' }}
                         </button>
                         <button mat-raised-button color="accent" (click)="goToBookingPage(venue.venueId)">
