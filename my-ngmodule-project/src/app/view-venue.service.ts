@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class ViewVenueService {
   [x: string]: any;
 
-  private apiUrl = 'http://localhost:8080/api/venues/all';
+  private apiUrl = 'http://localhost:8080/api/venues/view/all';
   
   constructor(private http: HttpClient) {}
 

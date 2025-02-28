@@ -1,27 +1,36 @@
 <div class="container">
-    <div class="card shadow-lg p-4">
-      <h3 class="text-center mb-4">🏢 Lease Package</h3>
-  
-      <form [formGroup]="leaseForm" (ngSubmit)="onSubmit()">
-  
-        <div class="mb-3">
-          <label for="description" class="form-label">Description</label>
-          <input id="description" type="text" class="form-control" formControlName="description" placeholder="Enter description" required>
-          <div class="error" *ngIf="leaseForm?.get('description')?.invalid">Description is required</div>
-        </div>
-        
-        <div class="mb-3">
-          <label for="price" class="form-label">Price</label>
-          <input id="price" type="number" class="form-control" formControlName="price" placeholder="Enter price" required>
-          <div class="error" *ngIf="leaseForm?.get('price')?.invalid">Valid price is required</div>
-        </div>
-  
-        <div class="text-center">
-          <button class="btn btn-primary" type="submit" [disabled]="leaseForm.invalid">
-            Submit
-          </button>
-        </div>
-      </form>
-    </div>
+  <div class="card shadow-lg p-4">
+    <h3 class="text-center mb-4">🏢 Lease Package</h3>
+
+    <form [formGroup]="leaseForm" (ngSubmit)="onSubmit()">
+
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <input id="description" type="text" class="form-control" formControlName="description" placeholder="Enter description" required minlength="5">
+        <div class="error" *ngIf="leaseForm?.get('description')?.invalid">Description is required (min 5 characters)</div>
+      </div>
+      
+      <div class="mb-3">
+        <label for="price" class="form-label">Price</label>
+        <input id="price" type="number" class="form-control" formControlName="price" placeholder="Enter price" required min="0" step="any">
+        <div class="error" *ngIf="leaseForm?.get('price')?.invalid">Valid price is required</div>
+      </div>
+
+      <div class="mb-3">
+        <label for="venue" class="form-label">Venue</label>
+        <select id="venue" class="form-control" formControlName="venueId" required>
+          <option value="" disabled selected>Select Venue</option>
+          <option *ngFor="let venue of venues" [ngValue]="venue.venueId">{{venue.venueId}}</option>
+          <!-- <option *ngFor="let venue of venues" [ngValue]="venue.venue">{{venue.venueId}}</option> -->
+        </select>
+        <div class="error" *ngIf="leaseForm?.get('venueId')?.invalid">Venue selection is required</div>
+      </div>
+
+      <div class="text-center">
+        <button class="btn btn-primary" type="submit" [disabled]="leaseForm.invalid">
+          Submit
+        </button>
+      </div>
+    </form>
   </div>
-  
+</div>

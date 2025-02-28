@@ -30,18 +30,19 @@
           <textarea matInput formControlName="description" rows="3"></textarea>
         </mat-form-field>
       </div>
-
-  
-        <!-- Lease Packages Multi-Select -->
-    <mat-form-field appearance="outline" class="w-100">
-      <mat-label>Lease Packages</mat-label>
-      <mat-select formControlName="leasePackageIds" required>
-        <mat-option *ngFor="let package of leasePackages" [value]="package.leaseId">
-          {{ package.category }} available for Tzs {{ package.price }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  
+    </div>
+ <!-- Lease Packages Single Select -->
+<mat-form-field appearance="outline" class="w-100">
+  <mat-label>Lease Package</mat-label>
+  <mat-select formControlName="leasePackageIds" required>
+    <mat-option *ngFor="let package of leasePackages" [value]="package.leaseId">
+      {{ package.category }} available for Tzs {{ package.price }}
+    </mat-option>
+  </mat-select>
+  <mat-error *ngIf="venueForm.get('leasePackageIds')?.hasError('required')">
+    A lease package must be selected
+  </mat-error>
+</mat-form-field>
     <!-- Building Selection -->
     <div class="row">
       <div class="col-md-6 mb-3">
@@ -52,10 +53,12 @@
               {{ building.buildingName }}
             </mat-option>
           </mat-select>
+          <mat-error *ngIf="venueForm.get('buildingId')?.hasError('required')">
+            Building selection is required
+          </mat-error>
         </mat-form-field>
       </div>
     </div>
-    
     <div class="row">
       <div class="col-12 mb-3">
         <input type="file" #fileInput (change)="onFileSelected($event)" multiple accept="image/*" hidden>
@@ -66,8 +69,7 @@
           {{ selectedFiles.length }} file(s) selected
         </span>
       </div>
-  </div>
-   
+    </div>
     <!-- Submit Button -->
     <div class="row">
       <div class="col-12 text-right">
@@ -76,6 +78,5 @@
         </button>
       </div>
     </div>
- 
+  </form>
 </div>
-</form>
