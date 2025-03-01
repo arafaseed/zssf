@@ -43,6 +43,8 @@ const routes: Routes = [
       { path: 'venueView', component: ViewVenuesComponent },
       { path: 'settings', component: SettingComponent },
 
+      { path: 'booking-form', component: BookingFormComponent },
+
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Default admin page
       { path: '**', redirectTo: 'dashboard' } // Catch-all
     ]

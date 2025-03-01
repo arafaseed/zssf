@@ -52,8 +52,10 @@ import { MajengoComponent } from './Admin/majengo/majengo.component';
 import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 import { BookingFormComponent } from './booking-form/booking-form.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { AdditionalBookingDialogComponent } from './additional-booking-dialog/additional-booking-dialog.component';
 
 
+import { MatGridListModule } from '@angular/material/grid-list'; // For grid layouts
 
 
 @NgModule({
@@ -77,6 +79,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
     ViewVenuesComponent,
     LeasePackageFormComponent,
     BookingFormComponent,
+    AdditionalBookingDialogComponent,
   
    
     
@@ -90,6 +93,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
     FullCalendarModule,
     MatCardModule,
     MatFormFieldModule,
+    MatGridListModule, 
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
@@ -129,9 +133,8 @@ import { FullCalendarModule } from '@fullcalendar/angular';
     MatLabel, 
     FormsModule,
     CommonModule,
-    BrowserModule
+    BrowserModule,
     
-     
     
     
    

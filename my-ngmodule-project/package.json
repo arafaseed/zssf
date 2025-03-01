@@ -25,6 +25,7 @@
     "@fullcalendar/daygrid": "^6.1.15",
     "@fullcalendar/interaction": "^6.1.15",
     "@fullcalendar/timegrid": "^6.1.15",
+    "@popperjs/core": "^2.11.8",
     "@types/fullcalendar": "^3.8.0",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.7",

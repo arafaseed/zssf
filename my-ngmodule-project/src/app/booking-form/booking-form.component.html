@@ -1,51 +1,40 @@
 <div class="container mt-5">
   <h2>Booking Form</h2>
-  <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+  <form (ngSubmit)="onSubmit()" #bookingForm="ngForm">
     <div class="form-group">
       <label for="fullName">Full Name</label>
-      <input type="text" id="fullName" class="form-control" formControlName="fullName" required>
+      <input type="text" id="fullName" class="form-control" required [(ngModel)]="booking.fullName" name="fullName">
     </div>
 
     <div class="form-group">
       <label for="phoneNumber">Phone Number</label>
-      <input type="tel" id="phoneNumber" class="form-control" formControlName="phoneNumber" required>
+      <input type="text" id="phoneNumber" class="form-control" required [(ngModel)]="booking.phoneNumber" name="phoneNumber">
     </div>
 
     <div class="form-group">
       <label for="startDate">Start Date</label>
-      <mat-form-field appearance="fill" class="w-100">
-        <mat-label>Choose a start date</mat-label>
-        <input matInput [matDatepicker]="startPicker" formControlName="startDate" required>
-        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-        <mat-datepicker #startPicker></mat-datepicker>
-      </mat-form-field>
+      <input matInput [matDatepicker]="picker" [(ngModel)]="booking.startDate" name="startDate" required (dateChange)="onDateChange()">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
     </div>
 
     <div class="form-group">
       <label for="startTime">Start Time</label>
-      <input type="time" id="startTime" class="form-control" formControlName="startTime" required>
+      <input type="time" id="startTime" class="form-control" required [(ngModel)]="booking.startTime" name="startTime">
     </div>
 
     <div class="form-group">
       <label for="endDate">End Date</label>
-      <mat-form-field appearance="fill" class="w-100">
-        <mat-label>Choose an end date</mat-label>
-        <input matInput [matDatepicker]="endPicker" formControlName="endDate" required>
-        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-        <mat-datepicker #endPicker></mat-datepicker>
-      </mat-form-field>
+      <input matInput [matDatepicker]="endPicker" [(ngModel)]="booking.endDate" name="endDate" required>
+      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+      <mat-datepicker #endPicker></mat-datepicker>
     </div>
 
     <div class="form-group">
       <label for="endTime">End Time</label>
-      <input type="time" id="endTime" class="form-control" formControlName="endTime" required>
+      <input type="time" id="endTime" class="form-control" required [(ngModel)]="booking.endTime" name="endTime">
     </div>
 
-    <div class="form-group">
-      <label for="venueId">Venue ID</label>
-      <input type="number" id="venueId" class="form-control" formControlName="venueId" required>
-    </div>
-
-    <button type="submit" class="btn btn-success mt-3" [disabled]="!bookingForm.valid">Submit Booking</button>
+    <button type="submit" class="btn btn-success">Submit Booking</button>
   </form>
 </div>

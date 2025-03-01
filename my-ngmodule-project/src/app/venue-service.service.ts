@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class VenueService {
   private apiUrl = 'http://localhost:8080/api/venues';
+  private venueApiUrl = 'http://localhost:8080/api/venues'; // Added venue API
 
   constructor(private http: HttpClient) {}
 
@@ -27,4 +28,60 @@ export class VenueService {
   deleteVenue(venueId: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${venueId}`);
   }
+  getVenues(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.venueApiUrl}/view/all`);
+  }
+
+  // Update an existing venue
+  updateVenue(id: number, formData: FormData): Observable<any> {
+    return this.http.put(`${this.apiUrl}/update/${id}`, formData);
+  }
+
+
+  // Get a specific venue by ID
+  getVenueById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/view/${id}`);
+  }
+
+
+  // Delete a specific image from a venue
+  deleteVenueImage(venueId: number, imagePath: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${venueId}/delete-image?imagePath=${imagePath}`);
+  }
+
+  // Update only the images of a venue
+  updateVenueImages(venueId: number, images: File[]): Observable<any> {
+    const formData = new FormData();
+    images.forEach(image => {
+      formData.append('images', image);
+    });
+    return this.http.put(`${this.apiUrl}/${venueId}/update-images`, formData);
+  }
+
+  // Get the list of image paths for a specific venue
+  getVenueImages(venueId: number): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiUrl}/${venueId}/images`);
+  }
+
+  // Search venues by name
+  searchVenuesByName(name: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/search?name=${name}`);
+  }
+
+  // Filter venues by capacity
+  filterVenuesByCapacity(minCapacity: number, maxCapacity: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/filter/capacity?minCapacity=${minCapacity}&maxCapacity=${maxCapacity}`);
+  }
+
+  // Get venues by building ID
+  getVenuesByBuilding(buildingId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/building/${buildingId}`);
+  }
+
+  // Get venues by lease package price range
+  getVenuesByLeasePackagePriceRange(minPrice: number, maxPrice: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/filter/lease-price?minPrice=${minPrice}&maxPrice=${maxPrice}`);
+  }
+
+ 
 }

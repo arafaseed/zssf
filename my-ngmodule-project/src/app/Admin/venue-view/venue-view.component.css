@@ -1,59 +1,103 @@
-.card {
-    border-radius: 10px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
+/* Card Styling */
+.venue-card {
+  width: 100%;
+  max-width: 300px; /* Ensures all cards have the same width */
+  height: 420px; /* Fixed height to ensure uniformity */
+  margin: 0 auto;
+  border: 2px solid #f0f0f0; /* Light border for separation */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-.card-header {
-    background-color: #007bff;
-    color: white;
-    padding: 10px;
-    font-size: 1.2rem;
-    font-weight: bold;
+/* Image Slider Styling */
+.image-slider {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 200px; /* Fixed height to ensure uniform images */
 }
 
-.carousel-inner img {
-    height: 200px;
-    object-fit: cover;
-    border-bottom: 1px solid #ddd;
+.slider-container {
+  position: relative;
+  width: 100%;
+  height: 100%; /* Ensure the container takes full height */
+  overflow: hidden;
 }
 
-.carousel-control-prev,
-.carousel-control-next {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    top: 50%;
-    transform: translateY(-50%);
+.slider-wrapper {
+  display: flex;
+  transition: transform 0.5s ease;
+  height: 100%;
 }
 
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-    filter: invert(1);
+.slider-item {
+  flex: 0 0 100%;
+  height: 100%; /* Ensuring the images take full height */
 }
 
-.card-body {
-    padding: 15px;
-    flex-grow: 1; /* This will make the body grow and push the buttons to the bottom */
+.slider-item img {
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; /* Ensures uniform size and prevents distortion */
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
-.card-body p {
-    margin: 5px 0;
-    font-size: 0.9rem;
+/* Card Content (Ensures uniform spacing) */
+.venue-card-content {
+  flex-grow: 1;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-button {
-    margin-top: 10px;
+/* Material Button Styling */
+.mat-raised-button {
+  font-size: 1rem;
+  padding: 10px 16px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  border-radius: 6px;
+}
+
+.mat-raised-button:hover {
+  transform: translateY(-2px);
+}
+
+.mat-raised-button.primary {
+  background-color: #3f51b5;
+  color: #fff;
+}
+
+.mat-raised-button.primary:hover {
+  background-color: #303f9f;
+}
+
+.mat-raised-button.accent {
+  background-color: #e91e63;
+  color: #fff;
+}
+
+.mat-raised-button.accent:hover {
+  background-color: #c2185b;
+}
+
+.mat-raised-button.warn {
+  background-color: #ff5722;
+  color: #fff;
+}
+
+.mat-raised-button.warn:hover {
+  background-color: #e64a19;
+}
+
+@media screen and (max-width: 600px) {
+  .mat-raised-button {
     width: 100%;
-    font-weight: bold;
-}
-
-button[mat-raised-button] {
-    padding: 8px 0;
-}
-
-button[mat-raised-button]:first-of-type {
-    margin-bottom: 5px;
+    margin: 5px 0;
+  }
 }
