@@ -1,40 +1,67 @@
-<div class="container mt-5">
-  <h2>Booking Form</h2>
-  <form (ngSubmit)="onSubmit()" #bookingForm="ngForm">
+<div class="booking-form">
+  <h2>Create Booking</h2>
+  <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="fullName">Full Name</label>
-      <input type="text" id="fullName" class="form-control" required [(ngModel)]="booking.fullName" name="fullName">
+      <input id="fullName" type="text" formControlName="fullName" />
+      <div *ngIf="bookingForm.controls['fullName'].invalid && bookingForm.controls['fullName'].touched" class="error-message">
+        Full Name is required.
+      </div>
     </div>
 
     <div class="form-group">
       <label for="phoneNumber">Phone Number</label>
-      <input type="text" id="phoneNumber" class="form-control" required [(ngModel)]="booking.phoneNumber" name="phoneNumber">
+      <input id="phoneNumber" type="text" formControlName="phoneNumber" />
+      <div *ngIf="bookingForm.controls['phoneNumber'].invalid && bookingForm.controls['phoneNumber'].touched" class="error-message">
+        Phone Number is required.
+      </div>
     </div>
 
     <div class="form-group">
       <label for="startDate">Start Date</label>
-      <input matInput [matDatepicker]="picker" [(ngModel)]="booking.startDate" name="startDate" required (dateChange)="onDateChange()">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
+      <input id="startDate" type="date" formControlName="startDate" />
+      <div *ngIf="bookingForm.controls['startDate'].invalid && bookingForm.controls['startDate'].touched" class="error-message">
+        Start Date is required.
+      </div>
     </div>
 
     <div class="form-group">
       <label for="startTime">Start Time</label>
-      <input type="time" id="startTime" class="form-control" required [(ngModel)]="booking.startTime" name="startTime">
+      <input id="startTime" type="time" formControlName="startTime" />
+      <div *ngIf="bookingForm.controls['startTime'].invalid && bookingForm.controls['startTime'].touched" class="error-message">
+        Start Time is required.
+      </div>
     </div>
 
     <div class="form-group">
       <label for="endDate">End Date</label>
-      <input matInput [matDatepicker]="endPicker" [(ngModel)]="booking.endDate" name="endDate" required>
-      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-      <mat-datepicker #endPicker></mat-datepicker>
+      <input id="endDate" type="date" formControlName="endDate" />
+      <div *ngIf="bookingForm.controls['endDate'].invalid && bookingForm.controls['endDate'].touched" class="error-message">
+        End Date is required.
+      </div>
     </div>
 
     <div class="form-group">
       <label for="endTime">End Time</label>
-      <input type="time" id="endTime" class="form-control" required [(ngModel)]="booking.endTime" name="endTime">
+      <input id="endTime" type="time" formControlName="endTime" />
+      <div *ngIf="bookingForm.controls['endTime'].invalid && bookingForm.controls['endTime'].touched" class="error-message">
+        End Time is required.
+      </div>
     </div>
 
-    <button type="submit" class="btn btn-success">Submit Booking</button>
+    <div class="form-group">
+      <label for="venue_id">Venue </label>
+      <select id="venue_id" formControlName="venue_id" >
+        <option *ngFor="let venue of venues" [value]="venue.venueId">{{ venue.venueId}}</option>
+      </select>
+      <div *ngIf="bookingForm.controls['venue_id'].invalid && bookingForm.controls['venue_id'].touched" class="error-message">
+        Venue is required.
+      </div>
+    </div>
+
+    <!-- Status is hidden, no need to show it in the form -->
+    <input type="hidden" formControlName="status" />
+
+    <button type="submit" [disabled]="bookingForm.invalid">Submit</button>
   </form>
 </div>
