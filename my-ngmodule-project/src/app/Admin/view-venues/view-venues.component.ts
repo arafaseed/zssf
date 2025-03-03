@@ -5,7 +5,7 @@ import { ViewVenueService } from '../../view-venue.service';
   selector: 'app-view-venues',
   standalone: false,
   templateUrl: './view-venues.component.html',
-  styleUrl: './view-venues.component.css'
+  styleUrl:'./view-venues.component.css'
 })
 export class ViewVenuesComponent implements OnInit {
     venues: any[] = [];
@@ -34,18 +34,19 @@ export class ViewVenuesComponent implements OnInit {
       // Open modal or navigate to edit page with venue details
       console.log("Editing Venue:", venue);
     }
-
-    deleteVenue(venueId: number): void {
+    deleteVenue(venueId: number) {
       if (confirm("Are you sure you want to delete this venue?")) {
         this.venueService.deleteVenue(venueId).subscribe(
           () => {
-            this.venues = this.venues.filter(v => v.id !== venueId);
-            console.log("Venue deleted successfully!");
+            alert("Venue deleted successfully");
+            this.loadVenues(); // Refresh venue list after deletion
+            window.location.href = window.location.href; 
           },
-          (error: any) => {
-            console.error("Error deleting venue:", error);
+          error => {
+            alert("Error deleting venue: " + error.message);
           }
         );
       }
     }
+    
 }

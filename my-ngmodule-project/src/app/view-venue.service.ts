@@ -18,8 +18,8 @@ export class ViewVenueService {
 
   }
 
-  deleteVenue(venueId: number): Observable<any> {
-    return this.http.delete(`${this.venueApiUrl}/${venueId}`);
+  deleteVenue(id: number): Observable<any> {
+    return this.http.delete(`http://localhost:8080/api/venues/delete/${id}`, { responseType: 'text' });
   }
   
   
