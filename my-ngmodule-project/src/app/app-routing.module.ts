@@ -14,6 +14,7 @@ import { LeasePackageTableComponent } from './Table/lease-package-table/lease-pa
 import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 import { BuildinglistComponent } from './Admin/buildinglist/buildinglist.component';
 import { ViewVenuesComponent } from './Admin/view-venues/view-venues.component';
+import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/lease-package-edit-form.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -37,9 +38,12 @@ const routes: Routes = [
 
       // ✅ Corrected lease package routes
       { path: 'leasepackageform', component: LeasePackageFormComponent }, // New package
-      { path: 'leasepackageform/:leaseId', component: LeasePackageFormComponent }, // Edit package
+      { path: 'leasepackageeditform/:leaseId', component: LeasePackageEditFormComponent },
+      { path: 'editVenue/:venueId', component: RegisterVenueComponent },
+
 
       { path: 'regvenues', component: RegisterVenueComponent },
+      { path: 'regvenue/:id', component: RegisterVenueComponent },
       { path: 'venueView', component: ViewVenuesComponent },
       { path: 'settings', component: SettingComponent },
 

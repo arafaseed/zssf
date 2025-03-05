@@ -42,6 +42,7 @@ export class VenueService {
   getVenueById(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/view/${id}`);
   }
+  
 
 
   // Delete a specific image from a venue

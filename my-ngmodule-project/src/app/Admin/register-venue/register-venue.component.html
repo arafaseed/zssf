@@ -1,7 +1,6 @@
 <div class="container mt-4">
-  <h2 class="mb-4">Register New Venue</h2>
+  <h2 class="mb-4">{{ isEditing ? 'Edit Venue' : 'Register New Venue' }}</h2>
   <form [formGroup]="venueForm" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
-    <!-- Venue Name and Capacity -->
     <div class="row">
       <div class="col-md-6 mb-3">
         <mat-form-field appearance="outline" class="w-100">
@@ -22,7 +21,6 @@
         </mat-form-field>
       </div>
     </div>
-    <!-- Description -->
     <div class="row">
       <div class="col-12 mb-3">
         <mat-form-field appearance="outline" class="w-100">
@@ -30,9 +28,7 @@
           <textarea matInput formControlName="description" rows="3"></textarea>
         </mat-form-field>
       </div>
-
-  
-    <!-- Building Selection -->
+    </div>
     <div class="row">
       <div class="col-md-6 mb-3">
         <mat-form-field appearance="outline" class="w-100">
@@ -59,12 +55,12 @@
         </span>
       </div>
     </div>
-    <!-- Submit Button -->
     <div class="row">
       <div class="col-12 text-right">
         <button mat-raised-button color="accent" type="submit" [disabled]="!venueForm.valid">
-          Register Venue
+          {{ isEditing ? 'Update Venue' : 'Register Venue' }}
         </button>
       </div>
     </div>
+  </form>
 </div>

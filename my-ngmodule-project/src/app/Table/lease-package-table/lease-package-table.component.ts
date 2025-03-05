@@ -46,11 +46,11 @@ export class LeasePackageTableComponent implements OnInit {
     }
   }
   
+  navigateToEditForm(leaseId: number): void { 
+    this.router.navigate(['/admin/leasepackageeditform', leaseId]);
+  }
   
 
  
-  editLeasePackage(id: number): void {
-    console.log("Navigating to: ", `/edit-lease-package/${id}`);
-    this.router.navigate(['/edit-lease-package', id]);
-  }
+
 }

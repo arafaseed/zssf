@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ViewVenueService } from '../../view-venue.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-venues',
@@ -11,7 +12,8 @@ export class ViewVenuesComponent implements OnInit {
     venues: any[] = [];
     displayedColumns: string[] = ['venueName', 'capacity', 'description', 'leasePackages', 'actions'];
   
-    constructor(private venueService: ViewVenueService) {}
+  
+  constructor(private venueService: ViewVenueService, private router: Router) {}
 
     ngOnInit(): void {
       this.loadVenues();
@@ -27,13 +29,19 @@ export class ViewVenuesComponent implements OnInit {
         }
       );
     }
-
-    
-
-    editVenue(venue: any): void {
-      // Open modal or navigate to edit page with venue details
-      console.log("Editing Venue:", venue);
+    // navigateToeditVenue(venueId: number): void { 
+    //   this.router.navigate(['/admin/editVenue', venueId]);
+    // }
+    editVenue(venueId: number): void {
+      this.router.navigate(['/regvenues', venueId]);
     }
+  
+  
+    
+    // editVenue(venue: any): void {
+    //   // Open modal or navigate to edit page with venue details
+    //   console.log("Editing Venue:", venue);
+    // }
     deleteVenue(venueId: number) {
       if (confirm("Are you sure you want to delete this venue?")) {
         this.venueService.deleteVenue(venueId).subscribe(

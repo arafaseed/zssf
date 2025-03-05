@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LeasePackageService } from '../../packages.service'; // Ensure correct import
+import { LeasePackageService } from '../../packages.service';
 
 @Component({
   selector: 'app-lease-package-edit-form',
-  templateUrl: './lease-package-edit-form.component.html',
   standalone: false,
-  styleUrls: ['./lease-package-edit-form.component.css'],
+  templateUrl: './lease-package-edit-form.component.html',
+  styleUrls: ['./lease-package-edit-form.component.css']
 })
 export class LeasePackageEditFormComponent implements OnInit {
   leaseForm: FormGroup;
-  leasePackageId!: number;
+  leaseId!: number;
+  errorMessage: string | null = null;
+  venues: any[] = []; // Store venue list
 
   constructor(
     private fb: FormBuilder,
@@ -19,53 +21,68 @@ export class LeasePackageEditFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {
-    // Define the form structure with initial empty values
     this.leaseForm = this.fb.group({
-      category: ['', Validators.required],
+      description: ['', [Validators.required, Validators.minLength(5)]],
       price: ['', [Validators.required, Validators.min(0)]],
+      venueId: ['', [Validators.required]]  // Venue selection
     });
   }
 
   ngOnInit(): void {
-    // Get the lease package ID from the route parameters
-    this.leasePackageId = +this.route.snapshot.paramMap.get('id')!;
-
-    // Fetch the lease package data from the server
+    this.leaseId = +this.route.snapshot.paramMap.get('leaseId')!;
+    console.log(this.leaseId);
     this.loadLeasePackage();
+    this.loadVenues();
   }
 
   loadLeasePackage(): void {
-    this.leasePackageService.getLeasePackageById(this.leasePackageId).subscribe(
-      (data: { category: any; price: any; }) => {
-        // Populate the form with the fetched data
+    // Fetch the lease package data by ID
+    this.leasePackageService.getLeasePackageById(this.leaseId).subscribe({
+      next: (data) => {
+        // Populate form with the lease package data
         this.leaseForm.patchValue({
-          category: data.category,
+          description: data.description,
           price: data.price,
+          venueId: data.venueId
         });
       },
-      (error: any) => {
+      error: (error) => {
         console.error('Error loading lease package:', error);
         alert('Error loading lease package data.');
       }
-    );
+    });
+  }
+
+  loadVenues(): void {
+    // Fetch venues from the service
+    this.leasePackageService.getVenues().subscribe({
+      next: (data) => {
+        this.venues = data;
+      },
+      error: (error) => {
+        this.errorMessage = 'Error loading venues: ' + error.message;
+      }
+    });
   }
 
   onSubmit(): void {
     if (this.leaseForm.valid) {
-      const leaseData = this.leaseForm.value;
+      const leasePackage = {
+        ...this.leaseForm.value,
+        venueId: this.leaseForm.value.venueId ? parseInt(this.leaseForm.value.venueId, 10) : null
+      };
 
-      // Call the service to update the lease package
-      this.leasePackageService.updateLeasePackage(this.leasePackageId, leaseData).subscribe(
-        (response) => {
-          console.log('Lease package updated:', response);
-          alert('Lease package updated successfully!');
-          this.router.navigate(['/lease-packages']); // Redirect to the lease packages list
+      // Update the lease package using the service
+      this.leasePackageService.updateLeasePackage(this.leaseId, leasePackage).subscribe({
+        next: (response) => {
+          console.log('Lease package updated successfully', response);
+          this.router.navigate(['/lease-packages']); // Redirect to lease packages list
         },
-        (error) => {
+        error: (error) => {
           console.error('Error updating lease package:', error);
-          alert('Error updating lease package.');
+          this.errorMessage = error.message;
         }
-      );
+      });
     }
   }
 }

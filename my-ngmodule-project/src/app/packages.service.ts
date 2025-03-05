@@ -21,12 +21,12 @@ export class LeasePackageService {
     return this.http.post(`${this.apiUrl}/add/${venueId}`, leasePackage, { headers });
 }
 
-  updateLeasePackage(id: number, leasePackage: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/update/${id}`, leasePackage);
+  updateLeasePackage(leaseId: number, leasePackage: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/update/${leaseId}`, leasePackage);
   }
 
-  getLeasePackageById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/get/${id}`);
+  getLeasePackageById(leaseId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/leaseBy/${leaseId}`);
   }
 
   deleteLeasePackage(id: number): Observable<string> {

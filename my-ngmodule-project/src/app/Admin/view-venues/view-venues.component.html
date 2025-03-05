@@ -44,7 +44,13 @@
       <th mat-header-cell *matHeaderCellDef> Actions </th>
       <td mat-cell *matCellDef="let venue">
         <div class="action-buttons">
-          <button class="btn btn-warning btn-sm" (click)="editVenue(venue)">Edit</button>
+          <!-- <button mata-icon-button color="success" (click)="editVenue(venue)">edit</button> -->
+          <!-- <button mat-raised-button color="primary" (click)="navigateToeditVenue(venue.venueId)">
+            <mat-icon>edit</mat-icon> 
+          </button> -->
+          <!-- Your table with venues -->
+<button mat-button (click)="editVenue(venue.venueId)">Edit</button>
+
           <button mat-icon-button color="warn" (click)="deleteVenue(venue.venueId)">🗑️</button>
         </div>
       </td>
