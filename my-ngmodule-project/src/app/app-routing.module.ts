@@ -15,6 +15,7 @@ import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-pack
 import { BuildinglistComponent } from './Admin/buildinglist/buildinglist.component';
 import { ViewVenuesComponent } from './Admin/view-venues/view-venues.component';
 import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/lease-package-edit-form.component';
+import { EditVenueComponentComponent } from './edit-venue-component/edit-venue-component.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -43,7 +44,7 @@ const routes: Routes = [
 
 
       { path: 'regvenues', component: RegisterVenueComponent },
-      { path: 'regvenue/:id', component: RegisterVenueComponent },
+      { path: 'regvenues/:id', component: EditVenueComponentComponent },
       { path: 'venueView', component: ViewVenuesComponent },
       { path: 'settings', component: SettingComponent },
 

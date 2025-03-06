@@ -55,8 +55,8 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { AdditionalBookingDialogComponent } from './additional-booking-dialog/additional-booking-dialog.component';
 
 
-import { MatGridListModule } from '@angular/material/grid-list'; // For grid layouts
-
+import { MatGridListModule } from '@angular/material/grid-list';
+import { EditVenueComponentComponent } from './edit-venue-component/edit-venue-component.component'; // For grid layouts
 
 @NgModule({
   declarations: [
@@ -80,6 +80,7 @@ import { MatGridListModule } from '@angular/material/grid-list'; // For grid lay
     LeasePackageFormComponent,
     BookingFormComponent,
     AdditionalBookingDialogComponent,
+    EditVenueComponentComponent,
   
    
     
