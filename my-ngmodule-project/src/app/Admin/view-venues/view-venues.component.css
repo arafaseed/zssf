@@ -10,7 +10,7 @@
 
 /* Header Styling */
 h2 {
-  background: #007bff;
+  background: #34495e;;
   color: white;
   text-align: center;
   padding: 15px;
@@ -32,6 +32,8 @@ h2 {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 15px;
+  background-color: rgb(20, 151, 238);
+  font-size: 18px; 
 }
 
 /* Table Styling */
@@ -44,7 +46,7 @@ table {
 }
 
 th {
-  background: #007bff;
+  background:#34495e;
   color: rgb(22, 17, 17);
   font-weight: bold;
   text-align: center;
@@ -77,6 +79,19 @@ li {
   transition: all 0.3s ease-in-out;
   font-size: 16px;
   padding: 10px 15px;
+}
+
+/* Submit Button */
+.btn-add {
+  background: #34495e;
+  border: none;
+  padding: 14px;
+  font-size: 20px; /* Bigger button */
+  font-weight: bold;
+  color: white;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+ 
 }
 
 /* "Add Venue" Button */
@@ -124,6 +139,31 @@ li {
 tr:hover {
   background: rgba(0, 123, 255, 0.1);
   transition: 0.3s;
+}
+
+.edit-button {
+  background-color: #c1e2a7;
+  color: white;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background-color 0.3s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-button:hover {
+  background-color: #91d48f;
+  transform: scale(1.05);
+}
+
+.edit-button:active {
+  background-color: #30009c;
+  transform: scale(0.98);
+}
+
+mat-icon {
+  font-size: 20px;
 }
 
 /* Responsive Design */

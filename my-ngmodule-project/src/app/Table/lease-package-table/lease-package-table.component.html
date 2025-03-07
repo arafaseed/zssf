@@ -1,41 +1,36 @@
 <div class="container">
-    <h2 class="text-center">Lease Packages</h2>
   
-    <div class="d-flex justify-content-between mb-3">
-        <button mat-raised-button color="primary" [routerLink]="['/admin/leasepackageform']">Add Lease Package</button>
-      </div>
-      
-  
-    <mat-table [dataSource]="leasePackages">
-      <ng-container matColumnDef="leaseId">
-        <mat-header-cell *matHeaderCellDef class="black-text"> Lease ID </mat-header-cell>
-        <mat-cell *matCellDef="let lease"> {{lease.leaseId}} </mat-cell>
-      </ng-container>
-  
-      <ng-container matColumnDef="description">
-        <mat-header-cell *matHeaderCellDef class="black-text"> Description</mat-header-cell>
-        <mat-cell *matCellDef="let lease"> {{lease.description}}</mat-cell>
-      </ng-container>
-  
-      <ng-container matColumnDef="price">
-        <mat-header-cell *matHeaderCellDef class="black-text"> Price </mat-header-cell>
-        <mat-cell *matCellDef="let lease"> {{lease.price | currency:'TZS':true}} </mat-cell>
-      </ng-container>
-  
-      <ng-container matColumnDef="actions">
-        <mat-header-cell *matHeaderCellDef class="black-text"> Actions </mat-header-cell>
-        <mat-cell *matCellDef="let lease">
-          <!-- <button mat-raised-button color="primary" [routerLink]="['/admin/leasepackageform',lease.leaseId]">Edit</button> -->
-          <button mat-raised-button color="primary" (click)="navigateToEditForm(lease.leaseId)">Edit</button>
-            
-          <button mat-icon-button color="warn" (click)="deleteLeasePackage(lease.leaseId)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </mat-cell>
-      </ng-container>
-  
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    </mat-table>
+  <div class="d-flex justify-content-between mb-3">
+    <button mat-raised-button color="primary" [routerLink]="['/admin/leasepackageform']">Add Lease Package</button>
   </div>
-  
+  <h2 class="text-center">Lease Packages</h2>
+
+
+  <mat-table [dataSource]="leasePackages">
+    
+
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef class="black-text"> Description</mat-header-cell>
+      <mat-cell *matCellDef="let lease"> {{lease.description}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="price">
+      <mat-header-cell *matHeaderCellDef class="black-text"> Price </mat-header-cell>
+      <mat-cell *matCellDef="let lease"> {{lease.price | currency:'TZS':true}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef class="black-text"> Actions </mat-header-cell>
+      <mat-cell *matCellDef="let lease">
+        <button mat-raised-button color="primary" (click)="navigateToEditForm(lease.leaseId)">Edit</button>
+
+        <button mat-icon-button color="warn" (click)="deleteLeasePackage(lease.leaseId)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>

@@ -10,25 +10,28 @@ import { Router } from '@angular/router';
 })
 export class ViewVenuesComponent implements OnInit {
     venues: any[] = [];
-    displayedColumns: string[] = ['venueName', 'capacity', 'description', 'leasePackages', 'actions'];
+    displayedColumns: string[] = ['venueName', 'capacity', 'description', 'leasePackages','building', 'actions'];
   
   
+
   constructor(private venueService: ViewVenueService, private router: Router) {}
 
     ngOnInit(): void {
       this.loadVenues();
     }
   
-    loadVenues(): void {
-      this.venueService.getAllVenues().subscribe(
-        (data: any[]) => {
-          this.venues = data;
-        },
-        (error: any) => {
-          console.error('Error fetching venues:', error);
-        }
-      );
+   loadVenues(): void {
+  this.venueService.getAllVenues().subscribe(
+    (data: any[]) => {
+      console.log('API Response:', data);  // Log the response to check the data structure
+      this.venues = data;
+    },
+    (error: any) => {
+      console.error('Error fetching venues:', error);
     }
+  );
+}
+
     // navigateToeditVenue(venueId: number): void { 
     //   this.router.navigate(['/admin/editVenue', venueId]);
     // }

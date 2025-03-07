@@ -79,13 +79,13 @@ mat-toolbar {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-color: #ecf0f1; /* Light background for the card */
 }
-
+/*
 .card-header {
-  background-color: #58585e; /* Darker header */
+  background-color:#34495e; /* Darker header 
   color: white;
   font-size: 18px;
   padding: 15px;
-}
+}*/
 
 .card-body {
   font-size: 14px;

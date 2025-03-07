@@ -2,8 +2,9 @@
 
 <div class="container mt-4">
   <!-- Grid List from Angular Material for responsive layout -->
-  <mat-grid-list cols="4" rowHeight="800px" gutterSize="50px">
-    <mat-grid-tile *ngFor="let venue of venues.slice(0, 3); let i = index">
+  <mat-grid-list cols="4" rowHeight="800px" gutterSize="10px"> <!-- Reduced gutter size -->
+
+    <mat-grid-tile *ngFor="let venue of venues.slice(0, 10); let i = index">
       <mat-card class="venue-card">
         <mat-card-header>
           <mat-card-title>{{ venue.venueName }}</mat-card-title>
