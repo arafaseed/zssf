@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ViewVenueService } from '../../view-venue.service';
 import { Router } from '@angular/router';
+import { EditVenueComponentComponent } from '../../edit-venue-component/edit-venue-component.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-view-venues',
@@ -9,8 +11,12 @@ import { Router } from '@angular/router';
   styleUrl:'./view-venues.component.css'
 })
 export class ViewVenuesComponent implements OnInit {
+editVenue(arg0: any) {
+throw new Error('Method not implemented.');
+}
     venues: any[] = [];
     displayedColumns: string[] = ['venueName', 'capacity', 'description', 'leasePackages','building', 'actions'];
+  dialog: any;
   
   
 
@@ -35,8 +41,20 @@ export class ViewVenuesComponent implements OnInit {
     // navigateToeditVenue(venueId: number): void { 
     //   this.router.navigate(['/admin/editVenue', venueId]);
     // }
-    editVenue(venueId: number): void {
-      this.router.navigate(['/regvenues', venueId]);
+    // editVenue(venueId: number): void {
+    //   this.router.navigate(['/admin/regvenues', venueId]);
+    // }
+    openEditVenueModal(venueId: number): void {
+      const dialogRef = this.dialog.open(EditVenueComponentComponent, {
+        width: '500px',
+        data: { venueId: venueId }
+      });
+  
+      dialogRef.afterClosed().subscribe((result: any) => {
+        if (result) {
+          this.loadVenues(); // Reload venues if modal was closed with a successful update
+        }
+      });
     }
   
   
