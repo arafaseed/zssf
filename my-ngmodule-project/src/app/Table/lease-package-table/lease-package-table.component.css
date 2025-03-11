@@ -70,55 +70,7 @@
     color: #444;
   }
   
-  /* Buttons */
-  .btn {
-    font-weight: bold;
-    border-radius: 8px;
-    transition: all 0.3s ease-in-out;
-    font-size: 16px;
-    padding: 10px 15px;
-  }
-  
-  /* "Add Venue" Button */
-  .btn-primary {
-    background: linear-gradient(to right, #007bff, #0056b3);
-    border: none;
-  }
-  
-  .btn-primary:hover {
-    background: linear-gradient(to right, #0056b3, #003d82);
-    transform: scale(1.05);
-  }
-  
-  /* Edit Button */
-  .btn-warning {
-    background: linear-gradient(to right, #ffc107, #ff9800);
-    border: none;
-    color: white;
-  }
-  
-  .btn-warning:hover {
-    background: linear-gradient(to right, #ff9800, #e65100);
-    transform: scale(1.05);
-  }
-  
-  /* Delete Button */
-  .btn-danger {
-    background: linear-gradient(to right, #dc3545, #a71d2a);
-    border: none;
-  }
-  
-  .btn-danger:hover {
-    background: linear-gradient(to right, #a71d2a, #730014);
-    transform: scale(1.05);
-  }
-  
-  /* Action Buttons - Aligned in One Line */
-  .action-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-  }
+ 
   
   /* Table Row Hover Effect */
   tr:hover {
@@ -163,10 +115,7 @@
         padding: 10px;
       }
   
-    .btn {
-      font-size: 14px;
-      padding: 8px 12px;
-    }
+  
   
     th, td {
       font-size: 14px;
@@ -178,6 +127,28 @@
       gap: 5px;
     }
   }
+  .btn-add-left {
+    display: flex;
+    justify-content: flex-start; /* Aligns button to the left */
+    margin-bottom: 16px;
+  }
+  
+  .btn-add-left button {
+    background-color: #1976d2; /* Primary blue color */
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+  }
+  
+  .btn-add-left button:hover {
+    background-color: #1565c0; /* Darker blue */
+  }
+  
   
   @media (max-width: 576px) {
     .btn {

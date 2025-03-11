@@ -99,6 +99,21 @@
 .mat-raised-button.warn:hover {
   background-color: #e64a19;
 }
+.snackbar-success {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}
+
+.snackbar-error {
+  background-color: #F44336; /* Red */
+  color: white;
+}
+
+.snackbar-info {
+  background-color: #2196F3; /* Blue */
+  color: white;
+}
+
 
 @media screen and (max-width: 600px) {
   .mat-raised-button {

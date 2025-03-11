@@ -1,51 +1,50 @@
-/* Card Styling */
+/* General Card Styling */
 .card {
-  background: #1e272e; /* Dark Gray-Blue background */
-  border-radius: 12px;
-  align-content: center;
-  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-  padding: 30px;
-  max-width: 600px; /* Increased size */
+  border-radius: 15px;
+  background: #2c3e50; /* Darker shade for modern look */
+  padding: 35px;
+  max-width: 600px;
   width: 100%;
-  align-self: center;
-  border-top: 50px solid #34495e;/* Soft Red Accent */
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
+  border-top: 10px solid #1abc9c; /* Fresh accent color */
 }
 
 /* Form Header */
 h3 {
-  color: white;
+  color: #ecf0f1;
   font-weight: bold;
-  font-size: 28px; /* Increased size */
+  font-size: 30px;
+  text-align: center;
 }
 
 /* Form Labels */
 .form-label {
   font-weight: 600;
-  color: #ecf0f1;
-  font-size: 18px; /* Larger labels */
+  color: #bdc3c7;
+  font-size: 18px;
   margin-bottom: 8px;
-  margin-right: 30px;
+  display: block;
 }
 
 /* Input Fields */
 .form-control {
-  border: 2px solid #34495e;
+  border: 2px solid #1abc9c;
   border-radius: 8px;
   padding: 14px;
-  font-size: 18px; /* Increased input size */
-  background: #485460; /* Darker Gray */
+  font-size: 18px;
+  background: #34495e;
   color: white;
-  transition: all 0.3s ease;
+  transition: 0.3s ease-in-out;
   margin-bottom: 20px;
 }
 
 .form-control::placeholder {
-  color: #d2dae2;
+  color: #95a5a6;
 }
 
 .form-control:focus {
-  border-color:#34495e;
-  box-shadow: 0 0 50px rgba(255, 107, 107, 0.6);
+  border-color: #1abc9c;
+  box-shadow: 0 0 10px rgba(26, 188, 156, 0.6);
 }
 
 /* Select Field */
@@ -56,26 +55,53 @@ select.form-control {
 /* Error Messages */
 .error {
   color: #e74c3c;
-  font-size: 16px; /* Bigger error messages */
+  font-size: 16px;
   margin-top: 5px;
 }
 
 /* Submit Button */
 .btn-primary {
-  background: #34495e;
+  background: #1abc9c;
   border: none;
   padding: 14px;
-  font-size: 20px; /* Bigger button */
+  font-size: 20px;
   font-weight: bold;
   border-radius: 8px;
-  transition: all 0.3s ease;
+  transition: 0.3s ease-in-out;
   width: 100%;
+  color: white;
 }
 
 .btn-primary:hover {
-  background: #6af187;
-  transform: scale(1.05); /* Slight hover effect */
+  background: #16a085;
+  transform: scale(1.05);
 }
+
+.btn-primary:disabled {
+  background: #95a5a6;
+  cursor: not-allowed;
+}
+
+.snackbar-success, .snackbar-error {
+  font-size: 35px !important; /* Increase font size */
+  padding: 16px 24px !important; /* Increase padding */
+  min-width: 300px !important; /* Increase width */
+  text-align: center;
+  border-radius: 8px;
+}
+
+/* Success Snackbar */
+.snackbar-success {
+  background-color: #27ae60 !important;
+  color: white !important;
+}
+
+/* Error Snackbar */
+.snackbar-error {
+  background-color: #e74c3c !important;
+  color: white !important;
+}
+
 
 /* Responsive Styling */
 @media (max-width: 768px) {
