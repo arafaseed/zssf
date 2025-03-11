@@ -1,19 +1,15 @@
 <div class="container">
-  
   <div class="d-flex justify-content-between mb-3">
-    
-  <div class="btn-add-left">
-    <button mat-raised-button color="primary" [routerLink]="['/admin/leasepackageform']">
-      Add Lease Package
-    </button>
+    <div class="btn-add-left">
+      <button mat-raised-button color="primary" [routerLink]="['/admin/leasepackageform']">
+        Add Lease Package
+      </button>
+    </div>
   </div>
-  </div>
+
   <h2 class="text-center">Lease Packages</h2>
 
-
-  <mat-table [dataSource]="leasePackages">
-    
-
+  <mat-table [dataSource]="leasePackages" class="mat-elevation-z8">
     <ng-container matColumnDef="description">
       <mat-header-cell *matHeaderCellDef class="black-text"> Description</mat-header-cell>
       <mat-cell *matCellDef="let lease"> {{lease.description}}</mat-cell>
@@ -27,7 +23,6 @@
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef class="black-text"> Actions </mat-header-cell>
       <mat-cell *matCellDef="let lease">
-        
         <button mat-button class="edit-button" (click)="navigateToEditForm(lease.leaseId)">
           <mat-icon>edit</mat-icon>
         </button>
