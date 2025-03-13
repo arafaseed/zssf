@@ -1,67 +1,94 @@
-<div class="booking-form">
-  <h2>Create Booking</h2>
-  <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="fullName">Full Name</label>
-      <input id="fullName" type="text" formControlName="fullName" />
-      <div *ngIf="bookingForm.controls['fullName'].invalid && bookingForm.controls['fullName'].touched" class="error-message">
-        Full Name is required.
-      </div>
+<div class="booking-container">
+  <h2>Book Your Reservation</h2>
+
+  <!-- Calendar Section -->
+  <div class="calendar-container">
+    <div class="calendar-header">
+      <button (click)="changeMonth(-1)">&#8592;</button>
+      <h3>{{ currentMonth | date: 'MMMM yyyy' }}</h3>
+      <button (click)="changeMonth(1)">&#8594;</button>
     </div>
 
-    <div class="form-group">
-      <label for="phoneNumber">Phone Number</label>
-      <input id="phoneNumber" type="text" formControlName="phoneNumber" />
-      <div *ngIf="bookingForm.controls['phoneNumber'].invalid && bookingForm.controls['phoneNumber'].touched" class="error-message">
-        Phone Number is required.
-      </div>
+    <!-- Days of the Week -->
+    <div class="calendar-grid">
+      <div class="calendar-day">Sun</div>
+      <div class="calendar-day">Mon</div>
+      <div class="calendar-day">Tue</div>
+      <div class="calendar-day">Wed</div>
+      <div class="calendar-day">Thu</div>
+      <div class="calendar-day">Fri</div>
+      <div class="calendar-day">Sat</div>
     </div>
 
-    <div class="form-group">
-      <label for="startDate">Start Date</label>
-      <input id="startDate" type="date" formControlName="startDate" />
-      <div *ngIf="bookingForm.controls['startDate'].invalid && bookingForm.controls['startDate'].touched" class="error-message">
-        Start Date is required.
+    <!-- Dates Grid -->
+    <div class="calendar-grid">
+      <div 
+        *ngFor="let calendarDate of calendarDates" 
+        class="calendar-date" 
+        [ngClass]="{
+          'booked-date': calendarDate.isBooked,
+          'selected-start-date': calendarDate.date === selectedStartDate,
+          'selected-end-date': calendarDate.date === selectedEndDate
+        }"
+        (click)="selectDate(calendarDate.date)"
+      >
+        {{ calendarDate.date.split('-')[2] }} <!-- Show only day number -->
       </div>
     </div>
+  </div>
 
-    <div class="form-group">
-      <label for="startTime">Start Time</label>
-      <input id="startTime" type="time" formControlName="startTime" />
-      <div *ngIf="bookingForm.controls['startTime'].invalid && bookingForm.controls['startTime'].touched" class="error-message">
-        Start Time is required.
-      </div>
-    </div>
+  <!-- Selection Indicator -->
+  <p class="selection-indicator">{{ selectionIndicator }}</p>
 
-    <div class="form-group">
-      <label for="endDate">End Date</label>
-      <input id="endDate" type="date" formControlName="endDate" />
-      <div *ngIf="bookingForm.controls['endDate'].invalid && bookingForm.controls['endDate'].touched" class="error-message">
-        End Date is required.
-      </div>
-    </div>
+  <!-- Start Date & End Date Fields -->
+  <div class="form-group">
+    <label>Start Date</label>
+    <input type="text" [(ngModel)]="selectedStartDate" readonly>
+  </div>
 
-    <div class="form-group">
-      <label for="endTime">End Time</label>
-      <input id="endTime" type="time" formControlName="endTime" />
-      <div *ngIf="bookingForm.controls['endTime'].invalid && bookingForm.controls['endTime'].touched" class="error-message">
-        End Time is required.
-      </div>
-    </div>
+  <div class="form-group">
+    <label>End Date</label>
+    <input type="text" [(ngModel)]="selectedEndDate" readonly>
+  </div>
 
-    <div class="form-group">
-      <label for="venue_id">Venue </label>
-      <select id="venue_id" formControlName="venue_id" >
-        <option *ngFor="let venue of venues" [value]="venue.venueId">{{ venue.venueId}}</option>
-      </select>
-      <div *ngIf="bookingForm.controls['venue_id'].invalid && bookingForm.controls['venue_id'].touched" class="error-message">
-        Venue is required.
-      </div>
-    </div>
+  <!-- Time Selection -->
+  <div class="form-group">
+    <label for="startTime">Start Time</label>
+    <select id="startTime" [(ngModel)]="selectedStartTime">
+      <option *ngFor="let time of availableTimes" [value]="time">{{ time }}</option>
+    </select>
+  </div>
 
-    <!-- Status is hidden, no need to show it in the form -->
-    <input type="hidden" formControlName="status" />
+  <div class="form-group">
+    <label for="endTime">End Time</label>
+    <select id="endTime" [(ngModel)]="selectedEndTime">
+      <option *ngFor="let time of availableTimes" [value]="time">{{ time }}</option>
+    </select>
+  </div>
 
-    <button type="submit" [disabled]="bookingForm.invalid">Submit</button>
-  </form>
+  <!-- User Information -->
+  <div class="form-group">
+    <label for="fullName">Full Name</label>
+    <input id="fullName" type="text" [(ngModel)]="fullName">
+  </div>
+
+  <div class="form-group">
+    <label for="phoneNumber">Phone Number</label>
+    <input id="phoneNumber" type="text" [(ngModel)]="phoneNumber">
+  </div>
+
+  <div class="form-group">
+    <label for="email">Email (Optional)</label>
+    <input id="email" type="email" [(ngModel)]="email">
+  </div>
+
+  <div class="form-group">
+    <label for="physicalAddress">Physical Address</label>
+    <input id="physicalAddress" type="text" [(ngModel)]="physicalAddress">
+  </div>
+
+  <!-- Submit Button -->
+  <div class="button-container">
+    <button (click)="makeReservation()">Confirm Reservation</button>
+  </div>
 </div>

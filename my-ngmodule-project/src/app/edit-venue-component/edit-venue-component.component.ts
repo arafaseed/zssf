@@ -14,7 +14,7 @@ export class EditVenueComponentComponent implements OnInit {
   venueForm!: FormGroup;
   selectedFiles: File[] | null = null;
   buildings: any[] = [];
-  selectedBuildingName: string = ''; // Variable to store the selected building name
+  selectedBuildingName: string = ''; // Store selected building name
 
   constructor(
     private fb: FormBuilder,
@@ -33,10 +33,10 @@ export class EditVenueComponentComponent implements OnInit {
 
   initializeForm(): void {
     this.venueForm = this.fb.group({
-      venueName: ['', Validators.required],
-      capacity: ['', [Validators.required, Validators.min(1)]],
-      description: [''],
-      buildingId: ['', Validators.required],
+      venueName: [''],  // No required validation
+      capacity: ['', [Validators.min(1)]],  // Only min validation
+      description: [''],  // No required validation
+      buildingId: [''],  // No required validation
     });
   }
 
@@ -45,7 +45,6 @@ export class EditVenueComponentComponent implements OnInit {
       (data: any[]) => {
         this.buildings = data;
         if (this.buildings.length > 0) {
-          // You can set the first building as the default or leave it as is
           this.selectedBuildingName = this.buildings[0].buildingName;
         }
       },
@@ -55,7 +54,6 @@ export class EditVenueComponentComponent implements OnInit {
       }
     );
   }
-  
 
   loadVenueDetails(venueId: number): void {
     this.venueService.getVenueById(venueId).subscribe(
@@ -68,7 +66,6 @@ export class EditVenueComponentComponent implements OnInit {
           buildingId: venue.buildingId
         });
 
-        // Set the selected building name after patching the form
         const selectedBuilding = this.buildings.find(building => building.buildingId === venue.buildingId);
         if (selectedBuilding) {
           this.selectedBuildingName = selectedBuilding.buildingName;
@@ -91,18 +88,18 @@ export class EditVenueComponentComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.venueForm.valid && this.data.venueId !== null) {
+    if (this.data.venueId !== null) {
       const formData = new FormData();
       const formValue = this.venueForm.value;
 
-      const venueData = {
-        venueName: formValue.venueName,
-        capacity: formValue.capacity,
-        description: formValue.description,
-      };
+      const venueData: any = {};
+
+      if (formValue.venueName) venueData.venueName = formValue.venueName;
+      if (formValue.capacity) venueData.capacity = formValue.capacity;
+      if (formValue.description) venueData.description = formValue.description;
+      if (formValue.buildingId) formData.append("buildingId", formValue.buildingId.toString());
 
       formData.append("venue", JSON.stringify(venueData));
-      formData.append("buildingId", formValue.buildingId.toString());
 
       if (this.selectedFiles) {
         this.selectedFiles.forEach(file => {
@@ -114,7 +111,7 @@ export class EditVenueComponentComponent implements OnInit {
         (response: any) => {
           console.log("Venue updated successfully:", response);
           alert("Venue updated successfully!");
-          this.dialogRef.close(true); // Close the modal and pass true as a result
+          this.dialogRef.close(true);
         },
         (error: HttpErrorResponse) => {
           console.error("Error updating venue:", error);
@@ -122,16 +119,14 @@ export class EditVenueComponentComponent implements OnInit {
         }
       );
     } else {
-      console.error("Form is invalid:", this.venueForm.errors);
-      alert("Please fill in all required fields.");
+      alert("Invalid Venue ID.");
     }
   }
 
   closeDialog(): void {
-    this.dialogRef.close(); // Close modal without returning any result
+    this.dialogRef.close();
   }
 
-  // Method to update the selected building name when the dropdown value changes
   onBuildingChange(): void {
     const selectedBuildingId = this.venueForm.get('buildingId')?.value;
     const selectedBuilding = this.buildings.find(building => building.buildingId === selectedBuildingId);
