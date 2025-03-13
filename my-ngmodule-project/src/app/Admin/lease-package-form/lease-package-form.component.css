@@ -1,80 +1,116 @@
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin-top: -50px; /* Moves the card slightly upward */
-}
-
+/* General Card Styling */
 .card {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 40px; /* Increased padding */
+  border-radius: 15px;
+  background: #2c3e50; /* Darker shade for modern look */
+  padding: 35px;
+  max-width: 600px;
   width: 100%;
-  max-width: 600px; /* Maximum width */
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
+  border-top: 10px solid #1abc9c; /* Fresh accent color */
 }
 
-  
-  .form-label {
-    font-weight: bold;
-    margin-bottom: 5px;
+/* Form Header */
+h3 {
+  color: #ecf0f1;
+  font-weight: bold;
+  font-size: 30px;
+  text-align: center;
+}
+
+/* Form Labels */
+.form-label {
+  font-weight: 600;
+  color: #bdc3c7;
+  font-size: 18px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* Input Fields */
+.form-control {
+  border: 2px solid #1abc9c;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 18px;
+  background: #34495e;
+  color: white;
+  transition: 0.3s ease-in-out;
+  margin-bottom: 20px;
+}
+
+.form-control::placeholder {
+  color: #95a5a6;
+}
+
+.form-control:focus {
+  border-color: #1abc9c;
+  box-shadow: 0 0 10px rgba(26, 188, 156, 0.6);
+}
+
+/* Select Field */
+select.form-control {
+  cursor: pointer;
+}
+
+/* Error Messages */
+.error {
+  color: #e74c3c;
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+/* Submit Button */
+.btn-primary {
+  background: #1abc9c;
+  border: none;
+  padding: 14px;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: 0.3s ease-in-out;
+  width: 100%;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #16a085;
+  transform: scale(1.05);
+}
+
+.btn-primary:disabled {
+  background: #95a5a6;
+  cursor: not-allowed;
+}
+
+.snackbar-success, .snackbar-error {
+  font-size: 35px !important; /* Increase font size */
+  padding: 16px 24px !important; /* Increase padding */
+  min-width: 300px !important; /* Increase width */
+  text-align: center;
+  border-radius: 8px;
+}
+
+/* Success Snackbar */
+.snackbar-success {
+  background-color: #27ae60 !important;
+  color: white !important;
+}
+
+/* Error Snackbar */
+.snackbar-error {
+  background-color: #e74c3c !important;
+  color: white !important;
+}
+
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+  .card {
+    width: 90%;
+    padding: 25px;
   }
-  
-  .form-control {
-    width: 100%;
-    padding: 12px; /* Increased padding */
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    margin-bottom: 10px;
-  }
-  
-  .form-control:focus {
-    border-color: #007bff;
-    outline: none;
-  }
-  
-  .error {
-    color: red;
-    font-size: 14px;
-    margin-top: 5px;
-  }
-  
-  .btn {
-    padding: 12px 24px; /* Increased padding */
-    font-size: 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
+
   .btn-primary {
-    background-color: #007bff;
-    color: white;
+    font-size: 18px;
   }
-  
-  .btn-primary:hover {
-    background-color: #0056b3;
-  }
-  
-  .btn-primary:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-  }
-  
-  @media (max-width: 600px) {
-    .card {
-      padding: 30px; /* Adjusted padding for smaller screens */
-    }
-  
-    .form-control {
-      font-size: 14px;
-    }
-  
-    .btn {
-      width: 100%;
-    }
-  }
-  
+}

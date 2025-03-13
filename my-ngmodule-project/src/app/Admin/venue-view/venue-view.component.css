@@ -1,5 +1,15 @@
-/* Card Styling */
+/* Container for the venue cards */
+.venue-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 cards per row */
+  grid-gap: 10px; /* space between cards */
+  margin-bottom: 30px; /* space between rows */
+  margin-top: 160px;
+}
+
+/* Card styling */
 .venue-card {
+<<<<<<< HEAD
   width: 100%;
   max-width: 400px; /* Ensures all cards have the same width */
   height: 600px; /* Fixed height to ensure uniformity */
@@ -12,6 +22,18 @@
   flex-direction: column;
   overflow: hidden;
   margin-top: 60px;
+=======
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  height: 400px; /* Reduced height for the cards */
+}
+
+.venue-card:hover {
+  transform: translateY(-5px); /* Elevate card on hover */
+>>>>>>> 1541af749f994e7bb83cf055d2af5a593ffe3959
 }
 
 /* Centered Search Bar */
@@ -74,16 +96,21 @@
   position: relative;
   overflow: hidden;
   width: 100%;
+<<<<<<< HEAD
   height: 400px; /* Fixed height to ensure uniform images */
+=======
+  height: 150px; /* Reduced height of image slider */
+>>>>>>> 1541af749f994e7bb83cf055d2af5a593ffe3959
 }
 
-.slider-container {
-  position: relative;
-  width: 100%;
-  height: 100%; /* Ensure the container takes full height */
-  overflow: hidden;
+/* Responsive design for smaller screens */
+@media screen and (max-width: 1200px) {
+  .venue-grid {
+    grid-template-columns: repeat(3, 1fr); /* 3 cards per row on medium screens */
+  }
 }
 
+<<<<<<< HEAD
 .slider-wrapper {
   display: flex;
   transition: transform 0.5s ease;
@@ -149,11 +176,16 @@
 
 .mat-raised-button.warn:hover {
   background-color: #e64a19;
+=======
+@media screen and (max-width: 900px) {
+  .venue-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 cards per row on smaller screens */
+  }
+>>>>>>> 1541af749f994e7bb83cf055d2af5a593ffe3959
 }
 
 @media screen and (max-width: 600px) {
-  .mat-raised-button {
-    width: 100%;
-    margin: 5px 0;
+  .venue-grid {
+    grid-template-columns: 1fr; /* 1 card per row on mobile screens */
   }
 }
