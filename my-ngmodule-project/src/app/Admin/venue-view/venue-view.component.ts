@@ -9,21 +9,23 @@ import { Router } from '@angular/router';
   styleUrls: ['./venue-view.component.css']
 })
 export class VenueViewComponent implements OnInit, OnDestroy {
-
+  
   venues: any[] = [];
-  currentSlideIndices: number[] = []; // Tracks the current slide index for each venue
-  slideInterval: any; // Store the interval ID for auto-sliding
+  filteredVenues: any[] = []; // Stores filtered venues based on search
+  currentSlideIndices: number[] = [];
+  slideInterval: any;
+  searchQuery: string = ''; // Holds search input value
 
   constructor(private venueService: ViewVenueService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadVenues();
-    this.startAutoSlide(); // Start the auto-slide when the component loads
+    this.startAutoSlide();
   }
 
   ngOnDestroy() {
     if (this.slideInterval) {
-      clearInterval(this.slideInterval); // Clear the interval when the component is destroyed
+      clearInterval(this.slideInterval);
     }
   }
 
@@ -32,10 +34,10 @@ export class VenueViewComponent implements OnInit, OnDestroy {
       this.venues = data.map(venue => ({
         ...venue,
         showDescription: false,
-        venueImages: venue.venueImages || [] // Ensure venueImages is an array
+        venueImages: venue.venueImages || []
       }));
 
-      // Initialize the current slide index for each venue to 0
+      this.filteredVenues = [...this.venues]; // Initialize filtered venues
       this.currentSlideIndices = new Array(this.venues.length).fill(0);
     });
   }
@@ -44,19 +46,22 @@ export class VenueViewComponent implements OnInit, OnDestroy {
     this.slideInterval = setInterval(() => {
       this.venues.forEach((venue, index) => {
         if (venue.venueImages?.length) {
-          // Automatically move to the next slide
           this.currentSlideIndices[index] = (this.currentSlideIndices[index] + 1) % venue.venueImages.length;
         }
       });
-    }, 3000); // Change slide every 3 seconds
+    }, 3000);
   }
+  clearSearch(): void {
+    this.searchQuery = '';
+    this.filterVenues();
+  }
+  
 
   toggleDescription(venue: any): void {
     venue.showDescription = !venue.showDescription;
   }
 
   goToBookingPage(venue: any): void {
-    // Pass venue_id and description to the booking page
     this.router.navigate(['/booking-form'], { 
       queryParams: { 
         venue_id: venue.venueId, 
@@ -64,8 +69,6 @@ export class VenueViewComponent implements OnInit, OnDestroy {
       } 
     });
   }
-  
-  
 
   prevSlide(index: number): void {
     if (this.venues[index].venueImages?.length) {
@@ -82,4 +85,16 @@ export class VenueViewComponent implements OnInit, OnDestroy {
   goToSlide(venueIndex: number, slideIndex: number): void {
     this.currentSlideIndices[venueIndex] = slideIndex;
   }
+
+  // 🔍 Search Functionality
+  filterVenues(): void {
+    this.filteredVenues = this.venues.filter(venue =>
+      venue.venueName.toLowerCase().includes(this.searchQuery.toLowerCase())
+    );
+  }
+    // ✅ Fix: Add selectVenue() method
+    selectVenue(venue: any) {
+      localStorage.setItem('selectedVenue', JSON.stringify(venue));
+      this.router.navigate(['/booking']);
+    }
 }

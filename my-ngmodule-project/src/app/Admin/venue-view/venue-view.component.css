@@ -1,24 +1,80 @@
 /* Card Styling */
 .venue-card {
   width: 100%;
-  max-width: 300px; /* Ensures all cards have the same width */
-  height: 420px; /* Fixed height to ensure uniformity */
-  margin: 0 auto;
-  border: 2px solid #f0f0f0; /* Light border for separation */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
+  max-width: 400px; /* Ensures all cards have the same width */
+  height: 600px; /* Fixed height to ensure uniformity */
+  margin: 30px auto 0 20px; /* Adds space on the left */
+  border: 2px solid #f0f0f0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease, transform 0.3s ease;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  margin-top: 60px;
 }
+
+/* Centered Search Bar */
+/* Make the search bar fixed */
+.search-container {
+  position: fixed;
+  top: 80px; /* Adjust based on header height */
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background: white; /* Background to prevent transparency */
+  padding: 10px 0;
+  z-index: 1000; /* Ensures it stays above other elements */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
+}
+
+/* Stylish Search Bar */
+.search-bar {
+  width: 100%;
+  max-width: 600px; /* Adjust width */
+  background: white;
+  border-radius: 8px;
+}
+
+/* Push content down to prevent overlap */
+.container {
+  margin-top: 120px; /* Adjust based on search bar height */
+}
+
+/* Adjustments for better usability */
+.search-bar input {
+  font-size: 16px;
+}
+
+/* Ensure buttons inside form-field are styled well */
+.mat-form-field.mat-focused .mat-form-field-outline {
+  color: #3f51b5;
+}
+
+.mat-icon-button {
+  color: rgb(128, 128, 128);
+}
+
+.mat-icon-button:hover {
+  color: rgb(128, 125, 125);
+}
+
+@media (max-width: 768px) {
+  .search-bar {
+    max-width: 90%;
+  }
+}
+
+
+
 
 /* Image Slider Styling */
 .image-slider {
   position: relative;
   overflow: hidden;
   width: 100%;
-  height: 200px; /* Fixed height to ensure uniform images */
+  height: 400px; /* Fixed height to ensure uniform images */
 }
 
 .slider-container {
@@ -83,7 +139,7 @@
 }
 
 .mat-raised-button.accent:hover {
-  background-color: #c2185b;
+  background-color: #1870c2;
 }
 
 .mat-raised-button.warn {

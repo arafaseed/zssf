@@ -19,7 +19,7 @@
 
     <div class="mb-3">
       <label for="buildingId" class="form-label">Building</label>
-      <select id="buildingId" class="form-select" formControlName="buildingId">
+      <select id="buildingId" class="form-select" formControlName="buildingId" (change)="onBuildingChange()">
         <option *ngIf="selectedBuildingName" [value]="venueForm.value.buildingId" selected>
           {{ selectedBuildingName }}
         </option>
@@ -34,7 +34,7 @@
   </div>
 
   <div mat-dialog-actions>
-    <button mat-button type="submit" [disabled]="venueForm.invalid">Update Venue</button>
+    <button mat-button type="submit">Update Venue</button>
     <button mat-button type="button" (click)="closeDialog()">Cancel</button>
   </div>
 </form>

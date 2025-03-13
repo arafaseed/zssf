@@ -47,16 +47,17 @@ import { MatError } from '@angular/material/form-field';
 
 
 
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MajengoComponent } from './Admin/majengo/majengo.component';
 import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 import { BookingFormComponent } from './booking-form/booking-form.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import { AdditionalBookingDialogComponent } from './additional-booking-dialog/additional-booking-dialog.component';
+
 
 
 import { MatGridListModule } from '@angular/material/grid-list';
 import { EditVenueComponentComponent } from './edit-venue-component/edit-venue-component.component'; // For grid layouts
+import { BookingService } from './Services/booking.service';
 
 @NgModule({
   declarations: [
@@ -79,7 +80,6 @@ import { EditVenueComponentComponent } from './edit-venue-component/edit-venue-c
     ViewVenuesComponent,
     LeasePackageFormComponent,
     BookingFormComponent,
-    AdditionalBookingDialogComponent,
     EditVenueComponentComponent,
   
    
@@ -135,6 +135,7 @@ import { EditVenueComponentComponent } from './edit-venue-component/edit-venue-c
     FormsModule,
     CommonModule,
     BrowserModule,
+    DatePipe
     
     
     
@@ -143,7 +144,7 @@ import { EditVenueComponentComponent } from './edit-venue-component/edit-venue-c
     
   ],
   providers: [
-    provideAnimationsAsync(), BuildingService, 
+    provideAnimationsAsync(), BuildingService,BookingService 
   ],
   bootstrap: [AppComponent],
   
