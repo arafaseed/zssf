@@ -1,6 +1,15 @@
 <app-header></app-header>
+<div class="search-container mb-4">
+  <mat-form-field appearance="fill">
+    <mat-label>Search Venue by Name</mat-label>
+    <input matInput [(ngModel)]="searchTerm" (keyup.enter)="searchVenues()" />
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="searchVenues()">Search</button>
+</div>
 
 <div class="container mt-4">
+  
+  
   <div class="venue-grid">
     <div *ngFor="let venue of venues.slice(0, 10); let i = index" class="venue-card">
       <mat-card class="venue-card-content">
@@ -25,6 +34,7 @@
               </button>
             </div>
           </div>
+          
 
           <div *ngIf="venue.showDescription">
             <p><strong>Venue Name:</strong> {{ venue.venueName }}</p>
@@ -35,12 +45,11 @@
 
         <mat-card-actions class="d-flex justify-content-between">
           <button mat-raised-button color="primary" (click)="toggleDescription(venue)">
-            <mat-icon>info</mat-icon>
+            <mat-icon>info</mat-icon> 
             {{ venue.showDescription ? 'Hide Details' : 'See More' }}
           </button>
-
           <button mat-raised-button color="accent" (click)="goToBookingPage(venue)">
-            <mat-icon>book</mat-icon>
+            <mat-icon>book</mat-icon> 
             Book Now
           </button>
         </mat-card-actions>

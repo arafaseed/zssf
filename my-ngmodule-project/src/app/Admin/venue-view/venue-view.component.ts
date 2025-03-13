@@ -13,7 +13,8 @@ export class VenueViewComponent implements OnInit, OnDestroy {
   venues: any[] = [];
   currentSlideIndices: number[] = []; // Tracks the current slide index for each venue
   slideInterval: any; // Store the interval ID for auto-sliding
-
+  searchTerm: string = ''; 
+  
   constructor(private venueService: ViewVenueService, private router: Router) {}
 
   ngOnInit(): void {
@@ -81,5 +82,21 @@ export class VenueViewComponent implements OnInit, OnDestroy {
 
   goToSlide(venueIndex: number, slideIndex: number): void {
     this.currentSlideIndices[venueIndex] = slideIndex;
+  }
+
+
+  searchVenues(): void {
+    if (this.searchTerm) {
+      this.venueService.searchVenuesByName(this.searchTerm).subscribe((data: any[]) => {
+        this.venues = data.map(venue => ({
+          ...venue,
+          showDescription: false,
+          venueImages: venue.venueImages || []
+        }));
+        this.currentSlideIndices = new Array(this.venues.length).fill(0);
+      });
+    } else {
+      this.loadVenues(); // Reload all venues if search term is empty
+    }
   }
 }
