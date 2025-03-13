@@ -1,42 +1,22 @@
 <app-header></app-header>
-<div class="search-container mb-4">
-  <mat-form-field appearance="fill">
-    <mat-label>Search Venue by Name</mat-label>
-    <input matInput [(ngModel)]="searchTerm" (keyup.enter)="searchVenues()" />
-  </mat-form-field>
-  <button mat-raised-button color="primary" (click)="searchVenues()">Search</button>
-</div>
 
 <div class="container mt-4">
-  
-  
-  <!-- Search Bar -->
-  <div class="search-container">
-    <mat-form-field class="search-bar" appearance="outline">
-      <mat-label>Search Venues</mat-label>
-      <input matInput type="text" [(ngModel)]="searchQuery" (input)="filterVenues()" placeholder="Enter venue name">
-      <button mat-icon-button matSuffix *ngIf="searchQuery" (click)="clearSearch()">
-        <mat-icon>close</mat-icon>
-      </button>
-      <mat-icon matSuffix>search</mat-icon>
-    </mat-form-field>
+  <div class="search-bar">
+    <input type="text" [(ngModel)]="searchTerm" placeholder="Search venues..." class="search-input">
+    <div class="button-container">
+      <button mat-raised-button color="primary" (click)="searchVenues()">Search</button>
+      <button mat-raised-button color="warn" (click)="clearSearch()">Clear</button>
+    </div>
   </div>
-  
 
-
-  <!-- Grid List from Angular Material for responsive layout -->
-  <mat-grid-list cols="4" rowHeight="800px" gutterSize="50px">
-    <mat-grid-tile *ngFor="let venue of filteredVenues?.slice(0, 3); let i = index">
-      <mat-card class="venue-card">
   <div class="venue-grid">
     <div *ngFor="let venue of venues.slice(0, 10); let i = index" class="venue-card">
       <mat-card class="venue-card-content">
-
         <mat-card-header>
+          <mat-card-title>{{ venue.venueName }}</mat-card-title>
         </mat-card-header>
 
         <mat-card-content>
-          <!-- Custom Image Slider -->
           <div class="image-slider" *ngIf="venue.venueImages?.length > 0">
             <div class="slider-container">
               <div class="slider-wrapper" [style.transform]="'translateX(-' + currentSlideIndices[i] * 100 + '%)'">
@@ -53,7 +33,6 @@
               </button>
             </div>
           </div>
-          
 
           <div *ngIf="venue.showDescription">
             <p><strong>Venue Name:</strong> {{ venue.venueName }}</p>
@@ -64,28 +43,19 @@
 
         <mat-card-actions class="d-flex justify-content-between">
           <button mat-raised-button color="primary" (click)="toggleDescription(venue)">
-
-            <mat-icon>info</mat-icon> 
-            {{ venue.showDescription ? 'Hide Details' : 'See More' }}
-          </button>
-          
-          <button mat-raised-button color="accent" (click)="selectVenue(venue)">
-
             <mat-icon>info</mat-icon>
-
             {{ venue.showDescription ? 'Hide Details' : 'See More' }}
           </button>
+
           <button mat-raised-button color="accent" (click)="goToBookingPage(venue)">
-
-
             <mat-icon>book</mat-icon>
-
             Book Now
           </button>
         </mat-card-actions>
       </mat-card>
     </div>
   </div>
-
+</div>
 
 <app-footer></app-footer>
+

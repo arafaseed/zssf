@@ -9,16 +9,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./venue-view.component.css']
 })
 export class VenueViewComponent implements OnInit, OnDestroy {
-selectVenue(_t49: any) {
+  searchQuery: string | undefined;
+selectVenue(_t29: any) {
 throw new Error('Method not implemented.');
 }
   
   venues: any[] = [];
   currentSlideIndices: number[] = []; // Tracks the current slide index for each venue
   slideInterval: any; // Store the interval ID for auto-sliding
-  searchTerm: string = ''; 
-  filteredVenues: any[] | undefined;
-  searchQuery: string | undefined;
+  ZsearchTerm: string = ''; 
+filteredVenues: any;
+searchTerm: any;
   
   constructor(private venueService: ViewVenueService, private router: Router) {}
 
@@ -54,13 +55,6 @@ throw new Error('Method not implemented.');
         }
       });
     }, 3000);
-  }
-  clearSearch(): void {
-    this.searchQuery = '';
-    this.filterVenues();
-  }
-  filterVenues() {
-    throw new Error('Method not implemented.');
   }
   
 
@@ -108,4 +102,20 @@ throw new Error('Method not implemented.');
       this.loadVenues(); // Reload all venues if search term is empty
     }
   }
+
+  clearSearch(): void {
+    this.searchTerm = ''; 
+    this.loadVenues(); // Reload all venues to clear the filter
+  }
+  
+  filterVenues() {
+    if (this.searchTerm) {
+      this.venues = this.filteredVenues.filter((venue: { venueName: string; }) =>
+        venue.venueName.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    } else {
+      this.venues = [...this.filteredVenues]; // Reset to original list
+    }
+  }
+  
 }

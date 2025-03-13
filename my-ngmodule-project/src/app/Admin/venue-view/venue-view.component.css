@@ -1,38 +1,13 @@
-.search-container {
-  display: flex;
-  flex-direction: column; /* Arrange children vertically */
-  align-items: center;    /* Center align items horizontally */
-  margin-top: 20px;  
-  margin-top: 160px;      /* Margin above the search container */
-}
-
-
-
-/* Container for the venue cards */
 .venue-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* 4 cards per row */
   grid-gap: 10px; /* space between cards */
   margin-bottom: 30px; /* space between rows */
-  margin-top: 10px;
+  margin-top: 100px;
 }
 
 /* Card styling */
 .venue-card {
-
-  width: 100%;
-  max-width: 400px; /* Ensures all cards have the same width */
-  height: 600px; /* Fixed height to ensure uniformity */
-  margin: 30px auto 0 20px; /* Adds space on the left */
-  border: 2px solid #f0f0f0;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  margin-top: 60px;
-
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -43,87 +18,55 @@
 
 .venue-card:hover {
   transform: translateY(-5px); /* Elevate card on hover */
-
 }
-
-/* Centered Search Bar */
-/* Make the search bar fixed */
-.search-container {
-  position: fixed;
-  top: 80px; /* Adjust based on header height */
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  background: white; /* Background to prevent transparency */
-  padding: 10px 0;
-  z-index: 1000; /* Ensures it stays above other elements */
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
-}
-
-/* Stylish Search Bar */
-.search-bar {
-  width: 100%;
-  max-width: 600px; /* Adjust width */
-  background: white;
-  border-radius: 8px;
-}
-
-/* Push content down to prevent overlap */
-.container {
-  margin-top: 120px; /* Adjust based on search bar height */
-}
-
-/* Adjustments for better usability */
-.search-bar input {
-  font-size: 16px;
-}
-
-/* Ensure buttons inside form-field are styled well */
-.mat-form-field.mat-focused .mat-form-field-outline {
-  color: #3f51b5;
-}
-
-.mat-icon-button {
-  color: rgb(128, 128, 128);
-}
-
-.mat-icon-button:hover {
-  color: rgb(128, 125, 125);
-}
-
-@media (max-width: 768px) {
-  .search-bar {
-    max-width: 90%;
-  }
-}
-
-
-
 
 /* Image Slider Styling */
 .image-slider {
   position: relative;
   overflow: hidden;
   width: 100%;
-  height: 400px; /* Fixed height to ensure uniform images */
-  
+  height: 150px; /* Reduced height of image slider */
 }
 
-/* Overlay for description */
-.description-overlay {
-  position: absolute; /* Position the overlay absolutely */
-  top: 0; /* Cover the entire card */
-  left: 0; /* Cover the entire card */
-  right: 0; /* Cover the entire card */
-  bottom: 0; /* Cover the entire card */
-  background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
-  padding: 16px; /* Padding for the description */
+
+.search-bar {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  z-index: 1; /* Make sure the overlay is above the images */
+  align-items: center;
+  gap: 15px;
+  margin-top: 170px;
 }
+
+.search-input {
+  width: 60%;
+  padding: 10px 15px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: #007BFF;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+}
+
+.button-container {
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 8px;
+}
+
+
+
 
 /* Responsive design for smaller screens */
 @media screen and (max-width: 1200px) {
@@ -132,71 +75,10 @@
   }
 }
 
-.slider-wrapper {
-  display: flex;
-  transition: transform 0.5s ease;
-  height: 100%;
-}
-
-.slider-item {
-  flex: 0 0 100%;
-  height: 100%; /* Ensuring the images take full height */
-}
-
-.slider-item img {
-  width: 100%; 
-  height: 100%; 
-  object-fit: cover; /* Ensures uniform size and prevents distortion */
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-}
-
-/* Card Content (Ensures uniform spacing) */
-.venue-card-content {
-  flex-grow: 1;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-/* Material Button Styling */
-.mat-raised-button {
-  font-size: 1rem;
-  padding: 10px 16px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  border-radius: 6px;
-}
-
-.mat-raised-button:hover {
-  transform: translateY(-2px);
-}
-
-.mat-raised-button.primary {
-  background-color: #3f51b5;
-  color: #fff;
-}
-
-.mat-raised-button.primary:hover {
-  background-color: #303f9f;
-}
-
-.mat-raised-button.accent {
-  background-color: #e91e63;
-  color: #fff;
-}
-
-.mat-raised-button.accent:hover {
-  background-color: #1870c2;
-}
-
-.mat-raised-button.warn {
-  background-color: #ff5722;
-  color: #fff;
-}
-
-.mat-raised-button.warn:hover {
-  background-color: #e64a19;
+@media screen and (max-width: 900px) {
+  .venue-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 cards per row on smaller screens */
+  }
 }
 
 @media screen and (max-width: 600px) {
