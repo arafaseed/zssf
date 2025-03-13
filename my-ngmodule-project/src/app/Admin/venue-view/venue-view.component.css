@@ -19,10 +19,7 @@
 
 /* Card styling */
 .venue-card {
-<<<<<<< HEAD
-  position: relative; /* Set position to relative for absolute positioning of overlay */
-=======
-<<<<<<< HEAD
+
   width: 100%;
   max-width: 400px; /* Ensures all cards have the same width */
   height: 600px; /* Fixed height to ensure uniformity */
@@ -35,8 +32,7 @@
   flex-direction: column;
   overflow: hidden;
   margin-top: 60px;
-=======
->>>>>>> aba054b86ca11cdc62ee6aea0210a48076b1fe74
+
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -47,7 +43,7 @@
 
 .venue-card:hover {
   transform: translateY(-5px); /* Elevate card on hover */
->>>>>>> 1541af749f994e7bb83cf055d2af5a593ffe3959
+
 }
 
 /* Centered Search Bar */
@@ -110,11 +106,8 @@
   position: relative;
   overflow: hidden;
   width: 100%;
-<<<<<<< HEAD
   height: 400px; /* Fixed height to ensure uniform images */
-=======
-  height: 150px; /* Reduced height of image slider */
->>>>>>> 1541af749f994e7bb83cf055d2af5a593ffe3959
+  
 }
 
 /* Overlay for description */
@@ -139,7 +132,6 @@
   }
 }
 
-<<<<<<< HEAD
 .slider-wrapper {
   display: flex;
   transition: transform 0.5s ease;
@@ -205,12 +197,6 @@
 
 .mat-raised-button.warn:hover {
   background-color: #e64a19;
-=======
-@media screen and (max-width: 900px) {
-  .venue-grid {
-    grid-template-columns: repeat(2, 1fr); /* 2 cards per row on smaller screens */
-  }
->>>>>>> 1541af749f994e7bb83cf055d2af5a593ffe3959
 }
 
 @media screen and (max-width: 600px) {
