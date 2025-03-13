@@ -1,7 +1,7 @@
 .venue-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* 4 cards per row */
-  grid-gap: 10px; /* space between cards */
+  grid-gap: 20px; /* space between cards */
   margin-bottom: 30px; /* space between rows */
   margin-top: 100px;
 }
@@ -9,7 +9,7 @@
 /* Venue Card Styling */
 .venue-card {
   background: #fff;
-  border-radius: 10px;
+  border-radius: 30px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.3s ease;
