@@ -1,5 +1,4 @@
 <app-header></app-header>
-<<<<<<< HEAD
 <div class="search-container mb-4">
   <mat-form-field appearance="fill">
     <mat-label>Search Venue by Name</mat-label>
@@ -11,9 +10,6 @@
 <div class="container mt-4">
   
   
-=======
-<div class="container mt-4">
-<<<<<<< HEAD
   <!-- Search Bar -->
   <div class="search-container">
     <mat-form-field class="search-bar" appearance="outline">
@@ -30,22 +26,17 @@
 
   <!-- Grid List from Angular Material for responsive layout -->
   <mat-grid-list cols="4" rowHeight="800px" gutterSize="50px">
-    <mat-grid-tile *ngFor="let venue of filteredVenues.slice(0, 3); let i = index">
+    <mat-grid-tile *ngFor="let venue of filteredVenues?.slice(0, 3); let i = index">
       <mat-card class="venue-card">
-=======
->>>>>>> aba054b86ca11cdc62ee6aea0210a48076b1fe74
   <div class="venue-grid">
     <div *ngFor="let venue of venues.slice(0, 10); let i = index" class="venue-card">
       <mat-card class="venue-card-content">
->>>>>>> 1541af749f994e7bb83cf055d2af5a593ffe3959
+
         <mat-card-header>
         </mat-card-header>
 
         <mat-card-content>
-<<<<<<< HEAD
           <!-- Custom Image Slider -->
-=======
->>>>>>> 1541af749f994e7bb83cf055d2af5a593ffe3959
           <div class="image-slider" *ngIf="venue.venueImages?.length > 0">
             <div class="slider-container">
               <div class="slider-wrapper" [style.transform]="'translateX(-' + currentSlideIndices[i] * 100 + '%)'">
@@ -73,33 +64,28 @@
 
         <mat-card-actions class="d-flex justify-content-between">
           <button mat-raised-button color="primary" (click)="toggleDescription(venue)">
-<<<<<<< HEAD
-            <mat-icon>info</mat-icon> 
-=======
-<<<<<<< HEAD
+
             <mat-icon>info</mat-icon> 
             {{ venue.showDescription ? 'Hide Details' : 'See More' }}
           </button>
           
           <button mat-raised-button color="accent" (click)="selectVenue(venue)">
-=======
+
             <mat-icon>info</mat-icon>
->>>>>>> aba054b86ca11cdc62ee6aea0210a48076b1fe74
+
             {{ venue.showDescription ? 'Hide Details' : 'See More' }}
           </button>
           <button mat-raised-button color="accent" (click)="goToBookingPage(venue)">
-<<<<<<< HEAD
-            <mat-icon>book</mat-icon> 
-=======
->>>>>>> 1541af749f994e7bb83cf055d2af5a593ffe3959
+
+
             <mat-icon>book</mat-icon>
->>>>>>> aba054b86ca11cdc62ee6aea0210a48076b1fe74
+
             Book Now
           </button>
         </mat-card-actions>
       </mat-card>
     </div>
   </div>
-</div>
+
 
 <app-footer></app-footer>
