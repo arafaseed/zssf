@@ -16,7 +16,7 @@
 <div class="container mt-4">
   <!-- Grid List from Angular Material -->
   <mat-grid-list cols="4" rowHeight="800px" gutterSize="50px">
-    <mat-grid-tile *ngFor="let venue of filteredVenues.slice(0, 3); let i = index">
+    <mat-grid-tile *ngFor="let venue of filteredVenues?.slice(0, 3); let i = index">
       <mat-card class="venue-card">
         <mat-card-header></mat-card-header>
         
@@ -38,6 +38,7 @@
               </button>
             </div>
           </div>
+          
 
           <div *ngIf="venue.showDescription">
             <p><strong>Venue Name:</strong> {{ venue.venueName }}</p>
@@ -54,6 +55,7 @@
           
           <button mat-raised-button color="accent" (click)="selectVenue(venue)">
             <mat-icon>book</mat-icon>
+
             Book Now
           </button>
         </mat-card-actions>
