@@ -98,6 +98,7 @@ import { BookingService } from './Services/booking.service';
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
+    MatDialogModule,
     BrowserModule,
     MatSelectModule,
     AppRoutingModule,

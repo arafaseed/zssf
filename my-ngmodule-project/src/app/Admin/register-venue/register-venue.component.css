@@ -1,107 +1,80 @@
-/* General container styling */
+/* Container styling */
 .container {
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 20px;
-  align-items: center;
-}
-
-/* Form card styling */
-.form-card {
-  background-color: #fff;
+  max-width: 700px;
+  margin: 40px auto;
+  background-color: #f8f9fa;
   padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 800px;
-  margin: 0 auto;
-  width: 100%;
-  align-items: center;
-  box-sizing: border-box;
+  border-radius: 15px;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Heading styling */
-h2.mb-4 {
-  font-size: 24px;
+/* Heading */
+h3 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
   font-weight: bold;
   color: #333;
 }
 
-/* Form field styling */
-.mat-form-field {
+/* Custom input field styling */
+.custom-input {
   margin-bottom: 15px;
 }
 
-.mat-form-field .mat-label {
-  font-weight: bold;
+.custom-input .form-label {
+  font-size: 1.1rem;
+  font-weight: 500;
   color: #555;
+  margin-bottom: 5px;
 }
 
-/* Input fields styling */
-input.mat-input-element,
-textarea.mat-input-element,
-mat-select,
-input[type="color"] {
+.custom-input input,
+.custom-input textarea,
+.custom-input select {
   width: 100%;
-  padding: 12px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  box-sizing: border-box;
-}
-
-textarea.mat-input-element {
-  resize: vertical;
-}
-
-.mat-form-field .mat-error {
-  font-size: 12px;
-  color: red;
-}
-
-/* Color picker field styling */
-input[type="color"] {
-  padding: 0;
-  width: 50px; /* Makes the color input field square */
-  height: 40px;
-  border: 1px solid #ccc;
-  cursor: pointer;
-}
-
-/* Button styling */
-button.mat-raised-button {
-  font-size: 14px;
-  padding: 12px 20px;
-  border-radius: 5px;
-  font-weight: bold;
-  display: inline-flex;
-  align-items: center;
-}
-
-/* Primary button style */
-button.mat-raised-button.color-primary {
-  background-color: #3f51b5;
-  color: white;
+  padding: 12px 15px;
   border: none;
+  background-color: transparent;
+  outline: none;
+  border-bottom: 1px solid #ced4da;
+  font-size: 1rem;
 }
 
-button.mat-raised-button.color-primary:hover {
-  background-color: #303f9f;
-  transition: background-color 0.3s ease-in-out;
+.custom-input input:focus,
+.custom-input textarea:focus,
+.custom-input select:focus {
+  border-bottom: 2px solid #007bff;
 }
 
-/* Accent button style */
-button.mat-raised-button.color-accent {
-  background-color: #ff4081;
-  color: white;
-  border: none;
+/* Error message styling */
+.error {
+  color: #dc3545;
+  font-size: 0.9rem;
+  margin-top: 5px;
 }
 
-button.mat-raised-button.color-accent:hover {
-  background-color: #f50057;
-  transition: background-color 0.3s ease-in-out;
+/* Form control */
+.form-control {
+  font-size: 1rem;
+  padding: 12px 15px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ced4da;
 }
 
-/* File upload button and text */
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+}
+
+/* Buttons */
+.btn-primary {
+  padding: 12px 25px;
+  font-size: 1.1rem;
+  border-radius: 10px;
+}
+
+/* File upload button */
 button.btn-primary {
   display: inline-flex;
   align-items: center;
@@ -121,30 +94,17 @@ button.btn-primary mat-icon {
   margin-right: 5px;
 }
 
+/* Selected file text */
 span.ml-2 {
   font-size: 14px;
   color: #333;
 }
 
-/* Buttons at the bottom - align left and right */
+/* Button alignment */
 .row:last-child {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-button.mat-raised-button[type="submit"] {
-  margin-left: 10px;
-}
-
-button.btn-primary {
-  margin-right: 10px;
-}
-h2 {
-  color: white;
-  font-weight: bold;
-  align-items: center;
-  font-size: 28px; /* Increased size */
 }
 
 /* Responsive layout */
@@ -154,9 +114,16 @@ h2 {
     margin-bottom: 15px;
   }
 
-  /* Ensure buttons still align properly on mobile */
   .row:last-child {
     flex-direction: column;
     align-items: flex-start;
   }
+}
+
+/* Heading for white text */
+h2 {
+  color: white;
+  font-weight: bold;
+  align-items: center;
+  font-size: 28px;
 }
