@@ -47,6 +47,7 @@ import { MatError } from '@angular/material/form-field';
 
 
 
+
 import { CommonModule, DatePipe } from '@angular/common';
 import { MajengoComponent } from './Admin/majengo/majengo.component';
 import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
@@ -81,6 +82,7 @@ import { BookingService } from './Services/booking.service';
     LeasePackageFormComponent,
     BookingFormComponent,
     EditVenueComponentComponent,
+    
   
    
     
@@ -127,6 +129,7 @@ import { BookingService } from './Services/booking.service';
     FormsModule,
     MatCard,
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     MatButtonModule, 
     MatTableModule,
@@ -135,7 +138,8 @@ import { BookingService } from './Services/booking.service';
     FormsModule,
     CommonModule,
     BrowserModule,
-    DatePipe
+    DatePipe,
+   
     
     
     
@@ -144,9 +148,13 @@ import { BookingService } from './Services/booking.service';
     
   ],
   providers: [
-    provideAnimationsAsync(), BuildingService,BookingService 
+   
+    provideAnimationsAsync(), 
+    BuildingService,
+    BookingService 
   ],
   bootstrap: [AppComponent],
+  
   
 })
 export class AppModule { }

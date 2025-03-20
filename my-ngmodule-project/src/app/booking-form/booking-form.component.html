@@ -51,20 +51,23 @@
     <input type="text" [(ngModel)]="selectedEndDate" readonly>
   </div>
 
-  <!-- Time Selection -->
-  <div class="form-group">
-    <label for="startTime">Start Time</label>
-    <select id="startTime" [(ngModel)]="selectedStartTime">
-      <option *ngFor="let time of availableTimes" [value]="time">{{ time }}</option>
-    </select>
-  </div>
+ <!-- Time Selection -->
+<div class="form-group" *ngIf="selectedStartDate">
+  <label for="startTime">Start Time</label>
+  <select id="startTime" [(ngModel)]="selectedStartTime" (change)="checkAvailabilityForTime(selectedStartTime)">
+    <option *ngFor="let time of availableTimes" [value]="time">{{ time }}</option>
+  </select>
+  <p *ngIf="!availableTimes.length">Sorry, no available time slots for this date.</p>
+</div>
 
-  <div class="form-group">
-    <label for="endTime">End Time</label>
-    <select id="endTime" [(ngModel)]="selectedEndTime">
-      <option *ngFor="let time of availableTimes" [value]="time">{{ time }}</option>
-    </select>
-  </div>
+<div class="form-group" *ngIf="selectedEndDate">
+  <label for="endTime">End Time</label>
+  <select id="endTime" [(ngModel)]="selectedEndTime" (change)="checkAvailabilityForTime(selectedEndTime)">
+    <option *ngFor="let time of availableTimes" [value]="time">{{ time }}</option>
+    <p *ngIf="!availableTimes.length">Sorry, no available time slots for this date.</p>
+  </select>
+</div>
+
 
   <!-- User Information -->
   <div class="form-group">

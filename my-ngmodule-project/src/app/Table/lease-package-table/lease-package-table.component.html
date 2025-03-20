@@ -10,20 +10,30 @@
   <h2 class="text-center">Lease Packages</h2>
 
   <mat-table [dataSource]="leasePackages" class="mat-elevation-z8">
-    <ng-container matColumnDef="description">
-      <mat-header-cell *matHeaderCellDef class="black-text"> Description</mat-header-cell>
-      <mat-cell *matCellDef="let lease"> {{lease.description}}</mat-cell>
+
+    <!-- Package Name Column -->
+    <ng-container matColumnDef="packageName">
+      <mat-header-cell *matHeaderCellDef class="black-text"> Package Name </mat-header-cell>
+      <mat-cell *matCellDef="let lease"> {{lease.packageName}} </mat-cell>
     </ng-container>
 
+    <!-- Description Column -->
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef class="black-text"> Description </mat-header-cell>
+      <mat-cell *matCellDef="let lease"> {{lease.description}} </mat-cell>
+    </ng-container>
+
+    <!-- Price Column -->
     <ng-container matColumnDef="price">
       <mat-header-cell *matHeaderCellDef class="black-text"> Price </mat-header-cell>
       <mat-cell *matCellDef="let lease"> {{lease.price | currency:'TZS':true}} </mat-cell>
     </ng-container>
 
+    <!-- Actions Column -->
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef class="black-text"> Actions </mat-header-cell>
       <mat-cell *matCellDef="let lease">
-        <button mat-button class="edit-button" (click)="navigateToEditForm(lease.leaseId)">
+        <button mat-button class="edit-button" (click)="openEditModal(lease.leaseId)">
           <mat-icon>edit</mat-icon>
         </button>
         <button mat-icon-button color="warn" (click)="deleteLeasePackage(lease.leaseId)">🗑️</button>

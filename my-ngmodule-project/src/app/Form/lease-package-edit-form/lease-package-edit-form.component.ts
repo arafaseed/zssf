@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { LeasePackageService } from '../../packages.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-lease-package-edit-form',
@@ -10,79 +11,111 @@ import { LeasePackageService } from '../../packages.service';
   styleUrls: ['./lease-package-edit-form.component.css']
 })
 export class LeasePackageEditFormComponent implements OnInit {
-  leaseForm: FormGroup;
-  leaseId!: number;
-  errorMessage: string | null = null;
-  venues: any[] = []; // Store venue list
+  leaseForm!: FormGroup;
+  venues: any[] = [];
+  selectedVenueName: string = '';
+  isLeaseDataLoaded: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private leasePackageService: LeasePackageService,
-    private route: ActivatedRoute,
-    private router: Router
-  ) {
-    this.leaseForm = this.fb.group({
-      description: ['', [Validators.required, Validators.minLength(5)]],
-      price: ['', [Validators.required, Validators.min(0)]],
-      venueId: ['', [Validators.required]]  // Venue selection
-    });
-  }
+    private dialogRef: MatDialogRef<LeasePackageEditFormComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { leaseId: number }
+  ) {}
 
   ngOnInit(): void {
-    this.leaseId = +this.route.snapshot.paramMap.get('leaseId')!;
-    console.log(this.leaseId);
-    this.loadLeasePackage();
+    this.initializeForm();
     this.loadVenues();
+
+    if (this.data.leaseId) {
+      this.loadLeasePackageDetails(this.data.leaseId);
+    }
   }
 
-  loadLeasePackage(): void {
-    // Fetch the lease package data by ID
-    this.leasePackageService.getLeasePackageById(this.leaseId).subscribe({
-      next: (data) => {
-        // Populate form with the lease package data
-        this.leaseForm.patchValue({
-          description: data.description,
-          price: data.price,
-          venueId: data.venueId
-        });
-      },
-      error: (error) => {
-        console.error('Error loading lease package:', error);
-        alert('Error loading lease package data.');
-      }
+  initializeForm(): void {
+    this.leaseForm = this.fb.group({
+      packageName: ['', [Validators.required, Validators.minLength(3)]],
+      description: ['', [Validators.required, Validators.minLength(5)]],
+      price: ['', [Validators.required, Validators.min(0)]],
+      venueId: ['', Validators.required]
     });
   }
 
   loadVenues(): void {
-    // Fetch venues from the service
-    this.leasePackageService.getVenues().subscribe({
-      next: (data) => {
+    this.leasePackageService.getVenues().subscribe(
+      (data: any[]) => {
         this.venues = data;
+        
+        if (!this.isLeaseDataLoaded && this.venues.length > 0) {
+          this.leaseForm.patchValue({ venueId: this.venues[0].venueId });
+          this.selectedVenueName = this.venues[0].venueName;
+        }
       },
-      error: (error) => {
-        this.errorMessage = 'Error loading venues: ' + error.message;
+      (error: any) => {
+        console.error('Error fetching venues:', error);
+        alert('Failed to load venues.');
       }
-    });
+    );
+  }
+
+  loadLeasePackageDetails(leaseId: number): void {
+    this.leasePackageService.getLeasePackageById(leaseId).subscribe(
+      (leasePackage: any) => {
+        console.log('Loading lease package details:', leasePackage);
+        
+        this.leaseForm.patchValue({
+          packageName: leasePackage.packageName, // Updated to include package name
+          description: leasePackage.description,
+          price: leasePackage.price,
+          venueId: leasePackage.venueId
+        });
+
+        this.isLeaseDataLoaded = true;
+
+        const selectedVenue = this.venues.find(venue => venue.venueId === leasePackage.venueId);
+        if (selectedVenue) {
+          this.selectedVenueName = selectedVenue.venueName;
+        }
+
+        console.log('Form value after patch:', this.leaseForm.value);
+      },
+      (error: HttpErrorResponse) => {
+        console.error('Error fetching lease package details:', error);
+        alert('Failed to load lease package details.');
+      }
+    );
   }
 
   onSubmit(): void {
     if (this.leaseForm.valid) {
       const leasePackage = {
         ...this.leaseForm.value,
-        venueId: this.leaseForm.value.venueId ? parseInt(this.leaseForm.value.venueId, 10) : null
+        venueId: parseInt(this.leaseForm.value.venueId, 10)
       };
 
-      // Update the lease package using the service
-      this.leasePackageService.updateLeasePackage(this.leaseId, leasePackage).subscribe({
-        next: (response) => {
-          console.log('Lease package updated successfully', response);
-          this.router.navigate(['/lease-packages']); // Redirect to lease packages list
+      this.leasePackageService.updateLeasePackage(this.data.leaseId, leasePackage).subscribe(
+        (response: any) => {
+          console.log('Lease package updated successfully:', response);
+          alert('Lease package updated successfully!');
+          this.dialogRef.close(true);
         },
-        error: (error) => {
+        (error: HttpErrorResponse) => {
           console.error('Error updating lease package:', error);
-          this.errorMessage = error.message;
+          alert('Failed to update lease package: ' + error.message);
         }
-      });
+      );
+    } else {
+      alert('Please fill out the form correctly.');
     }
+  }
+
+  closeDialog(): void {
+    this.dialogRef.close();
+  }
+
+  onVenueChange(): void {
+    const selectedVenueId = this.leaseForm.get('venueId')?.value;
+    const selectedVenue = this.venues.find(venue => venue.venueId === selectedVenueId);
+    this.selectedVenueName = selectedVenue ? selectedVenue.venueName : '';
   }
 }

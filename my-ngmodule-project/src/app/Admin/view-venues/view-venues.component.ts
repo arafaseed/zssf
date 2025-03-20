@@ -1,28 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { ViewVenueService } from '../../view-venue.service';
 import { Router } from '@angular/router';
-import { EditVenueComponentComponent } from '../../edit-venue-component/edit-venue-component.component';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar'
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { EditVenueComponentComponent } from '../../edit-venue-component/edit-venue-component.component';
 
 @Component({
   selector: 'app-view-venues',
   standalone: false,
   templateUrl: './view-venues.component.html',
-  styleUrl:'./view-venues.component.css'
+  styleUrls: ['./view-venues.component.css']
 })
 export class ViewVenuesComponent implements OnInit {
-editVenue(arg0: any) {
-throw new Error('Method not implemented.');
-}
-
   venues: any[] = [];
-  displayedColumns: string[] = ['venueName', 'capacity', 'description', 'leasePackages','building', 'actions'];
+  displayedColumns: string[] = ['venueName', 'capacity', 'description', 'leasePackages', 'building', 'actions'];
 
   constructor(
-    private venueService: ViewVenueService, 
+    private venueService: ViewVenueService,
     private router: Router,
-    private dialog: MatDialog, 
+    private dialog: MatDialog,
     private snackBar: MatSnackBar // Inject MatSnackBar
   ) {}
 
@@ -54,6 +50,10 @@ throw new Error('Method not implemented.');
         this.showToast('Venue updated successfully!', 'success');
       }
     });
+  }
+
+  editVenue(venueId: number): void {
+    this.openEditVenueModal(venueId); // Open the edit modal when edit button is clicked
   }
 
   deleteVenue(venueId: number) {
