@@ -13,7 +13,7 @@ import { EditVenueComponentComponent } from '../../edit-venue-component/edit-ven
 })
 export class ViewVenuesComponent implements OnInit {
   venues: any[] = [];
-  displayedColumns: string[] = ['venueName', 'capacity', 'description', 'leasePackages', 'building', 'actions'];
+  displayedColumns: string[] = ['venueName', 'capacity', 'description', 'leasePackages', 'actions'];
 
   constructor(
     private venueService: ViewVenueService,
