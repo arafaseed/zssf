@@ -1,80 +1,123 @@
+/* Container styling */
 .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin-top: -50px; /* Moves the card slightly upward */
+  max-width: 700px;
+  margin: 40px auto;
+  background-color: #f8f9fa;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
-.card {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 40px; /* Increased padding */
+/* Heading */
+h3 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #333;
+  align-self: center;
+}
+
+/* Custom input field styling */
+.custom-input {
+  margin-bottom: 15px;
+}
+
+.custom-input .form-label {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.custom-input input,
+.custom-input textarea,
+.custom-input select {
   width: 100%;
-  max-width: 600px; /* Maximum width */
+  padding: 12px 15px;
+  border: none;
+  background-color: transparent;
+  outline: none;
+  border-bottom: 1px solid #ced4da;
+  font-size: 1rem;
 }
 
-  
-  .form-label {
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  .form-control {
+.custom-input input:focus,
+.custom-input textarea:focus,
+.custom-input select:focus {
+  border-bottom: 2px solid #007bff;
+}
+
+/* Error message styling */
+.error {
+  color: #dc3545;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+/* Form control */
+.form-control {
+  font-size: 1rem;
+  padding: 12px 15px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ced4da;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+}
+
+/* Buttons */
+.btn-primary {
+  padding: 12px 25px;
+  font-size: 1.1rem;
+  border-radius: 10px;
+}
+
+/* File upload button */
+button.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+}
+
+button.btn-primary:hover {
+  background-color: #388e3c;
+  transition: background-color 0.3s ease-in-out;
+}
+
+button.btn-primary mat-icon {
+  margin-right: 5px;
+}
+
+/* Selected file text */
+span.ml-2 {
+  font-size: 14px;
+  color: #333;
+}
+
+/* Button alignment */
+.row:last-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Responsive layout */
+@media (max-width: 768px) {
+  .col-md-6 {
     width: 100%;
-    padding: 12px; /* Increased padding */
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
   }
-  
-  .form-control:focus {
-    border-color: #007bff;
-    outline: none;
+
+  .row:last-child {
+    flex-direction: column;
+    align-items: flex-start;
   }
-  
-  .error {
-    color: red;
-    font-size: 14px;
-    margin-top: 5px;
-  }
-  
-  .btn {
-    padding: 12px 24px; /* Increased padding */
-    font-size: 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .btn-primary {
-    background-color: #007bff;
-    color: white;
-  }
-  
-  .btn-primary:hover {
-    background-color: #0056b3;
-  }
-  
-  .btn-primary:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-  }
-  
-  @media (max-width: 600px) {
-    .card {
-      padding: 30px; /* Adjusted padding for smaller screens */
-    }
-  
-    .form-control {
-      font-size: 14px;
-    }
-  
-    .btn {
-      width: 100%;
-    }
-  }
-  
+}
+

@@ -4,7 +4,7 @@
   margin-top: 20px;
   display: flex;
   flex-direction: column;
-  background-color: #f8f9fa; /* Light background for a clean look */
+  background-color: #e5ebf0; /* Light background for a clean look */
   min-height: 100vh;
 }
 
@@ -35,7 +35,7 @@
 
 /* Individual Cards */
 .card {
-  background-color: #fff;
+  background-color: #f7f3f3;
   padding: 25px;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);

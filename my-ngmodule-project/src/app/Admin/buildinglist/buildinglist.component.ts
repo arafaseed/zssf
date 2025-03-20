@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { BuildinglistService } from '../../Sercice/buildinglist.service';
+import { BuildinglistService } from '../../Services/buildinglist.service';
 import { HttpClient } from '@angular/common/http';  // Import HttpClient
 
 @Component({

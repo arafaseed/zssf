@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -7,26 +7,36 @@ import { Observable } from 'rxjs';
 })
 export class LeasePackageService {
   private apiUrl = 'http://localhost:8080/api/lease-packages';
+  private venueApiUrl = 'http://localhost:8080/api/venues'; // Added venue API
 
   constructor(private http: HttpClient) { }
 
+  // Lease Package Operations
   getAllLeasePackages(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/all`);
   }
 
-  addLeasePackage(leasePackage: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/add`, leasePackage);
+  addLeasePackage(leasePackage: any, venueId: number): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post(`${this.apiUrl}/add/${venueId}`, leasePackage, { headers });
+}
+
+  updateLeasePackage(leaseId: number, leasePackage: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/update/${leaseId}`, leasePackage);
   }
 
-  updateLeasePackage(id: number, leasePackage: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/update/${id}`, leasePackage);
+  getLeasePackageById(leaseId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/leaseBy/${leaseId}`);
   }
 
-  getLeasePackageById(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}`);
+  deleteLeasePackage(id: number): Observable<string> {
+    return this.http.delete(`${this.apiUrl}/delete/${id}`, { responseType: 'text' });
   }
+  
 
-  deleteLeasePackage(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
+  // Venue Operations (Added)
+  getVenues(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.venueApiUrl}/view/all`);
   }
 }
+

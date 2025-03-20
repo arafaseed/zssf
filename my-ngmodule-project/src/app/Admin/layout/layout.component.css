@@ -9,7 +9,7 @@
 
 /* Sidenav (Left Sidebar) */
 .sidenav {
-  background-color: #d3dbe4; /* Darker shade */
+  background-color: #0d0d0e; /* Darker shade */
   color: white;
   width: 250px;
   height: 100%; /* Cover the full height of the container */
@@ -79,13 +79,13 @@ mat-toolbar {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-color: #ecf0f1; /* Light background for the card */
 }
-
+/*
 .card-header {
-  background-color: #34495e; /* Darker header */
+  background-color:#34495e; /* Darker header 
   color: white;
   font-size: 18px;
   padding: 15px;
-}
+}*/
 
 .card-body {
   font-size: 14px;

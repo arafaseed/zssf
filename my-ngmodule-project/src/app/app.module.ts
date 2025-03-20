@@ -47,7 +47,7 @@ import { MatError } from '@angular/material/form-field';
 
 
 
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MajengoComponent } from './Admin/majengo/majengo.component';
 import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 import { BookingFormComponent } from './booking-form/booking-form.component';
@@ -57,6 +57,9 @@ import { StaffDashboardComponent } from './staff-dashboard/staff-dashboard.compo
 
 
 
+import { MatGridListModule } from '@angular/material/grid-list';
+import { EditVenueComponentComponent } from './edit-venue-component/edit-venue-component.component'; // For grid layouts
+import { BookingService } from './Services/booking.service';
 
 @NgModule({
   declarations: [
@@ -79,8 +82,12 @@ import { StaffDashboardComponent } from './staff-dashboard/staff-dashboard.compo
     ViewVenuesComponent,
     LeasePackageFormComponent,
     BookingFormComponent,
+<<<<<<< HEAD
     LoginComponent,
     StaffDashboardComponent,
+=======
+    EditVenueComponentComponent,
+>>>>>>> 5576b934d4d3369aad15bee0a7f1de2b6dda41c8
   
    
     
@@ -94,9 +101,11 @@ import { StaffDashboardComponent } from './staff-dashboard/staff-dashboard.compo
     FullCalendarModule,
     MatCardModule,
     MatFormFieldModule,
+    MatGridListModule, 
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
+    MatDialogModule,
     BrowserModule,
     MatSelectModule,
     AppRoutingModule,
@@ -133,9 +142,9 @@ import { StaffDashboardComponent } from './staff-dashboard/staff-dashboard.compo
     MatLabel, 
     FormsModule,
     CommonModule,
-    BrowserModule
+    BrowserModule,
+    DatePipe
     
-     
     
     
    
@@ -143,7 +152,7 @@ import { StaffDashboardComponent } from './staff-dashboard/staff-dashboard.compo
     
   ],
   providers: [
-    provideAnimationsAsync(), BuildingService, 
+    provideAnimationsAsync(), BuildingService,BookingService 
   ],
   bootstrap: [AppComponent],
   

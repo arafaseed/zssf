@@ -1,55 +1,94 @@
-<div class="container mt-4">
-  <mat-card class="booking-card">
-    <mat-card-title>Venue Booking Form</mat-card-title>
-    <form [formGroup]="bookingForm" (ngSubmit)="submitBooking()">
-      
-      <!-- Full Name -->
-      <mat-form-field class="full-width">
-        <mat-label>Full Name</mat-label>
-        <input matInput formControlName="fullName" required>
-        <mat-error *ngIf="bookingForm.get('fullName')?.invalid && bookingForm.get('fullName')?.touched">
-          Full Name is required.
-        </mat-error>
-      </mat-form-field>
+<div class="booking-container">
+  <h2>Book Your Reservation</h2>
 
-      <!-- Phone Number -->
-      <mat-form-field class="full-width">
-        <mat-label>Phone Number</mat-label>
-        <input matInput formControlName="phoneNumber" type="tel" required>
-        <mat-error *ngIf="bookingForm.get('phoneNumber')?.invalid && bookingForm.get('phoneNumber')?.touched">
-          Valid phone number is required.
-        </mat-error>
-      </mat-form-field>
+  <!-- Calendar Section -->
+  <div class="calendar-container">
+    <div class="calendar-header">
+      <button (click)="changeMonth(-1)">&#8592;</button>
+      <h3>{{ currentMonth | date: 'MMMM yyyy' }}</h3>
+      <button (click)="changeMonth(1)">&#8594;</button>
+    </div>
 
-      <!-- Start Date -->
-      <mat-form-field class="full-width">
-        <mat-label>Start Date</mat-label>
-        <input matInput [matDatepicker]="startPicker" formControlName="startDate" required>
-        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-        <mat-datepicker #startPicker></mat-datepicker>
-      </mat-form-field>
+    <!-- Days of the Week -->
+    <div class="calendar-grid">
+      <div class="calendar-day">Sun</div>
+      <div class="calendar-day">Mon</div>
+      <div class="calendar-day">Tue</div>
+      <div class="calendar-day">Wed</div>
+      <div class="calendar-day">Thu</div>
+      <div class="calendar-day">Fri</div>
+      <div class="calendar-day">Sat</div>
+    </div>
 
-      <!-- End Date -->
-      <mat-form-field class="full-width">
-        <mat-label>End Date</mat-label>
-        <input matInput [matDatepicker]="endPicker" formControlName="endDate" required>
-        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-        <mat-datepicker #endPicker></mat-datepicker>
-      </mat-form-field>
+    <!-- Dates Grid -->
+    <div class="calendar-grid">
+      <div 
+        *ngFor="let calendarDate of calendarDates" 
+        class="calendar-date" 
+        [ngClass]="{
+          'booked-date': calendarDate.isBooked,
+          'selected-start-date': calendarDate.date === selectedStartDate,
+          'selected-end-date': calendarDate.date === selectedEndDate
+        }"
+        (click)="selectDate(calendarDate.date)"
+      >
+        {{ calendarDate.date.split('-')[2] }} <!-- Show only day number -->
+      </div>
+    </div>
+  </div>
 
-      <!-- Venue -->
-      <mat-form-field class="full-width">
-        <mat-label>Select Venue</mat-label>
-        <mat-select formControlName="venueId" required>
-          <mat-option *ngFor="let venue of venues" [value]="venue.venueId">{{ venue.venueName }}</mat-option>
-        </mat-select>
-      </mat-form-field>
+  <!-- Selection Indicator -->
+  <p class="selection-indicator">{{ selectionIndicator }}</p>
 
-      <!-- Submit Button -->
-      <button mat-raised-button color="primary" type="submit" [disabled]="bookingForm.invalid">
-        Book Now
-      </button>
+  <!-- Start Date & End Date Fields -->
+  <div class="form-group">
+    <label>Start Date</label>
+    <input type="text" [(ngModel)]="selectedStartDate" readonly>
+  </div>
 
-    </form>
-  </mat-card>
+  <div class="form-group">
+    <label>End Date</label>
+    <input type="text" [(ngModel)]="selectedEndDate" readonly>
+  </div>
+
+  <!-- Time Selection -->
+  <div class="form-group">
+    <label for="startTime">Start Time</label>
+    <select id="startTime" [(ngModel)]="selectedStartTime">
+      <option *ngFor="let time of availableTimes" [value]="time">{{ time }}</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="endTime">End Time</label>
+    <select id="endTime" [(ngModel)]="selectedEndTime">
+      <option *ngFor="let time of availableTimes" [value]="time">{{ time }}</option>
+    </select>
+  </div>
+
+  <!-- User Information -->
+  <div class="form-group">
+    <label for="fullName">Full Name</label>
+    <input id="fullName" type="text" [(ngModel)]="fullName">
+  </div>
+
+  <div class="form-group">
+    <label for="phoneNumber">Phone Number</label>
+    <input id="phoneNumber" type="text" [(ngModel)]="phoneNumber">
+  </div>
+
+  <div class="form-group">
+    <label for="email">Email (Optional)</label>
+    <input id="email" type="email" [(ngModel)]="email">
+  </div>
+
+  <div class="form-group">
+    <label for="physicalAddress">Physical Address</label>
+    <input id="physicalAddress" type="text" [(ngModel)]="physicalAddress">
+  </div>
+
+  <!-- Submit Button -->
+  <div class="button-container">
+    <button (click)="makeReservation()">Confirm Reservation</button>
+  </div>
 </div>

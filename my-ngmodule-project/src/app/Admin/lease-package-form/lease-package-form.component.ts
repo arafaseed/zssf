@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LeasePackageService } from '../../packages.service';
+import { __values } from 'tslib';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-lease-package-form',
@@ -11,62 +14,58 @@ import { LeasePackageService } from '../../packages.service';
 })
 export class LeasePackageFormComponent implements OnInit {
   leaseForm: FormGroup;
-  leaseId: number | null = null;
+  venues: any[] = []; // Store venue list
 
   constructor(
     private fb: FormBuilder,
     private leasePackageService: LeasePackageService,
-    private route: ActivatedRoute,
-    private router: Router
+    private snackBar: MatSnackBar // Inject Snackbar
   ) {
     this.leaseForm = this.fb.group({
-      description: ['', [Validators.required]],
-      price: ['', [Validators.required, Validators.min(0)]]
+      description: ['', [Validators.required, Validators.minLength(5)]],
+      price: ['', [Validators.required, Validators.min(0)]],
+      venueId: ['', [Validators.required]]
     });
   }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      const id = params.get('id');
-      if (id) {
-        this.leaseId = +id;
-        this.loadLeasePackage(this.leaseId);
+    // Fetch venues from the service
+    this.leasePackageService.getVenues().subscribe({
+      next: (data) => {
+        this.venues = data;
+      },
+      error: (error) => {
+        this.showToast('Error loading venues: ' + error.message, 'error');
       }
-    });
-  }
-
-  loadLeasePackage(id: number): void {
-    this.leasePackageService.getLeasePackageById(id).subscribe(data => {
-      if (data) {
-        this.leaseForm.patchValue({
-          description: data.description,
-          price: data.price
-        });
-      }
-    }, error => {
-      console.error('Error fetching lease package:', error);
     });
   }
 
   onSubmit(): void {
     if (this.leaseForm.valid) {
-      const leaseData = this.leaseForm.value;
+      const leasePackage = {
+        ...this.leaseForm.value,
+        venueId: this.leaseForm.value.venueId ? parseInt(this.leaseForm.value.venueId, 10) : null
+      };
 
-      if (this.leaseId) {
-        this.leasePackageService.updateLeasePackage(this.leaseId, leaseData).subscribe(() => {
-          alert('Lease Package Updated Successfully');
-          this.router.navigate(['/admin/lease-packages']);
-        }, error => {
-          console.error('Error updating lease package:', error);
-        });
-      } else {
-        this.leasePackageService.addLeasePackage(leaseData).subscribe(() => {
-          alert('Lease Package Added Successfully');
-          this.router.navigate(['/admin/lease-packages']);
-        }, error => {
-          console.error('Error adding lease package:', error);
-        });
-      }
+      this.leasePackageService.addLeasePackage(leasePackage, leasePackage.venueId).subscribe({
+        next: (response) => {
+          this.showToast('Lease package added successfully!', 'success');
+          this.leaseForm.reset();
+        },
+        error: (error) => {
+          this.showToast('Error adding lease package: ' + error.message, 'error');
+        }
+      });
     }
+  }
+
+  // Snackbar Toast Alert
+  private showToast(message: string, type: 'success' | 'error'): void {
+    this.snackBar.open(message, 'Close', {
+      duration: 4000,
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+      panelClass: type === 'success' ? 'snackbar-success' : 'snackbar-error'
+    });
   }
 }

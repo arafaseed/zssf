@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ViewVenueService } from '../../view-venue.service';
 import { Router } from '@angular/router';
 
@@ -8,133 +8,114 @@ import { Router } from '@angular/router';
   templateUrl: './venue-view.component.html',
   styleUrls: ['./venue-view.component.css']
 })
-export class VenueViewComponent implements OnInit {
-
+export class VenueViewComponent implements OnInit, OnDestroy {
+  searchQuery: string | undefined;
+selectVenue(_t29: any) {
+throw new Error('Method not implemented.');
+}
+  
   venues: any[] = [];
-  selectedVenue: any;
-  currentImageIndex: number = 0;
-
+  currentSlideIndices: number[] = []; // Tracks the current slide index for each venue
+  slideInterval: any; // Store the interval ID for auto-sliding
+  ZsearchTerm: string = ''; 
+filteredVenues: any;
+searchTerm: any;
+  
   constructor(private venueService: ViewVenueService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadVenues();
+    this.startAutoSlide();
+  }
+
+  ngOnDestroy() {
+    if (this.slideInterval) {
+      clearInterval(this.slideInterval);
+    }
   }
 
   loadVenues(): void {
     this.venueService.getAllVenues().subscribe((data: any[]) => {
-      this.venues = data.map(venue => ({ ...venue, showDescription: false })); // Add showDescription property
+      this.venues = data.map(venue => ({
+        ...venue,
+        showDescription: false,
+        venueImages: venue.venueImages || []
+      }));
+
+      this.filteredVenues = [...this.venues]; // Initialize filtered venues
+      this.currentSlideIndices = new Array(this.venues.length).fill(0);
     });
   }
 
-  openGallery(venue: any): void {
-    this.selectedVenue = venue;
-    this.currentImageIndex = 0;
+  startAutoSlide() {
+    this.slideInterval = setInterval(() => {
+      this.venues.forEach((venue, index) => {
+        if (venue.venueImages?.length) {
+          this.currentSlideIndices[index] = (this.currentSlideIndices[index] + 1) % venue.venueImages.length;
+        }
+      });
+    }, 3000);
   }
-
-  prevImage(): void {
-    if (this.selectedVenue?.venueImages?.length) {
-      this.currentImageIndex =
-        this.currentImageIndex > 0 ? this.currentImageIndex - 1 : this.selectedVenue.venueImages.length - 1;
-    }
-  }
-
-  nextImage(): void {
-    if (this.selectedVenue?.venueImages?.length) {
-      this.currentImageIndex =
-        this.currentImageIndex < this.selectedVenue.venueImages.length - 1 ? this.currentImageIndex + 1 : 0;
-    }
-  }
+  
 
   toggleDescription(venue: any): void {
     venue.showDescription = !venue.showDescription;
   }
 
-  goToBookingPage(venueId: number | undefined): void {
-    if (venueId !== undefined && venueId !== null) {
-      this.router.navigate(['/booking', venueId]);
-    } else {
-      console.error('Venue ID is undefined:', venueId);
+  goToBookingPage(venue: any): void {
+    this.router.navigate(['/booking-form'], { 
+      queryParams: { 
+        venue_id: venue.venueId, 
+        description: venue.description 
+      } 
+    });
+  }
+
+  prevSlide(index: number): void {
+    if (this.venues[index].venueImages?.length) {
+      this.currentSlideIndices[index] = (this.currentSlideIndices[index] - 1 + this.venues[index].venueImages.length) % this.venues[index].venueImages.length;
     }
   }
+
+  nextSlide(index: number): void {
+    if (this.venues[index].venueImages?.length) {
+      this.currentSlideIndices[index] = (this.currentSlideIndices[index] + 1) % this.venues[index].venueImages.length;
+    }
+  }
+
+  goToSlide(venueIndex: number, slideIndex: number): void {
+    this.currentSlideIndices[venueIndex] = slideIndex;
+  }
+
+
+  searchVenues(): void {
+    if (this.searchTerm) {
+      this.venueService.searchVenuesByName(this.searchTerm).subscribe((data: any[]) => {
+        this.venues = data.map(venue => ({
+          ...venue,
+          showDescription: false,
+          venueImages: venue.venueImages || []
+        }));
+        this.currentSlideIndices = new Array(this.venues.length).fill(0);
+      });
+    } else {
+      this.loadVenues(); // Reload all venues if search term is empty
+    }
+  }
+
+  clearSearch(): void {
+    this.searchTerm = ''; 
+    this.loadVenues(); // Reload all venues to clear the filter
+  }
+  
+  filterVenues() {
+    if (this.searchTerm) {
+      this.venues = this.filteredVenues.filter((venue: { venueName: string; }) =>
+        venue.venueName.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    } else {
+      this.venues = [...this.filteredVenues]; // Reset to original list
+    }
+  }
+  
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import { Component, OnInit } from '@angular/core';
-// import { ViewVenueService } from '../../view-venue.service';
-// import { Router } from '@angular/router';  // Import Router for navigation
-
-// @Component({
-//   selector: 'app-venue-view',
-//   standalone: false,
-//   templateUrl: './venue-view.component.html',
-//   styleUrls: ['./venue-view.component.css']
-// })
-// export class VenueViewComponent implements OnInit {
-
-//   venues: any[] = [];
-//   selectedVenue: any;
-//   currentImageIndex: number = 0;
-
-//   constructor(private venueService: ViewVenueService, private router: Router) {}
-
-//   ngOnInit(): void {
-//     this.loadVenues();
-//   }
-
-//   loadVenues(): void {
-//     this.venueService.getAllVenues().subscribe((data: any[]) => {
-//       this.venues = data;
-//     });
-//   }
-
-//   openGallery(venue: any): void {
-//     this.selectedVenue = venue;
-//     this.currentImageIndex = 0; // Start with the first image
-//   }
-
-//   prevImage(): void {
-//     if (this.currentImageIndex > 0) {
-//       this.currentImageIndex--;
-//     } else {
-//       this.currentImageIndex = this.selectedVenue.venueImages.length - 1; // Loop to the last image
-//     }
-//   }
-
-//   nextImage(): void {
-//     if (this.currentImageIndex < this.selectedVenue.venueImages.length - 1) {
-//       this.currentImageIndex++;
-//     } else {
-//       this.currentImageIndex = 0; // Loop to the first image
-//     }
-//   }
-
-//   bookVenue(venue: any): void {
-//     // Navigate to booking page with the venue ID as a route parameter
-//     this.router.navigate(['/booking', venue.venueId]);  // Assuming /booking/:id route in your Angular routing configuration
-//   }
-//   goToBookingPage(venueId: number | undefined): void {
-//     if (venueId !== undefined && venueId !== null) {
-//       this.router.navigate(['/booking', venueId]);
-//     } else {
-//       console.error('Venue ID is undefined:', venueId);
-//     }
-//   }
-  
-  
-// }

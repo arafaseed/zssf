@@ -10,7 +10,7 @@
 
 /* Header Styling */
 h2 {
-  background: #007bff;
+  background: #34495e;;
   color: white;
   text-align: center;
   padding: 15px;
@@ -32,6 +32,8 @@ h2 {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 15px;
+  background-color: rgb(20, 151, 238);
+  font-size: 18px; 
 }
 
 /* Table Styling */
@@ -44,7 +46,7 @@ table {
 }
 
 th {
-  background: #007bff;
+  background:#34495e;
   color: rgb(22, 17, 17);
   font-weight: bold;
   text-align: center;
@@ -78,17 +80,28 @@ li {
   font-size: 16px;
   padding: 10px 15px;
 }
+.btn-add-left {
+  display: flex;
+  justify-content: flex-start; /* Aligns button to the left */
+  margin-bottom: 16px;
+}
 
-/* "Add Venue" Button */
-.btn-primary {
-  background: linear-gradient(to right, #007bff, #0056b3);
+.btn-add-left button {
+  background-color: #1976d2; /* Primary blue color */
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 20px;
   border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
 }
 
-.btn-primary:hover {
-  background: linear-gradient(to right, #0056b3, #003d82);
-  transform: scale(1.05);
+.btn-add-left button:hover {
+  background-color: #1565c0; /* Darker blue */
 }
+
 
 /* Edit Button */
 .btn-warning {
@@ -125,6 +138,52 @@ tr:hover {
   background: rgba(0, 123, 255, 0.1);
   transition: 0.3s;
 }
+
+.edit-button {
+  background-color: #c1e2a7;
+  color: white;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background-color 0.3s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-button:hover {
+  background-color: #91d48f;
+  transform: scale(1.05);
+}
+
+.edit-button:active {
+  background-color: #30009c;
+  transform: scale(0.98);
+}
+
+mat-icon {
+  font-size: 20px;
+}
+
+.snackbar-success {
+  background-color: #4CAF50 !important; /* Green */
+  color: white !important;
+}
+
+.snackbar-error {
+  background-color: #F44336 !important; /* Red */
+  color: white !important;
+}
+
+.snackbar-info {
+  background-color: #2196F3 !important; /* Blue */
+  color: white !important;
+}
+
+.mat-snack-bar-container {
+  font-size: 16px !important;
+  font-weight: bold !important;
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {
