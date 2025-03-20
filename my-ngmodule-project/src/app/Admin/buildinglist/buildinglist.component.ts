@@ -27,14 +27,14 @@ export class BuildinglistComponent implements OnInit {
       address: ['', Validators.required],
     });
   }
-  loadLeasePackages() {
+  loadLeaseBuilding() {
     this.buildingService.getBuildings().subscribe((data: any[]) => {
       this.buildings = data;
     });
   }
 
   ngOnInit(): void {
-    this.loadLeasePackages();
+    this.loadLeaseBuilding();
   }
 
   // Fetch all buildings from API
@@ -61,7 +61,7 @@ export class BuildinglistComponent implements OnInit {
       this.buildingService.addBuilding(this.buildingForm.value).subscribe(
         () => {
           this.snackBar.open('Building added successfully!', 'Close', { duration: 3000 });
-          this.loadLeasePackages(); // Refresh the list
+          this.loadLeaseBuilding(); // Refresh the list
           this.closePopup();
         },
         () => {
@@ -77,7 +77,7 @@ export class BuildinglistComponent implements OnInit {
     
     if (confirmDelete) {
       this.buildingService.deleteBuilding(id).subscribe(() => {
-        this.loadLeasePackages();
+        this.loadLeaseBuilding();
       });
     }
 

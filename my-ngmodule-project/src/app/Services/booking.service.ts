@@ -7,6 +7,12 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class BookingService {
+  getVenues() {
+    throw new Error('Method not implemented.');
+  }
+  getPackages() {
+    throw new Error('Method not implemented.');
+  }
   private apiUrl = 'http://localhost:8080/api/bookings';
 
   constructor(private http: HttpClient) {}

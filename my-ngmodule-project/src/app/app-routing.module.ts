@@ -16,6 +16,7 @@ import { BuildinglistComponent } from './Admin/buildinglist/buildinglist.compone
 import { ViewVenuesComponent } from './Admin/view-venues/view-venues.component';
 import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/lease-package-edit-form.component';
 import { EditVenueComponentComponent } from './edit-venue-component/edit-venue-component.component';
+import { MultiStepFormComponent } from './multi-step-form/multi-step-form.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'Venueslists', component: VenueDisplayComponent },
   { path: 'dash', component: DashboardComponent },
   { path: 'booking', component: BookingFormComponent },
+  { path: 'book', component:  MultiStepFormComponent},
 
   {
     path: 'admin',

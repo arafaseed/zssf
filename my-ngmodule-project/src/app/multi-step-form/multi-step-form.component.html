@@ -1,0 +1,56 @@
+<div *ngIf="currentStep === 1">
+  <h2>Step 1: Select Venue</h2>
+  <form [formGroup]="bookingForm">
+    <label for="venueId">Venue</label>
+    <select formControlName="venueId" id="venueId" required>
+      <option *ngFor="let venue of venueOptions" [value]="venue.venueId">{{ venue.venueName }}</option>
+    </select>
+    
+    <label for="venuePackageId">Package</label>
+    <select formControlName="venuePackageId" id="venuePackageId" required>
+      <option *ngFor="let package of packageOptions" [value]="package.leaseId">{{ package.packageName }}</option>
+    </select>
+
+    <button type="button" (click)="nextStep()" [disabled]="bookingForm.invalid">Next</button>
+  </form>
+</div>
+
+<div *ngIf="currentStep === 2">
+  <h2>Step 2: Select Date & Time</h2>
+  <form [formGroup]="bookingForm">
+    <label for="startDate">Start Date</label>
+    <input type="date" formControlName="startDate" id="startDate" required>
+    
+    <label for="startTime">Start Time</label>
+    <input type="time" formControlName="startTime" id="startTime" required>
+    
+    <label for="endDate">End Date</label>
+    <input type="date" formControlName="endDate" id="endDate" required>
+    
+    <label for="endTime">End Time</label>
+    <input type="time" formControlName="endTime" id="endTime" required>
+    
+    <button type="button" (click)="prevStep()">Previous</button>
+    <button type="button" (click)="nextStep()" [disabled]="bookingForm.invalid">Next</button>
+  </form>
+</div>
+
+<div *ngIf="currentStep === 3">
+  <h2>Step 3: Customer Details</h2>
+  <form [formGroup]="bookingForm">
+    <label for="fullName">Full Name</label>
+    <input type="text" formControlName="fullName" id="fullName" required>
+
+    <label for="phoneNumber">Phone Number</label>
+    <input type="text" formControlName="phoneNumber" id="phoneNumber" required>
+
+    <label for="email">Email</label>
+    <input type="email" formControlName="email" id="email" required>
+
+    <label for="address">Address</label>
+    <input type="text" formControlName="address" id="address" required>
+
+    <button type="button" (click)="prevStep()">Previous</button>
+    <button type="submit" (click)="onSubmit()" [disabled]="bookingForm.invalid">Submit</button>
+  </form>
+</div>

@@ -34,6 +34,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { MatStepperModule } from '@angular/material/stepper';
+
+
 
 
 
@@ -58,6 +61,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { EditVenueComponentComponent } from './edit-venue-component/edit-venue-component.component'; // For grid layouts
 import { BookingService } from './Services/booking.service';
+import { MultiStepFormComponent } from './multi-step-form/multi-step-form.component';
 
 @NgModule({
   declarations: [
@@ -81,6 +85,7 @@ import { BookingService } from './Services/booking.service';
     LeasePackageFormComponent,
     BookingFormComponent,
     EditVenueComponentComponent,
+    MultiStepFormComponent,
   
    
     
@@ -98,11 +103,15 @@ import { BookingService } from './Services/booking.service';
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
-    MatDialogModule,
+    MatDialogModule,    
+    MatInputModule,
+    MatButtonModule,
+    ReactiveFormsModule,
     BrowserModule,
     MatSelectModule,
     AppRoutingModule,
     MatToolbarModule,
+    MatStepperModule,
     HeaderComponent,
     MatButtonModule,
     MatFormField,
