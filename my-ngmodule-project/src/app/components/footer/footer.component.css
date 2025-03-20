@@ -4,9 +4,10 @@
     width: 100%;
     background: var(--mat-toolbar-background, #212121);
     color: var(--mat-toolbar-color, #ffffff);
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Poppins', sans-serif;
     text-align: center;
-    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+    font-size: large;
+    box-shadow: 0 -8px 12px rgba(0, 0, 0, 0.2);
     padding: 10px 0;
   }
   

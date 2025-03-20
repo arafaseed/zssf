@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { VenueService } from '../../venue-service.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register-venue',
@@ -17,7 +18,7 @@ export class RegisterVenueComponent implements OnInit {
   VenueId: number | null = null; // Store the venue ID being edited
   venues: any[] = []; // Updated: Initialize venues array as an empty array
 
-  constructor(private fb: FormBuilder, private venueService: VenueService) {}
+  constructor(private fb: FormBuilder, private venueService: VenueService, private router: Router) {}
 
   ngOnInit(): void {
     this.initializeForm();
@@ -108,6 +109,7 @@ export class RegisterVenueComponent implements OnInit {
             alert("Venue updated successfully!");
             this.resetForm();
             this.loadVenues(); // Refresh venue list
+            this.router.navigate(['/venueView']);
           },
           (error: HttpErrorResponse) => {
             console.error("Error updating venue:", error);
@@ -122,6 +124,7 @@ export class RegisterVenueComponent implements OnInit {
             alert("Venue registered successfully!");
             this.resetForm();
             this.loadVenues(); // Refresh venue list
+            this.router.navigate(['/venueView']); 
           },
           (error: HttpErrorResponse) => {
             console.error("Error registering venue:", error);

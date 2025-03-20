@@ -1,49 +1,71 @@
 <app-header></app-header>
-<div class="container mt-4">
-  <div class="venue-grid">
-    <div *ngFor="let venue of venues.slice(0, 10); let i = index" class="venue-card">
-      <mat-card class="venue-card-content">
-        <mat-card-header>
-        </mat-card-header>
+<div id="home-page">
+  <div class="main-content">
+    <div class="content-box">
+      <!-- Modified card to attract users to stay on the venue page -->
+      <div class="welcome-card">
+        <div class="card">
+          <div class="card-header text-center">
+            <h4>Discover Our Exclusive Venues</h4>
+          </div>
+          <div class="card-body">
+            <p>Explore a wide range of venues for your events, meetings, and celebrations. Find the perfect space that fits your needs and book with ease.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-        <mat-card-content>
-          <div class="image-slider" *ngIf="venue.venueImages?.length > 0">
-            <div class="slider-container">
-              <div class="slider-wrapper" [style.transform]="'translateX(-' + currentSlideIndices[i] * 100 + '%)'">
-                <div *ngFor="let image of venue.venueImages; let j = index" class="slider-item">
-                  <img class="d-block w-100" [src]="image" alt="Venue Image {{ j + 1 }}">
-                </div>
+<div class="search-container">
+  <input type="text" [(ngModel)]="searchQuery" (input)="searchVenues()" placeholder="Search for a venue..." class="form-control">
+  <button (click)="clearSearch()">Clear</button>
+</div>
+
+<div class="venue-grid">
+  <div *ngFor="let venue of venues.slice(0, 10); let i = index" class="venue-card">
+    <mat-card class="venue-card-content">
+      <mat-card-header>
+        <mat-card-title>{{ venue.venueName }}</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="image-slider" *ngIf="venue.venueImages?.length > 0">
+          <div class="slider-container">
+            <div class="slider-wrapper" [style.transform]="'translateX(-' + currentSlideIndices[i] * 100 + '%)'">
+              <div *ngFor="let image of venue.venueImages; let j = index" class="slider-item">
+                <img class="d-block w-100" [src]="image" alt="Venue Image {{ j + 1 }}">
               </div>
             </div>
-            <div class="indicator-container">
-              <button *ngFor="let image of venue.venueImages; let j = index"
-                      class="indicator" 
-                      [class.active]="currentSlideIndices[i] === j"
-                      (click)="goToSlide(i, j)">
-              </button>
-            </div>
           </div>
-
-          <div *ngIf="venue.showDescription">
-            <p><strong>Venue Name:</strong> {{ venue.venueName }}</p>
-            <p><strong>Capacity:</strong> {{ venue.capacity }}</p>
-            <p><strong>Description:</strong> {{ venue.description }}</p>
+          <div class="indicator-container">
+            <button *ngFor="let image of venue.venueImages; let j = index"
+                    class="indicator" 
+                    [class.active]="currentSlideIndices[i] === j"
+                    (click)="goToSlide(i, j)">
+            </button>
           </div>
-        </mat-card-content>
+        </div>
 
-        <mat-card-actions class="d-flex justify-content-between">
-          <button mat-raised-button color="primary" (click)="toggleDescription(venue)">
-            <mat-icon>info</mat-icon>
-            {{ venue.showDescription ? 'Hide Details' : 'See More' }}
-          </button>
+        <div *ngIf="venue.showDescription">
+          <p><strong>Venue Name:</strong> {{ venue.venueName }}</p>
+          <p><strong>Capacity:</strong> {{ venue.capacity }}</p>
+          <p><strong>Description:</strong> {{ venue.description }}</p>
+        </div>
+      </mat-card-content>
 
-          <button mat-raised-button color="accent" (click)="goToBookingPage(venue)">
-            <mat-icon>book</mat-icon>
-            Book Now
-          </button>
-        </mat-card-actions>
-      </mat-card>
-    </div>
+      <mat-card-actions class="d-flex justify-content-between">
+        <button mat-raised-button color="primary" (click)="toggleDescription(venue)">
+          <mat-icon>info</mat-icon>
+          {{ venue.showDescription ? 'Hide Details' : 'See More' }}
+        </button>
+
+        <button mat-raised-button color="accent" (click)="goToBookingPage(venue)">
+          <mat-icon>book</mat-icon>
+          Book Now
+        </button>
+      </mat-card-actions>
+    </mat-card>
   </div>
 </div>
 

@@ -1,48 +1,48 @@
 <div class="container mt-4">
-  
   <div class="form-card">
     <form [formGroup]="venueForm" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
       <div class="row">
         <div class="col-md-6 mb-3">
-          <h2 class="mb-4 text-center">{{ isEditing ? 'Edit Venue' : 'Register New Venue' }}</h2>
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label class="form-label">Venue Name</mat-label>
-            <input matInput formControlName="venueName" required class="form-control">
-            <mat-error *ngIf="venueForm.get('venueName')?.hasError('required')" class="error">
+          <h3 class="mb-4 text-center">{{ isEditing ? 'Edit Venue' : 'Register New Venue' }}</h3>
+          <div class="custom-input">
+            <label class="form-label">Venue Name</label>
+            <input formControlName="venueName" class="form-control" placeholder="Enter Venue Name" required>
+            <div *ngIf="venueForm.get('venueName')?.hasError('required')" class="error">
               Venue name is required
-            </mat-error>
-          </mat-form-field>
+            </div>
+          </div>
         </div>
+
         <div class="col-md-6 mb-3">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label class="form-label">Capacity</mat-label>
-            <input matInput type="number" formControlName="capacity" required class="form-control">
-            <mat-error *ngIf="venueForm.get('capacity')?.hasError('required')" class="error">
+          <div class="custom-input">
+            <label class="form-label">Capacity</label>
+            <input type="number" formControlName="capacity" class="form-control" placeholder="Capacity" required>
+            <div *ngIf="venueForm.get('capacity')?.hasError('required')" class="error">
               Capacity is required
-            </mat-error>
-          </mat-form-field>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-6 mb-3">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label class="form-label">Description</mat-label>
-            <textarea matInput formControlName="description" rows="3" class="form-control"></textarea>
-          </mat-form-field>
+          <div class="custom-input">
+            <label class="form-label">Description</label>
+            <textarea formControlName="description" rows="3" class="form-control" placeholder="Write description..."></textarea>
+          </div>
         </div>
         <div class="col-md-6 mb-3">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label class="form-label">Building</mat-label>
-            <mat-select formControlName="buildingId" required class="form-control">
-              <mat-option *ngFor="let building of buildings" [value]="building.buildingId">
+          <div class="custom-input">
+            <label class="form-label">Building</label>
+            <select formControlName="buildingId" class="form-control" required>
+              <option *ngFor="let building of buildings" [value]="building.buildingId">
                 {{ building.buildingName }}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="venueForm.get('buildingId')?.hasError('required')" class="error">
+              </option>
+            </select>
+            <div *ngIf="venueForm.get('buildingId')?.hasError('required')" class="error">
               Building selection is required
-            </mat-error>
-          </mat-form-field>
+            </div>
+          </div>
         </div>
       </div>
 

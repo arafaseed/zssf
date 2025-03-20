@@ -14,11 +14,15 @@ import { LeasePackageTableComponent } from './Table/lease-package-table/lease-pa
 import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 import { BuildinglistComponent } from './Admin/buildinglist/buildinglist.component';
 import { ViewVenuesComponent } from './Admin/view-venues/view-venues.component';
+import { LoginComponent } from './login/login.component';
+import { StaffDashboardComponent } from './staff-dashboard/staff-dashboard.component';
+import { AuthGuard } from './guards/auth.guard';
 import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/lease-package-edit-form.component';
 import { EditVenueComponentComponent } from './edit-venue-component/edit-venue-component.component';
+import { MultiStepFormComponent } from './multi-step-form/multi-step-form.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '', redirectTo: 'venue', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'venue', component: VenueViewComponent },
   { path: 'booking/:id', component: BookingFormComponent },
@@ -26,10 +30,18 @@ const routes: Routes = [
   { path: 'Venueslists', component: VenueDisplayComponent },
   { path: 'dash', component: DashboardComponent },
   { path: 'booking', component: BookingFormComponent },
+  { path: 'book', component:  MultiStepFormComponent},
+  { path: 'login', component: LoginComponent },
+  { path: 'staff-dashboard', component:StaffDashboardComponent,
+    canActivate: [AuthGuard], 
+    data: { role: 'staff' }
 
+  },
   {
     path: 'admin',
     component: LayoutComponent,
+    canActivate: [AuthGuard], 
+    data: { role: 'admin' } ,
     children: [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'building', component: BuildingComponent },

@@ -1,116 +1,123 @@
-/* General Card Styling */
-.card {
+/* Container styling */
+.container {
+  max-width: 700px;
+  margin: 40px auto;
+  background-color: #f8f9fa;
+  padding: 30px;
   border-radius: 15px;
-  background: #2c3e50; /* Darker shade for modern look */
-  padding: 35px;
-  max-width: 600px;
-  width: 100%;
-  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
-  border-top: 10px solid #1abc9c; /* Fresh accent color */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Form Header */
+/* Heading */
 h3 {
-  color: #ecf0f1;
-  font-weight: bold;
-  font-size: 30px;
-  text-align: center;
-}
-
-/* Form Labels */
-.form-label {
-  font-weight: 600;
-  color: #bdc3c7;
-  font-size: 18px;
-  margin-bottom: 8px;
-  display: block;
-}
-
-/* Input Fields */
-.form-control {
-  border: 2px solid #1abc9c;
-  border-radius: 8px;
-  padding: 14px;
-  font-size: 18px;
-  background: #34495e;
-  color: white;
-  transition: 0.3s ease-in-out;
+  font-size: 1.8rem;
   margin-bottom: 20px;
+  font-weight: bold;
+  color: #333;
+  align-self: center;
 }
 
-.form-control::placeholder {
-  color: #95a5a6;
+/* Custom input field styling */
+.custom-input {
+  margin-bottom: 15px;
 }
 
-.form-control:focus {
-  border-color: #1abc9c;
-  box-shadow: 0 0 10px rgba(26, 188, 156, 0.6);
+.custom-input .form-label {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 5px;
 }
 
-/* Select Field */
-select.form-control {
-  cursor: pointer;
+.custom-input input,
+.custom-input textarea,
+.custom-input select {
+  width: 100%;
+  padding: 12px 15px;
+  border: none;
+  background-color: transparent;
+  outline: none;
+  border-bottom: 1px solid #ced4da;
+  font-size: 1rem;
 }
 
-/* Error Messages */
+.custom-input input:focus,
+.custom-input textarea:focus,
+.custom-input select:focus {
+  border-bottom: 2px solid #007bff;
+}
+
+/* Error message styling */
 .error {
-  color: #e74c3c;
-  font-size: 16px;
+  color: #dc3545;
+  font-size: 0.9rem;
   margin-top: 5px;
 }
 
-/* Submit Button */
+/* Form control */
+.form-control {
+  font-size: 1rem;
+  padding: 12px 15px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ced4da;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+}
+
+/* Buttons */
 .btn-primary {
-  background: #1abc9c;
-  border: none;
-  padding: 14px;
-  font-size: 20px;
-  font-weight: bold;
-  border-radius: 8px;
-  transition: 0.3s ease-in-out;
-  width: 100%;
+  padding: 12px 25px;
+  font-size: 1.1rem;
+  border-radius: 10px;
+}
+
+/* File upload button */
+button.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  background-color: #4caf50;
   color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
 }
 
-.btn-primary:hover {
-  background: #16a085;
-  transform: scale(1.05);
+button.btn-primary:hover {
+  background-color: #388e3c;
+  transition: background-color 0.3s ease-in-out;
 }
 
-.btn-primary:disabled {
-  background: #95a5a6;
-  cursor: not-allowed;
+button.btn-primary mat-icon {
+  margin-right: 5px;
 }
 
-.snackbar-success, .snackbar-error {
-  font-size: 35px !important; /* Increase font size */
-  padding: 16px 24px !important; /* Increase padding */
-  min-width: 300px !important; /* Increase width */
-  text-align: center;
-  border-radius: 8px;
+/* Selected file text */
+span.ml-2 {
+  font-size: 14px;
+  color: #333;
 }
 
-/* Success Snackbar */
-.snackbar-success {
-  background-color: #27ae60 !important;
-  color: white !important;
+/* Button alignment */
+.row:last-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* Error Snackbar */
-.snackbar-error {
-  background-color: #e74c3c !important;
-  color: white !important;
-}
-
-
-/* Responsive Styling */
+/* Responsive layout */
 @media (max-width: 768px) {
-  .card {
-    width: 90%;
-    padding: 25px;
+  .col-md-6 {
+    width: 100%;
+    margin-bottom: 15px;
   }
 
-  .btn-primary {
-    font-size: 18px;
+  .row:last-child {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
+

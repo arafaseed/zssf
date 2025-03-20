@@ -5,10 +5,10 @@
     left: 0;
     right: 0;
     z-index: 1000;
-    height: 64px;
+    height: 70px;
     display: flex;
     justify-content: space-between;
-    background-color: #42c95a !important; /* Material success color */
+    background-color: #05a393 !important; /* Material success color */
   }
   
   .header-content {
@@ -16,51 +16,70 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 16px;
+    padding: 0 2px;
   }
   
   .header-title {
-    font-weight: bold;
-    font-size: 1.25rem;
-    white-space: nowrap; 
+    font-family: 'Poppins', sans-serif; /* Modern & Clean Font */
+    font-size: 26px;
+    font-weight:bolder;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
   }
   
-  .header-contact {
+  .highlight {
+    color: #ffeb3b; /* Yellow Accent for S */
+    font-weight: 900;
+  }
+  
+  /* .header-contact {
     font-size: 0.875rem;
-  }
-  
-  /* Navigation Menu */
-  .fixed-nav {
-    position: fixed;
-    top: 64px;
-    left: 0;
-    right: 0;
-    z-index: 999;
-    height: 48px;
-    box-shadow: none !important;
-    background-color: #f5f5f5 !important; /* Material default color */
-    display: flex;
-    justify-content: center;
-  }
-  
-  .nav-buttons {
-    display: flex;
-    gap: 24px;
-  }
+  } */
+ 
+/* Material Navbar */
+.navbar {
+  position: fixed;
+  top: 70px;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background-color: #f5f5f5;
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.navbar button {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.navbar mat-icon {
+  margin-right: 5px;
+  color: #009688;
+}
+
+/* Spacer for spacing between buttons */
+.spacer {
+  flex-grow: 1;
+}
   .logo-title-group {
     display: flex;
     align-items: center;
     gap: 16px; /* Space between logo and title */
   }
   /* Notification Bar */
-  .notification-bar {
+  /* .notification-bar {
     position: fixed;
     top: 112px;
     left: 0;
     right: 0;
     z-index: 998;
     background-color: #2196F3; /* Material info color */
-    color: white;
+    /* color: white;
     padding: 8px;
     text-align: center;
     font-size: 0.875rem;
@@ -68,13 +87,43 @@
   
   .notification-text {
     margin: 0;
-  }
+  }  */
 
   .header-logo {
-    height: 68px; /* Adjust based on your logo aspect ratio */
+    height: 70px; /* Adjust based on your logo aspect ratio */
     margin-right: 0px;
     margin-block-start: auto;
     width: auto;
     object-fit: contain;
   }
+  .header-contact {
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #f5efef;
+  }
   
+  .icon {
+    font-size: 20px;
+  }
+  
+  .phone-icon {
+    color: #eef10a; /* Blue for phone */
+  }
+  
+  .email-icon {
+    color:#eef10a; /* Green for email */
+  }
+  
+  .email-link {
+    color: #d9534f; /* Red email link */
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .email-link:hover {
+    text-decoration: underline;
+  }
+    

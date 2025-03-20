@@ -9,13 +9,18 @@ import { Router } from '@angular/router';
   styleUrls: ['./venue-view.component.css']
 })
 export class VenueViewComponent implements OnInit, OnDestroy {
+  searchQuery: string | undefined;
+selectVenue(_t29: any) {
+throw new Error('Method not implemented.');
+}
   
   venues: any[] = [];
-  filteredVenues: any[] = []; // Stores filtered venues based on search
-  currentSlideIndices: number[] = [];
-  slideInterval: any;
-  searchQuery: string = ''; // Holds search input value
-
+  currentSlideIndices: number[] = []; // Tracks the current slide index for each venue
+  slideInterval: any; // Store the interval ID for auto-sliding
+  ZsearchTerm: string = ''; 
+filteredVenues: any;
+searchTerm: any;
+  
   constructor(private venueService: ViewVenueService, private router: Router) {}
 
   ngOnInit(): void {
@@ -51,10 +56,6 @@ export class VenueViewComponent implements OnInit, OnDestroy {
       });
     }, 3000);
   }
-  clearSearch(): void {
-    this.searchQuery = '';
-    this.filterVenues();
-  }
   
 
   toggleDescription(venue: any): void {
@@ -62,7 +63,7 @@ export class VenueViewComponent implements OnInit, OnDestroy {
   }
 
   goToBookingPage(venue: any): void {
-    this.router.navigate(['/booking-form'], { 
+    this.router.navigate(['/booking'], { 
       queryParams: { 
         venue_id: venue.venueId, 
         description: venue.description 
@@ -86,15 +87,35 @@ export class VenueViewComponent implements OnInit, OnDestroy {
     this.currentSlideIndices[venueIndex] = slideIndex;
   }
 
-  // 🔍 Search Functionality
-  filterVenues(): void {
-    this.filteredVenues = this.venues.filter(venue =>
-      venue.venueName.toLowerCase().includes(this.searchQuery.toLowerCase())
-    );
-  }
-    // ✅ Fix: Add selectVenue() method
-    selectVenue(venue: any) {
-      localStorage.setItem('selectedVenue', JSON.stringify(venue));
-      this.router.navigate(['/booking']);
+
+  searchVenues(): void {
+    if (this.searchTerm) {
+      this.venueService.searchVenuesByName(this.searchTerm).subscribe((data: any[]) => {
+        this.venues = data.map(venue => ({
+          ...venue,
+          showDescription: false,
+          venueImages: venue.venueImages || []
+        }));
+        this.currentSlideIndices = new Array(this.venues.length).fill(0);
+      });
+    } else {
+      this.loadVenues(); // Reload all venues if search term is empty
     }
+  }
+
+  clearSearch(): void {
+    this.searchTerm = ''; 
+    this.loadVenues(); // Reload all venues to clear the filter
+  }
+  
+  filterVenues() {
+    if (this.searchTerm) {
+      this.venues = this.filteredVenues.filter((venue: { venueName: string; }) =>
+        venue.venueName.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    } else {
+      this.venues = [...this.filteredVenues]; // Reset to original list
+    }
+  }
+  
 }

@@ -34,6 +34,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { MatStepperModule } from '@angular/material/stepper';
+
+
 
 
 
@@ -53,12 +56,15 @@ import { MajengoComponent } from './Admin/majengo/majengo.component';
 import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 import { BookingFormComponent } from './booking-form/booking-form.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { LoginComponent } from './login/login.component';
+import { StaffDashboardComponent } from './staff-dashboard/staff-dashboard.component';
 
 
 
 import { MatGridListModule } from '@angular/material/grid-list';
 import { EditVenueComponentComponent } from './edit-venue-component/edit-venue-component.component'; // For grid layouts
 import { BookingService } from './Services/booking.service';
+import { MultiStepFormComponent } from './multi-step-form/multi-step-form.component';
 
 @NgModule({
   declarations: [
@@ -81,8 +87,11 @@ import { BookingService } from './Services/booking.service';
     ViewVenuesComponent,
     LeasePackageFormComponent,
     BookingFormComponent,
+    LoginComponent,
+    StaffDashboardComponent,
     EditVenueComponentComponent,
     
+    MultiStepFormComponent,
   
    
     
@@ -100,10 +109,15 @@ import { BookingService } from './Services/booking.service';
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
+    MatDialogModule,    
+    MatInputModule,
+    MatButtonModule,
+    ReactiveFormsModule,
     BrowserModule,
     MatSelectModule,
     AppRoutingModule,
     MatToolbarModule,
+    MatStepperModule,
     HeaderComponent,
     MatButtonModule,
     MatFormField,

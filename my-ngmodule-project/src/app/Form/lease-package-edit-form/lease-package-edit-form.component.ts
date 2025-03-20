@@ -45,10 +45,17 @@ export class LeasePackageEditFormComponent implements OnInit {
     this.leasePackageService.getVenues().subscribe(
       (data: any[]) => {
         this.venues = data;
-        
-        if (!this.isLeaseDataLoaded && this.venues.length > 0) {
-          this.leaseForm.patchValue({ venueId: this.venues[0].venueId });
-          this.selectedVenueName = this.venues[0].venueName;
+
+        if (this.venues.length > 0) {
+          const existingVenueId = this.leaseForm.get('venueId')?.value;
+          const selectedVenue = this.venues.find(venue => venue.venueId === existingVenueId);
+
+          if (selectedVenue) {
+            this.selectedVenueName = selectedVenue.venueName;
+          } else {
+            this.leaseForm.patchValue({ venueId: this.venues[0].venueId });
+            this.selectedVenueName = this.venues[0].venueName;
+          }
         }
       },
       (error: any) => {
@@ -62,9 +69,9 @@ export class LeasePackageEditFormComponent implements OnInit {
     this.leasePackageService.getLeasePackageById(leaseId).subscribe(
       (leasePackage: any) => {
         console.log('Loading lease package details:', leasePackage);
-        
+
         this.leaseForm.patchValue({
-          packageName: leasePackage.packageName, // Updated to include package name
+          packageName: leasePackage.packageName,
           description: leasePackage.description,
           price: leasePackage.price,
           venueId: leasePackage.venueId
