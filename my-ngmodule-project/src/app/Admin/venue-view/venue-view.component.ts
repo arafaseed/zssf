@@ -63,7 +63,7 @@ searchTerm: any;
   }
 
   goToBookingPage(venue: any): void {
-    this.router.navigate(['/booking-form'], { 
+    this.router.navigate(['/booking'], { 
       queryParams: { 
         venue_id: venue.venueId, 
         description: venue.description 
