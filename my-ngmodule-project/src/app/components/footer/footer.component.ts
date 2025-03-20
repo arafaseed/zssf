@@ -20,6 +20,6 @@ export class FooterComponent {
   copyrightText: string;
 
   constructor() {
-    this.copyrightText = `© ${new Date().getFullYear()} Zanzibar Social Security Fund. All rights reserved.`;
+    this.copyrightText = `© 2025 Zanzibar Social Security Fund (ZSSF). All rights reserved.`;
   }
 }

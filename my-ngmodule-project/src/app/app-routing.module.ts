@@ -18,8 +18,8 @@ import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/le
 import { EditVenueComponentComponent } from './edit-venue-component/edit-venue-component.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
+  { path: '', redirectTo: 'venue', pathMatch: 'full' },
+  // { path: 'home', component: HomeComponent },
   { path: 'venue', component: VenueViewComponent },
   { path: 'booking/:id', component: BookingFormComponent },
   { path: 'reservation', component: HomeComponent },  
