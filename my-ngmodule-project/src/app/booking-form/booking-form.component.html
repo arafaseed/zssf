@@ -1,97 +1,104 @@
 <div class="booking-container">
   <h2>Book Your Reservation</h2>
 
-  <!-- Calendar Section -->
-  <div class="calendar-container">
-    <div class="calendar-header">
-      <button (click)="changeMonth(-1)">&#8592;</button>
-      <h3>{{ currentMonth | date: 'MMMM yyyy' }}</h3>
-      <button (click)="changeMonth(1)">&#8594;</button>
-    </div>
+  <!-- Step Indicator -->
+  <div class="step-indicator">
+    <span [class.active]="step === 1">Step 1: Choose Dates</span>
+    <span [class.active]="step === 2">Step 2: Enter Your Details</span>
+    <span [class.active]="step === 3">Step 3: Confirm & Submit</span>
+  </div>
 
-    <!-- Days of the Week -->
-    <div class="calendar-grid">
-      <div class="calendar-day">Sun</div>
-      <div class="calendar-day">Mon</div>
-      <div class="calendar-day">Tue</div>
-      <div class="calendar-day">Wed</div>
-      <div class="calendar-day">Thu</div>
-      <div class="calendar-day">Fri</div>
-      <div class="calendar-day">Sat</div>
-    </div>
+  <!-- Step 1: Choose Dates -->
+  <div *ngIf="step === 1">
+    <div class="calendar-container">
+      <div class="calendar-header">
+        <button (click)="changeMonth(-1)">&#8592;</button>
+        <h3>{{ currentMonth | date: 'MMMM yyyy' }}</h3>
+        <button (click)="changeMonth(1)">&#8594;</button>
+      </div>
 
-    <!-- Dates Grid -->
-    <div class="calendar-grid">
-      <div 
-        *ngFor="let calendarDate of calendarDates" 
-        class="calendar-date" 
-        [ngClass]="{
-          'booked-date': calendarDate.isBooked,
-          'selected-start-date': calendarDate.date === selectedStartDate,
-          'selected-end-date': calendarDate.date === selectedEndDate
-        }"
-        (click)="selectDate(calendarDate.date)"
-      >
-        {{ calendarDate.date.split('-')[2] }} <!-- Show only day number -->
+      <div class="calendar-grid">
+        <div class="calendar-day">Sun</div>
+        <div class="calendar-day">Mon</div>
+        <div class="calendar-day">Tue</div>
+        <div class="calendar-day">Wed</div>
+        <div class="calendar-day">Thu</div>
+        <div class="calendar-day">Fri</div>
+        <div class="calendar-day">Sat</div>
+      </div>
+
+      <div class="calendar-grid">
+        <div 
+          *ngFor="let calendarDate of calendarDates" 
+          class="calendar-date" 
+          [ngClass]="{
+            'booked-date': calendarDate.isBooked,
+            'selected-start-date': calendarDate.date === selectedStartDate,
+            'selected-end-date': calendarDate.date === selectedEndDate
+          }"
+          (click)="selectDate(calendarDate.date)"
+        >
+          {{ calendarDate.date.split('-')[2] }}
+        </div>
       </div>
     </div>
+
+    <p class="selection-indicator">{{ selectionIndicator }}</p>
+
+    <div class="form-group">
+      <button (click)="goToNextStep()">Next Step</button>
+    </div>
   </div>
 
-  <!-- Selection Indicator -->
-  <p class="selection-indicator">{{ selectionIndicator }}</p>
+  <!-- Step 2: Enter Your Details -->
+  <div *ngIf="step === 2">
+    <div class="form-group">
+      <label>Start Date</label>
+      <input type="text" [(ngModel)]="selectedStartDate" readonly>
+    </div>
 
-  <!-- Start Date & End Date Fields -->
-  <div class="form-group">
-    <label>Start Date</label>
-    <input type="text" [(ngModel)]="selectedStartDate" readonly>
+    <div class="form-group">
+      <label>End Date</label>
+      <input type="text" [(ngModel)]="selectedEndDate" readonly>
+    </div>
+
+    <div class="form-group">
+      <label for="fullName">Full Name</label>
+      <input id="fullName" type="text" [(ngModel)]="fullName">
+    </div>
+
+    <div class="form-group">
+      <label for="phoneNumber">Phone Number</label>
+      <input id="phoneNumber" type="text" [(ngModel)]="phoneNumber">
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email (Optional)</label>
+      <input id="email" type="email" [(ngModel)]="email">
+    </div>
+
+    <div class="form-group">
+      <label for="physicalAddress">Physical Address</label>
+      <input id="physicalAddress" type="text" [(ngModel)]="physicalAddress">
+    </div>
+
+    <div class="button-container">
+      <button (click)="goToNextStep()">Next Step</button>
+    </div>
   </div>
 
-  <div class="form-group">
-    <label>End Date</label>
-    <input type="text" [(ngModel)]="selectedEndDate" readonly>
-  </div>
+  <!-- Step 3: Confirm & Submit -->
+  <div *ngIf="step === 3">
+    <h3>Confirm Your Reservation</h3>
+    <p><strong>Start Date:</strong> {{ selectedStartDate }}</p>
+    <p><strong>End Date:</strong> {{ selectedEndDate }}</p>
+    <p><strong>Full Name:</strong> {{ fullName }}</p>
+    <p><strong>Phone Number:</strong> {{ phoneNumber }}</p>
+    <p><strong>Email:</strong> {{ email }}</p>
+    <p><strong>Address:</strong> {{ physicalAddress }}</p>
 
- <!-- Time Selection -->
-<div class="form-group" *ngIf="selectedStartDate">
-  <label for="startTime">Start Time</label>
-  <select id="startTime" [(ngModel)]="selectedStartTime" (change)="checkAvailabilityForTime(selectedStartTime)">
-    <option *ngFor="let time of availableTimes" [value]="time">{{ time }}</option>
-  </select>
-  <p *ngIf="!availableTimes.length">Sorry, no available time slots for this date.</p>
-</div>
-
-<div class="form-group" *ngIf="selectedEndDate">
-  <label for="endTime">End Time</label>
-  <select id="endTime" [(ngModel)]="selectedEndTime" (change)="checkAvailabilityForTime(selectedEndTime)">
-    <option *ngFor="let time of availableTimes" [value]="time">{{ time }}</option>
-    <p *ngIf="!availableTimes.length">Sorry, no available time slots for this date.</p>
-  </select>
-</div>
-
-
-  <!-- User Information -->
-  <div class="form-group">
-    <label for="fullName">Full Name</label>
-    <input id="fullName" type="text" [(ngModel)]="fullName">
-  </div>
-
-  <div class="form-group">
-    <label for="phoneNumber">Phone Number</label>
-    <input id="phoneNumber" type="text" [(ngModel)]="phoneNumber">
-  </div>
-
-  <div class="form-group">
-    <label for="email">Email (Optional)</label>
-    <input id="email" type="email" [(ngModel)]="email">
-  </div>
-
-  <div class="form-group">
-    <label for="physicalAddress">Physical Address</label>
-    <input id="physicalAddress" type="text" [(ngModel)]="physicalAddress">
-  </div>
-
-  <!-- Submit Button -->
-  <div class="button-container">
-    <button (click)="makeReservation()">Confirm Reservation</button>
+    <div class="button-container">
+      <button (click)="makeReservation()">Confirm Reservation</button>
+    </div>
   </div>
 </div>

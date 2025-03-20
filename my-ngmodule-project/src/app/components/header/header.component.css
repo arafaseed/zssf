@@ -101,7 +101,7 @@
     font-weight: 500;
     display: flex;
     align-items: center;
-    gap: 2px;
+    gap: 3px;
     color: #f5efef;
   }
   
@@ -119,13 +119,13 @@
   .yellow-button {
     background-color: #eef10a !important; /* Material Yellow */
     color: #000 !important; /* Black text for contrast */
-    font-weight: bold;
     border-radius: 4px;
-    padding: 8px 16px;
+    padding: 2px 16px;
+
 }
 
 .yellow-button:hover {
-    background-color: #23d1ab !important; /* Darker Yellow on Hover */
+    background-color:#05a393!important;
 }
 
  

@@ -1,4 +1,5 @@
 <app-header></app-header>
+
 <div id="home-page">
   <div class="main-content">
     <div class="content-box">
@@ -24,7 +25,7 @@
 
 <div class="venue-grid">
   <div *ngFor="let venue of venues.slice(0, 10); let i = index" class="venue-card">
-    <mat-card class="venue-card-content">
+    <mat-card class="venue-card-content" id="venue-card-{{ venue.venueId }}">
       <mat-card-header>
         <mat-card-title>{{ venue.venueName }}</mat-card-title>
       </mat-card-header>
@@ -44,6 +45,11 @@
                     [class.active]="currentSlideIndices[i] === j"
                     (click)="goToSlide(i, j)">
             </button>
+          </div>
+          <!-- Add previous and next buttons -->
+          <div class="slider-controls">
+            <button class="prev-slide" (click)="prevSlide(i)">&#10094;</button>
+            <button class="next-slide" (click)="nextSlide(i)">&#10095;</button>
           </div>
         </div>
 

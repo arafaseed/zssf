@@ -12,7 +12,7 @@ import { BookingService } from '../Services/booking.service';
 })
 export class BookingFormComponent implements OnInit {
   currentMonth: Date = new Date();
-  isSelectingStart: boolean = true;
+  step: number = 1; // Step control (1: Dates, 2: Details, 3: Confirmation)
   selectionIndicator: string = 'Please select the start date and time';
 
   selectedStartDate: string = '';
@@ -44,10 +44,6 @@ export class BookingFormComponent implements OnInit {
   ngOnInit(): void {
     this.generateCalendar();
     this.fetchBookedDates();
-  }
-
-  checkAvailabilityForTime(selectedTime: string): void {
-    console.log('Checking availability for:', selectedTime);
   }
 
   changeMonth(months: number): void {
@@ -87,6 +83,22 @@ export class BookingFormComponent implements OnInit {
   selectDate(date: string): void {
     this.selectedStartDate = date;
     this.selectionIndicator = 'Now select the start time';
+  }
+
+  goToNextStep(): void {
+    if (this.step === 1) {
+      if (!this.selectedStartDate) {
+        alert('Please select a start date.');
+        return;
+      }
+      this.step = 2;
+    } else if (this.step === 2) {
+      if (!this.fullName || !this.phoneNumber) {
+        alert('Please fill out your name and phone number.');
+        return;
+      }
+      this.step = 3;
+    }
   }
 
   async makeReservation(): Promise<void> {

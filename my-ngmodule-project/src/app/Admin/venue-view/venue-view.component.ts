@@ -47,20 +47,20 @@ export class VenueViewComponent implements OnInit, OnDestroy {
           this.currentSlideIndices[index] = (this.currentSlideIndices[index] + 1) % venue.venueImages.length;
         }
       });
-    }, 3000);
+    }, 3000); // Adjust interval for auto sliding
   }
 
   toggleDescription(venue: any): void {
     venue.showDescription = !venue.showDescription;
+    const venueCard = document.getElementById(`venue-card-${venue.venueId}`);
+    if (venueCard) {
+      venueCard.classList.toggle('expanded'); // Toggle the expanded class for card size change
+    }
   }
 
   goToBookingPage(venue: any): void {
-    this.router.navigate(['/booking'], { 
-      queryParams: { 
-        venue_id: venue.venueId, 
-        description: venue.description 
-      } 
-    });
+    localStorage.setItem('venueId', venue.venueId);
+    this.router.navigate(['/booking']);
   }
 
   prevSlide(index: number): void {
