@@ -65,16 +65,7 @@ export class MultiStepFormComponent {
   }
 
   nextStep() {
-    if (this.currentStep === 1 && (this.bookingForm.get('venueId')?.invalid || this.bookingForm.get('venuePackageId')?.invalid)) {
-      return;
-    }
-    if (this.currentStep === 2 && (
-      this.bookingForm.get('startDate')?.invalid || 
-      this.bookingForm.get('startTime')?.invalid || 
-      this.bookingForm.get('endDate')?.invalid || 
-      this.bookingForm.get('endTime')?.invalid)) {
-      return;
-    }
+    
     this.currentStep++;
   }
 

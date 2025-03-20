@@ -86,3 +86,19 @@ button {
     grid-template-columns: 1fr; /* 1 card per row on mobile screens */
   }
 }
+
+
+
+.content-box {
+  /* Remove position: fixed */
+  position: relative; /* Use relative/static positioning */
+  transform: none; /* Remove translate */
+  top: auto;
+  left: auto;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 32px;
+  border-radius: 8px;
+  max-width: 90%;
+  text-align: center;
+  margin: 20px; /* Add margin if needed */
+}

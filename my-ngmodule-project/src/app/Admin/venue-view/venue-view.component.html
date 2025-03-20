@@ -1,12 +1,55 @@
 <app-header></app-header>
-
+<div id="home-page">
+  <div class="main-content">
+    <div class="content-box">
+      <h3 class="subtitle">Experience amazing and comfortable services with Zanzibar Social Security Fund (ZSSF).</h3>
+    </div>
+  </div>
+  </div>
 <!-- Main Content -->
 <div class="container mt-4">
-  <div class="search-bar">
-    <input type="text" [(ngModel)]="searchTerm" placeholder="Search venues..." class="search-input">
-    <div class="button-container">
-      <button mat-raised-button color="primary" (click)="searchVenues()">Search</button>
-      <button mat-raised-button color="warn" (click)="clearSearch()">Clear</button>
+    <div class="row justify-content-start"> <!-- This will align items to the left -->
+        <div class="col-12 col-sm-6 col-md-4" *ngFor="let venue of venues.slice(0, 3); let i = index">
+            <div class="card shadow-sm mb-3"> <!-- Added margin bottom for spacing -->
+                <div class="card-header text-center">
+                    <h5>{{ venue.venueName }}</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Slideshow for venue images -->
+                    <div id="carousel{{i}}" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item" *ngFor="let image of venue.venueImages; let j = index" 
+                                 [ngClass]="{'active': j === 0}">
+                                <img class="d-block w-100" [src]="image" alt="Venue image">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel' + i" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#carousel' + i" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        </button>
+                    </div>
+
+                    <!-- Venue description toggle -->
+                    <div *ngIf="venue.showDescription">
+                        <p><strong>Category:</strong> {{ venue.venueName }}</p>
+                        <p><strong>Price:</strong> {{ venue.capacity }}</p>
+                        <p><strong>Description:</strong> {{ venue.description }}</p>
+                    </div>
+
+                    <!-- Buttons inside card body -->
+                    <div class="d-flex justify-content-between mt-3">
+                        <button mat-raised-button color="primary" (click)="venue.showDescription = !venue.showDescription">
+                            {{ venue.showDescription ? 'Hide Details' : 'See More' }}
+                        </button>
+                        <button mat-raised-button color="accent" (click)="goToBookingPage(venue.venueId)">
+                            Book Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
   </div>
 
@@ -56,7 +99,7 @@
       </mat-card>
     </div>
   </div>
-</div>
+
 
 <app-footer></app-footer>
 
