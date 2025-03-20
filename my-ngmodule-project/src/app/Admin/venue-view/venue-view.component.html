@@ -1,9 +1,9 @@
 <app-header></app-header>
 
 <div class="container mt-4">
-    <div class="row justify-content-center">
+    <div class="row justify-content-start"> <!-- This will align items to the left -->
         <div class="col-12 col-sm-6 col-md-4" *ngFor="let venue of venues.slice(0, 3); let i = index">
-            <div class="card shadow-sm">
+            <div class="card shadow-sm mb-3"> <!-- Added margin bottom for spacing -->
                 <div class="card-header text-center">
                     <h5>{{ venue.venueName }}</h5>
                 </div>

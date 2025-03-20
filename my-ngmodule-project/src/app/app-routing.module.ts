@@ -14,6 +14,9 @@ import { LeasePackageTableComponent } from './Table/lease-package-table/lease-pa
 import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 import { BuildinglistComponent } from './Admin/buildinglist/buildinglist.component';
 import { ViewVenuesComponent } from './Admin/view-venues/view-venues.component';
+import { LoginComponent } from './login/login.component';
+import { StaffDashboardComponent } from './staff-dashboard/staff-dashboard.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -24,10 +27,17 @@ const routes: Routes = [
   { path: 'Venueslists', component: VenueDisplayComponent },
   { path: 'dash', component: DashboardComponent },
   { path: 'booking', component: BookingFormComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'staff-dashboard', component:StaffDashboardComponent,
+    canActivate: [AuthGuard], 
+    data: { role: 'staff' }
 
+  },
   {
     path: 'admin',
     component: LayoutComponent,
+    canActivate: [AuthGuard], 
+    data: { role: 'admin' } ,
     children: [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'building', component: BuildingComponent },

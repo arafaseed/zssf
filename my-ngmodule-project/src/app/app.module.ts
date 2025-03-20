@@ -52,6 +52,8 @@ import { MajengoComponent } from './Admin/majengo/majengo.component';
 import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 import { BookingFormComponent } from './booking-form/booking-form.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { LoginComponent } from './login/login.component';
+import { StaffDashboardComponent } from './staff-dashboard/staff-dashboard.component';
 
 
 
@@ -77,6 +79,8 @@ import { FullCalendarModule } from '@fullcalendar/angular';
     ViewVenuesComponent,
     LeasePackageFormComponent,
     BookingFormComponent,
+    LoginComponent,
+    StaffDashboardComponent,
   
    
     
