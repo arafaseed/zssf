@@ -82,12 +82,9 @@ import { BookingService } from './Services/booking.service';
     ViewVenuesComponent,
     LeasePackageFormComponent,
     BookingFormComponent,
-<<<<<<< HEAD
     LoginComponent,
     StaffDashboardComponent,
-=======
     EditVenueComponentComponent,
->>>>>>> 5576b934d4d3369aad15bee0a7f1de2b6dda41c8
   
    
     

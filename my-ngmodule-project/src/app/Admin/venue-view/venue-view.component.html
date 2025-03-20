@@ -8,7 +8,6 @@
   </div>
 <!-- Main Content -->
 <div class="container mt-4">
-<<<<<<< HEAD
     <div class="row justify-content-start"> <!-- This will align items to the left -->
         <div class="col-12 col-sm-6 col-md-4" *ngFor="let venue of venues.slice(0, 3); let i = index">
             <div class="card shadow-sm mb-3"> <!-- Added margin bottom for spacing -->
@@ -51,13 +50,6 @@
                 </div>
             </div>
         </div>
-=======
-  <div class="search-bar">
-    <input type="text" [(ngModel)]="searchTerm" placeholder="Search venues..." class="search-input">
-    <div class="button-container">
-      <button mat-raised-button color="primary" (click)="searchVenues()">Search</button>
-      <button mat-raised-button color="warn" (click)="clearSearch()">Clear</button>
->>>>>>> 5576b934d4d3369aad15bee0a7f1de2b6dda41c8
     </div>
   </div>
 
@@ -107,7 +99,7 @@
       </mat-card>
     </div>
   </div>
-</div>
+
 
 <app-footer></app-footer>
 
