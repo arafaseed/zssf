@@ -64,11 +64,37 @@ export class MultiStepFormComponent {
     );
   }
 
-  nextStep() {
-    
-    this.currentStep++;
+  onVenueChange(event: Event) {
+    const selectedValue = (event.target as HTMLSelectElement).value;
+    this.bookingForm.patchValue({ venueId: selectedValue });
+    console.log('Selected Venue ID:', selectedValue);
   }
-
+  
+  onPackageChange(event: Event) {
+    const selectedValue = (event.target as HTMLSelectElement).value;
+    this.bookingForm.patchValue({ venuePackageId: selectedValue });
+    console.log('Selected Package ID:', selectedValue);
+  }
+  
+  nextStep() {
+    console.log("Current Step:", this.currentStep);
+    console.log("Form Status:", this.bookingForm.status);
+    console.log("Form Values:", this.bookingForm.value);
+  
+    // Hakikisha fomu yote imeshasomwa
+    this.bookingForm.markAllAsTouched();
+  
+    if (this.currentStep === 1) {
+    
+    }
+  
+    this.currentStep++; // Hii inapaswa kuongeza hatua
+    console.log("New Step:", this.currentStep);
+  }
+  
+  
+  
+  
   prevStep() {
     this.currentStep--;
   }
