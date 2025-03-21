@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { LeasePackageService } from '../../packages.service';
-import { __values } from 'tslib';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
 
 @Component({
   selector: 'app-lease-package-form',
@@ -22,6 +19,7 @@ export class LeasePackageFormComponent implements OnInit {
     private snackBar: MatSnackBar // Inject Snackbar
   ) {
     this.leaseForm = this.fb.group({
+      packageName: ['', [Validators.required, Validators.minLength(3)]], // Added packageName field
       description: ['', [Validators.required, Validators.minLength(5)]],
       price: ['', [Validators.required, Validators.min(0)]],
       venueId: ['', [Validators.required]]

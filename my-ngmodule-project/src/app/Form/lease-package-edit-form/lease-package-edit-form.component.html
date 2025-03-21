@@ -1,34 +1,51 @@
-<div class="container">
-  <div class="card shadow-lg p-4">
-    <h3 class="text-center mb-4">✏️ Edit Lease Package</h3>
+<h3 mat-dialog-title class="text-center mb-4">✏️ Edit Lease Package</h3>
 
-    <form [formGroup]="leaseForm" (ngSubmit)="onSubmit()">
-      <div class="mb-3">
-        <label for="description" class="form-label">Description</label>
-        <input id="description" type="text" class="form-control" formControlName="description" placeholder="Enter description" required minlength="5">
-        <div class="error" *ngIf="leaseForm?.get('description')?.invalid">Description is required (min 5 characters)</div>
+<form [formGroup]="leaseForm" (ngSubmit)="onSubmit()">
+  <div mat-dialog-content>
+    
+    <div class="mb-3">
+      <label for="packageName" class="form-label">Package Name</label>
+      <input id="packageName" type="text" class="form-control" formControlName="packageName" placeholder="Enter package name" required minlength="3">
+      <div class="error" *ngIf="leaseForm?.get('packageName')?.invalid && leaseForm?.get('packageName')?.touched">
+        Package Name is required (min 3 characters)
       </div>
+    </div>
 
-      <div class="mb-3">
-        <label for="price" class="form-label">Price</label>
-        <input id="price" type="number" class="form-control" formControlName="price" placeholder="Enter price" required min="0" step="any">
-        <div class="error" *ngIf="leaseForm?.get('price')?.invalid">Valid price is required</div>
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <input id="description" type="text" class="form-control" formControlName="description" placeholder="Enter description" required minlength="5">
+      <div class="error" *ngIf="leaseForm?.get('description')?.invalid && leaseForm?.get('description')?.touched">
+        Description is required (min 5 characters)
       </div>
+    </div>
 
-      <div class="mb-3">
-        <label for="venue" class="form-label">Venue</label>
-        <select id="venue" class="form-control" formControlName="venueId" required>
-          <option value="" disabled selected>Select Venue</option>
-          <option *ngFor="let venue of venues" [ngValue]="venue.venueId">{{venue.venueName}}</option>
-        </select>
-        <div class="error" *ngIf="leaseForm?.get('venueId')?.invalid">Venue selection is required</div>
+    <div class="mb-3">
+      <label for="price" class="form-label">Price</label>
+      <input id="price" type="number" class="form-control" formControlName="price" placeholder="Enter price" required min="0" step="any">
+      <div class="error" *ngIf="leaseForm?.get('price')?.invalid && leaseForm?.get('price')?.touched">
+        Valid price is required
       </div>
+    </div>
 
-      <div class="text-center">
-        <button class="btn btn-primary" type="submit" [disabled]="leaseForm.invalid">
-          Update
-        </button>
+    <div class="mb-3">
+      <label for="venue" class="form-label">Venue</label>
+      <select id="venue" class="form-control" formControlName="venueId" required>
+        <option value="" disabled selected>Select Venue</option>
+        <option *ngFor="let venue of venues" [ngValue]="venue.venueId">{{venue.venueName}}</option>
+      </select>
+      <div class="error" *ngIf="leaseForm?.get('venueId')?.invalid && leaseForm?.get('venueId')?.touched">
+        Venue selection is required
       </div>
-    </form>
+    </div>
+
   </div>
-</div>
+
+  <div mat-dialog-actions class="text-center">
+    <button mat-button type="submit" [disabled]="leaseForm.invalid">
+      Update
+    </button>
+    <button mat-button type="button" (click)="closeDialog()">
+      Cancel
+    </button>
+  </div>
+</form>

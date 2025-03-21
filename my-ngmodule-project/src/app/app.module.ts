@@ -50,6 +50,7 @@ import { MatError } from '@angular/material/form-field';
 
 
 
+
 import { CommonModule, DatePipe } from '@angular/common';
 import { MajengoComponent } from './Admin/majengo/majengo.component';
 import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
@@ -89,6 +90,7 @@ import { MultiStepFormComponent } from './multi-step-form/multi-step-form.compon
     LoginComponent,
     StaffDashboardComponent,
     EditVenueComponentComponent,
+    
     MultiStepFormComponent,
   
    
@@ -141,6 +143,7 @@ import { MultiStepFormComponent } from './multi-step-form/multi-step-form.compon
     FormsModule,
     MatCard,
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     MatButtonModule, 
     MatTableModule,
@@ -149,7 +152,8 @@ import { MultiStepFormComponent } from './multi-step-form/multi-step-form.compon
     FormsModule,
     CommonModule,
     BrowserModule,
-    DatePipe
+    DatePipe,
+   
     
     
     
@@ -158,9 +162,13 @@ import { MultiStepFormComponent } from './multi-step-form/multi-step-form.compon
     
   ],
   providers: [
-    provideAnimationsAsync(), BuildingService,BookingService 
+   
+    provideAnimationsAsync(), 
+    BuildingService,
+    BookingService 
   ],
   bootstrap: [AppComponent],
+  
   
 })
 export class AppModule { }

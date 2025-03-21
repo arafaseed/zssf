@@ -51,7 +51,7 @@ const routes: Routes = [
 
       // ✅ Corrected lease package routes
       { path: 'leasepackageform', component: LeasePackageFormComponent }, // New package
-      { path: 'leasepackageeditform/:leaseId', component: LeasePackageEditFormComponent },
+      { path: 'leasepackageeditform/:id', component: LeasePackageEditFormComponent },
       { path: 'editVenue/:venueId', component: RegisterVenueComponent },
 
 

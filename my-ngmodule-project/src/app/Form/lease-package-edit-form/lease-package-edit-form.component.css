@@ -1,59 +1,104 @@
-.container {
-    max-width: 700px;
-    margin: 40px auto;
-    background-color: #f8f9fa;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-  }
-  
-  h3 {
-    font-size: 1.8rem;
-    margin-bottom: 20px;
+/* Styling the dialog */
+.mat-dialog-title {
+    font-size: 1.5rem;
     font-weight: bold;
     color: #333;
+    text-align: center;
+    margin-bottom: 20px;
   }
   
-  .form-label {
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: #555;
-    padding-right: 10px;
+  /* Error messages */
+  .error {
+    color: #f44336;
+    font-size: 0.875rem;
+    margin-top: 5px;
   }
   
+  /* Form control styling */
   .form-control {
-    font-size: 1rem;
-    padding: 12px 15px;
-    border-radius: 10px;
+    width: 100%;
+    padding: 10px;
     margin-bottom: 10px;
-    border: 1px solid #ced4da;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
   }
   
   .form-control:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+    border-color: #4CAF50;
+    outline: none;
   }
   
-  .error {
-    color: #dc3545;
-    font-size: 0.9rem;
+  /* Add padding and spacing around the dialog */
+  .mat-dialog-content {
+    padding: 20px;
+    background-color: #fff;
   }
   
-  .btn-primary {
-    padding: 12px 25px;
-    font-size: 1.1rem;
-    border-radius: 10px;
+  /* Label styling */
+  .form-label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
   }
   
-  .text-center {
-    margin-top: 20px;
+  /* Button styling */
+  button[mat-button] {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    margin: 5px;
   }
   
+  /* Submit button */
+  button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+  }
   
-  /* Responsive design */
-  @media (max-width: 576px) {
-    .container {
-      width: 90%;
+  button[type="submit"]:disabled {
+    background-color: #e0e0e0;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #45a049;
+  }
+  
+  /* Cancel button */
+  button[type="button"] {
+    background-color: #f44336;
+    color: white;
+    border: none;
+  }
+  
+  button[type="button"]:hover {
+    background-color: #e53935;
+  }
+  
+  /* Center the action buttons */
+  .mat-dialog-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  /* Responsive design for smaller screens */
+  @media (max-width: 768px) {
+    .form-control {
+      padding: 8px;
+      font-size: 0.9rem;
+    }
+    .mat-dialog-title {
+      font-size: 1.25rem;
+    }
+    button[mat-button] {
+      font-size: 0.875rem;
+      padding: 8px 15px;
     }
   }
   

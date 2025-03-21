@@ -9,18 +9,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./venue-view.component.css']
 })
 export class VenueViewComponent implements OnInit, OnDestroy {
-  searchQuery: string | undefined;
-selectVenue(_t29: any) {
-throw new Error('Method not implemented.');
-}
-  
+  searchTerm: string = ''; // Search term to bind with the input
   venues: any[] = [];
+  filteredVenues: any[] = [];
   currentSlideIndices: number[] = []; // Tracks the current slide index for each venue
   slideInterval: any; // Store the interval ID for auto-sliding
-  ZsearchTerm: string = ''; 
-filteredVenues: any;
-searchTerm: any;
-  
+
   constructor(private venueService: ViewVenueService, private router: Router) {}
 
   ngOnInit(): void {
@@ -41,7 +35,6 @@ searchTerm: any;
         showDescription: false,
         venueImages: venue.venueImages || []
       }));
-
       this.filteredVenues = [...this.venues]; // Initialize filtered venues
       this.currentSlideIndices = new Array(this.venues.length).fill(0);
     });
@@ -54,21 +47,29 @@ searchTerm: any;
           this.currentSlideIndices[index] = (this.currentSlideIndices[index] + 1) % venue.venueImages.length;
         }
       });
-    }, 3000);
+    }, 3000); // Adjust interval for auto sliding
   }
-  
 
   toggleDescription(venue: any): void {
     venue.showDescription = !venue.showDescription;
+    const venueCard = document.getElementById(`venue-card-${venue.venueId}`);
+    if (venueCard) {
+      venueCard.classList.toggle('expanded'); // Toggle the expanded class for card size change
+    }
   }
 
   goToBookingPage(venue: any): void {
+<<<<<<< HEAD
     this.router.navigate(['/book'], { 
       queryParams: { 
         venue_id: venue.venueId, 
         description: venue.description 
       } 
     });
+=======
+    localStorage.setItem('venueId', venue.venueId);
+    this.router.navigate(['/booking']);
+>>>>>>> 7fc9e259154e17d65b57f0be0cdf2b214d97aa10
   }
 
   prevSlide(index: number): void {
@@ -87,35 +88,18 @@ searchTerm: any;
     this.currentSlideIndices[venueIndex] = slideIndex;
   }
 
-
   searchVenues(): void {
-    if (this.searchTerm) {
-      this.venueService.searchVenuesByName(this.searchTerm).subscribe((data: any[]) => {
-        this.venues = data.map(venue => ({
-          ...venue,
-          showDescription: false,
-          venueImages: venue.venueImages || []
-        }));
-        this.currentSlideIndices = new Array(this.venues.length).fill(0);
-      });
-    } else {
-      this.loadVenues(); // Reload all venues if search term is empty
-    }
-  }
-
-  clearSearch(): void {
-    this.searchTerm = ''; 
-    this.loadVenues(); // Reload all venues to clear the filter
-  }
-  
-  filterVenues() {
-    if (this.searchTerm) {
-      this.venues = this.filteredVenues.filter((venue: { venueName: string; }) =>
+    if (this.searchTerm.trim()) {
+      this.venues = this.filteredVenues.filter((venue) =>
         venue.venueName.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     } else {
       this.venues = [...this.filteredVenues]; // Reset to original list
     }
   }
-  
+
+  clearSearch(): void {
+    this.searchTerm = ''; 
+    this.venues = [...this.filteredVenues]; // Reset to original list
+  }
 }
