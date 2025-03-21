@@ -8,7 +8,7 @@
   <select formControlName="venueId" id="venueId" required (change)="onVenueChange($event)">
     <option value="" disabled>Select Venue</option>
     <option *ngFor="let venue of venueOptions" [value]="venue.venueId">
-      {{ venue.venueName }}
+      {{ venue.venueName }} (Capacity: {{ venue.capacity }})
     </option>
   </select>
   

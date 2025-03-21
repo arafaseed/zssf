@@ -15,7 +15,8 @@ import { provideHttpClient } from '@angular/common/http';
 export class MultiStepFormComponent {
   currentStep = 1;
   bookingForm: FormGroup;
-  venueOptions: { venueId: number, venueName: string }[] = [];
+  
+  venueOptions: { venueId: number, venueName: string, capacity: number }[] = [];
   packageOptions: { leaseId: number, packageName: string }[] = [];
   venueId!: number;
 
