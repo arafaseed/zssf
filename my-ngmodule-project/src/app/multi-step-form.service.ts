@@ -11,7 +11,7 @@ export class MultiStepFormService {
 
 
   private venueApiUrl = 'http://localhost:8080/api/venues/view/all';
-  private packageApiUrl = 'http://localhost:8080/api/lease-packages/all';
+  private packageApiUrl = 'http://localhost:8080/api/lease-packages';
   private bookingApiUrl = 'http://localhost:8080/api/bookings/create';
 
   constructor(private http: HttpClient) {}
@@ -27,4 +27,9 @@ export class MultiStepFormService {
   getPackages(): Observable<any[]> {
     return this.http.get<any[]>(this.packageApiUrl);
   }
+
+  getLeasesByVenue(venueId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.packageApiUrl}/venue/${venueId}`);  // Example URL with venueId
+  }
+  
 }

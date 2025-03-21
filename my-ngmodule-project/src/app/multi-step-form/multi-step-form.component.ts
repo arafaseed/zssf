@@ -3,6 +3,8 @@ import { MultiStepFormService } from '../multi-step-form.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { BookingService } from '../Services/booking.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-multi-step-form',
@@ -15,12 +17,14 @@ export class MultiStepFormComponent {
   bookingForm: FormGroup;
   venueOptions: { venueId: number, venueName: string }[] = [];
   packageOptions: { leaseId: number, packageName: string }[] = [];
+  venueId!: number;
 
   constructor(
     private fb: FormBuilder,
     private bookingService: BookingService,
     private multiStepFormService: MultiStepFormService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private route: ActivatedRoute
   ) {
     this.bookingForm = this.fb.group({
       venueId: ['', Validators.required],
@@ -33,96 +37,72 @@ export class MultiStepFormComponent {
       phoneNumber: ['', [Validators.required, Validators.pattern('^\\+?[0-9]*$')]],
       email: ['', [Validators.required, Validators.email]],
       address: ['', Validators.required],
-      discountRate: [0]  // Add discountRate field
+      discountRate: [0]
     });
   }
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      const venueId = params['venueId'];
+      if (venueId) {
+        this.venueId = Number(venueId);
+        this.bookingForm.patchValue({ venueId: this.venueId });
+        this.loadLeases(this.venueId);
+      }
+    });
+
     this.loadVenues();
-    this.loadPackages();
   }
 
-  loadVenues() {
-    this.multiStepFormService.getVenues().subscribe(
-      (venues) => {
-        this.venueOptions = venues;
-      },
-      (error) => {
-        console.error('Error loading venues:', error);
-      }
-    );
+  loadVenues(): void {
+    this.multiStepFormService.getVenues().subscribe({
+      next: (venues) => this.venueOptions = venues,
+      error: (error) => console.error('Error loading venues:', error)
+    });
   }
 
-  loadPackages() {
-    this.multiStepFormService.getPackages().subscribe(
-      (packages) => {
-        this.packageOptions = packages;
-      },
-      (error) => {
-        console.error('Error loading packages:', error);
-      }
-    );
+  loadLeases(venueId: number): void {
+    this.multiStepFormService.getLeasesByVenue(venueId).subscribe({
+      next: (leases) => this.packageOptions = leases,
+      error: (error) => console.error('Error loading leases:', error)
+    });
   }
 
-  onVenueChange(event: Event) {
+  onVenueChange(event: Event): void {
     const selectedValue = (event.target as HTMLSelectElement).value;
-    this.bookingForm.patchValue({ venueId: selectedValue });
-    console.log('Selected Venue ID:', selectedValue);
+    this.bookingForm.patchValue({ venueId: Number(selectedValue) });
+    this.loadLeases(Number(selectedValue));
   }
-  
-  onPackageChange(event: Event) {
+
+  onPackageChange(event: Event): void {
     const selectedValue = (event.target as HTMLSelectElement).value;
-    this.bookingForm.patchValue({ venuePackageId: selectedValue });
-    console.log('Selected Package ID:', selectedValue);
+    this.bookingForm.patchValue({ venuePackageId: Number(selectedValue) });
   }
-  
-  nextStep() {
-    console.log("Current Step:", this.currentStep);
-    console.log("Form Status:", this.bookingForm.status);
-    console.log("Form Values:", this.bookingForm.value);
-  
-    // Hakikisha fomu yote imeshasomwa
+
+  nextStep(): void {
     this.bookingForm.markAllAsTouched();
-  
-    if (this.currentStep === 1) {
-    
-    }
-  
-    this.currentStep++; // Hii inapaswa kuongeza hatua
-    console.log("New Step:", this.currentStep);
+    console.log('Current form data:', this.bookingForm.value);
+    this.currentStep++;
   }
-  
-  
-  
-  
-  prevStep() {
+
+  prevStep(): void {
     this.currentStep--;
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.bookingForm.invalid) {
       return;
     }
 
-    console.log('Booking Form Data:', this.bookingForm.value);  // Log form data
-
-    this.bookingService.createBooking(this.bookingForm.value).subscribe(
-      response => {
+    this.bookingService.createBooking(this.bookingForm.value).subscribe({
+      next: (response) => {
         console.log('Booking created successfully', response);
-        // Show success toast
-        this.snackBar.open('Booking created successfully!', 'Close', {
-          duration: 3000,  // 3 seconds
-          panelClass: ['success-snackbar']  // Optional: Define custom class for styling
-        });
+        this.snackBar.open('Booking created successfully!', 'Close', { duration: 3000 });
       },
-      error => {
+      error: (error) => {
         console.error('Error creating booking', error);
-        // Show error toast
-        this.snackBar.open('Error creating booking. Please try again.', 'Close', {
-          duration: 3000,  // 3 seconds
-          panelClass: ['error-snackbar']  // Optional: Define custom class for styling
-        });
+        this.snackBar.open('Error creating booking. Please try again.', 'Close', { duration: 3000 });
       }
-    );
+    });
   }
 }

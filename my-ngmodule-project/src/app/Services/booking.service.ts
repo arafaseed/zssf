@@ -6,6 +6,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class BookingService {
+  getLeasesByVenue(venueId: number) {
+    throw new Error('Method not implemented.');
+  }
   getVenues() {
     throw new Error('Method not implemented.');
   }
