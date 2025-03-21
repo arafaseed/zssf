@@ -25,6 +25,17 @@
   flex-grow: 1;
 }
 
+mat-card-title {
+  font-size: 24px; /* Larger text */
+  font-weight: bold; /* Bold text */
+  color: #1976d2; /* Custom color (change as needed) */
+  text-transform: uppercase; /* Optional: Makes text uppercase */
+  letter-spacing: 1px; /* Optional: Adds spacing between letters */
+  font-family: 'Arial', sans-serif; /* Change the font as needed */
+  font-style: italic; /* Italicize the text */
+}
+
+
 .venue-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);

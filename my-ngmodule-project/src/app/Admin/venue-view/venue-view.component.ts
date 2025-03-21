@@ -59,17 +59,8 @@ export class VenueViewComponent implements OnInit, OnDestroy {
   }
 
   goToBookingPage(venue: any): void {
-<<<<<<< HEAD
-    this.router.navigate(['/book'], { 
-      queryParams: { 
-        venue_id: venue.venueId, 
-        description: venue.description 
-      } 
-    });
-=======
     localStorage.setItem('venueId', venue.venueId);
-    this.router.navigate(['/booking']);
->>>>>>> 7fc9e259154e17d65b57f0be0cdf2b214d97aa10
+    this.router.navigate(['/book']);
   }
 
   prevSlide(index: number): void {
