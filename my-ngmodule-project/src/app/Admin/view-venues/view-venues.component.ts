@@ -30,7 +30,7 @@ export class ViewVenuesComponent implements OnInit {
     this.venueService.getAllVenues().subscribe({
       next: (data: any[]) => {
         this.venues = data;
-        this.showToast('Venues loaded successfully!', 'success');
+       
       },
       error: (error) => {
         this.showToast('Error fetching venues: ' + error.message, 'error');
