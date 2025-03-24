@@ -23,7 +23,7 @@ import { MultiStepFormComponent } from './multi-step-form/multi-step-form.compon
 
 const routes: Routes = [
   { path: '', redirectTo: 'venue', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
+  // { path: 'home', component: HomeComponent },
   { path: 'venue', component: VenueViewComponent },
   { path: 'booking/:id', component: BookingFormComponent },
   { path: 'reservation', component: HomeComponent },  
