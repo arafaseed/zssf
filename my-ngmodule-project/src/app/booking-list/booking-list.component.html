@@ -1,0 +1,32 @@
+<div class="container">
+    <h2>Booking List</h2>
+  
+    <div *ngFor="let status of ['PENDING', 'COMPLETE', 'CANCELLED']">
+      <h3>{{ status }}</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Booking Code</th>
+            <th>Venue</th>
+            <th>Customer</th>
+            <th>Start Date</th>
+            <th>Start Time</th>
+            <th>End Date</th>
+            <th>End Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let booking of filteredBookings[status]">
+            <td>{{ booking.bookingCode }}</td>
+            <td>{{ booking.venue.name }}</td>
+            <td>{{ booking.customer.fullName }}</td>
+            <td>{{ booking.startDate }}</td>
+            <td>{{ booking.startTime }}</td>
+            <td>{{ booking.endDate }}</td>
+            <td>{{ booking.endTime }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
