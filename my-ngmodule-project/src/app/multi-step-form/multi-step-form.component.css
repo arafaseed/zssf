@@ -1,99 +1,261 @@
-/* multi-step-form.component.css */
+/* Content Box */
+.content-box {
+  position: relative;
+  background-color: #4cdde2; /* Soft yellow background */
+  padding: 32px;
+  border-radius: 12px;
+  margin-top: 71px;
+  margin-bottom: 10px;
+  justify-content: center;
+  max-width: 100%;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  /* Added media query for content box responsiveness */
+}
+
+.welcome-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 1800px;
+  padding: 12px;
+  text-align: center;
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+.card-header h4 {
+  font-size: 36px;
+  font-weight: 700;
+  color: #2A7261;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+.card-body p {
+  font-size: 20px;
+  color: #444;
+  line-height: 1.5;
+  font-weight: 500;
+  font-style: oblique;
+}
+
+.main-content {
+  padding-bottom: 64px; /* Adjust this based on footer height */
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
+  padding-bottom: 64px; /* Ensure body content is not covered by footer */
+}
+
+/* Ensure the entire body takes full height and content adjusts accordingly */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Basic Reset */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Content Box */
+.content-box {
+  position: relative;
+  background-color: #4cdde2;
+  padding: 32px;
+  border-radius: 12px;
+  margin-top: 71px;
+  margin-bottom: 10px;
+  justify-content: center;
+  max-width: 100%;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Container */
+form {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  max-width: 800px;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Step Navigation Buttons */
+.step-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.step-nav button {
+  width: 48%;
+  font-size: 18px;
+  padding: 12px 0;
+  text-align: center;
+  border-radius: 8px;
+  background-color: #4cdde2;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.step-nav button.disabled {
+  background-color: #e6e6e6;
+  cursor: not-allowed;
+}
+
+.step-nav button:hover:not(.disabled) {
+  background-color: #38b2b2;
+}
+
+/* Multi-Step Container */
+.step-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.step-container > div {
+  display: none;
+}
+
+.step-container > .active {
+  display: block;
+}
+
+/* Form Input Fields */
+input[type="text"],
+input[type="email"],
+input[type="date"],
+input[type="time"],
+select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #555;
+  transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
+select:focus {
+  border-color: #4cdde2;
+  outline: none;
+  box-shadow: 0 0 5px rgba(76, 221, 226, 0.6);
+}
+
+/* Button Styles */
+button[type="button"],
+button[type="submit"] {
+  background-color: #4cdde2;
+  color: #fff;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+button[type="button"]:hover {
+  background-color: #e6e6e6;
+}
+
+button[type="submit"]:not([type="button"]) {
+  background-color: #4cdde2;
+}
+
+button[type="submit"]:hover {
+  background-color: #38b2b2;
+}
+
+/* Label Styling */
+label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  display: inline-block;
+}
+
+/* Step Header */
+h2 {
+  font-size: 28px;
+  color: #2a7261;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Form Validation Styling */
+input.ng-invalid,
+select.ng-invalid {
+  border-color: #e74c3c;
+}
+
+input.ng-valid,
+select.ng-valid {
+  border-color: #4cdde2;
+}
+
+/* Responsive Styling */
+@media screen and (max-width: 768px) {
+  .content-box {
+    margin-top: 80px;
     padding: 20px;
   }
-  
-  h2 {
-    color: #333;
-    text-align: center;
-  }
-  
+
   form {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
-    margin: 0 auto;
+    padding: 15px;
   }
-  
-  label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-  }
-  
+
   input[type="text"],
   input[type="email"],
   input[type="date"],
   input[type="time"],
   select {
-    width: 100%;
+    font-size: 14px;
     padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
-    transition: border-color 0.3s;
-  }
-  
-  input[type="text"]:focus,
-  input[type="email"]:focus,
-  input[type="date"]:focus,
-  input[type="time"]:focus,
-  select:focus {
-    border-color: #007bff; /* Blue focus color */
-    outline: none;
-  }
-  
-  button {
-    background-color: #007bff; /* Bootstrap primary color */
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-  }
-  
-  button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-  }
-  
-  button:disabled {
-    background-color: #ccc; /* Disabled button color */
-    cursor: not-allowed;
-  }
-  
-  .step {
-    display: none; /* Hide all steps by default */
-  }
-  
-  .step.active {
-    display: block; /* Show the active step */
-  }
-  
-  /* Additional styling for better visibility */
-  input::placeholder {
-    color: #aaa;
-  }
-  
-  .error-message {
-    color: red;
-    font-size: 12px;
-    margin-top: -10px;
-    margin-bottom: 15px;
   }
 
-  .success-snackbar {
-    background-color: #4CAF50;  /* Green for success */
+  button {
+    padding: 10px;
+    font-size: 14px;
   }
-  
-  .error-snackbar {
-    background-color: #F44336;  /* Red for error */
+}
+
+
+
+@media screen and (max-width: 768px) {
+  .content-box {
+    margin-top: 80px; /* Reduce margin on smaller screens */
+    padding: 20px; /* Adjust padding */
   }
-  
+}

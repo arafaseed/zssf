@@ -99,10 +99,7 @@ export class MultiStepFormComponent {
       next: (response) => {
         console.log('Booking created successfully', response);
         this.snackBar.open('Booking created successfully!', 'Close', { duration: 3000 });
-      },
-      error: (error) => {
-        console.error('Error creating booking', error);
-        this.snackBar.open('Error creating booking. Please try again.', 'Close', { duration: 3000 });
+     
       }
     });
   }

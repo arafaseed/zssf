@@ -65,6 +65,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { EditVenueComponentComponent } from './edit-venue-component/edit-venue-component.component'; // For grid layouts
 import { BookingService } from './Services/booking.service';
 import { MultiStepFormComponent } from './multi-step-form/multi-step-form.component';
+import { BookingListComponent } from './booking-list/booking-list.component';
+import { InvoiceComponent } from './invoice/invoice.component';
 
 @NgModule({
   declarations: [
@@ -92,9 +94,8 @@ import { MultiStepFormComponent } from './multi-step-form/multi-step-form.compon
     EditVenueComponentComponent,
     
     MultiStepFormComponent,
-  
+          BookingListComponent,
    
-    
  
     
    
