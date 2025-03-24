@@ -13,19 +13,15 @@ export class VenueViewComponent implements OnInit, OnDestroy {
   venues: any[] = [];
   filteredVenues: any[] = [];
   currentSlideIndices: number[] = []; // Tracks the current slide index for each venue
-  slideInterval: any; // Store the interval ID for auto-sliding
 
   constructor(private venueService: ViewVenueService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadVenues();
-    this.startAutoSlide();
   }
 
   ngOnDestroy() {
-    if (this.slideInterval) {
-      clearInterval(this.slideInterval);
-    }
+    // Clean up any resources if needed when the component is destroyed
   }
 
   loadVenues(): void {
@@ -36,18 +32,8 @@ export class VenueViewComponent implements OnInit, OnDestroy {
         venueImages: venue.venueImages || []
       }));
       this.filteredVenues = [...this.venues]; // Initialize filtered venues
-      this.currentSlideIndices = new Array(this.venues.length).fill(0);
+      this.currentSlideIndices = new Array(this.venues.length).fill(0); // Initialize slide indices
     });
-  }
-
-  startAutoSlide() {
-    this.slideInterval = setInterval(() => {
-      this.venues.forEach((venue, index) => {
-        if (venue.venueImages?.length) {
-          this.currentSlideIndices[index] = (this.currentSlideIndices[index] + 1) % venue.venueImages.length;
-        }
-      });
-    }, 3000); // Adjust interval for auto sliding
   }
 
   toggleDescription(venue: any): void {
@@ -61,7 +47,6 @@ export class VenueViewComponent implements OnInit, OnDestroy {
   goToBookingPage(venue: any): void {
     this.router.navigate(['/book'], { queryParams: { venueId: venue.id } });
   }
-  
 
   prevSlide(index: number): void {
     if (this.venues[index].venueImages?.length) {
@@ -85,12 +70,12 @@ export class VenueViewComponent implements OnInit, OnDestroy {
         venue.venueName.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     } else {
-      this.venues = [...this.filteredVenues]; // Reset to original list
+      this.venues = [...this.filteredVenues];
     }
   }
 
   clearSearch(): void {
-    this.searchTerm = ''; 
-    this.venues = [...this.filteredVenues]; // Reset to original list
+    this.searchTerm = '';
+    this.venues = [...this.filteredVenues];
   }
 }

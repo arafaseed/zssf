@@ -34,9 +34,6 @@
     font-weight: 900;
   }
   
-  /* .header-contact {
-    font-size: 0.875rem;
-  } */
  
 /* Material Navbar */
 .navbar {
@@ -71,23 +68,7 @@
     align-items: center;
     gap: 16px; /* Space between logo and title */
   }
-  /* Notification Bar */
-  /* .notification-bar {
-    position: fixed;
-    top: 112px;
-    left: 0;
-    right: 0;
-    z-index: 998;
-    background-color: #2196F3; /* Material info color */
-    /* color: white;
-    padding: 8px;
-    text-align: center;
-    font-size: 0.875rem;
-  }
-  
-  .notification-text {
-    margin: 0;
-  }  */
+ 
 
   .header-logo {
     height: 70px; /* Adjust based on your logo aspect ratio */
