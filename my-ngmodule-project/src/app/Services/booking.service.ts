@@ -60,7 +60,7 @@ export interface Booking {
   status: 'PENDING' | 'COMPLETE' | 'CANCELLED';
   venue: {
     venueId: number;
-    name: string;
+    venueName: string;
   };
   customer: {
     customerId: number;
