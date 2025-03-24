@@ -20,7 +20,11 @@ import { AuthGuard } from './guards/auth.guard';
 import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/lease-package-edit-form.component';
 import { EditVenueComponentComponent } from './edit-venue-component/edit-venue-component.component';
 import { MultiStepFormComponent } from './multi-step-form/multi-step-form.component';
+<<<<<<< HEAD
 import { BookingListComponent } from './booking-list/booking-list.component';
+=======
+import { InvoiceComponent } from './invoice/invoice.component';
+>>>>>>> 670b7fbfc2190dcf8c7f5ab4098357cf98f3e1ba
 
 const routes: Routes = [
   { path: '', redirectTo: 'venue', pathMatch: 'full' },
@@ -33,6 +37,7 @@ const routes: Routes = [
   { path: 'booking', component: BookingFormComponent },
   { path: 'book', component:  MultiStepFormComponent},
   { path: 'login', component: LoginComponent },
+  { path: 'invoice', component: InvoiceComponent },
   { path: 'staff-dashboard', component:StaffDashboardComponent,
     canActivate: [AuthGuard], 
     data: { role: 'staff' }
