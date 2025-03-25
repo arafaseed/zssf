@@ -217,7 +217,7 @@ h2 {
 /* Form Validation Styling */
 input.ng-invalid,
 select.ng-invalid {
-  border-color: #e74c3c;
+  border-color: #f12a14;
 }
 
 input.ng-valid,
