@@ -17,6 +17,8 @@ export class ViewVenueService {
     return this.http.get (`${this.venueApiUrl}/view/all`);
 
   }
+  
+  
   getVenueById(id: number): Observable<any> {
     return this.http.get(`${this.venueApiUrl}/view/${id}`);
   }

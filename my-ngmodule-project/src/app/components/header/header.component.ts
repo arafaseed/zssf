@@ -17,8 +17,8 @@ import { MatIcon, MatIconModule } from '@angular/material/icon';
 })
 export class HeaderComponent {
   constructor(private router: Router) {} // Inject the Router service
-  navigateToLogin(): void {
-    this.router.navigate(['/login']);
-  }
+  // navigateToLogin(): void {
+  //   this.router.navigate(['/login']);
+  // }
   }
 
