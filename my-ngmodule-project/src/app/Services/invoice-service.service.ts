@@ -4,6 +4,13 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class InvoiceServiceService {
+  private invoiceData: any = null;
 
-  constructor() { }
+  setInvoiceData(data: any) {
+    this.invoiceData = data;
+  }
+
+  getInvoiceData() {
+    return this.invoiceData;
+  }
 }

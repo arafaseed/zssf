@@ -1,13 +1,20 @@
 <div class="invoice-container">
-    <h2>Invoice</h2>
-    <p><strong>Customer:</strong> {{ invoiceData.customerName }}</p>
-    <p><strong>Email:</strong> {{ invoiceData.email }}</p>
-    <p><strong>Phone:</strong> {{ invoiceData.phone }}</p>
-    <p><strong>Venue:</strong> {{ invoiceData.venue }}</p>
-    <p><strong>Event Date:</strong> {{ invoiceData.eventDate }}</p>
-    <p><strong>Total Amount:</strong> {{ invoiceData.totalAmount }} USD</p>
-    <p><strong>Payment Status:</strong> {{ invoiceData.paymentStatus }}</p>
-  
-    <button (click)="downloadInvoice()">Download Invoice</button>
+  <h2>Invoice</h2>
+  <div *ngIf="invoice">
+    <p><strong>Invoice Number:</strong> {{ invoice.invoiceNumber }}</p>
+    <p><strong>Date:</strong> {{ invoice.date }}</p>
+
+    <h3>Customer Information</h3>
+    <p><strong>Name:</strong> {{ invoice.customerName }}</p>
+    <p><strong>Email:</strong> {{ invoice.customerEmail }}</p>
+    <p><strong>Phone:</strong> {{ invoice.customerPhone }}</p>
+
+    <h3>Booking Information</h3>
+    <p><strong>Venue:</strong> {{ invoice.venue }}</p>
+    <p><strong>Event Date:</strong> {{ invoice.eventDate }}</p>
+    <p><strong>Amount:</strong> ${{ invoice.amount }}</p>
+    <p><strong>Payment Type:</strong> {{ invoice.paymentType }}</p>
+
+    <button (click)="printInvoice()">Print Invoice</button>
   </div>
-  
+</div>

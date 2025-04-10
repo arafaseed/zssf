@@ -31,15 +31,18 @@ const routes: Routes = [
   { path: 'reservation', component: HomeComponent },  
   { path: 'Venueslists', component: VenueDisplayComponent },
   { path: 'dash', component: DashboardComponent },
-  { path: 'booking', component: BookingFormComponent },
+  { path: 'bookings', component: BookingFormComponent },
   { path: 'book', component:  MultiStepFormComponent},
   { path: 'login', component: LoginComponent },
-  { path: 'invoice', component: InvoiceComponent },
+  
   { path: 'staff-dashboard', component:StaffDashboardComponent,
     canActivate: [AuthGuard], 
     data: { role: 'staff' }
 
   },
+  { path: 'booking', component: MultiStepFormComponent },
+  { path: 'invoice', component: InvoiceComponent }, // Ensure this is correctly set up
+  { path: '**', redirectTo: 'booking' },
   {
     path: 'admin',
     component: LayoutComponent,

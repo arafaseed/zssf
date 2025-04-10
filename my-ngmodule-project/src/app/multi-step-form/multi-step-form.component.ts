@@ -17,8 +17,12 @@ export class MultiStepFormComponent {
   bookingForm: FormGroup;
   
   venueOptions: { venueId: number, venueName: string, capacity: number }[] = [];
-  packageOptions: { leaseId: number, packageName: string }[] = [];
+  packageOptions: {
+    price: any; leaseId: number, packageName: string 
+}[] = [];
   venueId!: number;
+  invoiceService: any;
+  router: any;
 
   constructor(
     private fb: FormBuilder,
@@ -91,16 +95,40 @@ export class MultiStepFormComponent {
   }
 
   onSubmit(): void {
-    if (this.bookingForm.invalid) {
-      return;
-    }
-
+  
+  
     this.bookingService.createBooking(this.bookingForm.value).subscribe({
       next: (response) => {
         console.log('Booking created successfully', response);
         this.snackBar.open('Booking created successfully!', 'Close', { duration: 3000 });
-     
+  
+        // Prepare invoice data
+        const selectedVenue = this.venueOptions.find(v => v.venueId == this.bookingForm.value.venueId);
+        const selectedPackage = this.packageOptions.find(p => p.leaseId == this.bookingForm.value.venuePackageId);
+        
+        const invoiceData = {
+          invoiceNumber: 'INV' + new Date().getTime(),
+          date: new Date().toLocaleDateString(),
+          customerName: this.bookingForm.value.fullName,
+          customerEmail: this.bookingForm.value.email,
+          customerPhone: this.bookingForm.value.phoneNumber,
+          venue: selectedVenue ? selectedVenue.venueName : 'N/A',
+          eventDate: this.bookingForm.value.startDate,
+          amount: selectedPackage ? selectedPackage.price : 500, // Replace with actual price logic
+          paymentType: 'Credit Card'
+        };
+  
+        // Store invoice in service before navigation
+        this.invoiceService.setInvoiceData(invoiceData);
+  
+        // Navigate to invoice page
+        this.router.navigate(['/invoice']);
+      },
+      error: (error) => {
+        console.error('Error creating booking:', error);
+        this.snackBar.open('Booking failed. Please try again.', 'Close', { duration: 3000 });
       }
     });
   }
+      
 }
