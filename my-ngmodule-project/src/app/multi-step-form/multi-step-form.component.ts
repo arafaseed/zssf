@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+
 import { MultiStepFormService } from '../multi-step-form.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { BookingService } from '../Services/booking.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core'; // Make sure this is imported
 
 @Component({
   selector: 'app-multi-step-form',
@@ -12,25 +13,27 @@ import { provideHttpClient } from '@angular/common/http';
   templateUrl: './multi-step-form.component.html',
   styleUrl: './multi-step-form.component.css'
 })
-export class MultiStepFormComponent {
+export class MultiStepFormComponent implements OnInit{
   currentStep = 1;
   bookingForm: FormGroup;
-  
+  selectedVenueName: string = '';  
   venueOptions: { venueId: number, venueName: string, capacity: number }[] = [];
   packageOptions: {
     price: any; leaseId: number, packageName: string 
 }[] = [];
   venueId!: number;
   invoiceService: any;
-  router: any;
+  
 
   constructor(
     private fb: FormBuilder,
     private bookingService: BookingService,
     private multiStepFormService: MultiStepFormService,
     private snackBar: MatSnackBar,
-    private route: ActivatedRoute
-  ) {
+    private route: ActivatedRoute,
+    private router: Router, // ✅ Proper injection
+     // ✅ Assuming you have a service
+  ) {   
     this.bookingForm = this.fb.group({
       venueId: ['', Validators.required],
       venuePackageId: ['', Validators.required],
@@ -52,19 +55,30 @@ export class MultiStepFormComponent {
       if (venueId) {
         this.venueId = Number(venueId);
         this.bookingForm.patchValue({ venueId: this.venueId });
+  
         this.loadLeases(this.venueId);
       }
     });
-
-    this.loadVenues();
+  
+    this.loadVenues(); // load venues first
   }
+  
 
   loadVenues(): void {
     this.multiStepFormService.getVenues().subscribe({
-      next: (venues) => this.venueOptions = venues,
+      next: (venues) => {
+        this.venueOptions = venues;
+  
+        // After venues are loaded, find and set the selected venue name
+        const foundVenue = venues.find(v => v.venueId === this.venueId);
+        if (foundVenue) {
+          this.selectedVenueName = foundVenue.venueName;
+        }
+      },
       error: (error) => console.error('Error loading venues:', error)
     });
   }
+  
 
   loadLeases(venueId: number): void {
     this.multiStepFormService.getLeasesByVenue(venueId).subscribe({
@@ -123,6 +137,7 @@ export class MultiStepFormComponent {
   
         // Navigate to invoice page
         this.router.navigate(['/invoice']);
+        
       },
       error: (error) => {
         console.error('Error creating booking:', error);

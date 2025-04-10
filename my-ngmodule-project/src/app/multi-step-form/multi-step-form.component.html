@@ -20,13 +20,13 @@
 <div *ngIf="currentStep === 1">
   <h2>Step 1: Select Date & Time</h2>
   
-  <label for="venueId">Venue</label>
-  <select formControlName="venueId" id="venueId" required (change)="onVenueChange($event)">
-    <option value="" disabled>Select Venue</option>
-    <option *ngFor="let venue of venueOptions" [value]="venue.venueId">
-      {{ venue.venueName }} (Capacity: {{ venue.capacity }})
-    </option>
-  </select>
+  <div>
+    <label>Venue:</label>
+    <input type="text" [value]="selectedVenueName" disabled />
+  </div>
+
+  <!-- Hidden input for venueId -->
+  <input formControlName="venueId" type="hidden" />
   
   <label for="venuePackageId">Package</label>
   <select formControlName="venuePackageId" id="venuePackageId" required (change)="onPackageChange($event)">
