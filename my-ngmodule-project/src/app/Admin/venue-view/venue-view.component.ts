@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ViewVenueService } from '../../view-venue.service';
 import { Router } from '@angular/router';
 
@@ -67,15 +67,23 @@ export class VenueViewComponent implements OnInit, OnDestroy {
   searchVenues(): void {
     if (this.searchTerm.trim()) {
       this.venues = this.filteredVenues.filter((venue) =>
-        venue.venueName.toLowerCase().includes(this.searchTerm.toLowerCase())
+        venue.venueName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        venue.capacity.toString().includes(this.searchTerm.trim())  // Check capacity as well
       );
     } else {
-      this.venues = [...this.filteredVenues];
+      this.venues = [...this.filteredVenues];  // Reset to all venues if search term is empty
     }
   }
+  
 
   clearSearch(): void {
     this.searchTerm = '';
     this.venues = [...this.filteredVenues];
   }
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.ctrlKey && event.key.toLowerCase() === 'l') {
+      this.router.navigate(['/login']); // Adjust route as needed
+    }
+}
 }
