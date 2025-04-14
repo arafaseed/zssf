@@ -41,7 +41,7 @@ const routes: Routes = [
   },
   { path: 'booking', component: MultiStepFormComponent },
   { path: 'invoice', component: InvoiceComponent }, // Ensure this is correctly set up
-  { path: '**', redirectTo: 'booking' },
+  //{ path: '**', redirectTo: 'invoice' },
   {
     path: 'admin',
     component: LayoutComponent,
