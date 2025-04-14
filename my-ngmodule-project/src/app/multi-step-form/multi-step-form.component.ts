@@ -31,7 +31,7 @@ export class MultiStepFormComponent implements OnInit{
     private multiStepFormService: MultiStepFormService,
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
-    private router: Router, // ✅ Proper injection
+   private router: Router, // ✅ Proper injection
      // ✅ Assuming you have a service
   ) {   
     this.bookingForm = this.fb.group({
@@ -136,7 +136,7 @@ export class MultiStepFormComponent implements OnInit{
         this.invoiceService.setInvoiceData(invoiceData);
   
         // Navigate to invoice page
-        this.router.navigate(['/invoice']);
+         this.router.navigate(['/invoice']);
         
       },
       error: (error) => {

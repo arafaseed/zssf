@@ -7,7 +7,6 @@ import { LayoutComponent } from './Admin/layout/layout.component';
 import { VenueComponent } from './components/venue/venue.component';
 import { SettingComponent } from './Admin/setting/setting.component';
 import { BuildingComponent } from './Admin/building/building.component';
-import { BookingFormComponent } from './booking-form/booking-form.component';
 import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
 import { VenueDisplayComponent } from './Admin/venue-display/venue-display.component';
 import { LeasePackageTableComponent } from './Table/lease-package-table/lease-package-table.component';
@@ -27,11 +26,11 @@ const routes: Routes = [
   { path: '', redirectTo: 'venue', pathMatch: 'full' },
   // { path: 'home', component: HomeComponent },
   { path: 'venue', component: VenueViewComponent },
-  { path: 'booking/:id', component: BookingFormComponent },
   { path: 'reservation', component: HomeComponent },  
   { path: 'Venueslists', component: VenueDisplayComponent },
   { path: 'dash', component: DashboardComponent },
-  { path: 'bookings', component: BookingFormComponent },
+
+  { path: 'layout', component: LayoutComponent },
   { path: 'book', component:  MultiStepFormComponent},
   { path: 'login', component: LoginComponent },
   
@@ -65,8 +64,6 @@ const routes: Routes = [
       { path: 'regvenues/:id', component: EditVenueComponentComponent },
       { path: 'venueView', component: ViewVenuesComponent },
       { path: 'settings', component: SettingComponent },
-
-      { path: 'booking-form', component: BookingFormComponent },
       { path: 'bookinglist', component: BookingListComponent },
 
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Default admin page

@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     // Implement your login logic here
     // For example, check if the staffId and password match some predefined credentials
-    if (this.staffId === 'admin' && this.password === 'admin123') {
+    if (this.staffId === 'admin' && this.password === 'admin') {
       // Set role in localStorage and redirect to admin dashboard
       localStorage.setItem('role', 'admin');
       this.router.navigate(['/admin']);
