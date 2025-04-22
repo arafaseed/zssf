@@ -8,6 +8,8 @@ import { provideHttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core'; // Make sure this is imported
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { InvoiceServiceService } from '../Services/invoice-service.service';
+
 
 @Component({
   selector: 'app-multi-step-form',
@@ -24,7 +26,7 @@ export class MultiStepFormComponent implements OnInit{
     price: any; leaseId: number, packageName: string 
 }[] = [];
   venueId!: number;
-  invoiceService: any;
+  // invoiceService: any;
   //  dialog: any;
   
 
@@ -37,6 +39,7 @@ export class MultiStepFormComponent implements OnInit{
    private router: Router, // ✅ Proper injection
      // ✅ Assuming you have a service
   private dialog: MatDialog,
+  private invoiceService: InvoiceServiceService,
   
   ) {   
     this.bookingForm = this.fb.group({
@@ -133,11 +136,11 @@ export class MultiStepFormComponent implements OnInit{
           next: (response) => {
             console.log('Booking created successfully', response);
             this.snackBar.open('Booking created successfully!', 'Close', { duration: 3000 });
-  
+ 
             // Prepare invoice data
             const selectedVenue = this.venueOptions.find(v => v.venueId == this.bookingForm.value.venueId);
             const selectedPackage = this.packageOptions.find(p => p.leaseId == this.bookingForm.value.venuePackageId);
-            
+            console.log("hi");
             const invoiceData = {
               invoiceNumber: 'INV' + new Date().getTime(),
               date: new Date().toLocaleDateString(),

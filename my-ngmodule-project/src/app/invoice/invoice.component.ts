@@ -7,11 +7,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MultiStepFormService } from '../multi-step-form.service';
 import { BookingService } from '../Services/booking.service';
 
+
 @Component({
   selector: 'app-invoice',
   standalone: false,
   templateUrl: './invoice.component.html',
-  styleUrl: './invoice.component.css'
+  styleUrl: './invoice.component.css',
+
 })
 export class InvoiceComponent {
   invoice: any = null;
