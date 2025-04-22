@@ -66,6 +66,7 @@ import { BookingService } from './Services/booking.service';
 import { MultiStepFormComponent } from './multi-step-form/multi-step-form.component';
 import { BookingListComponent } from './booking-list/booking-list.component';
 import { InvoiceComponent } from './invoice/invoice.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -92,6 +93,7 @@ import { InvoiceComponent } from './invoice/invoice.component';
     EditVenueComponentComponent,
     MultiStepFormComponent,
      BookingListComponent,
+     ConfirmDialogComponent,
    
  
     

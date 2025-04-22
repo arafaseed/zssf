@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Confirm Booking</h2>
+<mat-dialog-content>
+  <p><strong>Name:</strong> {{ data.fullName }}</p>
+  <p><strong>Venue:</strong> {{ data.venue }}</p>
+  <p><strong>Package:</strong> {{ data.packageName }}</p>
+  <p><strong>Price:</strong> {{ data.price | currency }}</p>
+</mat-dialog-content>
+<mat-dialog-actions >
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onConfirm()">Confirm</button>
+</mat-dialog-actions>

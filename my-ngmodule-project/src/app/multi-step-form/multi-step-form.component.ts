@@ -6,6 +6,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core'; // Make sure this is imported
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-multi-step-form',
@@ -23,6 +25,7 @@ export class MultiStepFormComponent implements OnInit{
 }[] = [];
   venueId!: number;
   invoiceService: any;
+  //  dialog: any;
   
 
   constructor(
@@ -33,6 +36,8 @@ export class MultiStepFormComponent implements OnInit{
     private route: ActivatedRoute,
    private router: Router, // ✅ Proper injection
      // ✅ Assuming you have a service
+  private dialog: MatDialog,
+  
   ) {   
     this.bookingForm = this.fb.group({
       venueId: ['', Validators.required],
@@ -108,42 +113,59 @@ export class MultiStepFormComponent implements OnInit{
     this.currentStep--;
   }
 
+  // 
   onSubmit(): void {
+    // Open the confirmation dialog
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        fullName: this.bookingForm.value.fullName,
+        venue: this.selectedVenueName || 'N/A',
+        packageName: this.packageOptions.find(p => p.leaseId == this.bookingForm.value.venuePackageId)?.packageName || 'N/A',
+        price: this.packageOptions.find(p => p.leaseId == this.bookingForm.value.venuePackageId)?.price || 'N/A'
+      }
+    });
   
+    // Wait for the result of the dialog
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        // User confirmed, proceed with booking
+        this.bookingService.createBooking(this.bookingForm.value).subscribe({
+          next: (response) => {
+            console.log('Booking created successfully', response);
+            this.snackBar.open('Booking created successfully!', 'Close', { duration: 3000 });
   
-    this.bookingService.createBooking(this.bookingForm.value).subscribe({
-      next: (response) => {
-        console.log('Booking created successfully', response);
-        this.snackBar.open('Booking created successfully!', 'Close', { duration: 3000 });
+            // Prepare invoice data
+            const selectedVenue = this.venueOptions.find(v => v.venueId == this.bookingForm.value.venueId);
+            const selectedPackage = this.packageOptions.find(p => p.leaseId == this.bookingForm.value.venuePackageId);
+            
+            const invoiceData = {
+              invoiceNumber: 'INV' + new Date().getTime(),
+              date: new Date().toLocaleDateString(),
+              customerName: this.bookingForm.value.fullName,
+              customerEmail: this.bookingForm.value.email,
+              customerPhone: this.bookingForm.value.phoneNumber,
+              venue: selectedVenue ? selectedVenue.venueName : 'N/A',
+              eventDate: this.bookingForm.value.startDate,
+              amount: selectedPackage ? selectedPackage.price : 500, // Replace with actual price logic
+              paymentType: 'Credit Card'
+            };
   
-        // Prepare invoice data
-        const selectedVenue = this.venueOptions.find(v => v.venueId == this.bookingForm.value.venueId);
-        const selectedPackage = this.packageOptions.find(p => p.leaseId == this.bookingForm.value.venuePackageId);
-        
-        const invoiceData = {
-          invoiceNumber: 'INV' + new Date().getTime(),
-          date: new Date().toLocaleDateString(),
-          customerName: this.bookingForm.value.fullName,
-          customerEmail: this.bookingForm.value.email,
-          customerPhone: this.bookingForm.value.phoneNumber,
-          venue: selectedVenue ? selectedVenue.venueName : 'N/A',
-          eventDate: this.bookingForm.value.startDate,
-          amount: selectedPackage ? selectedPackage.price : 500, // Replace with actual price logic
-          paymentType: 'Credit Card'
-        };
+            // Store invoice in service before navigation
+            this.invoiceService.setInvoiceData(invoiceData);
   
-        // Store invoice in service before navigation
-        this.invoiceService.setInvoiceData(invoiceData);
-  
-        // Navigate to invoice page
-         this.router.navigate(['/invoice']);
-        
-      },
-      error: (error) => {
-        console.error('Error creating booking:', error);
-        this.snackBar.open('Booking failed. Please try again.', 'Close', { duration: 3000 });
+            // Navigate to invoice page
+            this.router.navigate(['/invoice']);
+            
+          },
+          error: (error) => {
+            console.error('Error creating booking:', error);
+            this.snackBar.open('Booking failed. Please try again.', 'Close', { duration: 3000 });
+          }
+        });
       }
     });
   }
+  
+  
       
 }
