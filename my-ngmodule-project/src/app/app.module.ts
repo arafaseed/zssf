@@ -92,8 +92,9 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     StaffDashboardComponent,
     EditVenueComponentComponent,
     MultiStepFormComponent,
-     BookingListComponent,
-     ConfirmDialogComponent,
+    BookingListComponent,
+    ConfirmDialogComponent,
+    InvoiceComponent,
    
  
     

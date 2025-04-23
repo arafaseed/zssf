@@ -3,7 +3,8 @@
   <p><strong>Name:</strong> {{ data.fullName }}</p>
   <p><strong>Venue:</strong> {{ data.venue }}</p>
   <p><strong>Package:</strong> {{ data.packageName }}</p>
-  <p><strong>Price:</strong> {{ data.price | currency }}</p>
+  <p><strong>Price:</strong> {{ data.price | currency:'TZS':'code' }}</p>
+
 </mat-dialog-content>
 <mat-dialog-actions >
   <button mat-button (click)="onCancel()">Cancel</button>
