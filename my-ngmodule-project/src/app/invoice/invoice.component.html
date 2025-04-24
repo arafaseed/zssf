@@ -12,7 +12,7 @@
     <h3>Booking Information</h3>
     <p><strong>Venue:</strong> {{ invoice.venue }}</p>
     <p><strong>Event Date:</strong> {{ invoice.eventDate }}</p>
-    <p><strong>Amount:</strong> ${{ invoice.amount }}</p>
+    <p><strong>Amount:</strong> TZS {{ invoice.amount | number:'1.2-2' }}</p>
     <p><strong>Payment Type:</strong> {{ invoice.paymentType }}</p>
 
     <button (click)="printInvoice()">Print Invoice</button>

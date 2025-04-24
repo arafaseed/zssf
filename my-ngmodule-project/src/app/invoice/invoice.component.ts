@@ -47,7 +47,7 @@ export class InvoiceComponent {
     doc.text(`Phone: ${this.invoice.customerPhone}`, 20, 70);
     doc.text(`Venue: ${this.invoice.venue}`, 20, 80);
     doc.text(`Event Date: ${this.invoice.eventDate}`, 20, 90);
-    doc.text(`Amount: TZS${this.invoice.amount}`, 20, 100);
+    doc.text(`Amount: $${this.invoice.amount}`, 20, 100);
     doc.text(`Payment Type: ${this.invoice.paymentType}`, 20, 110);
     doc.save("Invoice.pdf");
   }
