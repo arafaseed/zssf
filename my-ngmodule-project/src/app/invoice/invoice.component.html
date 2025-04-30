@@ -13,7 +13,10 @@
     <p><strong>Venue:</strong> {{ invoice.venue }}</p>
     <p><strong>Event Date:</strong> {{ invoice.eventDate }}</p>
     <p><strong>Amount:</strong> TZS {{ invoice.amount | number:'1.2-2' }}</p>
-    <p><strong>Payment Type:</strong> {{ invoice.paymentType }}</p>
+    <p><strong>Payment Status:</strong> {{ invoice.paymentType }}</p>
+
+    <h3>Control Number</h3>
+    <p><strong>Control Number:</strong> {{ invoice.controlNumber }}</p>
 
     <button (click)="printInvoice()">Print Invoice</button>
   </div>

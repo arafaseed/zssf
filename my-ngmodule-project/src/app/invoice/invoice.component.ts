@@ -35,7 +35,18 @@ export class InvoiceComponent {
       alert('No invoice data found!');
       this.router.navigate(['/venue']);
     }
+    this.invoice.invoiceNumber = this.invoice.invoiceCode;
+    this.invoice.date = this.invoice.date;
+    this.invoice.customerName = this.invoice.booking.customer.fullName;
+    this.invoice.customerEmail = this.invoice.booking.customer.email;
+    this.invoice.customerPhone = this.invoice.booking.customer.phone;
+    this.invoice.venue = this.invoice.booking.venue.venueName;
+    this.invoice.eventDate = this.invoice.booking.startDate;
+    this.invoice.amount = this.invoice.netAmount;
+    this.invoice.paymentType = this.invoice.status;
+    this.invoice.controlNumber = this.invoice.controlNumber?.number || 'N/A';
   }
+  
 
   printInvoice(): void {
     const doc = new jsPDF();
@@ -48,7 +59,10 @@ export class InvoiceComponent {
     doc.text(`Venue: ${this.invoice.venue}`, 20, 80);
     doc.text(`Event Date: ${this.invoice.eventDate}`, 20, 90);
     doc.text(`Amount: $${this.invoice.amount}`, 20, 100);
+    // doc.text(`Payment Type: ${this.invoice.paymentType}`, 20, 110);
+    //  doc.text(`Control Number: ${this.invoice.controlNumber}`, 20, 130);
     doc.text(`Payment Type: ${this.invoice.paymentType}`, 20, 110);
+    doc.text(`Control Number: ${this.invoice.controlNumber}`, 20, 130);
     doc.save("Invoice.pdf");
   }
   

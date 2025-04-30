@@ -150,6 +150,8 @@ export class MultiStepFormComponent implements OnInit{
               venue: selectedVenue ? selectedVenue.venueName : 'N/A',
               eventDate: this.bookingForm.value.startDate,
               amount: selectedPackage ? selectedPackage.price : 500, // Replace with actual price logic
+              controlNumber: response.controlNumber?.zancontrolNumber || 'N/A',
+        
               paymentType: 'Credit Card'
             };
   
