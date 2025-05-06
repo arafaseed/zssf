@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -68,6 +68,7 @@ import { BookingListComponent } from './booking-list/booking-list.component';
 import { InvoiceComponent } from './invoice/invoice.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -103,6 +104,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     
   ],
   imports: [
+    MatDatepickerModule,
     FullCalendarModule,
     MatCardModule,
     MatFormFieldModule,

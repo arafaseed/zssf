@@ -85,6 +85,7 @@ html, body {
   max-width: 100%;
   text-align: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  
 }
 
 /* Form Container */
@@ -98,6 +99,8 @@ form {
   display: flex;
   flex-direction: column;
   gap: 20px;
+ 
+  
 }
 
 /* Step Navigation Buttons */
@@ -138,10 +141,12 @@ form {
 
 .step-container > div {
   display: none;
+  
 }
 
 .step-container > .active {
   display: block;
+
 }
 
 /* Form Input Fields */
@@ -259,3 +264,111 @@ select.ng-valid {
     padding: 20px; /* Adjust padding */
   }
 }
+/* Style the container of the calendar */
+.mat-calendar {
+  width: 30rem;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+}
+
+/* Make the calendar header look nice */
+.mat-calendar-header {
+  background-color: #3f51b5;
+  color: #fff;
+  padding: 12px;
+  text-align: center;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Style the days of the week */
+.mat-calendar-table th {
+  font-size: 14px;
+  color: #757575;
+}
+
+/* Style the individual days */
+.mat-calendar-table td {
+  text-align: center;
+  padding: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hover effect on the days */
+.mat-calendar-table td:hover {
+  background-color: #3f51b5;
+  color: white;
+  border-radius: 50%;
+}
+
+/* Selected day highlight */
+.mat-calendar-table td.mat-calendar-body-selected {
+  background-color: #3f51b5 !important;
+  color: white !important;
+  border-radius: 50%;
+}
+
+/* Disabled days styling (weekends) */
+.mat-calendar-table td.mat-calendar-body-disabled {
+  color: #b0bec5;
+  pointer-events: none;
+}
+
+/* Style the date picker's button (next/previous) */
+.mat-calendar-next-button, .mat-calendar-prev-button {
+  color: #3f51b5;
+  font-size: 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Style for the current month and year */
+.mat-calendar-previous-button, .mat-calendar-next-button {
+  padding: 8px;
+  font-size: 16px;
+}
+
+/* Add margin between calendar and form fields */
+.date-picker-section {
+  margin-bottom: 20px;
+}
+
+/* Space between the calendar and the input fields */
+.mat-form-field {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.step1-container {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  margin-top: 1rem;
+}
+
+.calendar-section {
+  flex: 1;
+}
+
+.form-section {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+
+
+/* mat-card.calendar-container {
+  padding: 1rem;
+  width: 90rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+} */

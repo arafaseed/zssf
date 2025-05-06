@@ -1,34 +1,33 @@
-
-import { MultiStepFormService } from '../multi-step-form.service';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { BookingService } from '../Services/booking.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core'; // Make sure this is imported
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
+import { BookingService } from '../Services/booking.service';
+import { MultiStepFormService } from '../multi-step-form.service';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { InvoiceServiceService } from '../Services/invoice-service.service';
-
 
 @Component({
   selector: 'app-multi-step-form',
-  standalone: false,
   templateUrl: './multi-step-form.component.html',
-  styleUrl: './multi-step-form.component.css'
+  standalone: false,
+  styleUrls: ['./multi-step-form.component.css']
 })
-export class MultiStepFormComponent implements OnInit{
+export class MultiStepFormComponent implements OnInit {
   currentStep = 1;
   bookingForm: FormGroup;
-  selectedVenueName: string = '';  
-  venueOptions: { venueId: number, venueName: string, capacity: number }[] = [];
-  packageOptions: {
-    price: any; leaseId: number, packageName: string 
-}[] = [];
+  selectedVenueName = '';
+  venueOptions: { venueId: number; venueName: string; capacity: number }[] = [];
+  packageOptions: { leaseId: number; packageName: string; price: number }[] = [];
   venueId!: number;
-  // invoiceService: any;
-  //  dialog: any;
-  
+
+  selectedStartDate: Date = new Date();
+  selectedEndDate: Date | null = null;
+  showEndDate = false;
+  selectingEndDate = false; // 👈 New flag
+  selectedDate: Date = new Date(); // 👈 Re-add this
+
 
   constructor(
     private fb: FormBuilder,
@@ -36,18 +35,16 @@ export class MultiStepFormComponent implements OnInit{
     private multiStepFormService: MultiStepFormService,
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
-   private router: Router, // ✅ Proper injection
-     // ✅ Assuming you have a service
-  private dialog: MatDialog,
-  private invoiceService: InvoiceServiceService,
-  
-  ) {   
+    private router: Router,
+    private dialog: MatDialog,
+    private invoiceService: InvoiceServiceService
+  ) {
     this.bookingForm = this.fb.group({
       venueId: ['', Validators.required],
       venuePackageId: ['', Validators.required],
       startDate: ['', Validators.required],
       startTime: ['', Validators.required],
-      endDate: ['', Validators.required],
+      endDate: [''],
       endTime: ['', Validators.required],
       fullName: ['', Validators.required],
       phoneNumber: ['', [Validators.required, Validators.pattern('^\\+?[0-9]*$')]],
@@ -63,21 +60,16 @@ export class MultiStepFormComponent implements OnInit{
       if (venueId) {
         this.venueId = Number(venueId);
         this.bookingForm.patchValue({ venueId: this.venueId });
-  
         this.loadLeases(this.venueId);
       }
     });
-  
-    this.loadVenues(); // load venues first
+    this.loadVenues();
   }
-  
 
   loadVenues(): void {
     this.multiStepFormService.getVenues().subscribe({
       next: (venues) => {
         this.venueOptions = venues;
-  
-        // After venues are loaded, find and set the selected venue name
         const foundVenue = venues.find(v => v.venueId === this.venueId);
         if (foundVenue) {
           this.selectedVenueName = foundVenue.venueName;
@@ -86,7 +78,6 @@ export class MultiStepFormComponent implements OnInit{
       error: (error) => console.error('Error loading venues:', error)
     });
   }
-  
 
   loadLeases(venueId: number): void {
     this.multiStepFormService.getLeasesByVenue(venueId).subscribe({
@@ -95,11 +86,10 @@ export class MultiStepFormComponent implements OnInit{
     });
   }
 
-  onVenueChange(event: Event): void {
-    const selectedValue = (event.target as HTMLSelectElement).value;
-    this.bookingForm.patchValue({ venueId: Number(selectedValue) });
-    this.loadLeases(Number(selectedValue));
-  }
+  dateFilter = (date: Date | null): boolean => {
+    const day = (date || new Date()).getDay();
+    return day !== 0 && day !== 6;
+  };
 
   onPackageChange(event: Event): void {
     const selectedValue = (event.target as HTMLSelectElement).value;
@@ -107,70 +97,87 @@ export class MultiStepFormComponent implements OnInit{
   }
 
   nextStep(): void {
-    this.bookingForm.markAllAsTouched();
-    console.log('Current form data:', this.bookingForm.value);
+    // if (this.bookingForm.invalid) {
+    //    this.bookingForm.markAllAsTouched();
+    //   return;
+    // }
     this.currentStep++;
+    console.log('Current step is now:', this.currentStep);
   }
+  
 
   prevStep(): void {
     this.currentStep--;
   }
 
-  // 
   onSubmit(): void {
-    // Open the confirmation dialog
+    if (this.bookingForm.invalid) {
+      this.bookingForm.markAllAsTouched();
+      return;
+    }
+
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         fullName: this.bookingForm.value.fullName,
         venue: this.selectedVenueName || 'N/A',
-        packageName: this.packageOptions.find(p => p.leaseId == this.bookingForm.value.venuePackageId)?.packageName || 'N/A',
+        packageName:
+          this.packageOptions.find(p => p.leaseId == this.bookingForm.value.venuePackageId)?.packageName || 'N/A',
         price: this.packageOptions.find(p => p.leaseId == this.bookingForm.value.venuePackageId)?.price || 'N/A'
       }
     });
-  
-    // Wait for the result of the dialog
+
     dialogRef.afterClosed().subscribe((result: boolean) => {
       if (result) {
-        // User confirmed, proceed with booking
         this.bookingService.createBooking(this.bookingForm.value).subscribe({
-          next: (response) => {
-            console.log('Booking created successfully', response);
+          next: () => {
             this.snackBar.open('Booking created successfully!', 'Close', { duration: 3000 });
- 
-            // Prepare invoice data
-            const selectedVenue = this.venueOptions.find(v => v.venueId == this.bookingForm.value.venueId);
-            const selectedPackage = this.packageOptions.find(p => p.leaseId == this.bookingForm.value.venuePackageId);
-            console.log("hi");
+
             const invoiceData = {
               invoiceNumber: 'INV' + new Date().getTime(),
-              date: new Date().toLocaleDateString(),
               customerName: this.bookingForm.value.fullName,
               customerEmail: this.bookingForm.value.email,
-              customerPhone: this.bookingForm.value.phoneNumber,
-              venue: selectedVenue ? selectedVenue.venueName : 'N/A',
-              eventDate: this.bookingForm.value.startDate,
-              amount: selectedPackage ? selectedPackage.price : 500, // Replace with actual price logic
-              controlNumber: response.controlNumber?.zancontrolNumber || 'N/A',
-        
+              amount: this.packageOptions.find(p => p.leaseId == this.bookingForm.value.venuePackageId)?.price || 500,
               paymentType: 'Credit Card'
             };
-  
-            // Store invoice in service before navigation
             this.invoiceService.setInvoiceData(invoiceData);
-  
-            // Navigate to invoice page
             this.router.navigate(['/invoice']);
-            
           },
-          error: (error) => {
-            console.error('Error creating booking:', error);
+          error: () => {
             this.snackBar.open('Booking failed. Please try again.', 'Close', { duration: 3000 });
           }
         });
       }
     });
   }
-  
-  
-      
+
+  // Updated date selection logic
+  onDateSelected(date: Date | null): void {
+    if (!date) return;
+
+    if (this.selectingEndDate && this.showEndDate) {
+      this.selectedEndDate = date;
+      this.bookingForm.patchValue({ endDate: date });
+      this.selectingEndDate = false;
+    } else {
+      this.selectedStartDate = date;
+      this.bookingForm.patchValue({ startDate: date });
+
+      // Optionally reset end date if start date changes
+      if (this.showEndDate) {
+        this.bookingForm.patchValue({ endDate: null });
+        this.selectedEndDate = null;
+      }
+    }
+  }
+
+  toggleEndDate(): void {
+    this.showEndDate = !this.showEndDate;
+
+    if (!this.showEndDate) {
+      this.bookingForm.patchValue({ endDate: null });
+      this.selectedEndDate = null;
+    } else {
+      this.selectingEndDate = true; // 👈 Now allow user to select end date from calendar
+    }
+  }
 }

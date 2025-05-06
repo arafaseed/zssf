@@ -1,76 +1,96 @@
-<app-header></app-header>
 
-<div id="home-page">
-  <div class="main-content">
-    <div class="content-box">
-      <!-- Modified card to attract users to stay on the venue page -->
-      <div class="welcome-card">
-        <div class="card">
-          <div class="card-header text-center">
-            <h4>Discover Our Exclusive Venues</h4>
-          </div>
-          <div class="card-body">
-            <p>Explore a wide range of venues for your events, meetings, and celebrations. Find the perfect space that fits your needs and book with ease.</p>
-          </div>
+<app-header></app-header>
+<div class="main-content">
+  <div class="content-box">
+    <div class="welcome-card">
+      <div class="card">
+        <div class="card-header text-center">
+          <h4>Discover Our Exclusive Venues</h4>
+        </div>
+        <div class="card-body">
+          <p>
+            Explore a wide range of venues for your events, meetings, and celebrations. 
+            Find the perfect space that fits your needs and book with ease.
+          </p>
         </div>
       </div>
     </div>
-
-
-<div *ngIf="currentStep === 1">
-  <h2>Step 1: Select Date & Time</h2>
-  
-  <div>
-    <label>Venue:</label>
-    <input type="text" [value]="selectedVenueName" disabled />
   </div>
-
-  <!-- Hidden input for venueId -->
-  <input formControlName="venueId" type="hidden" />
+ 
+  <form [formGroup]="bookingForm" class="big">
+    <div class="biger">
+    <div *ngIf="currentStep === 1">
+      <h2>Step 1: Select Date & Time</h2>
   
-  <label for="venuePackageId">Package</label>
-  <select formControlName="venuePackageId" id="venuePackageId" required (change)="onPackageChange($event)">
-    <option value="" disabled>Select Package</option>
-    <option *ngFor="let package of packageOptions" [value]="package.leaseId">
-      {{ package.packageName }}
-    </option>
-  </select>
+      <div class="step1-container">
+        <!-- Left: Calendar -->
+        <div class="calendar-section">
+          <mat-card class="calendar-container">
+            <mat-calendar
+              [selected]="selectedDate"
+              [dateFilter]="dateFilter"
+              (selectedChange)="onDateSelected($event)">
+            </mat-calendar>
+          </mat-card>
+        </div>
   
-
-  <form [formGroup]="bookingForm">
-    <label for="startDate">Start Date</label>
-    <input type="date" formControlName="startDate" id="startDate" required>
-
-    <label for="startTime">Start Time</label>
-    <input type="time" formControlName="startTime" id="startTime" required>
-
-    <label for="endDate">End Date</label>
-    <input type="date" formControlName="endDate" id="endDate" required>
-
-    <label for="endTime">End Time</label>
-    <input type="time" formControlName="endTime" id="endTime" required>
-
-    <button type="button" (click)="nextStep()">Next</button>
+        <!-- Right: Form Inputs -->
+        <div class="form-section">
+          <label>Venue:</label>
+          <input type="text" [value]="selectedVenueName" disabled />
+          <input formControlName="venueId" type="hidden" />
+  
+          <label for="venuePackageId">Package</label>
+          <select formControlName="venuePackageId" id="venuePackageId" required (change)="onPackageChange($event)">
+            <option value="" disabled>Select Package</option>
+            <option *ngFor="let package of packageOptions" [value]="package.leaseId">
+              {{ package.packageName }} for Tzs{{ package.price }}
+            </option>
+          </select>
+  
+          <div class="selected-date-display">
+            <strong>Date:</strong> {{ bookingForm.get('startDate')?.value | date: 'fullDate' }}
+          </div>
+  
+          <button mat-icon-button color="primary" (click)="toggleEndDate()" aria-label="Add End Date">
+            <mat-icon>{{ showEndDate ? 'remove_circle' : 'add_circle' }}</mat-icon>
+          </button>
+  
+          <div *ngIf="showEndDate">
+            <p><strong>End Date:</strong> {{ bookingForm.get('endDate')?.value | date: 'fullDate' }}</p>
+            <p><em>Select another date from the calendar above.</em></p>
+          </div>
+  
+          <label for="startTime">Start Time</label>
+          <input type="time" formControlName="startTime" id="startTime" required />
+  
+          <label for="endTime">End Time</label>
+          <input type="time" formControlName="endTime" id="endTime" required />
+  
+          <button type="button" (click)="nextStep()">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+    <!-- Step 2 (unchanged) -->
+    <div *ngIf="currentStep === 2">
+      <h2>Step 2: Customer Details</h2>
+  
+      <label for="fullName">Full Name</label>
+      <input type="text" formControlName="fullName" id="fullName" required />
+  
+      <label for="phoneNumber">Phone Number</label>
+      <input type="text" formControlName="phoneNumber" id="phoneNumber" required />
+  
+      <label for="email">Email</label>
+      <input type="email" formControlName="email" id="email" required />
+  
+      <label for="address">Address</label>
+      <input type="text" formControlName="address" id="address" required />
+  
+      <button type="button" (click)="prevStep()">Previous</button>
+      <button type="submit" (click)="onSubmit()">Submit</button>
+    </div>
   </form>
-</div>
-
-
-<div *ngIf="currentStep === 2">
-  <h2>Step 2: Customer Details</h2>
-  <form [formGroup]="bookingForm">
-    <label for="fullName">Full Name</label>
-    <input type="text" formControlName="fullName" id="fullName" required>
-
-    <label for="phoneNumber">Phone Number</label>
-    <input type="text" formControlName="phoneNumber" id="phoneNumber" required>
-
-    <label for="email">Email</label>
-    <input type="email" formControlName="email" id="email" required>
-
-    <label for="address">Address</label>
-    <input type="text" formControlName="address" id="address" required>
-
-    <button type="button" (click)="prevStep()">Previous</button>
-    <button type="submit" (click)="onSubmit()">Submit</button>
-  </form>
-</div>
+  

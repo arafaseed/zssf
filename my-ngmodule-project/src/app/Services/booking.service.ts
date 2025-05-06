@@ -99,9 +99,13 @@ export class BookingService {
   }
 
   // Existing method to get booked dates for a venue
-  getBookedDates(venueId: number): Observable<string[]> {
-    return this.http.get<string[]>(`${this.apiUrl}/venue/${venueId}/booked-dates`);
+  // getBookedDates(venueId: number): Observable<string[]> {
+  //   return this.http.get<string[]>(`${this.apiUrl}/venue/${venueId}/booked-dates`);
+  // }
+  getBookedDates(venueId: number) {
+    return this.http.get<any[]>(`/api/bookings/venue/${venueId}/booked-slots`);
   }
+  
 
   // Existing method to create a booking
   createBooking(bookingData: any): Observable<any> {
