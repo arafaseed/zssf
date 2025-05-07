@@ -18,7 +18,7 @@ export class VenueService {
   }
 
   getBuildings(): Observable<any> {
-    return this.http.get('http://localhost:8080/api/buildings/all');
+    return this.http.get('http://localhost:8080/api/buildings/view/all');
   }
 
   getLeasePackages(): Observable<any> {
