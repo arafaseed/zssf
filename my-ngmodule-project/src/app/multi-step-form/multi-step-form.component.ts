@@ -88,7 +88,7 @@ export class MultiStepFormComponent implements OnInit {
 
   dateFilter = (date: Date | null): boolean => {
     const day = (date || new Date()).getDay();
-    return day !== 0 && day !== 6;
+    return day !== 1 && day !== 8;
   };
 
   onPackageChange(event: Event): void {
