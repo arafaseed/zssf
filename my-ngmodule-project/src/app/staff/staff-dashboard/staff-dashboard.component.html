@@ -1,0 +1,28 @@
+<div class="flex h-screen overflow-hidden">
+  <!-- Sidebar -->
+  <div
+    class="fixed inset-y-0 left-0 z-30 w-64 transform bg-gray-800 text-white transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0"
+    [ngClass]="{ '-translate-x-full': !isSidebarOpen }"
+  >
+    <app-navbar></app-navbar>
+  </div>
+
+  <!-- Overlay for mobile when sidebar is open -->
+  <div
+    class="fixed inset-0 z-20 bg-black bg-opacity-50 transition-opacity lg:hidden"
+    *ngIf="isSidebarOpen"
+    (click)="toggleSidebar()"
+  ></div>
+
+  <!-- Main Content Area -->
+  <div class="flex-1 flex flex-col overflow-y-auto">
+    <!-- Topbar -->
+    <app-home (toggleSidebar)="toggleSidebar()"></app-home>
+
+    <!-- Page Content -->
+    <main class="flex-1 bg-gray-100 p-4 overflow-auto">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>
+

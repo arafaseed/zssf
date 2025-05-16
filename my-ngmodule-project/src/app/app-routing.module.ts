@@ -14,7 +14,7 @@ import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-pack
 import { BuildinglistComponent } from './Admin/buildinglist/buildinglist.component';
 import { ViewVenuesComponent } from './Admin/view-venues/view-venues.component';
 import { LoginComponent } from './login/login.component';
-import { StaffDashboardComponent } from './staff-dashboard/staff-dashboard.component';
+import { StaffDashboardComponent } from './staff/staff-dashboard/staff-dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
 import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/lease-package-edit-form.component';
 import { EditVenueComponentComponent } from './edit-venue-component/edit-venue-component.component';
@@ -69,6 +69,11 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Default admin page
       { path: '**', redirectTo: 'dashboard' } // Catch-all
     ]
+  },
+  { path: 'staffdash', redirectTo: 'staff/dashboard', pathMatch: 'full' },
+  {
+    path: 'staff',
+    loadChildren: () => import('./staff/staff.module').then(m => m.StaffModule)
   }
 ];
 

@@ -1,0 +1,16 @@
+<nav class="bg-gray-800 text-white p-4">
+  <h2 class="text-lg font-bold mb-4">Venues</h2>
+  <ul class="space-y-2">
+    <li *ngFor="let venue of venues">
+      <button
+        class="w-full text-left px-4 py-2 rounded transition duration-200"
+        [ngClass]="{
+          'bg-blue-500': isActive(venue),
+          'hover:bg-blue-600': !isActive(venue)
+        }"
+        (click)="setActiveVenue(venue)">
+        {{ venue.venueName }}
+      </button>
+    </li>
+  </ul>
+</nav>

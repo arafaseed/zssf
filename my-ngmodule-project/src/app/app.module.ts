@@ -56,7 +56,7 @@ import { MajengoComponent } from './Admin/majengo/majengo.component';
 import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { LoginComponent } from './login/login.component';
-import { StaffDashboardComponent } from './staff-dashboard/staff-dashboard.component';
+// import { StaffDashboardComponent } from './staff/staff-dashboard/staff-dashboard.component';
 
 
 
@@ -90,7 +90,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     ViewVenuesComponent,
     LeasePackageFormComponent,
     LoginComponent,
-    StaffDashboardComponent,
+    // StaffDashboardComponent,
     EditVenueComponentComponent,
     MultiStepFormComponent,
     BookingListComponent,
