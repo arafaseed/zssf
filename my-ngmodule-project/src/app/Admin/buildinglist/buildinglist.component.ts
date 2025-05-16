@@ -74,13 +74,18 @@ export class BuildinglistComponent implements OnInit {
   // Delete a building
   deleteLeasePackage(id: number): void {
     const confirmDelete = window.confirm('Are you sure you want to delete this building?');
-    
     if (confirmDelete) {
-      this.buildingService.deleteBuilding(id).subscribe(() => {
-        this.loadLeaseBuilding();
-      });
+      this.buildingService.deleteBuilding(id).subscribe(
+        () => {
+          this.loadLeaseBuilding();
+          this.snackBar.open('Building deleted successfully!', 'Close', { duration: 3000 });
+        },
+        (error) => {
+          console.error('Error deleting building:', error);
+          this.snackBar.open('Failed to delete building. Check console for details.', 'Close', { duration: 4000 });
+        }
+      );
     }
+  }
   
-  
-}
 }

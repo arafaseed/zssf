@@ -49,7 +49,7 @@
           </select>
   
           <div class="selected-date-display">
-            <strong>Date:</strong> {{ bookingForm.get('startDate')?.value | date: 'fullDate' }}
+            <strong>Date: Pick from the calender and if you want to add another date click the plus sign</strong> {{ bookingForm.get('startDate')?.value | date: 'fullDate' }}
           </div>
   
           <button mat-icon-button color="primary" (click)="toggleEndDate()" aria-label="Add End Date">
@@ -61,12 +61,19 @@
             <p><em>Select another date from the calendar beside.</em></p>
           </div>
   
-          <label for="startTime">Start Time</label>
-          <input type="time" formControlName="startTime" id="startTime" required />
-  
-          <label for="endTime">End Time</label>
-          <input type="time" formControlName="endTime" id="endTime" required />
-  
+          <label for="session">Select Session</label>
+          <select formControlName="session" id="session" required (change)="onSessionChange()">
+            <option value="" disabled>Select a session</option>
+            <option *ngFor="let session of sessionOptions" [value]="session.label">
+              {{ session.label }}
+            </option>
+          </select>
+          
+          <!-- Optional: Show selected time range -->
+          <div *ngIf="selectedSessionTime">
+            <strong>Time Range:</strong> {{ selectedSessionTime }}
+          </div>
+          
           <button type="button" (click)="nextStep()">Next</button>
         </div>
       </div>

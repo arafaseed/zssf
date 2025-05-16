@@ -15,6 +15,11 @@ import { InvoiceServiceService } from '../Services/invoice-service.service';
   styleUrls: ['./multi-step-form.component.css']
 })
 export class MultiStepFormComponent implements OnInit {
+  sessionOptions = [
+    { label: 'Session 1: 12:00 AM – 1:00 PM', start: '06:00', end: '13:00' },
+    { label: 'Session 2: 2:00 PM – 6:00 AM', start: '14:00', end: '00:00' }
+  ];
+  selectedSessionTime: string | null = null;
   currentStep = 1;
   bookingForm: FormGroup;
   selectedVenueName = '';
@@ -25,9 +30,8 @@ export class MultiStepFormComponent implements OnInit {
   selectedStartDate: Date = new Date();
   selectedEndDate: Date | null = null;
   showEndDate = false;
-  selectingEndDate = false; // 👈 New flag
-  selectedDate: Date = new Date(); // 👈 Re-add this
-
+  selectingEndDate = false;
+  selectedDate: Date = new Date();
 
   constructor(
     private fb: FormBuilder,
@@ -50,7 +54,8 @@ export class MultiStepFormComponent implements OnInit {
       phoneNumber: ['', [Validators.required, Validators.pattern('^\\+?[0-9]*$')]],
       email: ['', [Validators.required, Validators.email]],
       address: ['', Validators.required],
-      discountRate: [0]
+      discountRate: [0],
+      session: ['', Validators.required]
     });
   }
 
@@ -97,17 +102,41 @@ export class MultiStepFormComponent implements OnInit {
   }
 
   nextStep(): void {
-    // if (this.bookingForm.invalid) {
-    //    this.bookingForm.markAllAsTouched();
-    //   return;
-    // }
+    const requiredFields = ['venueId', 'venuePackageId', 'startDate', 'startTime', 'endTime'];
+
+    let hasErrors = false;
+    requiredFields.forEach(field => {
+      const control = this.bookingForm.get(field);
+      if (control && control.invalid) {
+        control.markAsTouched();
+        hasErrors = true;
+      }
+    });
+
+    if (hasErrors) {
+      this.snackBar.open('Please fill in all required fields before continuing.', 'Close', {
+        duration: 3000,
+      });
+      return;
+    }
+
     this.currentStep++;
-    console.log('Current step is now:', this.currentStep);
   }
-  
 
   prevStep(): void {
     this.currentStep--;
+  }
+
+  onSessionChange(): void {
+    const selectedLabel = this.bookingForm.get('session')?.value;
+    const session = this.sessionOptions.find(s => s.label === selectedLabel);
+    if (session) {
+      this.selectedSessionTime = `${session.start} – ${session.end}`;
+      this.bookingForm.patchValue({
+        startTime: session.start,
+        endTime: session.end
+      });
+    }
   }
 
   onSubmit(): void {
@@ -116,13 +145,39 @@ export class MultiStepFormComponent implements OnInit {
       return;
     }
 
+    // Ensure correct time is patched before submission
+    const selectedSession = this.sessionOptions.find(
+      s => s.label === this.bookingForm.value.session
+    );
+    if (selectedSession) {
+      this.bookingForm.patchValue({
+        startTime: selectedSession.start,
+        endTime: selectedSession.end
+      });
+    }
+
+    // Calculate duration in days
+    const startDate = new Date(this.bookingForm.value.startDate);
+    const endDate = this.bookingForm.value.endDate ? new Date(this.bookingForm.value.endDate) : startDate;
+    const durationInDays =
+      Math.floor((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24)) + 1;
+
+    // Get selected package price per day
+    const selectedPackage = this.packageOptions.find(
+      p => p.leaseId == this.bookingForm.value.venuePackageId
+    );
+
+    const pricePerDay = selectedPackage?.price || 0;
+    const totalPrice = pricePerDay * durationInDays;
+
+    // Open confirmation dialog
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         fullName: this.bookingForm.value.fullName,
         venue: this.selectedVenueName || 'N/A',
-        packageName:
-          this.packageOptions.find(p => p.leaseId == this.bookingForm.value.venuePackageId)?.packageName || 'N/A',
-        price: this.packageOptions.find(p => p.leaseId == this.bookingForm.value.venuePackageId)?.price || 'N/A'
+        packageName: selectedPackage?.packageName || 'N/A',
+        price: totalPrice,
+        durationInDays: durationInDays
       }
     });
 
@@ -136,7 +191,7 @@ export class MultiStepFormComponent implements OnInit {
               invoiceNumber: 'INV' + new Date().getTime(),
               customerName: this.bookingForm.value.fullName,
               customerEmail: this.bookingForm.value.email,
-              amount: this.packageOptions.find(p => p.leaseId == this.bookingForm.value.venuePackageId)?.price || 500,
+              amount: totalPrice,
               paymentType: 'Credit Card'
             };
             this.invoiceService.setInvoiceData(invoiceData);
@@ -150,7 +205,6 @@ export class MultiStepFormComponent implements OnInit {
     });
   }
 
-  // Updated date selection logic
   onDateSelected(date: Date | null): void {
     if (!date) return;
 
@@ -162,7 +216,6 @@ export class MultiStepFormComponent implements OnInit {
       this.selectedStartDate = date;
       this.bookingForm.patchValue({ startDate: date });
 
-      // Optionally reset end date if start date changes
       if (this.showEndDate) {
         this.bookingForm.patchValue({ endDate: null });
         this.selectedEndDate = null;
@@ -177,7 +230,7 @@ export class MultiStepFormComponent implements OnInit {
       this.bookingForm.patchValue({ endDate: null });
       this.selectedEndDate = null;
     } else {
-      this.selectingEndDate = true; // 👈 Now allow user to select end date from calendar
+      this.selectingEndDate = true;
     }
   }
 }

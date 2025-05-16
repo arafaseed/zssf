@@ -27,7 +27,8 @@ export class BuildinglistService {
   
   deleteBuilding(id: number): Observable<void> {
     console.log('Deleting building with ID:', id);
-    return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
+    return this.http.delete<void>(`http://localhost:8080/api/buildings/delete/${id}`);
   }
+  
 
 }
