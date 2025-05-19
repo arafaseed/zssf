@@ -1,0 +1,14 @@
+<p>check-out-list works!</p>
+<div class="cards">
+    <div class="card" *ngFor="let booking of bookings">
+      <h3>{{ booking.venueName }}</h3>
+      <p><strong>Package:</strong> {{ booking.packageName }} ({{ booking.price | currency }})</p>
+      <p><strong>Customer:</strong> {{ booking.customerName }} — {{ booking.customerPhone }}</p>
+      <button (click)="openCheckoutModal(booking)">Check Out</button>
+    </div>
+  
+    <div *ngIf="bookings.length === 0" class="empty">
+      No bookings to check out.
+    </div>
+  </div>
+  
