@@ -37,14 +37,22 @@ export class InvoiceComponent {
     }
     this.invoice.invoiceNumber = this.invoice.invoiceCode;
     this.invoice.date = this.invoice.date;
-    this.invoice.customerName = this.invoice.booking.customer.fullName;
-    this.invoice.customerEmail = this.invoice.booking.customer.email;
-    this.invoice.customerPhone = this.invoice.booking.customer.phone;
-    this.invoice.venue = this.invoice.booking.venue.venueName;
+    // this.invoice.customerName = this.invoice.booking.customer.fullName;
+    // this.invoice.customerEmail = this.invoice.booking.customer.email;
+    // this.invoice.customerPhone = this.invoice.booking.customer.phone;
+    // this.invoice.venue = this.invoice.booking.venue.venueName;
+    this.invoice.customerName = this.invoice.customerName;
+this.invoice.customerEmail = this.invoice.customerEmail;
+this.invoice.customerPhone = this.invoice.customerPhone;
+this.invoice.venue = this.invoice.venue;
     this.invoice.eventDate = this.invoice.booking.startDate;
     this.invoice.amount = this.invoice.netAmount;
     this.invoice.paymentType = this.invoice.status;
-    this.invoice.controlNumber = this.invoice.controlNumber?.number || 'N/A';
+    this.invoice.controlNumber = this.invoice.controlNumber || 'N/A';
+
+
+
+
   }
   
 

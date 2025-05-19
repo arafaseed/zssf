@@ -366,4 +366,13 @@ select.ng-valid {
   flex-direction: column;
   gap: 1rem;
 }
+/* Highlight booked dates */
+.highlight-date .mat-calendar-body-cell-content {
+  background-color: #d400ff !important;
+  color: black;
+  border-radius: 50%;
+}
+
+
+
 

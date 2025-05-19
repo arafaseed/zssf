@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
+
 import { BookingService } from '../Services/booking.service';
 import { MultiStepFormService } from '../multi-step-form.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
@@ -11,27 +12,28 @@ import { InvoiceServiceService } from '../Services/invoice-service.service';
 @Component({
   selector: 'app-multi-step-form',
   templateUrl: './multi-step-form.component.html',
-  standalone: false,
-  styleUrls: ['./multi-step-form.component.css']
+  styleUrls: ['./multi-step-form.component.css'],
+  standalone: false
 })
 export class MultiStepFormComponent implements OnInit {
   sessionOptions = [
-    { label: 'Session 1: 12:00 AM – 1:00 PM', start: '06:00', end: '13:00' },
-    { label: 'Session 2: 2:00 PM – 6:00 AM', start: '14:00', end: '00:00' }
+    { label: 'Session 1: 12:00 AM – 1:00 PM', start: '00:00', end: '13:00' },
+    { label: 'Session 2: 2:00 PM – 6:00 AM', start: '14:00', end: '06:00' }
   ];
+
   selectedSessionTime: string | null = null;
   currentStep = 1;
   bookingForm: FormGroup;
   selectedVenueName = '';
   venueOptions: { venueId: number; venueName: string; capacity: number }[] = [];
   packageOptions: { leaseId: number; packageName: string; price: number }[] = [];
-  venueId!: number;
 
+  venueId?: number;
+  selectedDate: Date | null = null;
   selectedStartDate: Date = new Date();
   selectedEndDate: Date | null = null;
   showEndDate = false;
   selectingEndDate = false;
-  selectedDate: Date = new Date();
 
   constructor(
     private fb: FormBuilder,
@@ -51,7 +53,7 @@ export class MultiStepFormComponent implements OnInit {
       endDate: [''],
       endTime: ['', Validators.required],
       fullName: ['', Validators.required],
-      phoneNumber: ['', [Validators.required, Validators.pattern('^\\+?[0-9]*$')]],
+      phoneNumber: ['', [Validators.required, Validators.pattern(/^\+?[0-9]*$/)]],
       email: ['', [Validators.required, Validators.email]],
       address: ['', Validators.required],
       discountRate: [0],
@@ -61,11 +63,11 @@ export class MultiStepFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      const venueId = params['venueId'];
+      const venueId = +params['venueId'];
       if (venueId) {
-        this.venueId = Number(venueId);
-        this.bookingForm.patchValue({ venueId: this.venueId });
-        this.loadLeases(this.venueId);
+        this.venueId = venueId;
+        this.bookingForm.patchValue({ venueId });
+        this.loadLeases(venueId);
       }
     });
     this.loadVenues();
@@ -75,48 +77,43 @@ export class MultiStepFormComponent implements OnInit {
     this.multiStepFormService.getVenues().subscribe({
       next: (venues) => {
         this.venueOptions = venues;
-        const foundVenue = venues.find(v => v.venueId === this.venueId);
-        if (foundVenue) {
-          this.selectedVenueName = foundVenue.venueName;
-        }
+        const selected = venues.find(v => v.venueId === this.venueId);
+        this.selectedVenueName = selected?.venueName ?? '';
       },
-      error: (error) => console.error('Error loading venues:', error)
+      error: (err) => console.error('Failed to load venues:', err)
     });
   }
 
   loadLeases(venueId: number): void {
     this.multiStepFormService.getLeasesByVenue(venueId).subscribe({
       next: (leases) => this.packageOptions = leases,
-      error: (error) => console.error('Error loading leases:', error)
+      error: (err) => console.error('Failed to load packages:', err)
     });
   }
 
   dateFilter = (date: Date | null): boolean => {
-    const day = (date || new Date()).getDay();
-    return day !== 1 && day !== 8;
+    return date ? date.getDay() !== 1 : false; // disable Mondays
   };
 
   onPackageChange(event: Event): void {
-    const selectedValue = (event.target as HTMLSelectElement).value;
-    this.bookingForm.patchValue({ venuePackageId: Number(selectedValue) });
+    const value = (event.target as HTMLSelectElement).value;
+    this.bookingForm.patchValue({ venuePackageId: +value });
   }
 
   nextStep(): void {
-    const requiredFields = ['venueId', 'venuePackageId', 'startDate', 'startTime', 'endTime'];
-
+    const required = ['venueId', 'venuePackageId', 'startDate', 'startTime', 'endTime'];
     let hasErrors = false;
-    requiredFields.forEach(field => {
+
+    required.forEach(field => {
       const control = this.bookingForm.get(field);
-      if (control && control.invalid) {
+      if (control?.invalid) {
         control.markAsTouched();
         hasErrors = true;
       }
     });
 
     if (hasErrors) {
-      this.snackBar.open('Please fill in all required fields before continuing.', 'Close', {
-        duration: 3000,
-      });
+      this.snackBar.open('Please fill in all required fields before continuing.', 'Close', { duration: 3000 });
       return;
     }
 
@@ -124,11 +121,11 @@ export class MultiStepFormComponent implements OnInit {
   }
 
   prevStep(): void {
-    this.currentStep--;
+    if (this.currentStep > 1) this.currentStep--;
   }
 
   onSessionChange(): void {
-    const selectedLabel = this.bookingForm.get('session')?.value;
+    const selectedLabel = this.bookingForm.value.session;
     const session = this.sessionOptions.find(s => s.label === selectedLabel);
     if (session) {
       this.selectedSessionTime = `${session.start} – ${session.end}`;
@@ -145,7 +142,6 @@ export class MultiStepFormComponent implements OnInit {
       return;
     }
 
-    // Ensure correct time is patched before submission
     const selectedSession = this.sessionOptions.find(
       s => s.label === this.bookingForm.value.session
     );
@@ -156,33 +152,30 @@ export class MultiStepFormComponent implements OnInit {
       });
     }
 
-    // Calculate duration in days
     const startDate = new Date(this.bookingForm.value.startDate);
-    const endDate = this.bookingForm.value.endDate ? new Date(this.bookingForm.value.endDate) : startDate;
-    const durationInDays =
-      Math.floor((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24)) + 1;
+    const endDateRaw = this.bookingForm.value.endDate;
+    const endDate = endDateRaw ? new Date(endDateRaw) : startDate;
+    const validEndDate = endDate >= startDate ? endDate : startDate;
+    const durationInDays = Math.floor((validEndDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24)) + 1;
 
-    // Get selected package price per day
     const selectedPackage = this.packageOptions.find(
-      p => p.leaseId == this.bookingForm.value.venuePackageId
+      p => p.leaseId === this.bookingForm.value.venuePackageId
     );
-
     const pricePerDay = selectedPackage?.price || 0;
     const totalPrice = pricePerDay * durationInDays;
 
-    // Open confirmation dialog
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         fullName: this.bookingForm.value.fullName,
         venue: this.selectedVenueName || 'N/A',
         packageName: selectedPackage?.packageName || 'N/A',
         price: totalPrice,
-        durationInDays: durationInDays
+        durationInDays
       }
     });
 
-    dialogRef.afterClosed().subscribe((result: boolean) => {
-      if (result) {
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
         this.bookingService.createBooking(this.bookingForm.value).subscribe({
           next: () => {
             this.snackBar.open('Booking created successfully!', 'Close', { duration: 3000 });
@@ -194,6 +187,7 @@ export class MultiStepFormComponent implements OnInit {
               amount: totalPrice,
               paymentType: 'Credit Card'
             };
+
             this.invoiceService.setInvoiceData(invoiceData);
             this.router.navigate(['/invoice']);
           },
@@ -215,7 +209,6 @@ export class MultiStepFormComponent implements OnInit {
     } else {
       this.selectedStartDate = date;
       this.bookingForm.patchValue({ startDate: date });
-
       if (this.showEndDate) {
         this.bookingForm.patchValue({ endDate: null });
         this.selectedEndDate = null;
@@ -229,8 +222,18 @@ export class MultiStepFormComponent implements OnInit {
     if (!this.showEndDate) {
       this.bookingForm.patchValue({ endDate: null });
       this.selectedEndDate = null;
+      this.selectingEndDate = false;
     } else {
       this.selectingEndDate = true;
     }
   }
+
+  onDateChange(date: Date): void {
+    this.selectedDate = date;
+  }
+
+  dateClass = (d: Date): string => {
+    const date = d.getDate();
+    return (date === 1 || date === 10 || date === 20) ? 'highlight-date' : '';
+  };
 }

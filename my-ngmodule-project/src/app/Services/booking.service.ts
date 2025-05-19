@@ -1,54 +1,7 @@
-// import { Injectable } from '@angular/core';
-// import { HttpClient } from '@angular/common/http';
-// import { Observable } from 'rxjs';
-
-// @Injectable({
-//   providedIn: 'root'
-// })
-// export class BookingService {
-//   getLeasesByVenue(venueId: number) {
-//     throw new Error('Method not implemented.');
-//   }
-//   getVenues() {
-//     throw new Error('Method not implemented.');
-//   }
-//   getPackages(venueId: any) {
-//     throw new Error('Method not implemented.');
-//   }
-//   private apiUrl = 'http://localhost:8080/api/bookings';
-
-//   constructor(private http: HttpClient) {}
-
-//   // Existing method to get booked dates for a venue
-//   getBookedDates(venueId: number): Observable<string[]> {
-//     return this.http.get<string[]>(
-//       `${this.apiUrl}/venue/${venueId}/booked-dates`
-//     );
-//   }
-
-//   // Existing method to create a booking
-//   createBooking(bookingData: any): Observable<any> {
-//     return this.http.post(`${this.apiUrl}/create`, bookingData);
-//   }
-
-//   // New method to check the availability of a venue
-//   checkVenueAvailability(venueId: number, startDate: string, startTime: string): Observable<boolean> {
-//     // Format the date and time correctly for the request
-//     return this.http.get<boolean>(`${this.apiUrl}/check-availability`, {
-//       params: {
-//         venueId: venueId.toString(),
-//         startDate: startDate,
-//         startTime: startTime
-//       }
-//     });
-//   }
-// }
-
-
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { tap, filter } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 export interface Booking {
   bookingId: number;
@@ -68,6 +21,14 @@ export interface Booking {
   };
 }
 
+export interface BookedSlot {
+  startDate: string;
+  startTime: string;
+  endDate?: string;
+  endTime?: string;
+  // add other fields if any
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -78,14 +39,14 @@ export class BookingService {
 
   constructor(private http: HttpClient) {}
 
-  // Fetch and store bookings
+  // Fetch and cache all bookings
   fetchBookings(): Observable<Booking[]> {
     return this.http.get<Booking[]>(`${this.apiUrl}/all`).pipe(
       tap((bookings) => this.bookingsSubject.next(bookings))
     );
   }
 
-  // Get cached bookings or fetch if not available
+  // Return cached bookings or fetch if empty
   getBookings(): Observable<Booking[]> {
     if (this.bookingsSubject.getValue().length === 0) {
       return this.fetchBookings();
@@ -93,37 +54,51 @@ export class BookingService {
     return this.bookings$;
   }
 
-  // Refresh the bookings list manually
+  // Manually refresh cached bookings
   refreshBookings(): void {
     this.fetchBookings().subscribe();
   }
 
-  // Existing method to get booked dates for a venue
-  // getBookedDates(venueId: number): Observable<string[]> {
-  //   return this.http.get<string[]>(`${this.apiUrl}/venue/${venueId}/booked-dates`);
+  // Get booked slots for a venue
+  // getBookedDates(venueId: number): Observable<BookedSlot[]> {
+  //   return this.http.get<BookedSlot[]>(`${this.apiUrl}/venue/${venueId}/booked-slots`);
   // }
-  getBookedDates(venueId: number) {
-    return this.http.get<any[]>(`/api/bookings/venue/${venueId}/booked-slots`);
+  getBookedDates(venueId: number): Observable<string[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/venue/${venueId}/booked-slots`);
   }
-  
 
-  // Existing method to create a booking
+  // Create a new booking
   createBooking(bookingData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/create`, bookingData);
   }
 
-  // Existing method to check the availability of a venue
+  // Check availability of a venue for a given date/time
   checkVenueAvailability(venueId: number, startDate: string, startTime: string): Observable<boolean> {
     return this.http.get<boolean>(`${this.apiUrl}/check-availability`, {
       params: {
         venueId: venueId.toString(),
-        startDate: startDate,
-        startTime: startTime
+        startDate,
+        startTime
       }
     });
   }
 
-  // Placeholder methods for getLeasesByVenue, getVenues, and getPackages
+  // Cancel a booking by ID
+  cancelBooking(bookingId: number): Observable<Booking> {
+    return this.http.put<Booking>(`${this.apiUrl}/cancel/${bookingId}`, {});
+  }
+
+  // Get booking details by booking ID
+  getBookingById(id: number): Observable<Booking> {
+    return this.http.get<Booking>(`${this.apiUrl}/${id}`);
+  }
+
+  // Get bookings filtered by customer ID
+  getBookingsByCustomer(customerId: number): Observable<Booking[]> {
+    return this.http.get<Booking[]>(`${this.apiUrl}/customer/${customerId}`);
+  }
+
+  // Placeholder methods to be implemented
   getLeasesByVenue(venueId: number) {
     throw new Error('Method not implemented.');
   }
@@ -136,5 +111,3 @@ export class BookingService {
     throw new Error('Method not implemented.');
   }
 }
-
-
