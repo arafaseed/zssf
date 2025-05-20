@@ -39,8 +39,8 @@ const routes: Routes = [
     data: { role: 'staff' }
 
   },
-  { path: 'booking', component: MultiStepFormComponent },
-  { path: 'invoice', component: InvoiceComponent }, // Ensure this is correctly set up
+  { path: 'book', component: MultiStepFormComponent },
+  { path: 'invoice/:bookingId', component: InvoiceComponent },// Ensure this is correctly set up
 
   {
     path: 'admin',

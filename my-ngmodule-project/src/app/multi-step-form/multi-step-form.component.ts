@@ -34,6 +34,7 @@ export class MultiStepFormComponent implements OnInit {
   selectedEndDate: Date | null = null;
   showEndDate = false;
   selectingEndDate = false;
+invoiceData: any;
 
   constructor(
     private fb: FormBuilder,
@@ -176,25 +177,30 @@ export class MultiStepFormComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
-        this.bookingService.createBooking(this.bookingForm.value).subscribe({
-          next: () => {
-            this.snackBar.open('Booking created successfully!', 'Close', { duration: 3000 });
+     this.bookingService.createBooking(this.bookingForm.value).subscribe({
+  next: (response) => { // ✅ This defines 'response'
+    console.log('Booking response:', response); // Optional for debugging
+    this.snackBar.open('Booking created successfully!', 'Close', { duration: 3000 });
 
-            const invoiceData = {
-              invoiceNumber: 'INV' + new Date().getTime(),
-              customerName: this.bookingForm.value.fullName,
-              customerEmail: this.bookingForm.value.email,
-              amount: totalPrice,
-              paymentType: 'Credit Card'
-            };
+    const bookingId = response.bookingId; // ✅ Change this based on your actual API
 
-            this.invoiceService.setInvoiceData(invoiceData);
-            this.router.navigate(['/invoice']);
-          },
-          error: () => {
-            this.snackBar.open('Booking failed. Please try again.', 'Close', { duration: 3000 });
-          }
-        });
+    const invoiceData = {
+      invoiceNumber: 'INV' + new Date().getTime(),
+      customerName: this.bookingForm.value.fullName,
+      customerEmail: this.bookingForm.value.email,
+      phone: this.bookingForm.value.phoneNumber,
+      amount: totalPrice,
+      paymentType: 'Credit Card'
+    };
+
+    this.invoiceService.setInvoiceData(invoiceData);
+    this.router.navigate(['/invoice', bookingId]);
+  },
+  error: () => {
+    this.snackBar.open('Booking failed. Please try again.', 'Close', { duration: 3000 });
+  }
+});
+
       }
     });
   }

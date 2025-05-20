@@ -1,23 +1,26 @@
-<div class="invoice-container">
-  <h2>Invoice</h2>
-  <div *ngIf="invoice">
-    <p><strong>Invoice Number:</strong> {{ invoice.invoiceNumber }}</p>
-    <p><strong>Date:</strong> {{ invoice.date }}</p>
+<section *ngIf="invoiceData">
+  <h2>Invoice #{{ invoiceData.invoiceCode }}</h2>
+  <p><strong>Issued Date:</strong> {{ invoiceData.issuedDate | date }}</p>
+  <p><strong>Due Date:</strong> {{ invoiceData.dueDate | date }}</p>
+  <p><strong>Status:</strong> {{ invoiceData.status }}</p>
 
-    <h3>Customer Information</h3>
-    <p><strong>Name:</strong> {{ invoice.customerName }}</p>
-    <p><strong>Email:</strong> {{ invoice.customerEmail }}</p>
-    <p><strong>Phone:</strong> {{ invoice.customerPhone }}</p>
+  <h3>Customer Info</h3>
+  <p>Name: {{ invoiceData.booking.customer.fullName }}</p>
+  <p>Phone: {{ invoiceData.booking.customer.phoneNumber }}</p>
+  <p>Email: {{ invoiceData.booking.customer.email }}</p>
 
-    <h3>Booking Information</h3>
-    <p><strong>Venue:</strong> {{ invoice.venue }}</p>
-    <p><strong>Event Date:</strong> {{ invoice.eventDate }}</p>
-    <p><strong>Amount:</strong> TZS {{ invoice.amount | number:'1.2-2' }}</p>
-    <p><strong>Payment Status:</strong> {{ invoice.paymentType }}</p>
+  <h3>Booking Info</h3>
+  <p>Venue: {{ invoiceData.booking.venue.name }}</p>
+  <p>Package: {{ invoiceData.booking.venuePackage.packageName }}</p>
+  <p>Session: {{ invoiceData.booking.session }}</p>
+  <p>Start Date: {{ invoiceData.booking.startDate | date }}</p>
+  <p *ngIf="invoiceData.booking.endDate">End Date: {{ invoiceData.booking.endDate | date }}</p>
 
-    <h3>Control Number</h3>
-    <p><strong>Control Number:</strong> {{ invoice.controlNumber }}</p>
+  <h3>Invoice Amount</h3>
+  <p>Original Amount: Tzs{{ invoiceData.amount }}</p>
+  <p>Discount ({{ invoiceData.discountRate }}%): -Tzs{{ invoiceData.discountApplied }}</p>
+  <p><strong>Net Amount: Tzs{{ invoiceData.netAmount }}</strong></p>
 
-    <button (click)="printInvoice()">Print Invoice</button>
-  </div>
-</div>
+  <h3>Control Number</h3>
+  <p *ngIf="invoiceData.controlNumber">Control #: {{ invoiceData.controlNumber.number }}</p>
+</section>
