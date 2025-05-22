@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output, OnInit } from '@angular/core';
+import { AuthService } from '../../Services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -10,12 +11,18 @@ export class HomeComponent implements OnInit {
   @Output() toggleSidebar = new EventEmitter<void>();
 
   activeTab: string = 'checkin';
-  staffName: string = 'Default Admin';
-  staffIDN: string = 'ADMIN-000001';
+
+  constructor(private auth: AuthService) {}
+
+  get staffIDN(): string | null {
+    return this.auth.getStaffIDN(); // Make sure this method exists in AuthService
+  }
+
+  get role(): string | null {
+    return this.auth.role;
+  }
 
   ngOnInit(): void {
-    localStorage.setItem('staffName', this.staffName);
-    localStorage.setItem('staffIDN', this.staffIDN);
     localStorage.setItem('activeTab', this.activeTab);
   }
 

@@ -1,6 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -26,20 +25,13 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { VenueFormComponent } from './Admin/venue-form/venue-form.component';
-
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BuildingService } from './building.service';
-
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatStepperModule } from '@angular/material/stepper';
-
-
-
-
-
 import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
 import { LeasePackageTableComponent } from './Table/lease-package-table/lease-package-table.component';
 import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/lease-package-edit-form.component';
@@ -47,19 +39,12 @@ import { BuildinglistComponent } from './Admin/buildinglist/buildinglist.compone
 import { VenueViewComponent } from './Admin/venue-view/venue-view.component';
 import { ViewVenuesComponent } from './Admin/view-venues/view-venues.component';
 import { MatError } from '@angular/material/form-field';
-
-
-
-
 import { CommonModule, DatePipe } from '@angular/common';
 import { MajengoComponent } from './Admin/majengo/majengo.component';
 import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { LoginComponent } from './login/login.component';
 // import { StaffDashboardComponent } from './staff/staff-dashboard/staff-dashboard.component';
-
-
-
 import { MatGridListModule } from '@angular/material/grid-list';
 import { EditVenueComponentComponent } from './edit-venue-component/edit-venue-component.component'; // For grid layouts
 import { BookingService } from './Services/booking.service';
@@ -67,7 +52,8 @@ import { MultiStepFormComponent } from './multi-step-form/multi-step-form.compon
 import { BookingListComponent } from './booking-list/booking-list.component';
 import { InvoiceComponent } from './invoice/invoice.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
-
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 
 @NgModule({
   declarations: [
@@ -96,23 +82,18 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     BookingListComponent,
     ConfirmDialogComponent,
     InvoiceComponent,
-   
- 
-    
-   
-
-    
+  
   ],
   imports: [
     MatDatepickerModule,
     FullCalendarModule,
     MatCardModule,
     MatFormFieldModule,
-    MatGridListModule, 
+    MatGridListModule,
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
-    MatDialogModule,    
+    MatDialogModule,
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
@@ -148,30 +129,24 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    MatButtonModule, 
+    MatButtonModule,
     MatTableModule,
     MatSortModule,
-    MatLabel, 
+    MatLabel,
     FormsModule,
     CommonModule,
     BrowserModule,
     DatePipe,
-   
-    
-    
-    
-   
 
-    
   ],
   providers: [
-   
-    provideAnimationsAsync(), 
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    provideAnimationsAsync(),
     BuildingService,
-    BookingService 
+    BookingService,
+    JwtHelperService,
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
   ],
   bootstrap: [AppComponent],
-  
-  
 })
 export class AppModule { }

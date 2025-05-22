@@ -1,79 +1,55 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router'; // To navigate after successful login
+import { StaffLoginRequest } from '../models/auth';
+import { AuthService } from '../Services/auth.service';
 
 @Component({
   selector: 'app-login',
-  standalone:false,
+  standalone: false,
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
-  staffId: string = '';
-  password: string = '';
+export class LoginComponent {
+  // Use definite assignment assertion (!) to tell TypeScript this will be initialized
+  form!: FormGroup;
 
-  constructor(private router: Router) {}
+  loading = false;
+  errorMsg = '';
 
-  ngOnInit(): void {
-    // Initialize any necessary logic or data
+  constructor(
+    private fb: FormBuilder,
+    private auth: AuthService,
+    private router: Router
+  ) {
+    // Initialize the form in the constructor
+    this.form = this.fb.group({
+      staffIDN: ['', [Validators.required]],
+      password: ['', [Validators.required]]
+    });
   }
 
-  // Define the onSubmit method that will be triggered on form submission
-  onSubmit() {
-    // Implement your login logic here
-    // For example, check if the staffId and password match some predefined credentials
-    if (this.staffId === 'admin' && this.password === 'admin') {
-      // Set role in localStorage and redirect to admin dashboard
-      localStorage.setItem('role', 'admin');
-      this.router.navigate(['/admin/']);
-    } else if (this.staffId === 'staff001' && this.password === 'password123') {
-      // Set role in localStorage and redirect to staff dashboard
-      localStorage.setItem('role', 'staff');
-      this.router.navigate(['/staff-dashboard']);
-    } else {
-      // Handle invalid credentials
-      alert('Invalid Staff ID or Password!');
-    }
+  submit(): void {
+    if (this.form.invalid) { return; }
+    this.loading = true;
+    this.errorMsg = '';
+
+    this.auth.login(this.form.value as StaffLoginRequest).subscribe({
+      next: () => {
+        this.loading = false;
+
+        // Redirect based on role stored in sessionStorage
+        const role = this.auth.role;
+        if (role === 'ADMIN') {
+          this.router.navigate(['/admin']);
+        } else {
+          this.router.navigate(['/staff/dashboard']);
+        }
+      },
+      error: () => {
+        this.loading = false;
+        this.errorMsg = 'Invalid credentials';
+      }
+    });
   }
 }
-// import { Component, OnInit } from '@angular/core';
-// import { Router } from '@angular/router';
-// import { HttpClient, HttpHeaders } from '@angular/common/http'; // Import HttpClient
-
-// @Component({
-//   selector: 'app-login',
-//   standalone: false,
-//   templateUrl: './login.component.html',
-//   styleUrls: ['./login.component.css']
-// })
-// export class LoginComponent implements OnInit {
-//   staffId: string = '';
-//   password: string = '';
-
-//   constructor(private router: Router, private http: HttpClient) {}
-
-//   ngOnInit(): void {
-//     // Initialization logic if needed
-//   }
-
-//   onSubmit() {
-//     const loginRequest = {
-//       staffId: this.staffId,
-//       password: this.password
-//     };
-  
-//     this.http.post('http://localhost:8080/api/staff/login', loginRequest, {
-//       headers: new HttpHeaders().set('Content-Type', 'application/json')
-//     })
-//     .subscribe(
-//       (response) => {
-//         console.log('Login successful:', response);
-//         // Handle successful login
-//       },
-//       (error) => {
-//         console.error('Login failed:', error);
-//         // Handle error (e.g., incorrect credentials)
-//       }
-//     );
-//   }
-  
-// }

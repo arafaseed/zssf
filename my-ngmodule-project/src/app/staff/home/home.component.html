@@ -13,9 +13,9 @@
 
   <!-- User Info -->
   <div class="flex items-center space-x-2">
-    <span class="text-sm hidden sm:inline">Welcome, {{ staffName }}</span>
+    <span class="text-sm hidden sm:inline">IDN: {{ staffIDN || 'N/A' }}</span>
     <div class="bg-blue-500 rounded-full w-8 h-8 flex items-center justify-center font-bold">
-      {{ staffName.charAt(0) }}
+      {{ staffIDN ? staffIDN.charAt(0) : '?' }}
     </div>
   </div>
 </nav>
