@@ -1,17 +1,36 @@
 <div id="invoice" class="invoice-container">
-  <h1>Invoice: {{ invoiceData.invoiceCode }}</h1>
-  <p><strong>Customer:</strong> {{ invoiceData.customerName }}</p>
-  <p><strong>Phone:</strong> {{ invoiceData.customerPhone }}</p>
-  <p><strong>Email:</strong> {{ invoiceData.customerEmail }}</p>
-  <p><strong>Description:</strong> {{ invoiceData.description }}</p>
-  <p><strong>Amount:</strong> {{ invoiceData.amount | number:'1.2-2' }} TZS</p>
-  <p><strong>Discount:</strong> {{ invoiceData.discountApplied | number:'1.2-2' }} TZS</p>
-  <p><strong>Total:</strong> {{ invoiceData.netAmount | number:'1.2-2' }} TZS</p>
-  <p><strong>Status:</strong> {{ invoiceData.status }}</p>
-  <p><strong>Control Number:</strong> {{ invoiceData.controlNumber }}</p>
-  <p><strong>Issued Date:</strong> {{ invoiceData.issuedDate }}</p>
-  <p><strong>Due Date:</strong> {{ invoiceData.dueDate || 'Not Specified' }}</p>
+  <div class="invoice-header">
+    <h1>INVOICE</h1>
+    <div>Invoice Code: {{ invoiceData.invoiceCode }}</div>
+  </div>
+
+  <div class="invoice-section">
+    <div class="section-title">Customer Information</div>
+    <div class="info-row"><div class="info-label">Name:</div><div class="info-value">{{ invoiceData.customerName }}</div></div>
+    <div class="info-row"><div class="info-label">Phone:</div><div class="info-value">{{ invoiceData.customerPhone }}</div></div>
+    <div class="info-row"><div class="info-label">Email:</div><div class="info-value">{{ invoiceData.customerEmail }}</div></div>
+  </div>
+
+  <div class="invoice-section">
+    <div class="section-title">Invoice Details</div>
+    <div class="info-row"><div class="info-label">Issued Date:</div><div class="info-value">{{ invoiceData.issuedDate }}</div></div>
+    <div class="info-row"><div class="info-label">Due Date:</div><div class="info-value">{{ invoiceData.dueDate || 'Not Specified' }}</div></div>
+    <div class="info-row"><div class="info-label">Status:</div><div class="info-value">{{ invoiceData.status }}</div></div>
+    <div class="info-row"><div class="info-label">Control Number:</div><div class="info-value">{{ invoiceData.controlNumber }}</div></div>
+    <div class="info-row"><div class="info-label">Description:</div><div class="info-value">{{ invoiceData.description }}</div></div>
+  </div>
+
+  <div class="invoice-section amount-summary">
+    <div class="section-title">Amount Summary</div>
+    <div class="amount-row"><div>Amount:</div><div>{{ invoiceData.amount | number:'1.2-2' }} TZS</div></div>
+    <div class="amount-row"><div>Discount:</div><div>{{ invoiceData.discountApplied | number:'1.2-2' }} TZS</div></div>
+    <div class="amount-row total"><div>Total:</div><div>{{ invoiceData.netAmount | number:'1.2-2' }} TZS</div></div>
+  </div>
 </div>
 
-
 <div *ngIf="loading">Generating Invoice PDF...</div>
+
+<div *ngIf="!loading" class="button-group">
+  <button (click)="printInvoice()">🖨️ Print Invoice</button>
+  <button (click)="generatePDF()">📄 Download PDF</button>
+</div>
