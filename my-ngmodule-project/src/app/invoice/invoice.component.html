@@ -17,7 +17,12 @@
     <div class="info-row"><div class="info-label">Due Date:</div><div class="info-value">{{ invoiceData.dueDate || 'Not Specified' }}</div></div>
     <div class="info-row"><div class="info-label">Status:</div><div class="info-value">{{ invoiceData.status }}</div></div>
     <div class="info-row"><div class="info-label">Control Number:</div><div class="info-value">{{ invoiceData.controlNumber }}</div></div>
-    <div class="info-row"><div class="info-label">Description:</div><div class="info-value">{{ invoiceData.description }}</div></div>
+   
+  </div>
+    <div class="invoice-section">
+      <div class="section-title">Description </div>
+      <p>{{ invoiceData.description }}</p>
+    
   </div>
 
   <div class="invoice-section amount-summary">
