@@ -17,8 +17,14 @@ import { InvoiceServiceService } from '../Services/invoice-service.service';
 })
 export class MultiStepFormComponent implements OnInit {
   sessionOptions = [
+<<<<<<< Updated upstream
     { label: 'Session 1: 12:00 AM – 1:00 PM', start: '00:00', end: '13:00' },
     { label: 'Session 2: 2:00 PM – 6:00 AM', start: '14:00', end: '06:00' }
+=======
+    { label: 'Session 1: Asubuhi- Mchana', start: '06:00', end: '13:00' },
+    { label: 'Session 2: Alasiri- Usiku',  start: '14:00', end: '00:00' },
+    { label: 'SIKU NZIMA:', start: '06:00', end: '00:00' }
+>>>>>>> Stashed changes
   ];
 
   selectedSessionTime: string | null = null;
