@@ -1,5 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../../Services/auth.service';
 
 interface Venue {
   venueId: number;
@@ -19,7 +20,11 @@ export class NavbarComponent implements OnDestroy {
 
   private staffCheckInterval: any;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private auth: AuthService
+
+  ) {
     this.staffCheckInterval = setInterval(() => this.checkAndFetchVenues(), 1000); // Check every second
   }
 
@@ -68,5 +73,9 @@ export class NavbarComponent implements OnDestroy {
     if (this.staffCheckInterval) {
       clearInterval(this.staffCheckInterval);
     }
+  }
+
+  logout(): void {
+    this.auth.logout();
   }
 }

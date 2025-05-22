@@ -33,12 +33,6 @@ const routes: Routes = [
   { path: 'layout', component: LayoutComponent },
   { path: 'book', component:  MultiStepFormComponent},
   { path: 'login', component: LoginComponent },
-  
-  // { path: 'staff-dashboard', component:StaffDashboardComponent,
-  //   canActivate: [AuthGuard], 
-  //   data: { role: 'staff' }
-
-  // },
   { path: 'booking', component: MultiStepFormComponent },
   { path: 'invoice/:bookingId', component: InvoiceComponent },
 
@@ -53,7 +47,7 @@ const routes: Routes = [
     path: 'admin',
     component: LayoutComponent,
     canActivate: [AuthGuard], 
-    data: { roles: ['ADMIN'] ,
+    data: { roles: ['ADMIN'] },
     children: [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'building', component: BuildingComponent },
@@ -78,7 +72,7 @@ const routes: Routes = [
     ]
   }
 
-}];
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

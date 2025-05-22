@@ -1,48 +1,86 @@
-<mat-toolbar color="primary">
-  <span>ZSSF VENUE RESERVATION SYSTEM </span>
-</mat-toolbar>
+<!-- HEADER ---------------------------------------------------------------->
+<header class="fixed inset-x-0 top-0 z-40 h-14 bg-slate-800 text-white flex items-center px-4 shadow-md">
+  <!-- sidebar toggle (mobile only) -->
+  <button class="lg:hidden mr-3" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+      <path d="M4 6h16M4 12h16M4 18h16"></path>
+    </svg>
+  </button>
 
-<div class="layout-container">
-  <!-- Sidenav (Left Sidebar) -->
-  <mat-sidenav-container class="sidenav-container">
-    <mat-sidenav mode="side" opened class="sidenav">
-      <mat-nav-list>
-        <a mat-list-item routerLink="/admin/dashboard" routerLinkActive="active" class="nav-item">Dashboard</a>
+  <!-- app title -->
+  <span class="text-sm sm:text-lg font-semibold flex-1">ZSSF · VENUE RESERVATION SYSTEM</span>
 
-        <a mat-list-item routerLink="/admin/leasepackagetable" routerLinkActive="active" class="nav-item">LeasePackage</a>
-        <a mat-list-item routerLink="/admin/buildings" routerLinkActive="active" class="nav-item">Building</a>
-        <a mat-list-item routerLink="/admin/venueView" routerLinkActive="active" class="nav-item">Venue</a>
-       
-        <a mat-list-item routerLink="/admin/bookinglist" routerLinkActive="active" class="nav-item">Booking List</a>
+  <!-- admin chip -->
+  <div class="flex items-center space-x-2">
+    <span class="hidden sm:inline text-xs">{{ adminId || 'Admin' }}</span>
+    <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center font-bold uppercase">
+      {{ adminId ? adminId.charAt(0) : '?' }}
+    </div>
+  </div>
+</header>
 
-       
-        
-        
-        
-      </mat-nav-list>
-    </mat-sidenav>
+<!-- WRAPPER (sidebar + content) ------------------------------------------>
+<div class="flex pt-14 h-screen overflow-hidden">
 
-    <!-- Content (Right Side) -->
-    <mat-sidenav-content class="content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="card">
-              
-              <div class="card-body">
-                <router-outlet></router-outlet>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+  <!-- SIDEBAR -->
+  <aside
+  class="fixed top-[1cm] bottom-0 left-0 z-30 w-64 bg-slate-900 text-white transform transition-transform duration-300 ease-in-out
+         lg:translate-x-0"
+  [class.-translate-x-full]="!isSidebarOpen"
+>
+
+    <nav class="mt-4 flex flex-col space-y-2 px-2">
+
+      <a routerLink="/admin/dashboard"
+         routerLinkActive="!bg-slate-800 bg-indigo-600"
+         class="nav-link">
+        Dashboard
+      </a>
+
+      <a routerLink="/admin/leasepackagetable" routerLinkActive="!bg-slate-800 bg-indigo-600" class="nav-link">
+        Lease Packages
+      </a>
+
+      <a routerLink="/admin/buildings" routerLinkActive="!bg-slate-800 bg-indigo-600" class="nav-link">
+        Buildings
+      </a>
+
+      <a routerLink="/admin/venueView" routerLinkActive="!bg-slate-800 bg-indigo-600" class="nav-link">
+        Venues
+      </a>
+
+      <a routerLink="/admin/bookinglist" routerLinkActive="!bg-slate-800 bg-indigo-600" class="nav-link">
+        Booking List
+      </a>
+
+      <!-- LOGOUT button (sticky at bottom) -->
+        <div class="absolute bottom-0 left-0 right-0 p-2 border-t border-slate-700">
+      <button
+        (click)="logout()"
+        class="w-full flex items-center justify-center rounded-md bg-red-600 hover:bg-red-700 text-white px-3 py-2 text-sm transition-colors duration-200"
+      >
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M17 16l4-4m0 0l-4-4m4 4H7"></path>
+          <path d="M13 12H3"></path>
+        </svg>
+        Logout
+      </button>
+    </div>
+    </nav>
+  </aside>
+
+  <!-- CLICK-OFF overlay (mobile) -->
+  <div *ngIf="isSidebarOpen"
+       class="fixed inset-0 z-20 bg-black/50 lg:hidden"
+       (click)="toggleSidebar()">
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 overflow-y-auto bg-slate-100 p-4 lg:ml-64">
+    <router-outlet></router-outlet>
+  </main>
 </div>
 
-<!-- Footer -->
-<footer class="footer">
-  <div class="container">
-    <p>&copy; 2025 Admin Dashboard</p>
-  </div>
-</footer>
+
