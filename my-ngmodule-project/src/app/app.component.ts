@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -6,7 +7,12 @@ import { Component } from '@angular/core';
   standalone: false,
   styleUrl: './app.component.css'
 })
+
 export class AppComponent {
   title = 'zssf-project';
-  
+
+  constructor(router: Router) {
+      console.log(router.config);
+  }
+
 }

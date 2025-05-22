@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { JwtResponse, StaffLoginRequest } from '../models/auth';
 import { TokenStorageService } from './token-storage.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private tokenStorage: TokenStorageService
+    private tokenStorage: TokenStorageService,
+    private router: Router
   ) {}
 
   login(credentials: StaffLoginRequest): Observable<boolean> {
@@ -42,6 +44,7 @@ export class AuthService {
 
   logout(): void {
     this.tokenStorage.signOut();
+    this.router.navigate(['/login']); 
   }
 
   get role(): string | null {

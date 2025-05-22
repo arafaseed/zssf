@@ -13,4 +13,19 @@
       </button>
     </li>
   </ul>
+
+  <!-- LOGOUT button (sticky at bottom) -->
+       <div class="absolute bottom-0 left-0 right-0 p-2 border-t border-slate-700">
+      <button
+        (click)="logout()"
+        class="w-full flex items-center justify-center rounded-md bg-red-600 hover:bg-red-700 text-white px-3 py-2 text-sm transition-colors duration-200"
+      >
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M17 16l4-4m0 0l-4-4m4 4H7"></path>
+          <path d="M13 12H3"></path>
+        </svg>
+        Logout
+      </button>
+    </div>
 </nav>
