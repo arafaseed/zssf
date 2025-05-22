@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { BuildingService } from '../../building.service';
+import { BuildingService } from '../../Services/building.service';
 
 @Component({
   selector: 'app-majengo',

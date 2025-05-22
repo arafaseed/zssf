@@ -36,6 +36,7 @@ export class BookingService {
   private apiUrl = 'http://localhost:8080/api/bookings';
   private bookingsSubject = new BehaviorSubject<Booking[]>([]);
   bookings$ = this.bookingsSubject.asObservable();
+  checkDateAvailability: any;
 
   constructor(private http: HttpClient) {}
 

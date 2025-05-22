@@ -1,0 +1,174 @@
+<app-header></app-header>
+
+<div class="main-content">
+  <div class="content-box">
+    <section class="welcome-card">
+      <div class="card">
+        <header class="card-header text-center">
+          <h4>Discover Our Exclusive Venues</h4>
+        </header>
+        <div class="card-body">
+          <p>
+            Explore a wide range of venues for your events, meetings, and celebrations.
+            Find the perfect space that fits your needs and book with ease.
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <form [formGroup]="bookingForm" class="big" (ngSubmit)="onSubmit()">
+    <div class="biger">
+      <!-- Step 1 -->
+      <section *ngIf="currentStep === 1" aria-labelledby="step1-title">
+        <h2 id="step1-title">Step 1: Select Date & Time</h2>
+
+        <div class="step1-container">
+          <!-- Left: Calendar -->
+          <div class="calendar-section" aria-label="Calendar section for selecting date">
+            <mat-card class="calendar-container">
+              <mat-calendar
+                [selected]="selectedDate"
+                [dateFilter]="dateFilter"
+                (selectedChange)="onDateSelected($event)"
+                aria-label="Event date calendar">
+              </mat-calendar>
+            </mat-card>
+          </div>
+
+          <!-- Right: Form Inputs -->
+          <div class="form-section" aria-label="Booking details form">
+            <label for="venueName">Venue</label>
+            <input id="venueName" type="text" [value]="selectedVenueName" disabled aria-disabled="true" />
+
+            <input formControlName="venueId" type="hidden" />
+
+            <label for="venuePackageId">Package</label>
+            <select
+              formControlName="venuePackageId"
+              id="venuePackageId"
+              required
+              (change)="onPackageChange($event)"
+              aria-required="true"
+            >
+              <option value="" disabled>Select Package</option>
+              <option *ngFor="let package of packageOptions" [value]="package.leaseId">
+                {{ package.packageName }} for Tzs{{ package.price }}
+              </option>
+            </select>
+
+            <div class="selected-date-display">
+              <strong>Date:</strong> Pick from the calendar. If you want to add another date, click the plus sign.
+              <br />
+              {{ bookingForm.get('startDate')?.value | date: 'fullDate' }}
+            </div>
+
+            <button
+            type="button"
+            mat-icon-button
+            color="primary"
+            (click)="toggleEndDate()"
+            [attr.aria-label]="showEndDate ? 'Remove End Date' : 'Add End Date'"
+          >
+            <mat-icon>{{ showEndDate ? 'remove_circle' : 'add_circle' }}</mat-icon>
+          </button>
+          
+
+            <div *ngIf="showEndDate" class="end-date-section">
+              <p><strong>End Date:</strong> {{ bookingForm.get('endDate')?.value | date: 'fullDate' }}</p>
+              <p><em>Select another date from the calendar beside.</em></p>
+            </div>
+
+            <label for="session">Select Session</label>
+            <select
+              formControlName="session"
+              id="session"
+              required
+              (change)="onSessionChange()"
+              aria-required="true"
+            >
+              <option value="" disabled>Select a session</option>
+              <option *ngFor="let session of sessionOptions" [value]="session.label">
+                {{ session.label }}
+              </option>
+            </select>
+
+            <div *ngIf="selectedSessionTime" class="session-time">
+              <strong>Time Range:</strong> {{ selectedSessionTime }}
+            </div>
+
+            <button type="button" (click)="nextStep()">Next</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 2 --><!-- Step 2 -->
+<section *ngIf="currentStep === 2" aria-labelledby="step2-title">
+  <h2 id="step2-title">Step 2: Customer Details</h2>
+
+  <div class="step1-container">
+    <!-- Left: Calendar -->
+    <div class="calendar-section" aria-label="Calendar section for selecting date">
+      <mat-card class="calendar-container">
+        <mat-calendar
+          [selected]="selectedDate"
+          [dateFilter]="dateFilter"
+          (selectedChange)="onDateSelected($event)"
+          aria-label="Event date calendar">
+        </mat-calendar>
+      </mat-card>
+    </div>
+
+    <!-- Right: Form Fields -->
+    <div class="form-section" aria-label="Customer details form">
+      <label for="fullName">Full Name</label>
+      <input
+        type="text"
+        formControlName="fullName"
+        id="fullName"
+        required
+        aria-required="true"
+        autocomplete="name"
+      />
+
+      <label for="phoneNumber">Phone Number</label>
+      <input
+        type="tel"
+        formControlName="phoneNumber"
+        id="phoneNumber"
+        required
+        aria-required="true"
+        autocomplete="tel"
+      />
+
+      <label for="email">Email</label>
+      <input
+        type="email"
+        formControlName="email"
+        id="email"
+        required
+        aria-required="true"
+        autocomplete="email"
+      />
+
+      <label for="address">Address</label>
+      <input
+        type="text"
+        formControlName="address"
+        id="address"
+        required
+        aria-required="true"
+        autocomplete="street-address"
+      />
+
+      <div class="button-group">
+        <button type="button" (click)="prevStep()">Previous</button>
+        <button type="submit">Submit</button>
+      </div>
+    </div> <!-- end form-section -->
+  </div> <!-- end step1-container -->
+</section>
+
+    </div>
+  </form>
+</div>

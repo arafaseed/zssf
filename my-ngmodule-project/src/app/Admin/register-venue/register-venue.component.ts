@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { VenueService } from '../../venue-service.service';
+import { VenueService } from '../../Services/venue-service.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 

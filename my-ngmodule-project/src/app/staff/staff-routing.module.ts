@@ -8,9 +8,7 @@ const routes: Routes = [
     path: 'dashboard',
     component: StaffDashboardComponent,
     children: [
-      { path: 'staffdash', redirectTo: 'home', pathMatch: 'full' },
-      { path: 'home', component: HomeComponent },
-      // { path: 'reports', component: ReportsComponent }
+      { path: '', component: HomeComponent },
     ]
   }
 ];

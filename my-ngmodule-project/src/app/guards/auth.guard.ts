@@ -1,31 +1,25 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { AuthService } from '../Services/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(private router: Router) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+  canActivate(route: ActivatedRouteSnapshot, _: RouterStateSnapshot): boolean {
+    const expectedRoles: string[] = route.data['roles'];   // e.g. ['STAFF','ADMIN']
+    const userRole = this.auth.role;
 
-    // Get the role from localStorage
-    const role = localStorage.getItem('role');
-    
-    // Get the expected role from route data using bracket notation
-    const expectedRole = route.data['role'];
-
-    // If the role matches the expected role, allow access
-    if (role === expectedRole) {
+    if (this.auth.isLoggedIn && expectedRoles.includes(userRole!)) {
       return true;
-    } else {
-      // Redirect to the login page or any other page if the role doesn't match
-      this.router.navigate(['/']);
-      return false;
     }
+
+    // Not permitted – redirect to login or 403 page
+    this.router.navigate(['/login']);
+    return false;
   }
 }

@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LeasePackageService } from '../../packages.service';
+import { LeasePackageService } from '../../Services/packages.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({

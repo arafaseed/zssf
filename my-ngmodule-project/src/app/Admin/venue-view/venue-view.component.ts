@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { ViewVenueService } from '../../view-venue.service';
+import { ViewVenueService } from '../../Services/view-venue.service';
 import { Router } from '@angular/router';
 
 @Component({

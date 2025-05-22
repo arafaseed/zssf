@@ -8,13 +8,13 @@ import { VenueComponent } from './components/venue/venue.component';
 import { SettingComponent } from './Admin/setting/setting.component';
 import { BuildingComponent } from './Admin/building/building.component';
 import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
-import { VenueDisplayComponent } from './Admin/venue-display/venue-display.component';
+
 import { LeasePackageTableComponent } from './Table/lease-package-table/lease-package-table.component';
 import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 import { BuildinglistComponent } from './Admin/buildinglist/buildinglist.component';
 import { ViewVenuesComponent } from './Admin/view-venues/view-venues.component';
 import { LoginComponent } from './login/login.component';
-import { StaffDashboardComponent } from './staff/staff-dashboard/staff-dashboard.component';
+// import { StaffDashboardComponent } from './staff/staff-dashboard/staff-dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
 import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/lease-package-edit-form.component';
 import { EditVenueComponentComponent } from './edit-venue-component/edit-venue-component.component';
@@ -26,27 +26,34 @@ const routes: Routes = [
   { path: '', redirectTo: 'venue', pathMatch: 'full' },
   // { path: 'home', component: HomeComponent },
   { path: 'venue', component: VenueViewComponent },
-  { path: 'reservation', component: HomeComponent },  
-  { path: 'Venueslists', component: VenueDisplayComponent },
+  { path: 'reservation', component: HomeComponent }, 
+  
   { path: 'dash', component: DashboardComponent },
 
   { path: 'layout', component: LayoutComponent },
   { path: 'book', component:  MultiStepFormComponent},
   { path: 'login', component: LoginComponent },
   
-  { path: 'staff-dashboard', component:StaffDashboardComponent,
-    canActivate: [AuthGuard], 
-    data: { role: 'staff' }
+  // { path: 'staff-dashboard', component:StaffDashboardComponent,
+  //   canActivate: [AuthGuard], 
+  //   data: { role: 'staff' }
 
+  // },
+  { path: 'booking', component: MultiStepFormComponent },
+  { path: 'invoice/:bookingId', component: InvoiceComponent },
+
+  {
+    path: 'staff',
+    loadChildren: () => import('./staff/staff.module').then(m => m.StaffModule),
+    canActivate: [AuthGuard],
+    data: { roles: ['STAFF', 'ADMIN'] }
   },
-  { path: 'book', component: MultiStepFormComponent },
-  { path: 'invoice/:bookingId', component: InvoiceComponent },// Ensure this is correctly set up
 
   {
     path: 'admin',
     component: LayoutComponent,
     canActivate: [AuthGuard], 
-    data: { role: 'admin' } ,
+    data: { roles: ['ADMIN'] ,
     children: [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'building', component: BuildingComponent },
@@ -69,13 +76,9 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Default admin page
       { path: '**', redirectTo: 'dashboard' } // Catch-all
     ]
-  },
-  { path: 'staffdash', redirectTo: 'staff/dashboard', pathMatch: 'full' },
-  {
-    path: 'staff',
-    loadChildren: () => import('./staff/staff.module').then(m => m.StaffModule)
   }
-];
+
+}];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

@@ -1,26 +1,17 @@
-<section *ngIf="invoiceData">
-  <h2>Invoice #{{ invoiceData.invoiceCode }}</h2>
-  <p><strong>Issued Date:</strong> {{ invoiceData.issuedDate | date }}</p>
-  <p><strong>Due Date:</strong> {{ invoiceData.dueDate | date }}</p>
+<div id="invoice" class="invoice-container">
+  <h1>Invoice: {{ invoiceData.invoiceCode }}</h1>
+  <p><strong>Customer:</strong> {{ invoiceData.customerName }}</p>
+  <p><strong>Phone:</strong> {{ invoiceData.customerPhone }}</p>
+  <p><strong>Email:</strong> {{ invoiceData.customerEmail }}</p>
+  <p><strong>Description:</strong> {{ invoiceData.description }}</p>
+  <p><strong>Amount:</strong> {{ invoiceData.amount | number:'1.2-2' }} TZS</p>
+  <p><strong>Discount:</strong> {{ invoiceData.discountApplied | number:'1.2-2' }} TZS</p>
+  <p><strong>Total:</strong> {{ invoiceData.netAmount | number:'1.2-2' }} TZS</p>
   <p><strong>Status:</strong> {{ invoiceData.status }}</p>
+  <p><strong>Control Number:</strong> {{ invoiceData.controlNumber }}</p>
+  <p><strong>Issued Date:</strong> {{ invoiceData.issuedDate }}</p>
+  <p><strong>Due Date:</strong> {{ invoiceData.dueDate || 'Not Specified' }}</p>
+</div>
 
-  <h3>Customer Info</h3>
-  <p>Name: {{ invoiceData.booking.customer.fullName }}</p>
-  <p>Phone: {{ invoiceData.booking.customer.phoneNumber }}</p>
-  <p>Email: {{ invoiceData.booking.customer.email }}</p>
 
-  <h3>Booking Info</h3>
-  <p>Venue: {{ invoiceData.booking.venue.name }}</p>
-  <p>Package: {{ invoiceData.booking.venuePackage.packageName }}</p>
-  <p>Session: {{ invoiceData.booking.session }}</p>
-  <p>Start Date: {{ invoiceData.booking.startDate | date }}</p>
-  <p *ngIf="invoiceData.booking.endDate">End Date: {{ invoiceData.booking.endDate | date }}</p>
-
-  <h3>Invoice Amount</h3>
-  <p>Original Amount: Tzs{{ invoiceData.amount }}</p>
-  <p>Discount ({{ invoiceData.discountRate }}%): -Tzs{{ invoiceData.discountApplied }}</p>
-  <p><strong>Net Amount: Tzs{{ invoiceData.netAmount }}</strong></p>
-
-  <h3>Control Number</h3>
-  <p *ngIf="invoiceData.controlNumber">Control #: {{ invoiceData.controlNumber.number }}</p>
-</section>
+<div *ngIf="loading">Generating Invoice PDF...</div>

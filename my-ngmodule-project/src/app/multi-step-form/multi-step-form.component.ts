@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 
 import { BookingService } from '../Services/booking.service';
-import { MultiStepFormService } from '../multi-step-form.service';
+import { MultiStepFormService } from '../Services/multi-step-form.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { InvoiceServiceService } from '../Services/invoice-service.service';
 
