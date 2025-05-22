@@ -26,7 +26,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { VenueFormComponent } from './Admin/venue-form/venue-form.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { BuildingService } from './building.service';
+import { BuildingService } from './Services/building.service';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';

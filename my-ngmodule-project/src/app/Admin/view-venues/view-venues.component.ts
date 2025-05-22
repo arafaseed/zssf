@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ViewVenueService } from '../../view-venue.service';
+import { ViewVenueService } from '../../Services/view-venue.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';

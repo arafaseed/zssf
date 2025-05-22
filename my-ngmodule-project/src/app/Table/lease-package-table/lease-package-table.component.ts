@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LeasePackageService } from '../../packages.service';
+import { LeasePackageService } from '../../Services/packages.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { LeasePackageEditFormComponent } from '../../Form/lease-package-edit-form/lease-package-edit-form.component';
