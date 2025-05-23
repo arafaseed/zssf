@@ -25,10 +25,11 @@ export class BuildinglistService {
 
   // Delete a building by ID
   
-  deleteBuilding(id: number): Observable<void> {
-    console.log('Deleting building with ID:', id);
-    return this.http.delete<void>(`http://localhost:8080/api/buildings/delete/${id}`);
+  deleteBuilding(buildingId: number): Observable<void> {
+    console.log('Deleting building with ID:', buildingId);
+    return this.http.delete<void>(`http://localhost:8080/api/buildings/delete/${buildingId}`);
   }
+  
   
 
 }
