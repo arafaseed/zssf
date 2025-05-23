@@ -60,12 +60,15 @@ export class BookingService {
     this.fetchBookings().subscribe();
   }
 
-  // Get booked slots for a venue
-  // getBookedDates(venueId: number): Observable<BookedSlot[]> {
-  //   return this.http.get<BookedSlot[]>(`${this.apiUrl}/venue/${venueId}/booked-slots`);
-  // }
   getBookedDates(venueId: number): Observable<string[]> {
     return this.http.get<any[]>(`${this.apiUrl}/venue/${venueId}/booked-slots`);
+  }
+
+   // A method to get booked slots
+  getBookedSlots(venueId: number): Observable<string[]> {
+    return this.http.get<string[]>(
+      `${this.apiUrl}/venue/${venueId}/booked-slots`
+    );
   }
 
   // Create a new booking

@@ -1,378 +1,41 @@
-/* Content Box */
-.content-box {
-  position: relative;
-  background-color: #4cdde2; /* Soft yellow background */
-  padding: 32px;
-  border-radius: 12px;
-  margin-top: 71px;
-  margin-bottom: 10px;
-  justify-content: center;
-  max-width: 100%;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  /* Added media query for content box responsiveness */
+/* Increase card shadow, subtle rounding for mat-select popups */
+.mat-card {
+  border-radius: 0.75rem; /* rounded-lg */
 }
 
-.welcome-card {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
+.mat-select-panel .mat-option .mat-option-text {
+  padding: 0; /* We handle padding inside our custom div */
 }
 
-.card {
-  background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 1800px;
-  padding: 12px;
-  text-align: center;
-  transition: transform 0.2s ease-in-out;
+.mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: #ecfdf5; /* Tailwind’s green-50 */
+  border-radius: 0.5rem;   /* rounded-lg */
 }
 
-.card:hover {
-  transform: scale(1.02);
+.mat-form-field-appearance-fill .mat-form-field-underline {
+  display: none; /* hide default underline */
 }
 
-.card-header h4 {
-  font-size: 36px;
-  font-weight: 700;
-  color: #2A7261;
-  margin-bottom: 6px;
-  letter-spacing: 0.5px;
+.mat-form-field-appearance-fill .mat-form-field-wrapper {
+  padding: 0.5rem 0; /* match our tailwind py-2 */
 }
 
-.card-body p {
-  font-size: 20px;
-  color: #444;
-  line-height: 1.5;
-  font-weight: 500;
-  font-style: oblique;
-}
-
-.main-content {
-  padding-bottom: 64px; /* Adjust this based on footer height */
-}
-
-body {
-  padding-bottom: 64px; /* Ensure body content is not covered by footer */
-}
-
-/* Ensure the entire body takes full height and content adjusts accordingly */
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-/* Basic Reset */
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-/* Content Box */
-.content-box {
-  position: relative;
-  background-color: #4cdde2;
-  padding: 32px;
-  border-radius: 12px;
-  margin-top: 71px;
-  margin-bottom: 10px;
-  justify-content: center;
-  max-width: 100%;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  
-}
-
-/* Form Container */
-form {
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  width:88rem;
-  margin: 20px auto;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
- 
-  
-}
-
-/* Step Navigation Buttons */
-.step-nav {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.step-nav button {
-  width: 48%;
-  font-size: 18px;
-  padding: 12px 0;
-  text-align: center;
-  border-radius: 8px;
-  background-color: #4cdde2;
-  color: #fff;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.step-nav button.disabled {
-  background-color: #e6e6e6;
-  cursor: not-allowed;
-}
-
-.step-nav button:hover:not(.disabled) {
-  background-color: #38b2b2;
-}
-
-/* Multi-Step Container */
-.step-container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.step-container > div {
-  display: none;
-  
-}
-
-.step-container > .active {
-  display: block;
-
-}
-
-/* Form Input Fields */
-input[type="text"],
-input[type="email"],
-input[type="date"],
-input[type="time"],
-select {
-  width: 100%;
-  padding: 12px;
-  width:55rem;
-  margin-bottom: 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 16px;
-  color: #555;
-  transition: all 0.3s ease;
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="date"]:focus,
-input[type="time"]:focus,
-select:focus {
-  border-color: #4cdde2;
-  outline: none;
-  box-shadow: 0 0 5px rgba(76, 221, 226, 0.6);
-}
-
-/* Button Styles */
-button[type="button"],
-button[type="submit"] {
-  background-color: #4cdde2;
-  color: #fff;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  width: 100%;
-}
-
-button[type="button"]:hover {
-  background-color: #e6e6e6;
-}
-
-button[type="submit"]:not([type="button"]) {
-  background-color: #4cdde2;
-}
-
-button[type="submit"]:hover {
-  background-color: #38b2b2;
-}
-
-/* Label Styling */
-label {
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 8px;
-  display: inline-block;
-}
-
-/* Step Header */
-h2 {
-  font-size: 28px;
-  color: #2a7261;
-  font-weight: 700;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-/* Form Validation Styling */
-input.ng-invalid,
-select.ng-invalid {
-  border-color: #f12a14;
-}
-
-input.ng-valid,
-select.ng-valid {
-  border-color: #4cdde2;
-}
-
-/* Responsive Styling */
-@media screen and (max-width: 768px) {
-  .content-box {
-    margin-top: 80px;
-    padding: 20px;
-  }
-
-  form {
-    padding: 15px;
-
-  }
-
-  input[type="text"],
-  input[type="email"],
-  input[type="date"],
-  input[type="time"],
-  select {
-    font-size: 14px;
-    padding: 10px;
-  }
-
-  button {
-    padding: 10px;
-    font-size: 14px;
-  }
-}
-
-
-
-@media screen and (max-width: 768px) {
-  .content-box {
-    margin-top: 80px; /* Reduce margin on smaller screens */
-    padding: 20px; /* Adjust padding */
-  }
-}
-/* Style the container of the calendar */
+/* Shrink mat-calendar’s default overflow if necessary */
 .mat-calendar {
-  width: 28rem;
-  max-width: 800px;
-  margin: 0 auto;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 16px;
+  max-height: 20rem !important; /* Tailwind’s max-h-80 */
 }
 
-/* Make the calendar header look nice */
-.mat-calendar-header {
-  background-color: #3f51b5;
-  color: #fff;
-  padding: 12px;
-  text-align: center;
-  border-radius: 8px;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-/* Style the days of the week */
-.mat-calendar-table th {
-  font-size: 14px;
-  color: #757575;
-}
-
-/* Style the individual days */
-.mat-calendar-table td {
-  text-align: center;
-  padding: 12px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Hover effect on the days */
-.mat-calendar-table td:hover {
-  background-color: #3f51b5;
-  color: white;
-  border-radius: 50%;
-}
-
-/* Selected day highlight */
-.mat-calendar-table td.mat-calendar-body-selected {
-  background-color: #3f51b5 !important;
-  color: white !important;
-  border-radius: 50%;
-}
-
-/* Disabled days styling (weekends) */
-.mat-calendar-table td.mat-calendar-body-disabled {
-  color: #b0bec5;
-  pointer-events: none;
-}
-
-/* Style the date picker's button (next/previous) */
-.mat-calendar-next-button, .mat-calendar-prev-button {
-  color: #3f51b5;
-  font-size: 18px;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-/* Style for the current month and year */
-.mat-calendar-previous-button, .mat-calendar-next-button {
-  padding: 8px;
-  font-size: 16px;
-}
-
-/* Add margin between calendar and form fields */
-.date-picker-section {
-  margin-bottom: 20px;
-}
-
-/* Space between the calendar and the input fields */
-.mat-form-field {
-  margin-top: 20px;
-  width: 100%;
-}
-
-.step1-container {
-  display: flex;
-  gap: 2rem;
-  align-items: flex-start;
-  margin-top: 1rem;
-}
-
-.calendar-section {
-  flex: 1;
-}
-
-.form-section {
-  flex: 2;
+/* Card-like effect on mat-option items */
+.mat-select-panel .mat-option .mat-option-text {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-}
-/* Highlight booked dates */
-.highlight-date .mat-calendar-body-cell-content {
-  background-color: #d400ff !important;
-  color: black;
-  border-radius: 50%;
+  border: 1px solid #d1fae5; /* Tailwind’s green-200 */
+  border-radius: 0.5rem;     /* rounded-lg */
+  margin: 0.25rem 0;         /* small vertical gap */
+  padding: 0.5rem;           /* p-2 */
+  background-color: #ecfdf5; /* Tailwind’s green-50 */
 }
 
-
-
-
+.mat-select-panel .mat-option:hover .mat-option-text {
+  background-color: #d1fae5; /* Tailwind’s green-100 */
+}
