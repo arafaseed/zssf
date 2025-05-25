@@ -65,11 +65,11 @@ export class BookingService {
   }
 
    // A method to get booked slots
-  getBookedSlots(venueId: number): Observable<string[]> {
-    return this.http.get<string[]>(
-      `${this.apiUrl}/venue/${venueId}/booked-slots`
-    );
-  }
+  getBookedSlots(venueId: number): Observable<Array<{ date: string; startTime: string; endTime: string }>> {
+  return this.http.get<Array<{ date: string; startTime: string; endTime: string }>>(
+    `${this.apiUrl}/venue/${venueId}/booked-slots`
+  );
+}
 
   // Create a new booking
   createBooking(bookingData: any): Observable<any> {
