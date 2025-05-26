@@ -11,12 +11,12 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let staff of staffList">
-      <td><input [(ngModel)]="staff.staffIDN"></td>
-      <td><input [(ngModel)]="staff.fullName"></td>
-      <td><input [(ngModel)]="staff.phoneNumber"></td>
+    <tr *ngFor="let staff of staffList; let i = index">
+      <td><input [(ngModel)]="staff.staffIDN" name="staffIDN{{i}}"></td>
+      <td><input [(ngModel)]="staff.fullName" name="fullName{{i}}"></td>
+      <td><input [(ngModel)]="staff.phoneNumber" name="phoneNumber{{i}}"></td>
       <td>
-        <select [(ngModel)]="staff.role">
+        <select [(ngModel)]="staff.role" name="role{{i}}">
           <option value="ADMIN">ADMIN</option>
           <option value="STAFF">STAFF</option>
         </select>
