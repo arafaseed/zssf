@@ -1,50 +1,45 @@
-<div class="container">
-  <button (click)="toggleForm()">
-    {{ showForm ? 'Back to List' : 'Add New Staff' }}
-  </button>
+<hr>
 
-  <div *ngIf="showForm">
-    <form [formGroup]="staffForm" (ngSubmit)="onSubmit()">
-      <label>Staff IDN:</label>
-      <input formControlName="staffIDN" type="text" />
+<table>
+  <thead>
+    <tr>
+      <th>IDN</th>
+      <th>Name</th>
+      <th>Phone</th>
+      <th>Role</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let staff of staffList">
+      <td><input [(ngModel)]="staff.staffIDN"></td>
+      <td><input [(ngModel)]="staff.fullName"></td>
+      <td><input [(ngModel)]="staff.phoneNumber"></td>
+      <td>
+        <select [(ngModel)]="staff.role">
+          <option value="ADMIN">ADMIN</option>
+          <option value="STAFF">STAFF</option>
+        </select>
+      </td>
+      <td>
+        <button (click)="updateStaff(staff)">Update</button>
+        <button (click)="deleteStaff(staff.staffId)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
-      <label>Full Name:</label>
-      <input formControlName="fullName" type="text" />
+<form [formGroup]="staffForm" (ngSubmit)="onSubmit()">
+  <input formControlName="staffIDN" placeholder="Staff IDN" required>
+  <input formControlName="fullName" placeholder="Full Name" required>
+  <input formControlName="phoneNumber" placeholder="Phone Number" required>
+  <input formControlName="password" placeholder="Password" required type="password">
+  
+  <select formControlName="role" required>
+    <option value="" disabled selected>Select Role</option>
+    <option value="ADMIN">ADMIN</option>
+    <option value="STAFF">STAFF</option>
+  </select>
 
-      <label>Phone Number:</label>
-      <input formControlName="phoneNumber" type="text" />
-
-      <label>Password:</label>
-      <input formControlName="password" type="password" />
-
-      <label>Role:</label>
-      <select formControlName="role">
-        <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
-      </select>
-
-      <button type="submit" [disabled]="staffForm.invalid">Add Staff</button>
-    </form>
-  </div>
-
-  <div *ngIf="!showForm">
-    <h3>Staff List</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>IDN</th>
-          <th>Name</th>
-          <th>Phone</th>
-          <th>Role</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let staff of staffList">
-          <td>{{ staff.staffIDN }}</td>
-          <td>{{ staff.fullName }}</td>
-          <td>{{ staff.phoneNumber }}</td>
-          <td>{{ staff.role }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+  <button type="submit">Add Staff</button>
+</form>

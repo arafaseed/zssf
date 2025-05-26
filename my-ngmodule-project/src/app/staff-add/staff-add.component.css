@@ -1,104 +1,108 @@
 /* Container styling */
 .container {
-  max-width: 800px;
+  max-width: 900px;
   margin: 30px auto;
-  padding: 20px;
+  padding: 25px;
   background: #f9fafb;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgb(0 0 0 / 0.1);
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgb(0 0 0 / 0.1);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Form styling */
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+/* Table styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
 }
 
-label {
-  font-weight: 600;
-  margin-bottom: 5px;
-  color: #333;
+thead {
+  background-color: #2a7261;
+  color: white;
 }
 
-input, select {
-  padding: 10px 12px;
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+tbody tr:hover {
+  background-color: #e9f1ef;
+}
+
+input[type="text"], select {
+  width: 100%;
+  padding: 8px 10px;
   border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
   transition: border-color 0.3s ease;
 }
 
-input:focus, select:focus {
+input[type="text"]:focus, select:focus {
   border-color: #2a7261;
   outline: none;
 }
 
-/* Submit button */
+/* Buttons in table */
 button {
   background-color: #2a7261;
   color: white;
-  font-weight: 700;
   border: none;
-  padding: 12px;
-  border-radius: 6px;
+  padding: 7px 14px;
+  margin-right: 8px;
+  border-radius: 5px;
+  font-weight: 600;
   cursor: pointer;
-  font-size: 1.1rem;
   transition: background-color 0.3s ease;
+  font-size: 0.9rem;
 }
 
 button:hover {
   background-color: #235745;
 }
 
-/* Staff list styling */
-.staff-list {
-  margin-top: 40px;
-}
-
-.staff-list h2 {
-  margin-bottom: 15px;
-  color: #2a7261;
-  border-bottom: 2px solid #2a7261;
-  padding-bottom: 5px;
-}
-
-.staff-item {
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  padding: 15px 20px;
-  margin-bottom: 15px;
-  box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+/* Form styling */
+form {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 15px;
   align-items: center;
 }
 
-.staff-item div {
-  display: flex;
-  flex-direction: column;
-}
-
-.staff-item span {
-  font-weight: 600;
-  color: #555;
-}
-
-/* Add new staff button */
-.add-staff-btn {
-  margin-top: 20px;
-  background-color: #2a7261;
-  color: white;
-  padding: 12px 18px;
-  border: none;
+form input, form select {
+  flex: 1 1 180px;
+  padding: 10px 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
   border-radius: 6px;
-  cursor: pointer;
-  font-weight: 700;
-  transition: background-color 0.3s ease;
+  transition: border-color 0.3s ease;
 }
 
-.add-staff-btn:hover {
-  background-color: #235745;
+form input:focus, form select:focus {
+  border-color: #2a7261;
+  outline: none;
+}
+
+form button[type="submit"] {
+  flex: 0 0 140px;
+  padding: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 6px;
+}
+
+/* Responsive improvements */
+@media (max-width: 600px) {
+  form {
+    flex-direction: column;
+  }
+  form button[type="submit"] {
+    width: 100%;
+  }
 }
