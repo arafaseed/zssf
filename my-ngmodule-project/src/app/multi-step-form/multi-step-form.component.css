@@ -1,3 +1,28 @@
+/* 1) Past dates → Grayish background, gray text */
+.past-date .mat-calendar-body-cell-content {
+  background-color: #E5E7EB !important; /* Tailwind’s gray-200 */
+  color: #9CA3AF !important;           /* Tailwind’s gray-400 */
+}
+
+/* 2) Booked dates → Reddish background, white text */
+.booked-date .mat-calendar-body-cell-content {
+  background-color: #FCA5A5 !important; /* Tailwind’s red-300 */
+  color: #FFFFFF !important;
+}
+
+/* 3) Available dates → Green background, black text */
+.available-date .mat-calendar-body-cell-content {
+  background-color: #BBF7D0 !important; /* Tailwind’s green-200 */
+  color: #000000 !important;
+}
+
+/* Ensure selected date is still highlighted normally */
+.mat-calendar-body-selected .mat-calendar-body-cell-content {
+  background-color: #4CAF50 !important; /* If you want a distinct highlight color */
+  color: #FFFFFF !important;
+}
+
+
 /* Increase card shadow, subtle rounding for mat-select popups */
 .mat-card {
   border-radius: 0.75rem; /* rounded-lg */
@@ -39,3 +64,4 @@
 .mat-select-panel .mat-option:hover .mat-option-text {
   background-color: #d1fae5; /* Tailwind’s green-100 */
 }
+
