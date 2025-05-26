@@ -54,6 +54,7 @@ import { InvoiceComponent } from './invoice/invoice.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { StaffAddComponent } from './staff-add/staff-add.component';
 
 @NgModule({
   declarations: [
@@ -82,6 +83,7 @@ import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
     BookingListComponent,
     ConfirmDialogComponent,
     InvoiceComponent,
+    StaffAddComponent,
   
   ],
   imports: [

@@ -21,6 +21,7 @@ import { EditVenueComponentComponent } from './edit-venue-component/edit-venue-c
 import { MultiStepFormComponent } from './multi-step-form/multi-step-form.component';
 import { BookingListComponent } from './booking-list/booking-list.component';
 import { InvoiceComponent } from './invoice/invoice.component';
+import { StaffAddComponent } from './staff-add/staff-add.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'venue', pathMatch: 'full' },
@@ -66,9 +67,11 @@ const routes: Routes = [
       { path: 'venueView', component: ViewVenuesComponent },
       { path: 'settings', component: SettingComponent },
       { path: 'bookinglist', component: BookingListComponent },
+      {path: 'addstaff', component: StaffAddComponent},
 
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Default admin page
-      { path: '**', redirectTo: 'dashboard' } // Catch-all
+      { path: '**', redirectTo: 'dashboard' }, // Catch-all
+
     ]
   }
 

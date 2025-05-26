@@ -1,0 +1,104 @@
+/* Container styling */
+.container {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #f9fafb;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgb(0 0 0 / 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Form styling */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+input, select {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+input:focus, select:focus {
+  border-color: #2a7261;
+  outline: none;
+}
+
+/* Submit button */
+button {
+  background-color: #2a7261;
+  color: white;
+  font-weight: 700;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #235745;
+}
+
+/* Staff list styling */
+.staff-list {
+  margin-top: 40px;
+}
+
+.staff-list h2 {
+  margin-bottom: 15px;
+  color: #2a7261;
+  border-bottom: 2px solid #2a7261;
+  padding-bottom: 5px;
+}
+
+.staff-item {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.staff-item div {
+  display: flex;
+  flex-direction: column;
+}
+
+.staff-item span {
+  font-weight: 600;
+  color: #555;
+}
+
+/* Add new staff button */
+.add-staff-btn {
+  margin-top: 20px;
+  background-color: #2a7261;
+  color: white;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: background-color 0.3s ease;
+}
+
+.add-staff-btn:hover {
+  background-color: #235745;
+}

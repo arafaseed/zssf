@@ -1,0 +1,50 @@
+<div class="container">
+  <button (click)="toggleForm()">
+    {{ showForm ? 'Back to List' : 'Add New Staff' }}
+  </button>
+
+  <div *ngIf="showForm">
+    <form [formGroup]="staffForm" (ngSubmit)="onSubmit()">
+      <label>Staff IDN:</label>
+      <input formControlName="staffIDN" type="text" />
+
+      <label>Full Name:</label>
+      <input formControlName="fullName" type="text" />
+
+      <label>Phone Number:</label>
+      <input formControlName="phoneNumber" type="text" />
+
+      <label>Password:</label>
+      <input formControlName="password" type="password" />
+
+      <label>Role:</label>
+      <select formControlName="role">
+        <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+      </select>
+
+      <button type="submit" [disabled]="staffForm.invalid">Add Staff</button>
+    </form>
+  </div>
+
+  <div *ngIf="!showForm">
+    <h3>Staff List</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>IDN</th>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let staff of staffList">
+          <td>{{ staff.staffIDN }}</td>
+          <td>{{ staff.fullName }}</td>
+          <td>{{ staff.phoneNumber }}</td>
+          <td>{{ staff.role }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
