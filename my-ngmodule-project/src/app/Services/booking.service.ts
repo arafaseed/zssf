@@ -11,10 +11,7 @@ export interface Booking {
   endDate: string;
   endTime: string;
   status: 'PENDING' | 'COMPLETE' | 'CANCELLED';
-  venue: {
-    venueId: number;
-    venueName: string;
-  };
+  venueId: number;
   customer: {
     customerId: number;
     fullName: string;
