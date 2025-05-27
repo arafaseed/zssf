@@ -124,7 +124,7 @@ mat-card-title {
 /* Search Input */
 .search-container input[type="text"] {
   width: 100%;
-  max-width: 300px;
+  max-width: 310px;
   padding: 12px;
   font-size: 16px;
   border-radius: 25px;
@@ -159,24 +159,47 @@ mat-card-title {
 /* Button Container */
 .button-container {
   display: flex;
-  justify-content: center;
-  gap: 20px;
+  justify-content: center; /* Center buttons horizontally */
+  gap: 100px;               /* Space between buttons */
   margin-top: 20px;
 }
 
 /* General Button Styling */
 button {
-  padding: 2px 46px;
+  padding: 10px 40px;         /* More vertical space for better feel */
   font-size: 14px;
   font-weight: bold;
   text-transform: uppercase;
   border-radius: 8px;
   transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
 }
 
+/* Hover Effect */
 button:hover {
-  opacity: 0.85;
+  opacity: 0.9;
+  transform: scale(1.02);     /* Slight zoom on hover */
 }
+/* Make sure your mat-card-actions has flex gap */
+mat-card-actions.d-flex {
+  display: flex;
+  justify-content: center; /* Or space-between if preferred */
+  gap: 20px;                /* This creates space between the buttons */
+  margin-top: 10px;
+}
+
+/* Optional enhancements */
+mat-card-actions.d-flex button {
+  font-weight: bold;
+  color: white;
+}
+
+mat-card-actions.d-flex mat-icon {
+  margin-right: 6px;
+  color: white;
+}
+
 
 /* Responsive Design Adjustments */
 @media screen and (max-width: 1200px) {
@@ -269,4 +292,13 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+}
+.custom-button[color="primary"] {
+  background-color: #2A7261;
+  color: white;
+}
+
+.custom-button[color="accent"] {
+  background-color: #41bde2; /* deep green for accent */
+  color: white;
 }

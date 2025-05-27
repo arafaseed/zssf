@@ -58,19 +58,21 @@
           <p><strong>Description:</strong> {{ venue.description }}</p>
         </div>
       </mat-card-content>
+      
+<mat-card-actions class="d-flex justify-content-between">
+  <button mat-raised-button color="primary" (click)="toggleDescription(venue)" class="custom-button">
+    <mat-icon class="custom-icon">info_outline</mat-icon>
+    <span class="custom-text">{{ venue.showDescription ? 'Hide Details' : 'See More' }}</span>
+  </button>
 
-      <mat-card-actions class="d-flex justify-content-between">
-        <button mat-raised-button color="primary" (click)="toggleDescription(venue)">
-          <mat-icon>info</mat-icon>
-          {{ venue.showDescription ? 'Hide Details' : 'See More' }}
-        </button>
+  <button mat-raised-button color="accent" (click)="goToBookingPage(venue)" class="custom-button">
+    <mat-icon class="custom-icon">event_available</mat-icon>
+    <span class="custom-text">Book Now</span>
+  </button>
+</mat-card-actions>
 
-        <button mat-raised-button color="accent" (click)="goToBookingPage(venue)">
-          <mat-icon>book</mat-icon>
-          Book Now
-        </button>
-      </mat-card-actions>
-    </mat-card>
+</mat-card>
+     
   </div>
 </div>
 </div>

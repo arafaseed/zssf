@@ -1,3 +1,4 @@
+<app-header></app-header>
 <div class="login-container">
   <div class="login-box">
     <h2>Login</h2>
@@ -15,16 +16,21 @@
       </div>
 
       <div class="input-group">
-        <label for="password">Password</label>
-        <input 
-          type="password" 
-          id="password" 
-          formControlName="password"
-          required>
-        <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched" class="error-message">
-          Password is required
-        </div>
-      </div>
+  <label for="password">Password</label>
+  <div class="password-wrapper">
+    <input 
+      [type]="hidePassword ? 'password' : 'text'"
+      id="password" 
+      formControlName="password"
+      required>
+    <span class="toggle-password" (click)="togglePasswordVisibility()">
+      {{ hidePassword ? '👁️' : '🙈' }}
+    </span>
+  </div>
+  <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched" class="error-message">
+    Password is required
+  </div>
+</div>
 
       <div *ngIf="errorMsg" class="error-message">
         {{ errorMsg }}
@@ -39,3 +45,4 @@
     </form>
   </div>
 </div>
+<app-footer></app-footer>

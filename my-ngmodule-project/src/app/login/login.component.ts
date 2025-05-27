@@ -13,7 +13,7 @@ import { AuthService } from '../Services/auth.service';
 export class LoginComponent {
   // Use definite assignment assertion (!) to tell TypeScript this will be initialized
   form!: FormGroup;
-
+  hidePassword = true;
   loading = false;
   errorMsg = '';
 
@@ -28,6 +28,9 @@ export class LoginComponent {
       password: ['', [Validators.required]]
     });
   }
+  togglePasswordVisibility(): void {
+  this.hidePassword = !this.hidePassword;
+}
 
   submit(): void {
     if (this.form.invalid) { return; }
