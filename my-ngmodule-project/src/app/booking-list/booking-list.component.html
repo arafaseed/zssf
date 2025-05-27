@@ -1,32 +1,53 @@
 <div class="container">
-    <h2>Booking List</h2>
-  
-    <div *ngFor="let status of ['PENDING', 'COMPLETE', 'CANCELLED']">
-      <h3>{{ status }}</h3>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Booking Code</th>
-            <th>Venue</th>
-            <th>Customer</th>
-            <th>Start Date</th>
-            <th>Start Time</th>
-            <th>End Date</th>
-            <th>End Time</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let booking of filteredBookings[status]">
-            <td>{{ booking.bookingCode }}</td>
-            <td>{{ booking.venueId }}</td>
-            <td>{{ booking.customer.fullName }}</td>
-            <td>{{ booking.startDate }}</td>
-            <td>{{ booking.startTime }}</td>
-            <td>{{ booking.endDate }}</td>
-            <td>{{ booking.endTime }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+ <div class="d-flex justify-content-between mb-3">
+  <!-- Move this to the top -->
+  <div class="button-group">
+    <button (click)="showSection = 'CANCELLED'">Show Cancelled</button>
+    <button (click)="showSection = 'COMPLETED'">Show Completed</button>
   </div>
-  
+  </div>
+
+  <!-- Always show PENDING -->
+  <div>
+    <h3>PENDING</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Booking Code</th>
+          <th>Venue</th>
+          <th>Customer</th>
+          <th>Start Date</th>
+          <th>Start Time</th>
+          <th>End Date</th>
+          <th>End Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let booking of filteredBookings['PENDING']">
+          <td>{{ booking.bookingCode }}</td>
+          <td>{{ booking.venueId }}</td>
+          <td>{{ booking.customer.fullName }}</td>
+          <td>{{ booking.startDate }}</td>
+          <td>{{ booking.startTime }}</td>
+          <td>{{ booking.endDate }}</td>
+          <td>{{ booking.endTime }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Conditional rendering -->
+  <div *ngIf="showSection === 'CANCELLED'">
+    <h3>CANCELLED</h3>
+    <table class="table">
+      <!-- same table structure -->
+    </table>
+  </div>
+
+  <div *ngIf="showSection === 'COMPLETED'">
+    <h3>COMPLETE</h3>
+    <table class="table">
+      <!-- same table structure -->
+    </table>
+  </div>
+</div>

@@ -1,4 +1,6 @@
-<hr>
+<mat-card-title class="text-center">
+        <h3>Staff list</h3>
+      </mat-card-title>
 
 <table>
   <thead>
@@ -22,12 +24,23 @@
         </select>
       </td>
       <td>
-        <button (click)="updateStaff(staff)">Update</button>
-        <button (click)="deleteStaff(staff.staffId)">Delete</button>
-      </td>
+  <!-- Update button with icon -->
+  <button mat-icon-button color="primary" (click)="updateStaff(staff)">
+    <mat-icon>edit</mat-icon>
+  </button>
+
+  <!-- Delete button with icon -->
+  <button mat-icon-button color="warn" (click)="deleteStaff(staff.staffId)" >
+    <mat-icon>delete</mat-icon>
+  </button>
+</td>
+
     </tr>
   </tbody>
 </table>
+
+
+
 
 <form [formGroup]="staffForm" (ngSubmit)="onSubmit()">
   <input formControlName="staffIDN" placeholder="Staff IDN" required>

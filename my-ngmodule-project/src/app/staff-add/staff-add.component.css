@@ -1,15 +1,27 @@
-/* Container styling */
+/* General Container Styling */
 .container {
   max-width: 900px;
   margin: 30px auto;
   padding: 25px;
-  background: #f9fafb;
+  background: #ffffff;
   border-radius: 10px;
-  box-shadow: 0 5px 15px rgb(0 0 0 / 0.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Table styling */
+/* Header Styling */
+h3 {
+  background: #34495e;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  font-weight: bold;
+  border-radius: 8px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+/* Table Styling */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -17,62 +29,46 @@ table {
   background: white;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 thead {
-  background-color: #2a7261;
+  background-color: #34495e;
   color: white;
 }
 
 th, td {
   padding: 12px 15px;
-  text-align: left;
+  text-align: center;
   border-bottom: 1px solid #ddd;
+  font-size: 16px;
 }
 
+/* Row & Cell Hover Effects */
 tbody tr:hover {
-  background-color: #e9f1ef;
+  background-color: rgba(0, 123, 255, 0.1);
+  transition: 0.3s;
 }
 
-input[type="text"], select {
-  width: 100%;
-  padding: 8px 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  transition: border-color 0.3s ease;
-}
-
-input[type="text"]:focus, select:focus {
-  border-color: #2a7261;
-  outline: none;
-}
-
-/* Buttons in table */
-button {
-  background-color: #2a7261;
-  color: white;
-  border: none;
-  padding: 7px 14px;
-  margin-right: 8px;
-  border-radius: 5px;
-  font-weight: 600;
+th:hover {
+  background-color: rgba(0, 123, 255, 0.2);
   cursor: pointer;
   transition: background-color 0.3s ease;
-  font-size: 0.9rem;
 }
 
-button:hover {
-  background-color: #235745;
+td:hover {
+  background-color: rgba(0, 123, 255, 0.2);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-/* Form styling */
+/* Form Styling */
 form {
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
   align-items: center;
+  margin-bottom: 20px;
 }
 
 form input, form select {
@@ -95,14 +91,90 @@ form button[type="submit"] {
   font-size: 1.1rem;
   font-weight: 700;
   border-radius: 6px;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-/* Responsive improvements */
+form button[type="submit"]:hover {
+  background-color: #1565c0;
+}
+
+/* Input Fields */
+input[type="text"], select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus, select:focus {
+  border-color: #1976d2;
+  outline: none;
+}
+
+/* Buttons */
+button {
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  padding: 7px 14px;
+  margin-right: 8px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s;
+  font-size: 0.9rem;
+}
+
+button:hover {
+  background-color: #1565c0;
+  transform: scale(1.05);
+}
+
+button:active {
+  background-color: #0d47a1;
+  transform: scale(0.98);
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Responsive Adjustments */
 @media (max-width: 600px) {
   form {
     flex-direction: column;
   }
+
   form button[type="submit"] {
     width: 100%;
   }
+
+  th, td {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+
+/* Angular Material Specific (if using Angular) */
+mat-icon {
+  font-size: 20px;
+}
+
+mat-header-cell {
+  font-weight: bolder;
+  font-size: larger;
 }
