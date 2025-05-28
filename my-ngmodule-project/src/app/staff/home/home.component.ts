@@ -23,11 +23,11 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    localStorage.setItem('activeTab', this.activeTab);
+    sessionStorage.setItem('activeTab', this.activeTab);
   }
 
   setTab(tab: string): void {
     this.activeTab = tab;
-    localStorage.setItem('activeTab', tab);
+    sessionStorage.setItem('activeTab', tab);
   }
 }

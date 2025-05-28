@@ -7,3 +7,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+.mat-calendar-body-selected .mat-calendar-body-cell-content {
+  background-color: #16a34a !important; /* Tailwind’s green-600 */
+  color: white !important;
+}

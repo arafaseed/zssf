@@ -46,7 +46,6 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
   selectingEndDate = false;
   selectedDate: Date = new Date();
 
-  minDate = new Date(); // used to disable before-today
 
   // Base URL for booking-related endpoints
   private bookingApiUrl = 'http://localhost:8080/api/bookings';
@@ -178,34 +177,31 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
     return true;
   };
 
-  /**
-   * Assign a CSS class to each date in the calendar.
-   * - past-date  → grey background
-   * - booked-date → red background
-   * - available-date → green background
-   */
   dateClass = (cellDate: Date, view: string): string => {
-    if (view !== 'month') return '';
+  if (view !== 'month') {
+    return '';
+  }
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const cell = new Date(cellDate);
-    cell.setHours(0, 0, 0, 0);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
-    // 1) Past dates
-    if (cell < today) {
-      return 'past-date';
-    }
+  const cell = new Date(cellDate);
+  cell.setHours(0, 0, 0, 0);
 
-    // 2) Booked slots (exact match by YYYY-MM-DD)
-    const iso = cell.toISOString().split('T')[0];
-    if (this.bookedDatesSet.has(iso)) {
-      return 'booked-date';
-    }
+  // 1) Past dates → gray  text
+  if (cell < today) {
+    return ' text-gray-400';
+  }
 
-    // 3) All others
-    return 'available-date';
-  };
+  // 2) Booked dates → red  text
+  const iso = cell.toISOString().split('T')[0]; // "YYYY-MM-DD"
+  if (this.bookedDatesSet.has(iso)) {
+    return 'text-red-500';
+  }
+
+  // 3) Available dates → green  text
+  return 'text-green-700';
+};
 
   /** When user clicks a date: show feedback if disabled, otherwise patch form. */
   onDateSelected(date: Date | null): void {
