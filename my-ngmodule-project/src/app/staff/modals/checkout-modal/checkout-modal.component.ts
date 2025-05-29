@@ -1,49 +1,61 @@
-// import { Component, Input } from '@angular/core';
-// import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-// import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-// import { StaffBookingService } from '../../../services/venue-report.service';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { StaffBookingService } from '../../staff-booking.service';
 
-// @Component({
-//   selector: 'app-checkout-modal',
-//   templateUrl: './checkout-modal.component.html',
-//   styleUrls: ['./checkout-modal.component.css']
-// })
-// export class CheckoutModalComponent {
-//   @Input() booking: any;
-//   @Input() staffIDN: string;
+@Component({
+  selector: 'app-checkout-modal',
+  standalone: false,
+  templateUrl: './checkout-modal.component.html',
+  styleUrls: ['./checkout-modal.component.css']
+})
+export class CheckoutModalComponent {
+  @Input() booking!: any;
+  @Input() staffIDN!: string;
+  @Output() close = new EventEmitter<void>();
+  @Output() checkedOut = new EventEmitter<void>();
 
-//   form: FormGroup;
-//   conditionStatuses = ['GOOD', 'FAIR', 'BAD', 'CRITICAL'];
+  form: FormGroup;
+  conditionStatuses = ['GOOD', 'FAIR', 'BAD', 'CRITICAL'];
+  submitting = false;
+  errorMessage: string | null = null;
 
-//   constructor(
-//     public activeModal: NgbActiveModal,
-//     private fb: FormBuilder,
-//     private bookingService: StaffBookingService
-//   ) {
-//     this.form = this.fb.group({
-//       conditionStatus: ['', Validators.required],
-//       conditionDescription: ['', Validators.required]
-//     });
-//   }
+  constructor(
+    private fb: FormBuilder,
+    private bookingService: StaffBookingService
+  ) {
+    this.form = this.fb.group({
+      conditionStatus: ['', Validators.required],
+      conditionDescription: ['', Validators.required]
+    });
+  }
 
-//   onSubmit(): void {
-//     if (this.form.invalid) return;
+  onSubmit(): void {
+    if (this.form.invalid) return;
 
-//     const payload = {
-//       bookingCode: this.booking.bookingCode,
-//       staffIDN: this.staffIDN,
-//       conditionStatus: this.form.value.conditionStatus,
-//       conditionDescription: this.form.value.conditionDescription
-//     };
+    this.submitting = true;
+    this.errorMessage = null;
 
-//     this.bookingService.checkOut(payload).subscribe({
-//       next: (res) => {
-//         this.activeModal.close('checkedOut');
-//       },
-//       error: (err) => {
-//         console.error('Check-out failed', err);
-//         // Optionally show error
-//       }
-//     });
-//   }
-// }
+    const payload = {
+      bookingCode: this.booking.bookingCode,
+      staffIDN: this.staffIDN,
+      conditionStatus: this.form.value.conditionStatus,
+      conditionDescription: this.form.value.conditionDescription
+    };
+
+    this.bookingService.checkOut(payload).subscribe({
+      next: () => {
+        this.submitting = false;
+        this.checkedOut.emit();
+      },
+      error: (err) => {
+        this.errorMessage = err.error?.message || 'Check-out failed.';
+        console.error('Check-out failed', err);
+        this.submitting = false;
+      }
+    });
+  }
+
+  onCancel(): void {
+    this.close.emit();
+  }
+}
