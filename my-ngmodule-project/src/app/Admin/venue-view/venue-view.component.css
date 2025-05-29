@@ -223,7 +223,7 @@ mat-card-actions.d-flex mat-icon {
 /* Content Box */
 .content-box {
   position: relative;
-  background-color: #4cdde2; /* Soft yellow background */
+  /* background-color: #4cdde2;  */
   padding: 32px;
   border-radius: 12px;
   margin-top: 71px;

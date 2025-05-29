@@ -1,43 +1,30 @@
 <!-- Main Header -->
-<mat-toolbar color="success" class="fixed-header">
-    <div class="header-content">
+<mat-toolbar color="primary" class="fixed-header mat-elevation-z6">
+  <div class="header-content">
     <div class="logo-title-group">
-    <img src="zssf.png" alt="ZSSF Logo" class="header-logo">
-    <span class="header-title"><span class="highlight">ZSSF </span>BOOKING VENUE</span>
-
+      <img src="zssf.png" alt="ZSSF Logo" class="header-logo" />
+      <span class="header-title mat-title">
+        <span class="highlight">ZSSF </span>BOOKING VENUE
+      </span>
     </div>
-    <span class="header-contact">
-      <mat-icon class="icon phone-icon">call</mat-icon> 
-      +255 242 230 242 | 
-      <mat-icon class="icon email-icon">mark_email_read</mat-icon> 
-      info&#64;zssf.com 
-      <!-- <button mat-button class="yellow-button" (click)="navigateToLogin()"> 
-        <mat-icon>login</mat-icon> Login
-    </button> -->
-    
-    </span>
-      
-    
-    
-    </div>
-  </mat-toolbar>
-  
+<!-- Wrap phone and email inside their own container -->
+<span class="header-contact mat-body-1">
+  <!-- Home Button -->
+  <button mat-button (click)="goHome()" color="accent" class="home-button" aria-label="Go to homepage">
+    <mat-icon>home</mat-icon> Home
+  </button>
 
-  <!-- Navigation Menu -->
-<!-- <mat-toolbar class="navbar">
-  <mat-toolbar-row>
-    <span class="spacer"></span>
-    <button mat-button (click)="navigateToVenue()">
-      <mat-icon>event</mat-icon> VENUE
-    </button>
-    <button mat-button>
-      <mat-icon>group</mat-icon> CONFERENCE
-    </button>
-    <button mat-button>
-      <mat-icon>info</mat-icon> ABOUT
-    </button>
-    <span class="spacer"></span>
-  </mat-toolbar-row>
-</mat-toolbar> -->
+  <span class="contact-details">
+    <mat-icon class="icon phone-icon" aria-label="Phone icon">call</mat-icon>
+    +255 242 230 242 &nbsp;|&nbsp;
+    <mat-icon class="icon email-icon" aria-label="Email icon">mark_email_read</mat-icon>
+    info&#64;zssf.com
+  </span>
+  </span>
+  </div>
+</mat-toolbar>
+
+
+
 
 
