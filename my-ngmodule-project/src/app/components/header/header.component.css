@@ -54,7 +54,7 @@
 /* Highlight */
 .highlight {
   color: #ffeb3b;
-  font-weight: 900;
+ 
 }
 
 /* Contact and Home container */
@@ -63,7 +63,7 @@
   align-items: center;
   gap: 1rem;
   font-family: 'Roboto', sans-serif;
-  font-size: 1rem;
+  font-size: 1.17rem;
   font-weight: 500;
   color: #f5efef;
   text-align: right;
@@ -92,8 +92,9 @@
 /* Home button */
 .home-button {
   font-family: 'Roboto', sans-serif;
-  font-size: 1.2rem;
+  font-size: 1.17rem;
   color: #fff;
+  font-weight: 500;
   background-color: transparent;
   padding: 0 0px;
   text-transform: none;
@@ -107,7 +108,8 @@
 }
 
 .home-button:hover {
-  background-color: rgba(255, 235, 59, 0.2);
+  /* background-color: rgba(255, 235, 59, 0.2); */
+   text-decoration: underline;
 }
 
 /* Mobile (Responsive) */
