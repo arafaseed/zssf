@@ -1,7 +1,6 @@
 module.exports = {
     content: [
-      "./src/**/*.{html,ts}",
-      "./projects/**/*.{html,ts}"
+      "./src/**/*.{html,ts}"
     ],
     theme: {
       colors: {

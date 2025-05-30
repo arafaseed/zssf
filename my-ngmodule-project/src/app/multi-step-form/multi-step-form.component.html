@@ -1,193 +1,268 @@
 <app-header></app-header>
 
-<div class="min-h-screen bg-gray-50 p-4">
-  <div class="max-w-7xl mx-auto">
-    <!-- Welcome Card -->
-    <div class="bg-blue-200 rounded-xl p-6 shadow-lg mb-8 mt-16">
-      <div class="text-center">
-        <h4 class="text-2xl font-bold text-green-800 mb-4">Fomu ya kukodi ukumbi</h4>
-      </div>
-    </div>
+<div class="min-h-screen p-4 mt-8 bg-gray-50">
+  <div
+    class="max-w-3xl p-6 mx-auto mb-8 text-center bg-white shadow-lg rounded-xl"
+    style="margin-top: 4rem;"
+  >
+    <h4 class="mb-4 text-2xl font-bold text-blue-700">Booking Form</h4>
+  </div>
 
-    <!-- Multi-step Form -->
-    <form [formGroup]="bookingForm"
-          class="bg-white rounded-xl shadow-md p-6 mb-8 h-210 border-2 border-green-300">
-      <!-- Step 1: Select Date & Time -->
+  <div class="max-w-3xl mx-auto">
+    <!-- Multi-step Form Container -->
+    <form
+      [formGroup]="bookingForm"
+      (ngSubmit)="onSubmit()"
+      class="p-6 mb-8 bg-white border-2 border-blue-300 shadow-md rounded-xl"
+    >
+      <!-- Step 1: Select Date Range, Venue, Package, Session -->
       <div *ngIf="currentStep === 1" class="space-y-6">
-        <h2 class="text-2xl font-bold text-green-700 text-center mb-6">
+        <h2 class="mb-6 text-2xl font-bold text-center text-blue-700">
           Step 1: Select Date & Time
         </h2>
 
-        <div class="flex flex-col lg:flex-row gap-6">
-          <!-- Calendar Section -->
-          <div class="lg:w-1/2">
-            <mat-card class="p-4 shadow-lg bg-white rounded-lg">
-              <div class="flex justify-center mb-2">
-                <h3 class="text-lg font-medium text-gray-800">Choose a Date</h3>
-              </div>
-              <mat-calendar
-                class="w-full max-h-80"
-                [selected]="selectedDate"
-                [dateFilter]="dateFilter"
-                [dateClass]="dateClass"
-                (selectedChange)="onDateSelected($event)">
-              </mat-calendar>
-            </mat-card>
-          </div>
-
-          <!-- Form Section -->
-          <div class="lg:w-1/2 space-y-4">
-            <!-- Venue Input (readonly) -->
+        <div class="flex flex-col space-y-6">
+          <!-- Date Range Picker -->
+          <div>
             <mat-form-field appearance="fill" class="w-full">
-              <mat-label class="text-green-700">Venue</mat-label>
-              <input matInput
-                     [value]="selectedVenueName || 'No venue selected'"
-                     disabled
-                     class="bg-green-50 border border-green-300 rounded-lg py-2 px-3">
-              <input formControlName="venueId" type="hidden">
-            </mat-form-field>
+  <mat-label class="text-lg font-medium text-blue-700">
+    Choose Date Range
+  </mat-label>
 
-            <!-- Package Selection -->
-            <mat-form-field appearance="fill" class="w-full">
-              <mat-label class="text-green-700">Package</mat-label>
-              <mat-select formControlName="venuePackageId" required class="bg-green-50">
-                <mat-option *ngFor="let pak of packageOptions" [value]="pak.leaseId">
-                  <div class="flex flex-col p-2">
-                    <span class="font-semibold">{{ pak.packageName }}</span>
-                    <span class="text-sm text-gray-600">Tzs {{ pak.price }}</span>
-                  </div>
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="bookingForm.get('venuePackageId')?.hasError('required')">
-                Package selection is required
+  <mat-date-range-input
+    [rangePicker]="picker"
+    [min]="minDate"
+    [dateFilter]="dateFilter"
+    formGroupName="dateRangeGroup"
+  >
+    <input
+      matStartDate
+      formControlName="startDate"
+      placeholder="Start date"
+      (dateChange)="onDateChange($event, 'start')"
+      class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+    />
+    <input
+      matEndDate
+      formControlName="endDate"
+      placeholder="End date"
+      (dateChange)="onDateChange($event, 'end')"
+      class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+    />
+  </mat-date-range-input>
+
+  <mat-datepicker-toggle matSuffix [for]="picker" class="bg-blue-300"></mat-datepicker-toggle>
+
+  <!-- Tell the picker’s overlay to carry a `bg-blue-100` class -->
+  <mat-date-range-picker #picker panelClass="bg-blue-50"></mat-date-range-picker>
+
+
+
+              <!-- Days Counter Hint -->
+              <mat-hint class="text-sm text-gray-600">
+                Days selected: {{ getDurationDays() }}
+              </mat-hint>
+              <!-- Validation Errors -->
+              <mat-error
+                *ngIf="
+                  bookingForm
+                    .get('dateRangeGroup.startDate')
+                    ?.hasError('required')
+                "
+                class="text-red-500"
+              >
+                Start date is required
               </mat-error>
             </mat-form-field>
+          </div>
 
-            <!-- Date Display + Toggle End Date -->
-            <div class="bg-gray-100 p-3 rounded-lg border border-gray-300">
-              <p class="font-semibold text-sm mb-2">
-                Selected Date:
-                <span *ngIf="bookingForm.get('startDate')?.value">
-                  {{ bookingForm.get('startDate')?.value | date: 'fullDate' }}
-                </span>
-                <span *ngIf="!bookingForm.get('startDate')?.value">Not selected</span>
-              </p>
-              <button type="button"
-                      mat-icon-button
-                      color="primary"
-                      (click)="toggleEndDate()"
-                      class="!bg-blue-100 hover:!bg-blue-200"
-                      aria-label="Toggle End Date">
-                <mat-icon>
-                  {{ showEndDate ? 'remove_circle' : 'add_circle' }}
-                </mat-icon>
-                Add
-              </button>
-
-              <div *ngIf="showEndDate" class="mt-3 text-sm">
-                <p class="font-medium">
-                  End Date:
-                  <span *ngIf="bookingForm.get('endDate')?.value">
-                    {{ bookingForm.get('endDate')?.value | date: 'fullDate' }}
-                  </span>
-                  <span *ngIf="!bookingForm.get('endDate')?.value">Not selected</span>
-                </p>
-                <p class="text-gray-600 text-xs italic">Select end date from calendar</p>
-              </div>
-            </div>
-
-            <!-- Session Selection as dropdown with card-like options -->
+          <!-- Venue Input (readonly) -->
+          <div>
             <mat-form-field appearance="fill" class="w-full">
-              <mat-label class="text-green-700">Select Session</mat-label>
-              <mat-select formControlName="session" required (selectionChange)="onSessionChange()">
-                <mat-option *ngFor="let sess of sessionOptions" [value]="sess.label">
-                  <div class="flex flex-col p-2 bg-green-50 rounded-lg border border-green-200 hover:bg-green-100">
-                    <span class="font-semibold">{{ sess.label }}</span>
-                    <span class="text-xs text-gray-600">
-                      {{ sess.start }} – {{ sess.end }}
+              <mat-label class="font-medium text-blue-700">Venue</mat-label>
+              <input
+                matInput
+                [value]="selectedVenueName || 'No venue selected'"
+                disabled
+                class="w-full px-3 py-2 border border-blue-300 rounded-md bg-blue-50"
+              />
+              <input formControlName="venueId" type="hidden" />
+            </mat-form-field>
+          </div>
+
+          <!-- Package Selection -->
+          <div>
+            <mat-form-field appearance="fill" class="w-full">
+              <mat-label class="font-medium text-blue-700">Package</mat-label>
+              <mat-select formControlName="venuePackageId">
+                <mat-option
+                  *ngFor="let pak of packageOptions"
+                  [value]="pak.leaseId"
+                >
+                  <div class="flex flex-col p-3.5 mt-2 bg-blue-100 w-2xl">
+                    <span class="font-semibold">{{ pak.packageName }}</span>
+                    <span class="text-gray-800 text-l">
+                      Tzs {{ pak.price }}
                     </span>
                   </div>
                 </mat-option>
               </mat-select>
-              <mat-error *ngIf="bookingForm.get('session')?.hasError('required')">
-                Session selection is required
+              <mat-error
+                *ngIf="bookingForm.get('venuePackageId')?.hasError('required')"
+                class="text-red-500"
+              >
+                Package selection is required
               </mat-error>
             </mat-form-field>
-
-            <!-- Selected Time Display -->
-            <div *ngIf="selectedSessionTime" class="bg-blue-50 p-3 rounded-lg border border-blue-200">
-              <p class="text-sm font-medium">Selected Time Range: {{ selectedSessionTime }}</p>
-            </div>
-
-            <button type="button"
-                    (click)="nextStep()"
-                    class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">
-              Next Step
-            </button>
           </div>
+
+          <!-- Session (only SIKU NZIMA, preselected) -->
+          <div>
+            <mat-form-field appearance="fill" class="w-full">
+              <mat-label class="font-medium text-blue-700">Session</mat-label>
+              <mat-select formControlName="session" (selectionChange)="onSessionChange()">
+                <mat-option
+                  *ngFor="let sess of sessionOptions"
+                  [value]="sess.label"
+                >
+                  <div
+                    class="flex flex-col p-2 bg-blue-100 w-2xl"
+                  >
+                    <span class="font-semibold">{{ sess.label }}</span>
+                    <span class="text-gray-800 text-l"
+                      >{{ sess.start }} – {{ sess.end }}</span
+                    >
+                  </div>
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="bookingForm.get('session')?.hasError('required')"
+                class="text-red-500"
+              >
+                Session is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <!-- Next Button -->
+          <button
+            type="button"
+            (click)="nextStep()"
+            class="w-full py-2 text-white transition bg-blue-600 rounded-md hover:bg-blue-700"
+          >
+            Next Step
+          </button>
         </div>
       </div>
 
       <!-- Step 2: Customer Details -->
       <div *ngIf="currentStep === 2" class="space-y-6">
-        <h2 class="text-2xl font-bold text-green-700 text-center mb-6">
+        <h2 class="mb-6 text-2xl font-bold text-center text-blue-700">
           Step 2: Customer Details
         </h2>
 
         <div class="grid gap-4 md:grid-cols-2">
           <!-- Full Name -->
-          <mat-form-field appearance="fill" class="w-full">
-            <mat-label class="text-green-700">Full Name</mat-label>
-            <input matInput formControlName="fullName" required
-                   class="bg-green-50 border border-green-300 rounded-lg py-2 px-3">
-            <mat-error *ngIf="bookingForm.get('fullName')?.hasError('required')">
-              Full name is required
-            </mat-error>
-          </mat-form-field>
+          <div>
+            <mat-form-field appearance="fill" class="w-full">
+              <mat-label class="font-medium text-blue-700">Full Name</mat-label>
+              <input
+                matInput
+                formControlName="fullName"
+                placeholder="Enter full name"
+                class="w-full px-3 py-2 border border-blue-300 rounded-md bg-blue-50"
+              />
+              <mat-error
+                *ngIf="bookingForm.get('fullName')?.hasError('required')"
+                class="text-red-500"
+              >
+                Full name is required
+              </mat-error>
+            </mat-form-field>
+          </div>
 
           <!-- Phone Number -->
-          <mat-form-field appearance="fill" class="w-full">
-            <mat-label class="text-green-700">Phone Number</mat-label>
-            <input matInput formControlName="phoneNumber" required
-                   class="bg-green-50 border border-green-300 rounded-lg py-2 px-3">
-            <mat-error *ngIf="bookingForm.get('phoneNumber')?.hasError('required')">
-              Phone number is required
-            </mat-error>
-            <mat-error *ngIf="bookingForm.get('phoneNumber')?.hasError('pattern')">
-              Invalid phone number format
-            </mat-error>
-          </mat-form-field>
+          <div>
+            <mat-form-field appearance="fill" class="w-full">
+              <mat-label class="font-medium text-blue-700"
+                >Phone Number</mat-label
+              >
+              <input
+                matInput
+                formControlName="phoneNumber"
+                placeholder="e.g. +255..."
+                class="w-full px-3 py-2 border border-blue-300 rounded-md bg-blue-50"
+              />
+              <mat-error
+                *ngIf="bookingForm.get('phoneNumber')?.hasError('required')"
+                class="text-red-500"
+              >
+                Phone number is required
+              </mat-error>
+              <mat-error
+                *ngIf="bookingForm.get('phoneNumber')?.hasError('pattern')"
+                class="text-red-500"
+              >
+                Invalid phone number format
+              </mat-error>
+            </mat-form-field>
+          </div>
 
-          <!-- Email -->
-          <mat-form-field appearance="fill" class="w-full">
-            <mat-label class="text-green-700">Email (Optional)</mat-label>
-            <input matInput formControlName="email"
-                   class="bg-green-50 border border-green-300 rounded-lg py-2 px-3">
-            <mat-error *ngIf="bookingForm.get('email')?.hasError('email')">
-              Please enter a valid email
-            </mat-error>
-          </mat-form-field>
+          <!-- Email (optional) -->
+          <div class="md:col-span-2">
+            <mat-form-field appearance="fill" class="w-full">
+              <mat-label class="font-medium text-blue-700"
+                >Email (Optional)</mat-label
+              >
+              <input
+                matInput
+                formControlName="email"
+                placeholder="e.g. example@mail.com"
+                class="w-full px-3 py-2 border border-blue-300 rounded-md bg-blue-50"
+              />
+              <mat-error
+                *ngIf="bookingForm.get('email')?.hasError('email')"
+                class="text-red-500"
+              >
+                Please enter a valid email
+              </mat-error>
+            </mat-form-field>
+          </div>
 
           <!-- Address -->
-          <mat-form-field appearance="fill" class="w-full">
-            <mat-label class="text-green-700">Address</mat-label>
-            <input matInput formControlName="address" required
-                   class="bg-green-50 border border-green-300 rounded-lg py-2 px-3">
-            <mat-error *ngIf="bookingForm.get('address')?.hasError('required')">
-              Address is required
-            </mat-error>
-          </mat-form-field>
+          <div class="md:col-span-2">
+            <mat-form-field appearance="fill" class="w-full">
+              <mat-label class="font-medium text-blue-700">Address</mat-label>
+              <input
+                matInput
+                formControlName="address"
+                placeholder="Enter address"
+                class="w-full px-3 py-2 border border-blue-300 rounded-md bg-blue-50"
+              />
+              <mat-error
+                *ngIf="bookingForm.get('address')?.hasError('required')"
+                class="text-red-500"
+              >
+                Address is required
+              </mat-error>
+            </mat-form-field>
+          </div>
         </div>
 
-        <div class="flex flex-col md:flex-row gap-4 mt-8">
-          <button type="button"
-                  (click)="prevStep()"
-                  class="flex-1 bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition">
+        <!-- Previous & Submit Buttons -->
+        <div class="flex flex-col gap-4 mt-8 md:flex-row">
+          <button
+            type="button"
+            (click)="prevStep()"
+            class="flex-1 py-2 text-white transition bg-gray-600 rounded-md hover:bg-gray-700"
+          >
             Previous
           </button>
-          <button type="submit"
-                  (click)="onSubmit()"
-                  class="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">
+          <button
+            type="submit"
+            class="flex-1 py-2 text-white transition bg-blue-600 rounded-md hover:bg-blue-700"
+            [disabled]="bookingForm.invalid"
+          >
             Submit Booking
           </button>
         </div>

@@ -55,6 +55,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { StaffAddComponent } from './staff-add/staff-add.component';
+import { MatSnackBarModule }   from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,6 @@ import { StaffAddComponent } from './staff-add/staff-add.component';
     ViewVenuesComponent,
     LeasePackageFormComponent,
     LoginComponent,
-    // StaffDashboardComponent,
     EditVenueComponentComponent,
     MultiStepFormComponent,
     BookingListComponent,
@@ -117,6 +117,7 @@ import { StaffAddComponent } from './staff-add/staff-add.component';
     MatToolbarModule,
     CommonModule,
     MatDialogModule,
+    MatSnackBarModule,
     MatSidenavModule,
     MatListModule,
     MatCardModule,

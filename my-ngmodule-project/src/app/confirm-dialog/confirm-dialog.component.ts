@@ -3,15 +3,23 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-confirm-dialog',
-  standalone: false,
+  standalone:false,
   templateUrl: './confirm-dialog.component.html',
-  styleUrl: './confirm-dialog.component.css'
+  styleUrls: ['./confirm-dialog.component.css']
 })
 export class ConfirmDialogComponent {
-customer: any;
   constructor(
     public dialogRef: MatDialogRef<ConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: {
+      fullName: string;
+      venue: string;
+      packageName: string;
+      price: number;
+      phoneNumber?: string;
+      startDate?: Date;
+      endDate?: Date;
+      durationInDays?: number;
+    }
   ) {}
 
   onConfirm(): void {
