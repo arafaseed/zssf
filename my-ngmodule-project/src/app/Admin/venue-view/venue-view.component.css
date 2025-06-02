@@ -2,59 +2,55 @@
 .venue-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* Default: 4 cards per row */
-  gap: 20px; /* Space between cards */
+  gap: 20px;
   margin: 30px auto 10px;
-  max-width: 1950px;
+  max-width: 1850px;
   padding: 0 2px;
-  /* Smooth scroll behavior when items are clicked */
   scroll-behavior: smooth;
 }
 
 /* Venue Card Styling */
 .venue-card {
   background: #fff;
-  border-radius: 20px;
+  border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.4s ease, box-shadow 0.4s ease;
-  height: auto; /* Adjusted height for better content fitting */
   display: flex;
   flex-direction: column;
-  position: relative;
-  /* Added flexbox for positioning card content */
   flex-grow: 1;
-  }
-  
- 
-
-mat-card-title {
-  font-size: 24px; /* Larger text */
-  font-weight: bold; /* Bold text */
-  color:  #2A7261; /* Custom color (change as needed) */
-  text-transform: uppercase; /* Optional: Makes text uppercase */
-  letter-spacing: 1px; /* Optional: Adds spacing between letters */
-  font-family: 'Arial', sans-serif; /* Change the font as needed */
-  font-style:normal /* Italicize the text */
+  position: relative;
+  height: auto;
 }
 
+/* Card Title Styling */
+mat-card-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #2A7261;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: 'Arial', sans-serif;
+  font-style: normal; /* Fixed missing semicolon */
+}
+
+/* Card Hover */
 .venue-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
-
 
 /* Image Slider */
 .image-slider {
   position: relative;
   overflow: hidden;
   max-width: 100%;
-  max-height:fit-content;
-  height:442px; 
+  height: 442px;
   border-radius: 20px 20px 0 0;
-  margin-bottom: 10px; /* Adjust this value to add space below the slider */
+  margin-bottom: 10px;
   object-fit: contain;
-  
 }
+
 .image-slider img {
   width: 100%;
   height: 100%;
@@ -62,7 +58,7 @@ mat-card-title {
   image-rendering: auto;
 }
 
-
+/* Slider Container */
 .slider-container {
   width: 100%;
   height: 100%;
@@ -81,18 +77,18 @@ mat-card-title {
 
 .slider-item img {
   width: 100%;
-  height: 442px; 
+  height: 442px;
   object-fit: cover;
   border-radius: 20px 20px 0 0;
 }
 
-/* Controls (Prev/Next) */
+/* Slider Controls */
 .slider-controls {
   position: absolute;
   top: 50%;
   width: 100%;
   display: flex;
-  justify-content:space-between;
+  justify-content: space-between;
   transform: translateY(-50%);
 }
 
@@ -159,14 +155,14 @@ mat-card-title {
 /* Button Container */
 .button-container {
   display: flex;
-  justify-content: center; /* Center buttons horizontally */
-  gap: 100px;               /* Space between buttons */
+  justify-content: center;
+  gap: 100px;
   margin-top: 20px;
 }
 
 /* General Button Styling */
 button {
-  padding: 10px 40px;         /* More vertical space for better feel */
+  padding: 10px 40px;
   font-size: 14px;
   font-weight: bold;
   text-transform: uppercase;
@@ -176,20 +172,19 @@ button {
   border: none;
 }
 
-/* Hover Effect */
 button:hover {
   opacity: 0.9;
-  transform: scale(1.02);     /* Slight zoom on hover */
+  transform: scale(1.02);
 }
-/* Make sure your mat-card-actions has flex gap */
+
+/* Card Action Buttons */
 mat-card-actions.d-flex {
   display: flex;
-  justify-content: center; /* Or space-between if preferred */
-  gap: 20px;                /* This creates space between the buttons */
+  justify-content: center;
+  gap: 20px;
   margin-top: 10px;
 }
 
-/* Optional enhancements */
 mat-card-actions.d-flex button {
   font-weight: bold;
   color: white;
@@ -200,30 +195,28 @@ mat-card-actions.d-flex mat-icon {
   color: white;
 }
 
-
-/* Responsive Design Adjustments */
+/* Responsive Design */
 @media screen and (max-width: 1200px) {
   .venue-grid {
-    grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media screen and (max-width: 900px) {
   .venue-grid {
-    grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media screen and (max-width: 600px) {
   .venue-grid {
-    grid-template-columns: 1fr; /* 1 card per row */
+    grid-template-columns: 1fr;
   }
 }
 
 /* Content Box */
 .content-box {
   position: relative;
-  /* background-color: #4cdde2;  */
   padding: 32px;
   border-radius: 12px;
   margin-top: 71px;
@@ -232,15 +225,16 @@ mat-card-actions.d-flex mat-icon {
   max-width: 100%;
   text-align: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  /* Added media query for content box responsiveness */
 }
 
 @media screen and (max-width: 768px) {
   .content-box {
-    margin-top: 80px; /* Reduce margin on smaller screens */
-    padding: 20px; /* Adjust padding */
+    margin-top: 80px;
+    padding: 20px;
   }
 }
+
+/* Welcome Card */
 .welcome-card {
   display: flex;
   justify-content: center;
@@ -253,7 +247,7 @@ mat-card-actions.d-flex mat-icon {
   border-radius: 8px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 1800px;
+  max-width: 1000px;
   padding: 12px;
   text-align: center;
   transition: transform 0.2s ease-in-out;
@@ -279,26 +273,29 @@ mat-card-actions.d-flex mat-icon {
   font-style: oblique;
 }
 
+/* Main Content */
 .main-content {
-  padding-bottom: 64px; /* Adjust this based on footer height */
+  padding-bottom: 64px;
 }
 
+/* Body Settings */
 body {
-  padding-bottom: 64px; /* Ensure body content is not covered by footer */
+  padding-bottom: 64px;
 }
 
-/* Ensure the entire body takes full height and content adjusts accordingly */
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
 }
+
+/* Custom Buttons */
 .custom-button[color="primary"] {
   background-color: #2A7261;
   color: white;
 }
 
 .custom-button[color="accent"] {
-  background-color: #41bde2; /* deep green for accent */
+  background-color: #41bde2;
   color: white;
 }

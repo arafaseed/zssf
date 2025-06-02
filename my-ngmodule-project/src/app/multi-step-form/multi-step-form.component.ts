@@ -416,7 +416,7 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
         phoneNumber: this.bookingForm.value.phoneNumber,
         email: this.bookingForm.value.email,
         address: this.bookingForm.value.address,
-        discountRate: this.bookingForm.value.discountRate,
+        // discountRate: this.bookingForm.value.discountRate,
         session: this.bookingForm.value.session
       };
 

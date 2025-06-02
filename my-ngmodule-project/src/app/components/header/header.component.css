@@ -5,7 +5,7 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  min-height: 70px; /* Let it grow if needed */
+  min-height: 30px; /* Let it grow if needed */
   height: auto;
   background-color: #05a393 !important;
   display: flex;
@@ -35,7 +35,7 @@
 
 /* Logo */
 .header-logo {
-  height: 78px;
+  height: 70px;
   width: auto;
   object-fit: contain;
 }

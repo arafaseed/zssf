@@ -3,7 +3,6 @@
 <div id="home-page">
   <div class="main-content">
     <div class="content-box">
-      <!-- Modified card to attract users to stay on the venue page -->
       <div class="welcome-card">
         <div class="card">
           <div class="card-header text-center">
@@ -15,66 +14,107 @@
         </div>
       </div>
     </div>
-  
 
-<div class="search-container">
-  <input type="text" [(ngModel)]="searchTerm" (input)="searchVenues()" placeholder="Type a venue name or capacity of a hall" class="form-control">
-  <button (click)="clearSearch()">Clear</button>
+    <div class="search-container">
+      <input type="text" [(ngModel)]="searchTerm" (input)="searchVenues()" placeholder="Type a venue name or capacity of a hall" class="form-control">
+      <button (click)="clearSearch()">Clear</button>
+    </div>
+
+    <div class="venue-grid">
+      <div *ngFor="let venue of venues.slice(0, 10); let i = index" class="venue-card">
+        <mat-card class="venue-card-content" id="venue-card-{{ venue.venueId }}">
+          <mat-card-header>
+            <mat-card-title>VENUE:{{ venue.venueName }}</mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content>
+
+            <!-- <div class="image-slider" *ngIf="venue.venueImages?.length > 0">
+              <div class="slider-container">
+                <div class="slider-wrapper" [style.transform]="'translateX(-' + currentSlideIndices[i] * 100 + '%)'">
+                  <div *ngFor="let image of venue.venueImages; let j = index" class="slider-item">
+                    <img class="d-block w-100" [src]="image" alt="Venue Image {{ j + 1 }}">
+                  </div>
+                </div>
+              </div>
+              <div class="indicator-container">
+                <button *ngFor="let image of venue.venueImages; let j = index" class="indicator" [class.active]="currentSlideIndices[i] === j" (click)="goToSlide(i, j)"></button>
+              </div>
+              <div class="slider-controls">
+                <button class="prev-slide" (click)="prevSlide(i)">&#10094;</button>
+                <button class="next-slide" (click)="nextSlide(i)">&#10095;</button>
+              </div>
+            </div> -->
+
+            <!-- Thumbnails -->
+     <img
+  [src]="venue.venueImages[currentSlideIndices[i] || 0]"
+  alt="Venue Image"
+  style="max-width: 550px; height: 350px; border-radius: 20px; object-fit: cover; cursor: pointer;"
+  (click)="openImageViewer(venue.venueImages, currentSlideIndices[i] || 0)"
+/>
+
+<div>
+  <!-- <p><strong>Venue Name:</strong> {{ venue.venueName }}</p> -->
+  <p><strong>Capacity:</strong> {{ venue.capacity }}</p>
+  <p><strong>Description:</strong> {{ venue.description }}</p>
 </div>
 
-<div class="venue-grid">
-  <div *ngFor="let venue of venues.slice(0, 10); let i = index" class="venue-card">
-    <mat-card class="venue-card-content" id="venue-card-{{ venue.venueId }}">
-      <mat-card-header>
-        <mat-card-title>{{ venue.venueName }}</mat-card-title>
-      </mat-card-header>
+          </mat-card-content>
 
-      <mat-card-content>
-        <div class="image-slider" *ngIf="venue.venueImages?.length > 0">
-          <div class="slider-container">
-            <div class="slider-wrapper" [style.transform]="'translateX(-' + currentSlideIndices[i] * 100 + '%)'">
-              <div *ngFor="let image of venue.venueImages; let j = index" class="slider-item">
-                <img class="d-block w-100" [src]="image" alt="Venue Image {{ j + 1 }}">
-              </div>
-            </div>
-          </div>
-          <div class="indicator-container">
-            <button *ngFor="let image of venue.venueImages; let j = index"
-                    class="indicator" 
-                    [class.active]="currentSlideIndices[i] === j"
-                    (click)="goToSlide(i, j)">
-            </button>
-          </div>
-          <!-- Add previous and next buttons -->
-          <div class="slider-controls">
-            <button class="prev-slide" (click)="prevSlide(i)">&#10094;</button>
-            <button class="next-slide" (click)="nextSlide(i)">&#10095;</button>
-          </div>
-        </div>
-
-        <div *ngIf="venue.showDescription">
-          <p><strong>Venue Name:</strong> {{ venue.venueName }}</p>
-          <p><strong>Capacity:</strong> {{ venue.capacity }}</p>
-          <p><strong>Description:</strong> {{ venue.description }}</p>
-        </div>
-      </mat-card-content>
+          <mat-card-actions class="d-flex justify-content-between">
       
-<mat-card-actions class="d-flex justify-content-between">
-  <button mat-raised-button color="primary" (click)="toggleDescription(venue)" class="custom-button">
-    <mat-icon class="custom-icon">info_outline</mat-icon>
-    <span class="custom-text">{{ venue.showDescription ? 'Hide Details' : 'See More' }}</span>
-  </button>
-
-  <button mat-raised-button color="accent" (click)="goToBookingPage(venue)" class="custom-button">
-    <mat-icon class="custom-icon">event_available</mat-icon>
-    <span class="custom-text">Book Now</span>
-  </button>
-</mat-card-actions>
-
-</mat-card>
-     
+            <button mat-raised-button color="accent" (click)="goToBookingPage(venue)" class="custom-button">
+              <mat-icon class="custom-icon">event_available</mat-icon>
+              <span class="custom-text">Book Now</span>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
   </div>
 </div>
+
+<!-- Fullscreen Dialog Template -->
+<ng-template #imageViewer>
+  <div class="dialog-backdrop" 
+     style="display:flex; align-items:center; justify-content:center; height:100vh; position:relative; background:rgba(0,0,0,0.8);">
+
+  <button mat-icon-button 
+          class="nav-btn left" 
+          (click)="prevImage()" 
+          style="
+            position:absolute; 
+            left:10px; 
+            top:50%; 
+            transform: translateY(-50%);
+            color: black; 
+            font-size: 3rem; 
+            z-index: 10;">
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+
+  <img [src]="selectedImages[currentImageIndex]" 
+       class="dialog-img" 
+       alt="Viewing Image" 
+       style="max-height: 85vh; max-width: 90vw; object-fit: contain; border-radius: 6px;" />
+
+  <button mat-icon-button 
+          class="nav-btn right" 
+          (click)="nextImage()" 
+          style="
+            position:absolute; 
+            right:10px; 
+            top:50%; 
+            transform: translateY(-50%);
+            color: black; 
+            font-size: 3rem; 
+            z-index: 10;">
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+
 </div>
-</div>
+
+</ng-template>
+
 <app-footer></app-footer>
