@@ -124,7 +124,7 @@ export class RegisterVenueComponent implements OnInit {
             alert("Venue registered successfully!");
             this.resetForm();
             this.loadVenues(); // Refresh venue list
-            this.router.navigate(['/venueView']); 
+            this.router.navigate(['admin/venueView']); 
           },
           (error: HttpErrorResponse) => {
             console.error("Error registering venue:", error);

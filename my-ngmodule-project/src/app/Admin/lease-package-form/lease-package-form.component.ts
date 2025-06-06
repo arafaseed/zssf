@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LeasePackageService } from '../../Services/packages.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-lease-package-form',
@@ -16,7 +17,8 @@ export class LeasePackageFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private leasePackageService: LeasePackageService,
-    private snackBar: MatSnackBar // Inject Snackbar
+    private snackBar: MatSnackBar, // Inject Snackbar
+    private router: Router // 2. Inject Router
   ) {
     this.leaseForm = this.fb.group({
       packageName: ['', [Validators.required, Validators.minLength(3)]], // Added packageName field
@@ -45,10 +47,13 @@ export class LeasePackageFormComponent implements OnInit {
         venueId: this.leaseForm.value.venueId ? parseInt(this.leaseForm.value.venueId, 10) : null
       };
 
-      this.leasePackageService.addLeasePackage(leasePackage, leasePackage.venueId).subscribe({
+     this.leasePackageService.addLeasePackage(leasePackage, leasePackage.venueId).subscribe({
         next: (response) => {
           this.showToast('Lease package added successfully!', 'success');
           this.leaseForm.reset();
+           console.log('Navigating to leasepackagetable...')
+          // 3. Navigate to the package table page after success
+          this.router.navigate(['/admin/leasepackagetable']);
         },
         error: (error) => {
           this.showToast('Error adding lease package: ' + error.message, 'error');
