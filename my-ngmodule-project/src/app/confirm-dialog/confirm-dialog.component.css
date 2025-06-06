@@ -1,0 +1,28 @@
+/* confirm-dialog.component.css */
+
+/* Remove extra default padding around mat-dialog-content */
+mat-dialog-content {
+  padding: 0;
+}
+
+/* Tighten up default mat-dialog-title margin */
+h2[mat-dialog-title] {
+  margin: 0;
+}
+
+/* Ensure the overall backdrop is semi‐opaque on mobile too */
+.mat-dialog-container {
+  padding: 0;
+}
+
+/* If you want a slight rounded edge on the overlay container itself: */
+.mat-dialog-container {
+  background: transparent; /* so our inner <div> background shows */
+}
+
+/* Responsive tweak: on very small screens, reduce the card’s horizontal margin */
+@media (max-width: 640px) {
+  .mat-dialog-container {
+    margin: 0 0.5rem; /* ensure tiny side gaps on mobile */
+  }
+}

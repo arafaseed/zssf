@@ -1,12 +1,11 @@
 .container {
-    width: 90%;
-    margin: auto;
-  }
-  
-  h3 {
-    color: #007bff;
-    margin-top: 20px;
-  }
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  margin: auto;
+}
   
   .table {
     width: 100%;
@@ -22,4 +21,36 @@
   .table th {
     background-color: #f2f2f2;
   }
+ .button-group {
+  display: flex;
+  justify-content: flex-start; /* align left */
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.button-group button {
+  background-color: #1976d2; /* Primary blue color */
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.button-group button:hover {
+  background-color: #1565c0;;
+}
+h3{
+background: #34495e;;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    font-weight: bold;
+    border-radius: 8px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+ 
   

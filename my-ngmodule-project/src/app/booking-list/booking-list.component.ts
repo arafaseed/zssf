@@ -10,6 +10,7 @@ import { Booking, BookingService } from '../Services/booking.service';
 export class BookingListComponent implements OnInit {
   bookings: Booking[] = [];
   filteredBookings: { [key: string]: Booking[] } = { PENDING: [], COMPLETE: [], CANCELLED: [] };
+  showSection: string = ''; // default: don't show anything
 
   constructor(private bookingService: BookingService) {}
 

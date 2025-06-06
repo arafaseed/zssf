@@ -1,113 +1,152 @@
-/* Main Header */
-.fixed-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    height: 70px;
-    display: flex;
-    justify-content: space-between;
-    background-color: #05a393 !important; /* Material success color */
-  }
-  
-  .header-content {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 2px;
-  }
-  
-  .header-title {
-    font-family: 'Poppins', sans-serif; /* Modern & Clean Font */
-    font-size: 26px;
-    font-weight:bolder;
-    color: #ffffff;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-  }
-  
-  .highlight {
-    color: #ffeb3b; /* Yellow Accent for S */
-    font-weight: 900;
-  }
-  
- 
-/* Material Navbar */
-.navbar {
+/* Fixed Header */
+  .fixed-header {
   position: fixed;
-  top: 70px;
+  top: 0;
   left: 0;
   right: 0;
-  z-index: 999;
-  background-color: #f5f5f5;
+  z-index: 1000;
+  min-height: 30px; /* Let it grow if needed */
+  height: auto;
+  background-color: #05a393 !important;
   display: flex;
-  justify-content: center;
-  padding: 10px 0;
+  align-items: flex-start; /* allow top alignment for stacked items */
+  padding: 0.5rem 1rem;
+  box-sizing: border-box;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-.navbar button {
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
+
+/* Flex container */
+.header-content {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: nowrap; /* Prevent unwanted stacking in large screens */
 }
 
-.navbar mat-icon {
-  margin-right: 5px;
-  color: #009688;
+/* Group for logo and title */
+.logo-title-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-/* Spacer for spacing between buttons */
-.spacer {
-  flex-grow: 1;
+/* Logo */
+.header-logo {
+  height: 70px;
+  width: auto;
+  object-fit: contain;
 }
-  .logo-title-group {
-    display: flex;
-    align-items: center;
-    gap: 16px; /* Space between logo and title */
-  }
+
+/* Title */
+.header-title {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Highlight */
+.highlight {
+  color: #ffeb3b;
  
+}
+
+/* Contact and Home container */
+.header-contact {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.17rem;
+  font-weight: 500;
+  color: #f5efef;
+  text-align: right;
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+/* Icon base style */
+.icon {
+  font-size: 1.55rem;
+}
+
+/* Colored icons */
+.phone-icon,
+.email-icon {
+  color: #eef10a;
+}
+
+/* Contact info group */
+.contact-details {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Home button */
+.home-button {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.17rem;
+  color: #fff;
+  font-weight: 500;
+  background-color: transparent;
+  padding: 0 0px;
+  text-transform: none;
+  min-width: auto;
+}
+
+.home-button mat-icon {
+  vertical-align: middle;
+  color: #eef10a;
+ 
+}
+
+.home-button:hover {
+  /* background-color: rgba(255, 235, 59, 0.2); */
+   text-decoration: underline;
+}
+
+/* Mobile (Responsive) */
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-contact {
+    width: 100%;
+    justify-content: flex-end;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-left: 0;
+  }
+
+  .contact-details {
+    display: flex;
+    flex-direction: row;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .header-title {
+    font-size: 1.3rem;
+  }
 
   .header-logo {
-    height: 70px; /* Adjust based on your logo aspect ratio */
-    margin-right: 0px;
-    margin-block-start: auto;
-    width: auto;
-    object-fit: contain;
-  }
-  .header-contact {
-    font-size: 16px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 3px;
-    color: #f5efef;
-  }
+    height: 50px;
   
-  .icon {
-    font-size: 20px;
   }
-  
-  .phone-icon {
-    color: #eef10a; /* Blue for phone */
+
+  .home-button {
+    margin-top: 0.7rem;
+    font-size: larger;
   }
-  
-  .email-icon {
-    color:#eef10a; /* Green for email */
-  }
-  .yellow-button {
-    background-color: #eef10a !important; /* Material Yellow */
-    color: #000 !important; /* Black text for contrast */
-    border-radius: 4px;
-    padding: 2px 16px;
-
-}
-
-.yellow-button:hover {
-    background-color:#05a393!important;
-}
-
  
-    
+}

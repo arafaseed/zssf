@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { StaffService } from '../Services/staff-view.service';
+import { StaffViewService } from '../Services/staff-view.service';
 
 
 @Component({
@@ -12,14 +12,15 @@ import { StaffService } from '../Services/staff-view.service';
 export class StaffAddComponent implements OnInit {
   staffForm: FormGroup;
   staffList: any[] = [];
-  showForm = false;
-  roles = ['ADMIN', 'STAFF'];
 
-  constructor(private fb: FormBuilder, private staffService: StaffService) {
+  constructor(
+    private fb: FormBuilder,
+    private staffService: StaffViewService
+  ) {
     this.staffForm = this.fb.group({
       staffIDN: ['', Validators.required],
       fullName: ['', Validators.required],
-      phoneNumber: ['', [Validators.required, Validators.pattern(/^\+?\d{10,15}$/)]],
+      phoneNumber: ['', Validators.required],
       password: ['', Validators.required],
       role: ['', Validators.required]
     });
@@ -29,31 +30,41 @@ export class StaffAddComponent implements OnInit {
     this.loadStaff();
   }
 
-  toggleForm(): void {
-    this.showForm = !this.showForm;
+  onSubmit(): void {
+    if (this.staffForm.valid) {
+      this.staffService.addStaff(this.staffForm.value).subscribe(() => {
+        alert('Staff added successfully');
+        this.staffForm.reset();
+        this.loadStaff();
+      });
+    }
   }
 
   loadStaff(): void {
-    this.staffService.getAllStaff().subscribe({
-      next: (data) => this.staffList = data,
-      error: (err) => console.error('Error fetching staff', err)
+    this.staffService.getAllStaff().subscribe(data => {
+      this.staffList = data;
     });
   }
 
-  onSubmit(): void {
-    if (this.staffForm.valid) {
-      this.staffService.addStaff(this.staffForm.value).subscribe({
-        next: () => {
-          alert('Staff added successfully!');
-          this.staffForm.reset();
-          this.showForm = false;
-          this.loadStaff();
-        },
-        error: (err) => {
-          console.error(err);
-          alert('Error adding staff');
-        }
-      });
-    }
+  deleteStaff(staffId: number): void {
+    this.staffService.deleteStaff(staffId).subscribe(() => {
+      alert('Staff deleted');
+      this.loadStaff();
+    });
+  }
+
+  updateStaff(staff: any): void {
+    const updatedData = {
+      staffIDN: staff.staffIDN,
+      fullName: staff.fullName,
+      phoneNumber: staff.phoneNumber,
+      password: staff.password,
+      role: staff.role
+    };
+
+    this.staffService.updateStaff(staff.staffId, updatedData).subscribe(() => {
+      alert('Staff updated');
+      this.loadStaff();
+    });
   }
 }

@@ -1,19 +1,18 @@
 /* Footer styles */
 .footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: var(--mat-toolbar-background,#067e72 );
+  background: var(--mat-toolbar-background, #067e72);
   color: var(--mat-toolbar-color, #ffffff);
   font-family: 'Poppins', sans-serif;
   text-align: center;
   font-size: 22px;
   font-weight: 500;
   font-style: normal;
-  box-shadow: 0 -8px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 -8px 10px rgba(0, 0, 0, 0.2);
   padding: 10px 0;
-  z-index: 10; /* Ensure footer stays above other content */
+  width: 100%;
+  margin-top: auto;
 }
+
 
 .footer-logo h3 {
   font-size: 1.8em;
@@ -39,7 +38,7 @@
 
 /* Main content container */
 .main-content {
-  padding-bottom: 64px; /* Adjust this based on footer height */
+  padding-bottom: 60px; /* Adjust this based on footer height */
 }
 
 body {

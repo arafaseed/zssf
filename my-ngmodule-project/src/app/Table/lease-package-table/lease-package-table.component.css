@@ -156,3 +156,7 @@ th:hover,
 th:hover ~ td {
   background-color: rgba(0, 123, 255, 0.2);
 }
+mat-header-cell{
+  font-weight: bolder;
+  font-size: larger;
+}

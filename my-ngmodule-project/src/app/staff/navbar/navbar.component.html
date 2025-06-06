@@ -1,31 +1,51 @@
 <nav class="bg-gray-800 text-white p-4">
   <h2 class="text-lg font-bold mb-4">Venues</h2>
-  <ul class="space-y-2">
+
+  <!-- 1) Loading state -->
+  <div *ngIf="loading" class="py-4 text-center text-gray-300">
+    Loading venues…
+  </div>
+
+  <!-- 2) Error state -->
+  <div *ngIf="!loading && errorMessage" class="py-4 text-center text-red-400">
+    {{ errorMessage }}
+  </div>
+
+  <!-- 3) List venues once loaded -->
+  <ul *ngIf="!loading && !errorMessage" class="space-y-2">
     <li *ngFor="let venue of venues">
       <button
         class="w-full text-left px-4 py-2 rounded transition duration-200"
         [ngClass]="{
-          'bg-blue-500': isActive(venue),
-          'hover:bg-blue-600': !isActive(venue)
+          'bg-blue-500 text-white': isActive(venue),
+          'bg-gray-50 text-gray-800 hover:bg-blue-100': !isActive(venue)
         }"
-        (click)="setActiveVenue(venue)">
+        (click)="setActiveVenue(venue)"
+      >
         {{ venue.venueName }}
       </button>
     </li>
   </ul>
 
   <!-- LOGOUT button (sticky at bottom) -->
-       <div class="absolute bottom-0 left-0 right-0 p-2 border-t border-slate-700">
-      <button
-        (click)="logout()"
-        class="w-full flex items-center justify-center rounded-md bg-red-600 hover:bg-red-700 text-white px-3 py-2 text-sm transition-colors duration-200"
+  <div class="absolute bottom-0 left-0 right-0 p-2 border-t border-slate-700 bg-gray-800">
+    <button
+      (click)="logout()"
+      class="w-full flex items-center justify-center rounded-md bg-red-600 hover:bg-red-700 text-white px-3 py-2 text-sm transition-colors duration-200"
+    >
+      <svg
+        class="w-4 h-4 mr-2"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        viewBox="0 0 24 24"
       >
-        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2"
-             stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-          <path d="M17 16l4-4m0 0l-4-4m4 4H7"></path>
-          <path d="M13 12H3"></path>
-        </svg>
-        Logout
-      </button>
-    </div>
+        <path d="M17 16l4-4m0 0l-4-4m4 4H7"></path>
+        <path d="M13 12H3"></path>
+      </svg>
+      Logout
+    </button>
+  </div>
 </nav>

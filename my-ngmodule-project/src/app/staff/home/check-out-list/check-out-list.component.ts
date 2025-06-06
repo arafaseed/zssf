@@ -1,56 +1,104 @@
-// import { Component, OnInit } from '@angular/core';
-// import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-// import { StaffBookingService } from '../../../services/venue-report.service';
-// import { CheckoutModalComponent } from '../../modals/checkout-modal/checkout-modal.component';
+import { Component, OnInit } from '@angular/core';
+import { StaffBookingService, BookingDTO, VenueHandOverDTO } from '../../staff-booking.service';
 
-// interface Booking {
-//   bookingCode: string;
-//   venueName: string;
-//   packageName: string;
-//   price: number;
-//   customerName: string;
-//   customerPhone: string;
-//   // plus a flag indicating checkedIn but not checkedOut
-//   checkedIn: boolean;
-//   checkedOut: boolean;
-// }
+@Component({
+  selector: 'app-check-out-list',
+  standalone: false,
+  templateUrl: './check-out-list.component.html',
+  styleUrls: ['./check-out-list.component.css']
+})
+export class CheckOutListComponent implements OnInit {
+  bookings: BookingDTO[] = [];
+  loading = true;
+  errorMessage: string | null = null;
 
-// @Component({
-//   selector: 'app-check-out-list',
-//   templateUrl: './check-out-list.component.html',
-//   styleUrls: ['./check-out-list.component.css']
-// })
-// export class CheckOutListComponent implements OnInit {
-//   bookings: Booking[] = [];
-//   staffIDN = 'YOUR_LOGGED_IN_STAFF_IDN';
+//   private venueId!: number;
+//   private staffIDN!: string;
 
-//   constructor(
-//     private bookingService: StaffBookingService,
-//     private modalService: NgbModal
-//   ) {}
+  public venueId!: number;
+  public staffIDN!: string;
 
-//   ngOnInit(): void {
-//     this.loadCheckOutBookings();
-//   }
+  // And the modal flags:
+  public showModal = false;
+  public selectedBooking!: BookingDTO;
 
-//   loadCheckOutBookings(): void {
-//     this.bookingService.getAllBookings().subscribe((data: Booking[]) => {
-//       this.bookings = data.filter(b => b.checkedIn && !b.checkedOut && !b.cancelled);
-//     });
-//   }
+//   // For modal
+//   showModal = false;
+//   selectedBooking!: BookingDTO;
 
-//   openCheckoutModal(booking: Booking): void {
-//     const modalRef = this.modalService.open(CheckoutModalComponent, { centered: true });
-//     modalRef.componentInstance.booking = booking;
-//     modalRef.componentInstance.staffIDN = this.staffIDN;
+  constructor(private bookingService: StaffBookingService) {}
 
-//     modalRef.result.then((result) => {
-//       if (result === 'checkedOut') {
-//         // Remove from list
-//         this.bookings = this.bookings.filter(b => b.bookingCode !== booking.bookingCode);
-//       }
-//     }).catch(() => {
-//       // Modal dismissed
-//     });
-//   }
-// }
+  ngOnInit(): void {
+    const vid = sessionStorage.getItem('activeVenueId');
+    const sid = sessionStorage.getItem('auth-username');
+
+    if (!vid || !sid) {
+      this.errorMessage = 'Venue or Staff IDN missing. Please log in again.';
+      this.loading = false;
+      return;
+    }
+    this.venueId = +vid;
+    this.staffIDN = sid;
+
+    this.loadData();
+  }
+
+  private loadData(): void {
+    this.loading = true;
+    this.errorMessage = null;
+
+    // 1) Fetch completed bookings
+    this.bookingService.getCompletedBookingsByVenue(this.venueId).subscribe({
+      next: (completedBookings) => {
+        // 2) Fetch all handovers for this venue
+        this.bookingService.getVenueHandOvers(this.venueId).subscribe({
+          next: (handovers) => {
+            // Build a set of bookingIds that have been checked in
+            const checkedInSet = new Set<number>(
+              handovers.filter(h => h.checkInTime && !h.checkOutTime)
+                       .map(h => h.forBooking)
+            );
+
+            // Now filter completed bookings to those that have been checked-in but not yet checked-out
+            const toCheckOut = completedBookings
+              .filter(b => checkedInSet.has(b.bookingId))
+              // Sort by bookingDate descending
+              .sort((a, b) => {
+                const da = new Date(a.bookingDate).getTime();
+                const db = new Date(b.bookingDate).getTime();
+                return db - da;
+              });
+
+            this.bookings = toCheckOut;
+            this.loading = false;
+          },
+          error: (err) => {
+            this.errorMessage = 'Failed to load handover records.';
+            console.error(err);
+            this.loading = false;
+          }
+        });
+      },
+      error: (err) => {
+        this.errorMessage = 'Failed to load completed bookings.';
+        console.error(err);
+        this.loading = false;
+      }
+    });
+  }
+
+  openCheckoutModal(booking: BookingDTO): void {
+    this.selectedBooking = booking;
+    this.showModal = true;
+  }
+
+  closeModal(): void {
+    this.showModal = false;
+  }
+
+  onCheckedOut(): void {
+    // Remove from list and close modal
+    this.bookings = this.bookings.filter(b => b.bookingId !== this.selectedBooking.bookingId);
+    this.showModal = false;
+  }
+}

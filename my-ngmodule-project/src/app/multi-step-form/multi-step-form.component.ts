@@ -1,9 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormControl
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
+
 import { BookingService } from '../Services/booking.service';
 import { MultiStepFormService } from '../Services/multi-step-form.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
@@ -17,17 +23,16 @@ interface BookedSlot {
 
 @Component({
   selector: 'app-multi-step-form',
-  templateUrl: './multi-step-form.component.html',
   standalone: false,
+  templateUrl: './multi-step-form.component.html',
   styleUrls: ['./multi-step-form.component.css']
 })
 export class MultiStepFormComponent implements OnInit, OnDestroy {
   sessionOptions = [
-    { label: 'Session 1: Asubuhi- Mchana', start: '06:00', end: '13:00' },
-    { label: 'Session 2: Alasiri- Usiku',  start: '14:00', end: '00:00' },
-    { label: 'SIKU NZIMA:',                start: '06:00', end: '00:00' }
+    // Only one option—SIKU NZIMA—preselected
+    { label: 'SIKU NZIMA', start: '06:00', end: '00:00' }
   ];
-  selectedSessionTime: string | null = null;
+  selectedSessionTime: string | null = '06:00 – 00:00';
   currentStep = 1;
   bookingForm: FormGroup;
 
@@ -36,20 +41,57 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
   packageOptions: { leaseId: number; packageName: string; price: number }[] = [];
   venueId!: number;
 
-  bookedDates: Date[] = [];
-  private bookedDatesSet = new Set<string>(); // e.g. "2025-03-22"
+  bookedDatesSet = new Set<string>(); // stores YYYY-MM-DD for booked days
   private fetchIntervalId: any;
-
-  selectedStartDate: Date = new Date();
-  selectedEndDate: Date | null = null;
-  showEndDate = false;
-  selectingEndDate = false;
-  selectedDate: Date = new Date();
-
-  minDate = new Date(); // used to disable before-today
 
   // Base URL for booking-related endpoints
   private bookingApiUrl = 'http://localhost:8080/api/bookings';
+
+  // Today's date for datePicker.min
+  minDate = new Date();
+
+  onDateChange(
+  event: { value: Date | null },
+  which: 'start' | 'end'
+): void {
+  const selected: Date | null = event.value;
+  if (!selected) {
+    return;
+  }
+
+  // Create a midnight‐normalized copy
+  const cell = new Date(selected);
+  cell.setHours(0, 0, 0, 0);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const iso = cell.toISOString().split('T')[0];
+  if (cell < today) {
+    this.snackBar.open('Cannot pick a past date.', 'Close', { duration: 3000 });
+    // Revert: clear whichever control was clicked
+    if (which === 'start') {
+      (this.bookingForm.get('dateRangeGroup.startDate') as FormControl).reset();
+    } else {
+      (this.bookingForm.get('dateRangeGroup.endDate') as FormControl).reset();
+    }
+    return;
+  }
+  if (this.bookedDatesSet.has(iso)) {
+    this.snackBar.open(
+      'This date is already booked. Please choose another.',
+      'Close',
+      { duration: 3000 }
+    );
+    if (which === 'start') {
+      (this.bookingForm.get('dateRangeGroup.startDate') as FormControl).reset();
+    } else {
+      (this.bookingForm.get('dateRangeGroup.endDate') as FormControl).reset();
+    }
+    return;
+  }
+
+  // Otherwise accept it—no additional action needed (the form value is already set)
+}
 
   constructor(
     private fb: FormBuilder,
@@ -62,42 +104,53 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private invoiceService: InvoiceServiceService
   ) {
+    // Build the form
     this.bookingForm = this.fb.group({
-      venueId:          ['', Validators.required],
-      venuePackageId:   ['', Validators.required],
-      startDate:        ['', Validators.required],
-      startTime:        ['', Validators.required],
-      endDate:          [''],
-      endTime:          ['', Validators.required],
-      fullName:         ['', Validators.required],
-      phoneNumber:      ['', [Validators.required, Validators.pattern('^\\+?[0-9]*$')]],
-      email:            ['', [Validators.required, Validators.email]],
-      address:          ['', Validators.required],
-      discountRate:     [0],
-      session:          ['', Validators.required]
+      // Group for date range: startDate and endDate
+      dateRangeGroup: this.fb.group({
+        startDate: ['', Validators.required],
+        endDate: [''] // optional; we’ll treat same‐as‐start if blank
+      }),
+      venueId: ['', Validators.required],
+      venuePackageId: ['', Validators.required],
+      startTime: ['', Validators.required],
+      endTime: ['', Validators.required],
+      session: ['SIKU NZIMA', Validators.required], // preselect
+      fullName: ['', Validators.required],
+      phoneNumber: [
+        '',
+        [Validators.required, Validators.pattern('^\\+?[0-9]*$')]
+      ],
+      email: ['', [Validators.email]], // no longer required
+      address: ['', Validators.required],
+      discountRate: [0]
+    });
+
+    // Ensure default times are set, so validation won't fail:
+    this.bookingForm.patchValue({
+      startTime: '06:00',
+      endTime: '00:00'
     });
   }
 
   ngOnInit(): void {
-    // 1) Extract venueId from query parameters
-    this.route.queryParams.subscribe(params => {
-      const venueIdParam = params['venueId'];
-      if (venueIdParam) {
-        this.venueId = Number(venueIdParam);
+    // 1) Read venueId from query params
+    this.route.queryParams.subscribe((params) => {
+      const vid = params['venueId'];
+      if (vid) {
+        this.venueId = Number(vid);
         this.bookingForm.patchValue({ venueId: this.venueId });
 
-        // Immediately fetch booked slots, then every 2 seconds
+        // Start polling booked slots
         this.fetchBookedSlots();
-        this.fetchIntervalId = setInterval(() => {
-          this.fetchBookedSlots();
-        }, 2000);
+        this.fetchIntervalId = setInterval(() => this.fetchBookedSlots(), 2000);
 
-        // Load leases tied to this venue
+        // Load packages (leases) for this venue
         this.loadLeases(this.venueId);
       }
     });
 
-    // 2) Load all venues for the dropdown (and set selectedVenueName if already known)
+    // 2) Load all venues (for drop-down and display name)
     this.loadVenues();
   }
 
@@ -107,35 +160,29 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  /** Fetch booked slots from backend and update bookedDates & bookedDatesSet */
+  /** Fetch booked slots every 2 seconds and populate bookedDatesSet */
   private fetchBookedSlots(): void {
     if (!this.venueId) return;
-
     this.http
       .get<BookedSlot[]>(`${this.bookingApiUrl}/venue/${this.venueId}/booked-slots`)
       .subscribe({
         next: (slots) => {
-          // Reset arrays, then re-populate
-          this.bookedDates = [];
           this.bookedDatesSet.clear();
-          slots.forEach(slot => {
-            // Only consider the date string (ignore startTime/endTime for disabling entire day)
-            const iso = slot.date; // "YYYY-MM-DD"
+          slots.forEach((slot) => {
+            const iso = slot.date; // “YYYY-MM-DD”
             this.bookedDatesSet.add(iso);
-            const d = new Date(iso + 'T00:00:00');
-            this.bookedDates.push(d);
           });
         },
         error: (error) => console.error('Error fetching booked slots:', error)
       });
   }
 
-  /** Load all venues, then set selectedVenueName if venueId already exists */
+  /** Load all venues to populate drop-down & set selectedVenueName */
   private loadVenues(): void {
     this.multiStepFormService.getVenues().subscribe({
       next: (venues) => {
         this.venueOptions = venues;
-        const found = venues.find(v => v.venueId === this.venueId);
+        const found = venues.find((v) => v.venueId === this.venueId);
         if (found) {
           this.selectedVenueName = found.venueName;
         }
@@ -144,143 +191,126 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  /** Load leases/packages for a given venue */
+  /** Load packages (leases) for the chosen venue */
   private loadLeases(venueId: number): void {
     this.multiStepFormService.getLeasesByVenue(venueId).subscribe({
-      next: (leases) => this.packageOptions = leases,
+      next: (leases) => (this.packageOptions = leases),
       error: (err) => console.error('Error loading leases:', err)
     });
   }
 
   /**
-   * Disable any date before today, or any date that appears in bookedDatesSet.
-   * This still prevents selection, but styling is handled by dateClass().
+   * dateFilter disables any date that is:
+   *  - Before today
+   *  - Already in bookedDatesSet
    */
   dateFilter = (d: Date | null): boolean => {
     if (!d) return false;
+    const cell = new Date(d);
+    cell.setHours(0, 0, 0, 0);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    // 1) All dates < today are disabled
-    const cell = new Date(d);
-    cell.setHours(0, 0, 0, 0);
-    if (cell < today) {
+    if (cell <= today) {
       return false;
     }
-
-    // 2) Any date in bookedDatesSet is disabled
-    const iso = cell.toISOString().split('T')[0];
+    const iso = cell.toISOString().split('T')[0]; // "YYYY-MM-DD"
     if (this.bookedDatesSet.has(iso)) {
       return false;
     }
-
-    // Otherwise it is enabled
     return true;
   };
 
   /**
-   * Assign a CSS class to each date in the calendar.
-   * - past-date  → grey background
-   * - booked-date → red background
-   * - available-date → green background
+   * dateClass applies custom CSS classes to each date cell:
+   *  - Past or today → gray and unselectable
+   *  - Booked → red and unselectable
+   *  - Available → green
    */
   dateClass = (cellDate: Date, view: string): string => {
-    if (view !== 'month') return '';
+    if (view !== 'month') {
+      return '';
+    }
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
+
     const cell = new Date(cellDate);
     cell.setHours(0, 0, 0, 0);
-
-    // 1) Past dates
-    if (cell < today) {
-      return 'past-date';
-    }
-
-    // 2) Booked slots (exact match by YYYY-MM-DD)
     const iso = cell.toISOString().split('T')[0];
-    if (this.bookedDatesSet.has(iso)) {
-      return 'booked-date';
+
+    // Past or today → gray
+    if (cell <= today) {
+      return 'bg-gray-200 text-gray-600';
     }
 
-    // 3) All others
-    return 'available-date';
+    // Booked dates → red
+    if (this.bookedDatesSet.has(iso)) {
+      return 'bg-red-200 text-red-800';
+    }
+
+    // Available → green
+    return 'bg-green-200 text-green-800';
   };
 
-  /** When user clicks a date: show feedback if disabled, otherwise patch form. */
-  onDateSelected(date: Date | null): void {
-    if (!date) return;
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const cell = new Date(date);
-    cell.setHours(0, 0, 0, 0);
-    const iso = cell.toISOString().split('T')[0];
+  /** Returns how many days are selected in the range (inclusive). */
+  getDurationDays(): number {
+    const drGroup = this.bookingForm.get('dateRangeGroup') as FormGroup;
+    const start: Date = drGroup.get('startDate')!.value;
+    let end: Date = drGroup.get('endDate')!.value;
 
-    // 1) If date < today → show snackBar
-    if (cell < today) {
-      this.snackBar.open('Cannot pick a past date.', 'Close', { duration: 3000 });
-      return;
+    if (!start) return 0;
+    if (!end) {
+      // If no endDate chosen, treat as single‐day booking
+      end = start;
     }
-
-    // 2) If date is in bookedDatesSet → show snackBar
-    if (this.bookedDatesSet.has(iso)) {
-      this.snackBar.open('This date is already booked. Please choose another.', 'Close', { duration: 3000 });
-      return;
-    }
-
-    // 3) Otherwise accept it
-    if (this.selectingEndDate && this.showEndDate) {
-      this.selectedEndDate = date;
-      this.bookingForm.patchValue({ endDate: date });
-      this.selectingEndDate = false;
-    } else {
-      this.selectedStartDate = date;
-      this.bookingForm.patchValue({ startDate: date });
-
-      if (this.showEndDate) {
-        this.bookingForm.patchValue({ endDate: null });
-        this.selectedEndDate = null;
-      }
-    }
+    const msPerDay = 1000 * 3600 * 24;
+    const diff =
+      Math.floor((new Date(end).getTime() - new Date(start).getTime()) / msPerDay) + 1;
+    return diff > 0 ? diff : 1;
   }
 
-  toggleEndDate(): void {
-    this.showEndDate = !this.showEndDate;
-
-    if (!this.showEndDate) {
-      this.bookingForm.patchValue({ endDate: null });
-      this.selectedEndDate = null;
-    } else {
-      this.selectingEndDate = true;
-    }
-  }
-
+  /** Move to next step after validating Step 1 fields. */
   nextStep(): void {
-    // Prevent picking a past time on the chosen date
-    const sd = this.bookingForm.value.startDate as Date;
-    const st = this.bookingForm.value.startTime as string; // "HH:mm"
-    if (sd && st) {
-      const [hh, mm] = st.split(':').map(x => Number(x));
-      const combined = new Date(sd);
+    const drGroup = this.bookingForm.get('dateRangeGroup') as FormGroup;
+    const startDate: Date = drGroup.get('startDate')!.value;
+    let endDate: Date = drGroup.get('endDate')!.value || startDate;
+
+    // 1) Prevent selecting a start date earlier than the current time:
+    const stTime: string = this.bookingForm.value.startTime;
+    if (startDate && stTime) {
+      const [hh, mm] = stTime.split(':').map((x) => Number(x));
+      const combined = new Date(startDate);
       combined.setHours(hh, mm, 0, 0);
       if (combined < new Date()) {
-        this.snackBar.open('You cannot pick a start time in the past.', 'Close', { duration: 3000 });
+        this.snackBar.open('Oops!Cannot pick a start day or time in the past.', 'Close', {
+          duration: 3000
+        });
         return;
       }
     }
 
-    // Validate required fields
-    const requiredFields = ['venueId', 'venuePackageId', 'startDate', 'startTime', 'endTime'];
-    let hasErrors = false;
-    requiredFields.forEach(field => {
-      const control = this.bookingForm.get(field);
-      if (control && control.invalid) {
-        control.markAsTouched();
-        hasErrors = true;
+    // 2) Validate Step 1 required fields
+    const requiredFields = [
+      'dateRangeGroup.startDate',
+      'venueId',
+      'venuePackageId',
+      'startTime',
+      'endTime',
+      'session'
+    ];
+    let hasErr = false;
+    requiredFields.forEach((path) => {
+      const ctrl = this.bookingForm.get(path);
+      if (ctrl && ctrl.invalid) {
+        ctrl.markAsTouched();
+        hasErr = true;
       }
     });
-    if (hasErrors) {
-      this.snackBar.open('Please fill in all required fields before continuing.', 'Close', { duration: 3000 });
+    if (hasErr) {
+      this.snackBar.open('Please fill all required fields in Step 1.', 'Close', {
+        duration: 3000
+      });
       return;
     }
 
@@ -291,87 +321,120 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
     this.currentStep--;
   }
 
+  /** If session changes (only one option anyway), update start/end times */
   onSessionChange(): void {
-    const selectedLabel = this.bookingForm.get('session')?.value;
-    const session = this.sessionOptions.find(s => s.label === selectedLabel);
-    if (session) {
-      this.selectedSessionTime = `${session.start} – ${session.end}`;
+    const sessLabel = this.bookingForm.get('session')!.value;
+    const sess = this.sessionOptions.find((s) => s.label === sessLabel);
+    if (sess) {
+      this.selectedSessionTime = `${sess.start} – ${sess.end}`;
       this.bookingForm.patchValue({
-        startTime: session.start,
-        endTime: session.end
+        startTime: sess.start,
+        endTime: sess.end
       });
     }
   }
 
   onSubmit(): void {
-    // Prevent booking at a date/time in the past again
-    const sd = this.bookingForm.value.startDate as Date;
-    const st = this.bookingForm.value.startTime as string;
-    if (sd && st) {
-      const [hh, mm] = st.split(':').map(x => Number(x));
-      const combined = new Date(sd);
+    // 1) Prevent booking for date/time in the past once more
+    const drGroup = this.bookingForm.get('dateRangeGroup') as FormGroup;
+    const startDate: Date = drGroup.get('startDate')!.value;
+    let endDate: Date = drGroup.get('endDate')!.value || startDate;
+    const stTime: string = this.bookingForm.value.startTime;
+
+    if (startDate && stTime) {
+      const [hh, mm] = stTime.split(':').map((x) => Number(x));
+      const combined = new Date(startDate);
       combined.setHours(hh, mm, 0, 0);
       if (combined < new Date()) {
-        this.snackBar.open('You cannot book for a date/time in the past.', 'Close', { duration: 3000 });
+        this.snackBar.open('Cannot book for a date/time in the past.', 'Close', {
+          duration: 3000
+        });
         return;
       }
     }
 
+    // 2) Final form validation
     if (this.bookingForm.invalid) {
       this.bookingForm.markAllAsTouched();
       return;
     }
 
-    // Ensure correct session times
-    const selectedSession = this.sessionOptions.find(
-      s => s.label === this.bookingForm.value.session
-    );
-    if (selectedSession) {
+    // 3) Ensure the session times are re-patched
+    const sessLabel = this.bookingForm.value.session;
+    const sess = this.sessionOptions.find((s) => s.label === sessLabel);
+    if (sess) {
       this.bookingForm.patchValue({
-        startTime: selectedSession.start,
-        endTime: selectedSession.end
+        startTime: sess.start,
+        endTime: sess.end
       });
     }
 
-    // Compute duration (in days) and price
-    const startDate = new Date(this.bookingForm.value.startDate);
-    const endDateRaw = this.bookingForm.value.endDate as Date | null;
-    const endDate = endDateRaw ? new Date(endDateRaw) : startDate;
+    // 4) Calculate duration & total price
+    const sd = new Date(startDate);
+    const ed = new Date(endDate);
+    const msPerDay = 1000 * 3600 * 24;
     const durationInDays =
-      Math.floor((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24)) + 1;
-    const selectedPackage = this.packageOptions.find(
-      p => p.leaseId == this.bookingForm.value.venuePackageId
+      Math.floor((ed.getTime() - sd.getTime()) / msPerDay) + 1;
+    const selectedPkg = this.packageOptions.find(
+      (p) => p.leaseId === this.bookingForm.value.venuePackageId
     );
-    const pricePerDay = selectedPackage?.price || 0;
+    const pricePerDay = selectedPkg?.price || 0;
     const totalPrice = pricePerDay * durationInDays;
 
-    // Confirmation dialog
+    // 5) Open confirmation dialog
+    
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: {
-        fullName: this.bookingForm.value.fullName,
-        venue: this.selectedVenueName || 'N/A',
-        packageName: selectedPackage?.packageName || 'N/A',
-        price: totalPrice,
-        durationInDays: durationInDays
-      }
-    });
+  data: {
+    fullName: this.bookingForm.value.fullName,
+    phoneNumber: this.bookingForm.value.phoneNumber,
+    venue: this.selectedVenueName || 'N/A',
+    packageName: selectedPkg?.packageName || 'N/A',
+    price: totalPrice,
+    startDate: this.bookingForm.value.dateRangeGroup.startDate,
+    endDate: this.bookingForm.value.dateRangeGroup.endDate || this.bookingForm.value.dateRangeGroup.startDate,
+    durationInDays: this.getDurationDays()
+  }
+});
+
+
 
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
-      if (confirmed) {
-        // Create booking; assume response returns { bookingId: <number>, ... }
-        this.bookingService.createBooking(this.bookingForm.value).subscribe({
-          next: (resp: any) => {
-            this.snackBar.open('Booking created successfully!', 'Close', { duration: 3000 });
-
-            // Navigate to invoice page using returned bookingId
-            const newBookingId = resp.bookingId;
-            this.router.navigate(['/invoice', newBookingId]);
-          },
-          error: () => {
-            this.snackBar.open('Booking failed. Please try again.', 'Close', { duration: 3000 });
-          }
-        });
+      if (!confirmed) {
+        return;
       }
+      // 6) Create the booking via BookingService
+      const payload = {
+        venueId: this.bookingForm.value.venueId,
+        venuePackageId: this.bookingForm.value.venuePackageId,
+        startDate: this.bookingForm.value.dateRangeGroup.startDate,
+        startTime: this.bookingForm.value.startTime,
+        endDate:
+          this.bookingForm.value.dateRangeGroup.endDate ||
+          this.bookingForm.value.dateRangeGroup.startDate,
+        endTime: this.bookingForm.value.endTime,
+        fullName: this.bookingForm.value.fullName,
+        phoneNumber: this.bookingForm.value.phoneNumber,
+        email: this.bookingForm.value.email,
+        address: this.bookingForm.value.address,
+        // discountRate: this.bookingForm.value.discountRate,
+        session: this.bookingForm.value.session
+      };
+
+      this.bookingService.createBooking(payload).subscribe({
+        next: (resp: any) => {
+          this.snackBar.open('Booking created successfully!', 'Close', {
+            duration: 3000
+          });
+          // Navigate to invoice page, passing new bookingId
+          const newBookingId = resp.bookingId;
+          this.router.navigate(['/invoice', newBookingId]);
+        },
+        error: () => {
+          this.snackBar.open('Booking failed. Please try again.', 'Close', {
+            duration: 3000
+          });
+        }
+      });
     });
   }
 }
