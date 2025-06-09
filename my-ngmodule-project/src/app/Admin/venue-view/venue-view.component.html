@@ -3,17 +3,20 @@
 <div id="home-page">
   <div class="main-content">
     <div class="content-box">
-      <div class="welcome-card">
-        <div class="card">
-          <div class="card-header text-center">
-            <h4>Discover Our Exclusive Venues</h4>
-          </div>
-          <div class="card-body">
-            <p>Explore a wide range of venues for your events, meetings, and celebrations. Find the perfect space that fits your needs and book with ease.</p>
-          </div>
-        </div>
-      </div>
-    </div>
+     <div class="welcome-card">
+  <mat-card class="mat-elevation-z6 welcome-mat-card">
+    <mat-card-header>
+      <mat-card-title>Discover Our Exclusive Venues</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        Explore a wide range of venues for your events, meetings, and celebrations.
+        Find the perfect space that fits your needs and book with ease.
+      </p>
+    </mat-card-content>
+  </mat-card>
+</div>
+
 
     <div class="search-container">
       <input type="text" [(ngModel)]="searchTerm" (input)="searchVenues()" placeholder="Type a venue name or capacity of a hall" class="form-control">
@@ -78,7 +81,7 @@
 <!-- Fullscreen Dialog Template -->
 <ng-template #imageViewer>
   <div class="dialog-backdrop" 
-     style="display:flex; align-items:center; justify-content:center; height:100vh; position:relative; background:rgba(0,0,0,0.8);">
+     style="display:flex; align-items:center; justify-content:center; height:400vh; position:relative; background:rgba(236, 231, 231, 0.8);">
 
   <button mat-icon-button 
           class="nav-btn left" 
