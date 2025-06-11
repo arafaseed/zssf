@@ -235,69 +235,86 @@ mat-card-actions.d-flex mat-icon {
     padding: 20px;
   } */
 }
-
-/* Welcome Card Section */
+/* Welcome Card Container */
 .welcome-card {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
-  width: 100%;
+  padding: 2rem 1rem;
   box-sizing: border-box;
+  width: 100%;
+  margin-top: 60px;
 }
 
+/* Material Card Styling */
 .welcome-mat-card {
   width: 100%;
   max-width: 1600px;
-  margin-top: 10px;
-  padding: 40px;
+  padding: 1.5rem 1rem;
   text-align: center;
-  border-radius: 10px;
-  background-color: #ffffff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  background: linear-gradient(to right, #e8f5f1, #ffffff);
+  box-shadow: 0 8px 20px rgba(159, 144, 144, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Hover Effect */
 .welcome-mat-card:hover {
-  transform: scale(1.01);
-  box-shadow: 0 8px 14px rgba(0, 0, 0, 0.15);
+  transform: scale(1.02);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
 }
 
-.welcome-mat-card mat-card-title {
-  font-size: 30px;
+/* Title Styling */
+.main-title {
+  font-size: 2.2rem;
   color: #2A7261;
   font-weight: 700;
-  text-align: center;
   font-family: 'Poppins', sans-serif;
-  font-style: italic;
+  margin-bottom: 1rem;
+  font-style:normal
 }
 
+/* Paragraph Styling */
 .welcome-mat-card mat-card-content p {
-  font-size: 18px;
-  color: #444;
-  line-height: 1.6;
+  font-size: 1.125rem;
+  color: #333;
+  line-height: 1.7;
   font-family: 'Roboto', sans-serif;
-  font-style: italic;
 }
 
-/* Responsive font scaling */
-@media (max-width: 768px) {
+/* Tablet */
+@media (max-width: 992px) {
+  .welcome-mat-card {
+    padding: 2rem 1.5rem;
+  }
+
   .welcome-mat-card mat-card-title {
-    font-size: 26px;
+    font-size: 1.8rem;
   }
 
   .welcome-mat-card mat-card-content p {
-    font-size: 16px;
+    font-size: 1rem;
   }
 }
 
-@media (max-width: 380px) {
+/* Mobile */
+@media (max-width: 576px) {
+  .welcome-mat-card {
+    padding: 1.5rem 1rem;
+    border-radius: 12px;
+  }
+
   .welcome-mat-card mat-card-title {
-    font-size: 22px;
+    font-size: 1.5rem;
   }
 
   .welcome-mat-card mat-card-content p {
-    font-size: 15px;
+    font-size: 0.95rem;
+  }
+}
+  @media (max-width: 768px) {
+  .main-title {
+    font-size: 1.8rem;
   }
 }
 
@@ -362,4 +379,3 @@ html, body {
 p{
   text-align: center;
 }
-

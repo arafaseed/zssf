@@ -2,11 +2,10 @@
 
 <div id="home-page">
   <div class="main-content">
-    <div class="content-box">
      <div class="welcome-card">
   <mat-card class="mat-elevation-z6 welcome-mat-card">
     <mat-card-header>
-      <mat-card-title>Discover Our Exclusive Venues</mat-card-title>
+      <mat-card-title class="main-title">Discover Our Exclusive Venues</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <p>
@@ -49,18 +48,18 @@
               </div>
             </div> -->
 
-            <!-- Thumbnails -->
+     <!-- Thumbnails -->
 <img
   [src]="venue.venueImages[currentSlideIndices[i] || 0]"
   alt="Venue Image"
   matTooltip="Tap"
-  matTooltipShowDelay="0"
-  matTooltipPosition="below"  
+  matTooltipShowDelay="0" 
   style="display: block; margin: 0 auto; max-width: 250px; height: 250px; border-radius: 6px; object-fit: cover; cursor: pointer; position: relative;"
   (click)="openImageViewer(venue.venueImages, currentSlideIndices[i] || 0)"
 />
 
 <div>
+ 
   <!-- <p><strong>Venue Name:</strong> {{ venue.venueName }}</p> -->
   <p><strong>Capacity:</strong> {{ venue.capacity }}</p>
   <p><strong>Description:</strong> {{ venue.description }}</p>
