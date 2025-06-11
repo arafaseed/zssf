@@ -50,10 +50,13 @@
             </div> -->
 
             <!-- Thumbnails -->
-     <img
+<img
   [src]="venue.venueImages[currentSlideIndices[i] || 0]"
   alt="Venue Image"
-  style="max-width: 550px; height: 350px; border-radius: 20px; object-fit: cover; cursor: pointer;"
+  matTooltip="Tap"
+  matTooltipShowDelay="0"
+  matTooltipPosition="below"  
+  style="display: block; margin: 0 auto; max-width: 250px; height: 250px; border-radius: 6px; object-fit: cover; cursor: pointer; position: relative;"
   (click)="openImageViewer(venue.venueImages, currentSlideIndices[i] || 0)"
 />
 
@@ -81,7 +84,7 @@
 <!-- Fullscreen Dialog Template -->
 <ng-template #imageViewer>
   <div class="dialog-backdrop" 
-     style="display:flex; align-items:center; justify-content:center; height:400vh; position:relative; background:rgba(236, 231, 231, 0.8);">
+     style="display:flex; align-items:center; justify-content:center; height:100vh; position:relative; background:rgba(236, 231, 231, 0.8);">
 
   <button mat-icon-button 
           class="nav-btn left" 
@@ -100,7 +103,7 @@
   <img [src]="selectedImages[currentImageIndex]" 
        class="dialog-img" 
        alt="Viewing Image" 
-       style="max-height: 85vh; max-width: 90vw; object-fit: contain; border-radius: 6px;" />
+       style="max-height: 85vh; max-width: 60vw; object-fit: contain; border-radius: 4px;" />
 
   <button mat-icon-button 
           class="nav-btn right" 

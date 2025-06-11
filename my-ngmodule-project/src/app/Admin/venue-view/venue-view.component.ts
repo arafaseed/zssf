@@ -79,8 +79,8 @@ export class VenueViewComponent implements OnInit, OnDestroy {
 
     this.dialog.open(this.imageViewer, {
       panelClass: 'image-viewer-dialog',
-      width: '80vw',
-      height: '80vh',
+      width: '90vw',
+      height: '60vh',
       // Optional: disableClose: true,
     });
   }

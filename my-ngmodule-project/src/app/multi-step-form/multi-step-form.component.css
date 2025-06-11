@@ -64,4 +64,10 @@
 .mat-select-panel .mat-option:hover .mat-option-text {
   background-color: #d1fae5; /* Tailwind’s green-100 */
 }
+.text-red-500{
+  color: #ab1906;
+  font-weight: 500;
+  font-size: 14px;
+}
+
 

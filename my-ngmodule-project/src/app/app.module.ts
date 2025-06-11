@@ -56,7 +56,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { StaffAddComponent } from './staff-add/staff-add.component';
 import { MatSnackBarModule }   from '@angular/material/snack-bar';
-
+import { MatTooltipModule } from '@angular/material/tooltip';
 @NgModule({
   declarations: [
     AppComponent,
@@ -87,6 +87,7 @@ import { MatSnackBarModule }   from '@angular/material/snack-bar';
   
   ],
   imports: [
+    MatTooltipModule,
     MatDatepickerModule,
     FullCalendarModule,
     MatCardModule,
