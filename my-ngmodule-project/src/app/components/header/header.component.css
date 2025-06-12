@@ -6,11 +6,11 @@
   right: 0;
   z-index: 1000;
   min-height: 30px; /* Let it grow if needed */
-  height: auto;
+  height: 70px;
   background-color: #05a393 !important;
   display: flex;
   align-items: flex-start; /* allow top alignment for stacked items */
-  padding: 0.5rem 1rem;
+  padding: 0.1rem 0.1rem;
   box-sizing: border-box;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
