@@ -49,7 +49,7 @@
     </tr>
     <tr *ngFor="let booking of filteredBookings.slice(-5).reverse()">
       <td>{{ booking.bookingCode }}</td>
-      <td>{{ booking.customer?.fullName || 'N/A' }}</td>
+      <td>{{ booking.customer?.fullName}}</td>
       <td>{{ booking.customer?.phoneNumber || 'N/A' }}</td>
       <td>{{ booking.venue?.venueName || 'N/A' }}</td>
       <td>{{ booking.status }}</td>

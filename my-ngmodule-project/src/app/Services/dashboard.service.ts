@@ -22,4 +22,10 @@ export class DashboardService {
   return this.http.get<any[]>(`${this.apiUrl}/search`, { params });
 }
 
+// dashboard.service.ts
+getAllVenues(): Observable<any[]> {
+  return this.http.get<any[]>('http://localhost:8080/api/venues/view/all');
+}
+
+
 }

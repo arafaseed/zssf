@@ -14,15 +14,33 @@ export class DashboardComponent implements OnInit {
   venueAvailability: string = 'N/A';
   bookings: any[] = [];
   filteredBookings: any[] = [];
+  venues: any[] = [];
 
   searchPhone: string = '';
   searchDate: string = '';
 
   constructor(private dashboardService: DashboardService) {}
 
-  ngOnInit() {
-    this.loadDashboardData();
-  }
+ngOnInit() {
+  this.loadDashboardData();
+
+  this.dashboardService.getAllVenues().subscribe(
+    (venues) => {
+      this.venues = venues;
+      this.attachVenueNames(); // match venue names to bookings
+    },
+    (error) => console.error('Error fetching venues', error)
+  );
+}
+attachVenueNames() {
+  this.bookings.forEach(booking => {
+    const matchedVenue = this.venues.find(v => v.venueId === booking.venueId);
+    booking.venue = matchedVenue || {}; // safely add venue object
+  });
+
+  this.filteredBookings = [...this.bookings]; // re-assign to trigger Angular change detection
+}
+
 
   loadDashboardData() {
     this.dashboardService.getAllBookings().subscribe(
@@ -48,6 +66,7 @@ export class DashboardComponent implements OnInit {
       return matchesPhone && matchesDate;
     });
   }
+  
 
   clearSearch() {
     this.searchPhone = '';
