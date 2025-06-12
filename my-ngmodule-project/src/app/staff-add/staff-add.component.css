@@ -11,7 +11,7 @@
 
 /* Header Styling */
 h3 {
-  background: #34495e;
+  background:rgb(12, 20, 41);
   color: white;
   text-align: center;
   padding: 15px;
@@ -33,7 +33,7 @@ table {
 }
 
 thead {
-  background-color: #34495e;
+  background-color:rgb(12, 20, 41);
   color: white;
 }
 

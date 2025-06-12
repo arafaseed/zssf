@@ -111,7 +111,7 @@
 }
 
 .recent-activity th {
-  background-color: #007bff;
+  background-color: rgb(12, 20, 41);
   color: #fff;
   text-transform: uppercase;
   font-weight: 600;
@@ -132,8 +132,7 @@
   padding: 20px;
   background-color: #f2f6fa;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
-}
+  box-shadow: 0 4px 12px rgb(12, 20, 41);}
 
 .search-filters input[type="text"],
 .search-filters input[type="date"] {
