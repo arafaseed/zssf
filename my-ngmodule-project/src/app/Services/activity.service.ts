@@ -21,4 +21,23 @@ export class ActivityService {
   getVenues(): Observable<any[]> {
     return this.http.get<any[]>(`${this.venueApi}/view/all`);
   }
+
+
+  
+  getAllActivities(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.activityApi}`);
+  }
+
+  createActivity(activity: any): Observable<any> {
+    return this.http.post(`${this.activityApi}`, activity);
+  }
+
+  deleteActivity(id: number): Observable<any> {
+    return this.http.delete(`${this.activityApi}/${id}`);
+  }
+
+  updateActivity(id: number, activity: any): Observable<any> {
+    return this.http.put(`${this.activityApi}/${id}`, activity);
+  }
 }
+

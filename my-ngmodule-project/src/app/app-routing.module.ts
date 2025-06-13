@@ -23,6 +23,7 @@ import { BookingListComponent } from './booking-list/booking-list.component';
 import { InvoiceComponent } from './invoice/invoice.component';
 import { StaffAddComponent } from './staff-add/staff-add.component';
 import { ActivityFormComponent } from './Admin/activity-form/activity-form.component';
+import { ActivityTableComponent } from './activitytable/activitytable.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'venue', pathMatch: 'full' },
@@ -70,6 +71,8 @@ const routes: Routes = [
       { path: 'bookinglist', component: BookingListComponent },
       {path: 'addstaff', component: StaffAddComponent},
       { path: 'activity', component: ActivityFormComponent },
+      { path: 'activitytable', component: ActivityTableComponent },
+
 
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Default admin page
       { path: '**', redirectTo: 'dashboard' }, // Catch-all

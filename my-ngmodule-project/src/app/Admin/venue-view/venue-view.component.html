@@ -52,6 +52,7 @@
 <img
   [src]="venue.venueImages[currentSlideIndices[i] || 0]"
   alt="Venue Image"
+  matTooltip="Tap"
   matTooltipShowDelay="0" 
   style="display: block; margin: 0 auto; max-width: 250px; height: 250px; border-radius: 6px; object-fit: cover; cursor: pointer; position: relative;"
   (click)="openImageViewer(venue.venueImages, currentSlideIndices[i] || 0)"

@@ -60,6 +60,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivityFormComponent } from './Admin/activity-form/activity-form.component';
 
 import { AdminbookingComponent } from './adminbooking/adminbooking.component';
+import { ActivityTableComponent } from './activitytable/activitytable.component';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -88,6 +91,8 @@ import { AdminbookingComponent } from './adminbooking/adminbooking.component';
     InvoiceComponent,
     StaffAddComponent,
     ActivityFormComponent,
+    ActivityTableComponent
+  
   
 
 

@@ -53,8 +53,8 @@ export class ActivityFormComponent implements OnInit {
   private showToast(message: string, type: 'success' | 'error') {
     this.snackBar.open(message, 'Close', {
       duration: 4000,
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
+      horizontalPosition:'center',
+      verticalPosition:'bottom',
       panelClass: type === 'success' ? 'snackbar-success' : 'snackbar-error'
     });
   }
