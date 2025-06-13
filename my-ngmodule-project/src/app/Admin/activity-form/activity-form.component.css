@@ -1,0 +1,123 @@
+/* Container styling */
+.container {
+  max-width: 700px;
+  margin: 40px auto;
+  background-color: #f8f9fa;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading */
+h3 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #333;
+  align-self: center;
+}
+
+/* Custom input field styling */
+.custom-input {
+  margin-bottom: 15px;
+}
+
+.custom-input .form-label {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.custom-input input,
+.custom-input textarea,
+.custom-input select {
+  width: 100%;
+  padding: 12px 15px;
+  border: none;
+  background-color: transparent;
+  outline: none;
+  border-bottom: 1px solid #ced4da;
+  font-size: 1rem;
+}
+
+.custom-input input:focus,
+.custom-input textarea:focus,
+.custom-input select:focus {
+  border-bottom: 2px solid #007bff;
+}
+
+/* Error message styling */
+.error {
+  color: #dc3545;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+/* Form control */
+.form-control {
+  font-size: 1rem;
+  padding: 12px 15px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ced4da;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+}
+
+/* Buttons */
+.btn-primary {
+  padding: 12px 25px;
+  font-size: 1.1rem;
+  border-radius: 10px;
+}
+
+/* File upload button */
+button.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+}
+
+button.btn-primary:hover {
+  background-color: #388e3c;
+  transition: background-color 0.3s ease-in-out;
+}
+
+button.btn-primary mat-icon {
+  margin-right: 5px;
+}
+
+/* Selected file text */
+span.ml-2 {
+  font-size: 14px;
+  color: #333;
+}
+
+/* Button alignment */
+.row:last-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Responsive layout */
+@media (max-width: 768px) {
+  .col-md-6 {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  .row:last-child {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+

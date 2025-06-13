@@ -57,6 +57,8 @@ import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { StaffAddComponent } from './staff-add/staff-add.component';
 import { MatSnackBarModule }   from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ActivityFormComponent } from './Admin/activity-form/activity-form.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -84,6 +86,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ConfirmDialogComponent,
     InvoiceComponent,
     StaffAddComponent,
+    ActivityFormComponent,
   
   ],
   imports: [

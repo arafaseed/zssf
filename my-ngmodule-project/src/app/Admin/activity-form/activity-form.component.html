@@ -1,0 +1,40 @@
+<div class="container">
+  <div class="card shadow-lg p-4">
+    <h3 class="text-center mb-4">🎯 Add Activity</h3>
+
+    <form [formGroup]="activityForm" (ngSubmit)="onSubmit()">
+
+      <div class="mb-3">
+        <label for="activityName" class="form-label">Activity Name:</label>
+        <input id="activityName" type="text" class="form-control" formControlName="activityName" placeholder="Enter activity name" required>
+        <div *ngIf="activityForm.get('activityName')?.invalid && activityForm.get('activityName')?.touched" class="error">
+          Activity name is required (min 3 characters)
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="activityDescription" class="form-label">Description:</label>
+        <input id="activityDescription" type="text" class="form-control" formControlName="activityDescription" placeholder="Enter description" required>
+        <div *ngIf="activityForm.get('activityDescription')?.invalid && activityForm.get('activityDescription')?.touched" class="error">
+          Description is required (min 5 characters)
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="venueId" class="form-label">Venue:</label>
+        <select id="venueId" class="form-control" formControlName="venueId" required>
+          <option value="" disabled selected>Select Venue</option>
+          <option *ngFor="let venue of venues" [value]="venue.venueId">{{ venue.venueName }}</option>
+        </select>
+        <div *ngIf="activityForm.get('venueId')?.invalid && activityForm.get('venueId')?.touched" class="error">
+          Venue is required
+        </div>
+      </div>
+
+      <div class="text-center">
+        <button class="btn btn-success" type="submit" [disabled]="activityForm.invalid">Submit</button>
+      </div>
+
+    </form>
+  </div>
+</div>

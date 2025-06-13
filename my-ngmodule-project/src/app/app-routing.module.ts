@@ -22,6 +22,7 @@ import { MultiStepFormComponent } from './multi-step-form/multi-step-form.compon
 import { BookingListComponent } from './booking-list/booking-list.component';
 import { InvoiceComponent } from './invoice/invoice.component';
 import { StaffAddComponent } from './staff-add/staff-add.component';
+import { ActivityFormComponent } from './Admin/activity-form/activity-form.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'venue', pathMatch: 'full' },
@@ -71,6 +72,9 @@ const routes: Routes = [
 
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Default admin page
       { path: '**', redirectTo: 'dashboard' }, // Catch-all
+
+     { path: 'activityform', component: ActivityFormComponent }
+
 
     ]
   }
