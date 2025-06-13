@@ -24,6 +24,7 @@ import { InvoiceComponent } from './invoice/invoice.component';
 import { StaffAddComponent } from './staff-add/staff-add.component';
 import { ActivityFormComponent } from './Admin/activity-form/activity-form.component';
 import { ActivityTableComponent } from './activitytable/activitytable.component';
+import { PhoneSearchComponent } from './phone-search/phone-search.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'venue', pathMatch: 'full' },
@@ -38,6 +39,8 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'booking', component: MultiStepFormComponent },
   { path: 'invoice/:bookingId', component: InvoiceComponent },
+
+   { path: 'mybooking', component: PhoneSearchComponent },
 
   {
     path: 'staff',

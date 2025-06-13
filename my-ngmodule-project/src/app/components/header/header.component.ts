@@ -20,6 +20,10 @@ export class HeaderComponent {
   goHome(): void {
     this.router.navigate(['/venue']);
    }
+   gomybooking(): void {
+    this.router.navigate(['/mybooking']);
+   }
+   
    
   }
 

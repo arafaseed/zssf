@@ -1,0 +1,99 @@
+/* Container styling */
+.container {
+  padding: 1rem;
+}
+
+/* Card styles */
+.card {
+  border-radius: 12px;
+  border: none;
+  background-color: #ffffff;
+  transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Form title */
+h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Form label */
+.form-label {
+  font-weight: 500;
+  color: #555;
+}
+
+/* Input field */
+input.form-control {
+  height: 45px;
+  font-size: 1rem;
+  border-radius: 6px;
+ 
+}
+
+/* Search button */
+button {
+  font-size: 1rem;
+  font-weight: 600;
+  height: 45px;
+  color: white;
+  background-color: #28a745; /* Bootstrap success green */
+  border: none;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #218838; /* Darker green on hover */
+  cursor: pointer;
+}
+
+/* Booking card */
+.card.mb-3 {
+  border-left: 4px solid #007bff;
+  background-color: #f8f9fa;
+}
+
+.card.mb-3 p {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+/* Invoice button */
+.btn-outline-primary {
+  margin-top: 0.5rem;
+}
+
+/* Alert message */
+.alert-warning {
+  font-size: 1rem;
+  text-align: center;
+  border-radius: 6px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  h3 {
+    font-size: 1.3rem;
+  }
+
+  h4 {
+    font-size: 1.1rem;
+  }
+
+  .btn,
+  input.form-control {
+    font-size: 0.95rem;
+  }
+
+  .card.mb-3 p {
+    font-size: 0.9rem;
+  }
+}

@@ -1,0 +1,37 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-sm-12">
+      <div class="card shadow p-4">
+        <h3 class="mb-3 text-center">Search Bookings by Phone</h3>
+        <form (ngSubmit)="onSubmit()" #searchForm="ngForm">
+          <div class="mb-3">
+            <label for="phoneNumber" class="form-label">Phone Number</label>
+            <input type="text" id="phoneNumber" class="form-control" required [(ngModel)]="phoneNumber" name="phoneNumber">
+          </div>
+          <button type="submit" class="btn btn-primary w-100" [disabled]="searching">Search</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4" *ngIf="bookings?.length">
+    <div class="col-12">
+      <h4>Results</h4>
+      <div *ngFor="let booking of bookings" class="card mb-3 p-3 shadow-sm">
+        <p><strong>Booking Code:</strong> {{ booking.bookingCode }}</p>
+        <p><strong>Start:</strong> {{ booking.startDate }} {{ booking.startTime }}</p>
+        <p><strong>End:</strong> {{ booking.endDate }} {{ booking.endTime }}</p>
+        <p><strong>Status:</strong> {{ booking.status }}</p>
+        <p><strong>Venue ID:</strong> {{ booking.venueId }}</p>
+        <p><strong>Invoice ID:</strong> {{ booking.invoiceId || 'Not Available' }}</p>
+        <a *ngIf="booking.invoiceId" [href]="'/invoice/' + booking.invoiceId" target="_blank" class="btn btn-outline-primary btn-sm">
+          View Invoice
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="noResults" class="alert alert-warning mt-4">
+    No bookings found for phone number {{ phoneNumber }}.
+  </div>
+</div>
