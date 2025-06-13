@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ActivityService {
+  
   private activityApi = 'http://localhost:8080/api/activities';
   private venueApi = 'http://localhost:8080/api/venues';
 
@@ -21,8 +22,10 @@ export class ActivityService {
   getVenues(): Observable<any[]> {
     return this.http.get<any[]>(`${this.venueApi}/view/all`);
   }
-
-
+  
+getActivityById(id: number): Observable<any> {
+  return this.http.get<any>(`${this.activityApi}/${id}`);
+}
   
   getAllActivities(): Observable<any[]> {
     return this.http.get<any[]>(`${this.activityApi}`);
@@ -39,5 +42,6 @@ export class ActivityService {
   updateActivity(id: number, activity: any): Observable<any> {
     return this.http.put(`${this.activityApi}/${id}`, activity);
   }
+
 }
 

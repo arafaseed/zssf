@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivityService } from '../Services/activity.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { ActivityEditFormComponent } from '../Form/activity-edit-form/activity-edit-form.component';
 
 @Component({
   selector: 'app-activitytable',
@@ -10,13 +11,8 @@ import { Router } from '@angular/router';
   styleUrl: './activitytable.component.css'
 })
 export class ActivityTableComponent implements OnInit {
-openEditModal(activityId: number): void {
-  console.log('Edit modal opened for activity:', activityId);
-  // TODO: implement the edit modal later
-}
 
-
-  activities: any[] = [];
+ activities: any[] = [];
 displayedColumns: string[] = ['activityName', 'activityDescription', 'venueId', 'actions'];
 
   constructor(
@@ -49,16 +45,16 @@ displayedColumns: string[] = ['activityName', 'activityDescription', 'venueId', 
     }
   }
 
-  // openEditModal(activityId: number): void {
-  //   const dialogRef = this.dialog.open(ActivityEditFormComponent, {
-  //     width: '500px',
-  //     data: { activityId }
-  //   });
+  openEditModal(activityId: number): void {
+    const dialogRef = this.dialog.open(ActivityEditFormComponent, {
+      width: '500px',
+      data: { activityId }
+    });
 
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if (result) {
-  //       this.loadActivities();
-  //     }
-  //   });
-  // }
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadActivities();
+      }
+    });
+  }
 }

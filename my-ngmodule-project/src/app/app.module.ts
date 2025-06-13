@@ -61,6 +61,7 @@ import { ActivityFormComponent } from './Admin/activity-form/activity-form.compo
 
 import { AdminbookingComponent } from './adminbooking/adminbooking.component';
 import { ActivityTableComponent } from './activitytable/activitytable.component';
+import { ActivityEditFormComponent } from './Form/activity-edit-form/activity-edit-form.component';
 
 
 @NgModule({
@@ -91,7 +92,8 @@ import { ActivityTableComponent } from './activitytable/activitytable.component'
     InvoiceComponent,
     StaffAddComponent,
     ActivityFormComponent,
-    ActivityTableComponent
+    ActivityTableComponent,
+    ActivityEditFormComponent,
   
   
 

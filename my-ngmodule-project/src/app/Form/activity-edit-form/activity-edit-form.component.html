@@ -1,0 +1,40 @@
+<h3 mat-dialog-title class="text-center mb-4">✏️ Edit Activity</h3>
+
+<form [formGroup]="activityForm" (ngSubmit)="onSubmit()">
+  <div mat-dialog-content>
+    
+    <div class="mb-3">
+      <label for="activityName" class="form-label">Activity Name</label>
+      <input id="activityName" type="text" class="form-control" formControlName="activityName" placeholder="Enter activity name">
+      <div class="error" *ngIf="activityForm.get('activityName')?.invalid && activityForm.get('activityName')?.touched">
+        Activity Name is required (min 3 characters)
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="activityDescription" class="form-label">Description</label>
+      <input id="activityDescription" type="text" class="form-control" formControlName="activityDescription" placeholder="Enter description">
+      <div class="error" *ngIf="activityForm.get('activityDescription')?.invalid && activityForm.get('activityDescription')?.touched">
+        Description is required (min 5 characters)
+      </div>
+    </div>
+
+   
+    <div class="mb-3">
+      <label for="venue" class="form-label">Venue</label>
+      <select id="venue" class="form-control" formControlName="venueId" required>
+        <option value="" disabled>Select Venue</option>
+        <option *ngFor="let venue of venues" [ngValue]="venue.venueId">{{venue.venueName}}</option>
+      </select>
+      <div class="error" *ngIf="activityForm.get('venueId')?.invalid && activityForm.get('venueId')?.touched">
+        Venue selection is required
+      </div>
+    </div>
+
+  </div>
+
+  <div mat-dialog-actions class="text-center">
+    <button mat-button type="submit" [disabled]="activityForm.invalid">Update</button>
+    <button mat-button type="button" (click)="closeDialog()">Cancel</button>
+  </div>
+</form>
