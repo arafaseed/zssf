@@ -29,7 +29,7 @@ const routes: Routes = [
   // { path: 'home', component: HomeComponent },
   { path: 'venue', component: VenueViewComponent },
   { path: 'reservation', component: HomeComponent }, 
-  
+   
   { path: 'dash', component: DashboardComponent },
 
   { path: 'layout', component: LayoutComponent },
@@ -69,11 +69,12 @@ const routes: Routes = [
       { path: 'settings', component: SettingComponent },
       { path: 'bookinglist', component: BookingListComponent },
       {path: 'addstaff', component: StaffAddComponent},
+      { path: 'activity', component: ActivityFormComponent },
 
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Default admin page
       { path: '**', redirectTo: 'dashboard' }, // Catch-all
 
-     { path: 'activityform', component: ActivityFormComponent }
+    
 
 
     ]
