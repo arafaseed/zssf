@@ -10,7 +10,7 @@
 
 /* Header Styling */
 h2 {
-  background: #34495e;;
+  background:rgb(12, 20, 41);
   color: white;
   text-align: center;
   padding: 15px;
@@ -46,7 +46,7 @@ table {
 }
 
 th {
-  background:#34495e;
+  background:rgb(12, 20, 41);
   color: rgb(22, 17, 17);
   font-weight: bold;
   text-align: center;

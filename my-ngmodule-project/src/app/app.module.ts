@@ -57,8 +57,12 @@ import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { StaffAddComponent } from './staff-add/staff-add.component';
 import { MatSnackBarModule }   from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+<<<<<<< HEAD
 import { ActivityFormComponent } from './Admin/activity-form/activity-form.component';
 
+=======
+import { AdminbookingComponent } from './adminbooking/adminbooking.component';
+>>>>>>> 6260eea78532c9fcd52161b007b64fbba93d823c
 @NgModule({
   declarations: [
     AppComponent,
@@ -86,7 +90,11 @@ import { ActivityFormComponent } from './Admin/activity-form/activity-form.compo
     ConfirmDialogComponent,
     InvoiceComponent,
     StaffAddComponent,
+<<<<<<< HEAD
     ActivityFormComponent,
+=======
+    AdminbookingComponent,
+>>>>>>> 6260eea78532c9fcd52161b007b64fbba93d823c
   
   ],
   imports: [

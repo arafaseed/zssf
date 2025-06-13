@@ -13,8 +13,9 @@ import { ViewVenueService } from '../../Services/view-venue.service';
   styleUrls: ['./view-venues.component.css']
 })
 export class ViewVenuesComponent implements OnInit {
+
   venues: any[] = [];
-  displayedColumns: string[] = ['venueName', 'capacity', 'description', 'leasePackages', 'actions'];
+  displayedColumns: string[] = ['venueName', 'capacity', 'description', 'leasePackages','addStaff', 'actions'];
 
   constructor(
     private venueService: ViewVenueService,
@@ -69,6 +70,10 @@ export class ViewVenuesComponent implements OnInit {
   editVenue(venueId: number): void {
     this.openEditVenueModal(venueId);
   }
+  addStaff(venueId: number): void {
+  this.router.navigate(['/admin/add-staff', venueId]);
+}
+
 
   deleteVenue(venueId: number) {
     if (confirm("Are you sure you want to delete this venue?")) {
