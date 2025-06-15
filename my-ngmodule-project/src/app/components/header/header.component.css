@@ -1,152 +1,192 @@
-/* Fixed Header */
-  .fixed-header {
+/* === FIXED HEADER === */
+.fixed-header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
-  min-height: 30px; /* Let it grow if needed */
-  height: 70px;
+  min-height: 30px;
+  height: auto;
   background-color: #05a393 !important;
   display: flex;
-  align-items: flex-start; /* allow top alignment for stacked items */
-  padding: 0.1rem 0.1rem;
+  align-items: flex-start;
+  padding: 0.5rem 1rem;
   box-sizing: border-box;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-
-/* Flex container */
+/* === MAIN FLEX CONTAINER === */
 .header-content {
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  flex-wrap: nowrap; /* Prevent unwanted stacking in large screens */
+  flex-wrap: wrap;
 }
 
-/* Group for logo and title */
+/* === LOGO + TITLE === */
 .logo-title-group {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-/* Logo */
 .header-logo {
-  height: 70px;
+  height: 60px;
   width: auto;
   object-fit: contain;
 }
 
-/* Title */
 .header-title {
   font-family: 'Roboto', sans-serif;
   font-weight: 700;
   font-size: 1.6rem;
-  color: #fff;
+  color: #ffffff;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-/* Highlight */
 .highlight {
   color: #ffeb3b;
- 
 }
 
-/* Contact and Home container */
+/* === CONTACT + BUTTONS GROUP === */
 .header-contact {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  flex-wrap: nowrap; /* prevent wrapping */
+  gap: 0.6rem;
+  white-space: nowrap; /* prevent wrapping of content */
   font-family: 'Roboto', sans-serif;
-  font-size: 1.17rem;
+  font-size: 1.1rem;
   font-weight: 500;
   color: #f5efef;
-  text-align: right;
-  white-space: nowrap;
   margin-left: auto;
+  margin-right: 4px;
 }
 
-/* Icon base style */
-.icon {
-  font-size: 1.55rem;
-}
-
-/* Colored icons */
-.phone-icon,
-.email-icon {
-  color: #eef10a;
-}
-
-/* Contact info group */
 .contact-details {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
+  white-space: nowrap;  /* prevent wrapping */
+  flex-wrap: nowrap !important; /* force no wrapping */
 }
 
-/* Home button */
-.home-button {
+
+/* === ICONS === */
+.icon {
+  font-size: 1.3rem;
+}
+
+.phone-icon,
+.email-icon,
+.home-icon,
+.booking-icon {
+  color: #eef10a;
+}
+
+/* === BUTTONS === */
+.home-button,
+.booking-button {
   font-family: 'Roboto', sans-serif;
-  font-size: 1.17rem;
-  color: #fff;
+  font-size: 1.1rem;
+  color: #ffffff;
   font-weight: 500;
   background-color: transparent;
-  padding: 0 0px;
   text-transform: none;
+  padding: 0 4px;
   min-width: auto;
 }
 
-.home-button mat-icon {
-  vertical-align: middle;
-  color: #eef10a;
- 
+.home-button mat-icon,
+.booking-button mat-icon {
+  vertical-align:baseline;
 }
 
-.home-button:hover {
-  /* background-color: rgba(255, 235, 59, 0.2); */
-   text-decoration: underline;
+.home-button:hover,
+.booking-button:hover {
+  text-decoration: underline;
 }
 
-/* Mobile (Responsive) */
-@media (max-width: 768px) {
-  .header-content {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+/* === RESPONSIVE STYLES === */
 
-  .header-contact {
-    width: 100%;
-    justify-content: flex-end;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    margin-left: 0;
-  }
-
-  .contact-details {
-    display: flex;
-    flex-direction: row;
-    gap: 0.75rem;
-    align-items: center;
-  }
-
+/* Tablet */
+@media (max-width: 1024px) {
   .header-title {
-    font-size: 1.3rem;
+    font-size: 2rem;
+     align-items: flex-start
+    
   }
 
   .header-logo {
     height: 50px;
-  
+  }
+}
+
+/* Mobile */
+@media (max-width: 310px) {
+  .header-content {
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 2px;
   }
 
-  .home-button {
-    margin-top: 0.7rem;
-    font-size: larger;
+  .logo-title-group {
+    width: 100%;
+    justify-content: space-between;
+     align-items: flex-start;
+
   }
- 
+
+  .header-contact {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .contact-details {
+  display: flex;
+  flex-direction: column; /* Ensure horizontal layout */
+  gap: 0.1rem;
+  align-items: flex-start;
+  font-size: 1rem;
+}
+
+
+  .header-title {
+    font-size: 1.7rem;
+  }
+
+  .header-logo {
+    height: 75px;
+  }
+
+  .home-button,
+  .booking-button {
+    font-size: 1rem;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+  .header-title {
+    font-size: 1rem;
+  }
+
+  .home-button span,
+  .booking-button span {
+    display: none; /* Show only icons on very small screens */
+  }
+
+@media (max-width: 768px) {
+  .contact-details {
+    flex-direction: column !important; /* Force row on mobile too */
+    gap: 0.1rem;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+}
+
 }
