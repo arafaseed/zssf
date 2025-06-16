@@ -1,125 +1,139 @@
 <app-header></app-header>
 
-<div id="home-page">
-  <div class="main-content">
-     <div class="welcome-card">
-  <mat-card class="mat-elevation-z6 welcome-mat-card">
-    <mat-card-header>
-      <mat-card-title class="main-title">Discover Our Exclusive Venues</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <p>
-        Explore a wide range of venues for your events, meetings, and celebrations.
-        Find the perfect space that fits your needs and book with ease.
-      </p>
-    </mat-card-content>
-  </mat-card>
-</div>
+<div id="home-page" class="pt-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+
+  <!-- Discover Venues Card -->
+<mat-card 
+  class="mat-elevation-z4 rounded-lg px-6 py-6 mb-12 mx-auto text-center"
+  style="
+    font-family: 'Poppins', Arial, sans-serif;
+    background: linear-gradient(135deg, #e6f2ef, #ffffff);
+    border: 1.5px solid #2a7261;
+    box-shadow: 0 4px 12px rgba(42, 114, 97, 0.1);
+    width: 90vw;
+    max-width: 1280px;
+    margin-top: -20px;
+  "
+>
+ <mat-card-header>
+  <div class="w-full flex justify-center text-center">
+    <mat-card-title 
+      class="text-5xl sm:text-6xl md:text-7xl font-extrabold text-green-800 uppercase tracking-wide mb-4"
+      style="font-family: 'Poppins', sans-serif;"
+    >
+      DISCOVER OUR EXCLUSIVE VENUES
+    </mat-card-title>
+  </div>
+</mat-card-header>
+
+  <mat-card-content>
+    <p 
+      class="text-yellow-600 italic text-base sm:text-lg md:text-xl leading-snug max-w-3xl mx-auto"
+      style="font-family: 'Poppins', sans-serif;"
+    >
+      Explore a wide range of venues for your events, meetings, and celebrations.
+      Find the perfect space that fits your needs and book with ease.
+    </p>
+  </mat-card-content>
+</mat-card>
 
 
-    <div class="search-container">
-      <input type="text" [(ngModel)]="searchTerm" (input)="searchVenues()" placeholder="Type a venue name or capacity of a hall" class="form-control">
-      <button (click)="clearSearch()">Clear</button>
-    </div>
 
-    <div class="venue-grid">
-      <div *ngFor="let venue of venues.slice(0, 10); let i = index" class="venue-card">
-        <mat-card class="venue-card-content" id="venue-card-{{ venue.venueId }}">
-          <mat-card-header>
-            <mat-card-title>VENUE:{{ venue.venueName }}</mat-card-title>
-          </mat-card-header>
-
-          <mat-card-content>
-
-            <!-- <div class="image-slider" *ngIf="venue.venueImages?.length > 0">
-              <div class="slider-container">
-                <div class="slider-wrapper" [style.transform]="'translateX(-' + currentSlideIndices[i] * 100 + '%)'">
-                  <div *ngFor="let image of venue.venueImages; let j = index" class="slider-item">
-                    <img class="d-block w-100" [src]="image" alt="Venue Image {{ j + 1 }}">
-                  </div>
-                </div>
-              </div>
-              <div class="indicator-container">
-                <button *ngFor="let image of venue.venueImages; let j = index" class="indicator" [class.active]="currentSlideIndices[i] === j" (click)="goToSlide(i, j)"></button>
-              </div>
-              <div class="slider-controls">
-                <button class="prev-slide" (click)="prevSlide(i)">&#10094;</button>
-                <button class="next-slide" (click)="nextSlide(i)">&#10095;</button>
-              </div>
-            </div> -->
-
-     <!-- Thumbnails -->
-<img
-  [src]="venue.venueImages[currentSlideIndices[i] || 0]"
-  alt="Venue Image"
-  matTooltip="Tap"
-  matTooltipShowDelay="0" 
-  style="display: block; margin: 0 auto; max-width: 250px; height: 250px; border-radius: 6px; object-fit: cover; cursor: pointer; position: relative;"
-  (click)="openImageViewer(venue.venueImages, currentSlideIndices[i] || 0)"
-/>
-
-<div>
- 
-  <!-- <p><strong>Venue Name:</strong> {{ venue.venueName }}</p> -->
-  <p><strong>Capacity:</strong> {{ venue.capacity }}</p>
-  <p><strong>Description:</strong> {{ venue.description }}</p>
-</div>
-
-          </mat-card-content>
-
-          <mat-card-actions class="d-flex justify-content-between">
-      
-            <button mat-raised-button color="accent" (click)="goToBookingPage(venue)" class="custom-button">
-              <mat-icon class="custom-icon">event_available</mat-icon>
-              <span class="custom-text">Book Now</span>
-            </button>
-          </mat-card-actions>
-        </mat-card>
-      </div>
+  <!-- Search Bar -->
+  <div class="max-w-xl mx-auto mb-12">
+    <div class="flex items-center gap-2 bg-white shadow-md rounded-lg px-4 py-2 border border-gray-300">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (input)="searchVenues()"
+        placeholder="Search venue name or capacity..."
+        class="w-full outline-none text-gray-700 text-base placeholder-gray-400"
+      />
+      <button (click)="clearSearch()" class="text-red-500 hover:text-red-600 font-medium text-sm">Clear</button>
     </div>
   </div>
+
+  <!-- Venue Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-4">
+
+    <div
+      *ngFor="let venue of venues.slice(0, 10); let i = index"
+      class="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer transform transition duration-300 hover:scale-105 hover:shadow-2xl"
+    >
+      <mat-card class="p-5 flex flex-col h-full">
+
+        <mat-card-header>
+          <mat-card-title class="text-xl font-semibold text-green-800">VENUE: {{ venue.venueName }}</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content class="flex-grow">
+          <!-- Image Thumbnail -->
+          <img
+            [src]="venue.venueImages[currentSlideIndices[i] || 0]"
+            alt="Venue Image"
+            matTooltip="Tap to view"
+            class="w-full h-64 object-cover rounded-md mb-4"
+            (click)="openInlineImageViewer(venue.venueImages, currentSlideIndices[i] || 0)"
+          />
+
+          <!-- Venue Info -->
+          <div class="text-gray-800 text-base space-y-1">
+            <p><strong>Capacity:</strong> {{ venue.capacity }}</p>
+            <p><strong>Description:</strong> {{ venue.description }}</p>
+          </div>
+        </mat-card-content>
+
+        <!-- Book Button -->
+        <mat-card-actions class="mt-6 flex justify-end">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="goToBookingPage(venue)"
+            class="bg-gradient-to-r from-green-400 to-green-700 hover:from-green-500 hover:to-green-800 text-white px-6 py-3 rounded-lg font-semibold shadow-lg transition duration-300 flex items-center gap-2"
+          >
+            <mat-icon>event_available</mat-icon>
+            Book Now
+          </button>
+        </mat-card-actions>
+
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- Inline Image Viewer Overlay -->
+  <div
+    *ngIf="inlineViewerVisible"
+    class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 p-4"
+  >
+    <button
+      (click)="closeInlineImageViewer()"
+      class="absolute top-6 right-6 text-white text-3xl hover:text-green-400 focus:outline-none"
+      aria-label="Close image viewer"
+    >&times;</button>
+
+    <button
+      (click)="prevInlineImage()"
+      class="absolute left-6 text-white text-4xl hover:text-green-400 focus:outline-none"
+      aria-label="Previous image"
+    >
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+
+    <img
+      [src]="selectedImages[currentImageIndex]"
+      class="max-h-[80vh] max-w-[90vw] object-contain rounded shadow-lg"
+      alt="Selected venue image"
+    />
+
+    <button
+      (click)="nextInlineImage()"
+      class="absolute right-6 text-white text-4xl hover:text-green-400 focus:outline-none"
+      aria-label="Next image"
+    >
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+
 </div>
-
-<!-- Fullscreen Dialog Template -->
-<ng-template #imageViewer>
-  <div class="dialog-backdrop" 
-     style="display:flex; align-items:center; justify-content:center; height:100vh; position:relative; background:rgba(236, 231, 231, 0.8);">
-
-  <button mat-icon-button 
-          class="nav-btn left" 
-          (click)="prevImage()" 
-          style="
-            position:absolute; 
-            left:10px; 
-            top:50%; 
-            transform: translateY(-50%);
-            color: black; 
-            font-size: 3rem; 
-            z-index: 10;">
-    <mat-icon>chevron_left</mat-icon>
-  </button>
-
-  <img [src]="selectedImages[currentImageIndex]" 
-       class="dialog-img" 
-       alt="Viewing Image" 
-       style="max-height: 85vh; max-width: 60vw; object-fit: contain; border-radius: 4px;" />
-
-  <button mat-icon-button 
-          class="nav-btn right" 
-          (click)="nextImage()" 
-          style="
-            position:absolute; 
-            right:10px; 
-            top:50%; 
-            transform: translateY(-50%);
-            color: black; 
-            font-size: 3rem; 
-            z-index: 10;">
-    <mat-icon>chevron_right</mat-icon>
-  </button>
-
-</div>
-
-</ng-template>
 
 <app-footer></app-footer>

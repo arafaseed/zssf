@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, HostListener, TemplateRef, ViewChild } from '@angular/core';
 import { ViewVenueService } from '../../Services/view-venue.service';
 import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-venue-view',
@@ -10,19 +9,19 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./venue-view.component.css']
 })
 export class VenueViewComponent implements OnInit, OnDestroy {
-  @ViewChild('imageViewer') imageViewer!: TemplateRef<any>;
-
   searchTerm: string = '';
   venues: any[] = [];
   filteredVenues: any[] = [];
   currentSlideIndices: number[] = [];
+
+  // --- Inline Image Viewer state ---
+  inlineViewerVisible = false;
   selectedImages: string[] = [];
-  currentImageIndex: number = 0;
+  currentImageIndex = 0;
 
   constructor(
     private venueService: ViewVenueService, 
     private router: Router,
-    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -45,14 +44,6 @@ export class VenueViewComponent implements OnInit, OnDestroy {
     });
   }
 
-  // toggleDescription(venue: any): void {
-  //   venue.showDescription = !venue.showDescription;
-  //   const venueCard = document.getElementById(`venue-card-${venue.venueId}`);
-  //   if (venueCard) {
-  //     venueCard.classList.toggle('expanded');
-  //   }
-  // }
-
   goToBookingPage(venue: any): void {
     this.router.navigate(['/book'], { queryParams: { venueId: venue.venueId } });
   }
@@ -73,28 +64,32 @@ export class VenueViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  openImageViewer(images: string[], index: number): void {
+  // === New inline image viewer methods ===
+
+  openInlineImageViewer(images: string[], index: number): void {
     this.selectedImages = images;
     this.currentImageIndex = index;
-
-    this.dialog.open(this.imageViewer, {
-      panelClass: 'image-viewer-dialog',
-      width: '90vw',
-      height: '60vh',
-      // Optional: disableClose: true,
-    });
+    this.inlineViewerVisible = true;
+    document.body.style.overflow = 'hidden'; // disable background scroll
   }
 
-  prevImage(): void {
+  closeInlineImageViewer(): void {
+    this.inlineViewerVisible = false;
+    this.selectedImages = [];
+    document.body.style.overflow = 'auto';
+  }
+
+  prevInlineImage(): void {
     if (this.selectedImages.length > 0) {
       this.currentImageIndex =
         (this.currentImageIndex - 1 + this.selectedImages.length) % this.selectedImages.length;
     }
   }
 
-  nextImage(): void {
+  nextInlineImage(): void {
     if (this.selectedImages.length > 0) {
-      this.currentImageIndex = (this.currentImageIndex + 1) % this.selectedImages.length;
+      this.currentImageIndex =
+        (this.currentImageIndex + 1) % this.selectedImages.length;
     }
   }
 

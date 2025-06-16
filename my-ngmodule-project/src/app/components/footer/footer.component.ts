@@ -16,10 +16,10 @@ import { BrowserModule } from '@angular/platform-browser';
 export class FooterComponent {
 
 
-  // Dynamic copyright text
-  copyrightText: string;
+  // // Dynamic copyright text
+  // copyrightText: string;
 
-  constructor() {
-    this.copyrightText = `© 2025 Zanzibar Social Security Fund (ZSSF). All rights reserved.`;
-  }
+  // constructor() {
+  //   this.copyrightText = `© 2025 Zanzibar Social Security Fund (ZSSF). All rights reserved.`;
+  // }
 }
