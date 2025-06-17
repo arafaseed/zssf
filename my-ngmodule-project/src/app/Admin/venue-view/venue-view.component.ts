@@ -1,6 +1,8 @@
-import { Component, OnInit, OnDestroy, HostListener, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ViewVenueService } from '../../Services/view-venue.service';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-venue-view',
@@ -9,9 +11,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./venue-view.component.css']
 })
 export class VenueViewComponent implements OnInit, OnDestroy {
-openImageViewer(arg0: any,arg1: number) {
-throw new Error('Method not implemented.');
-}
   searchTerm: string = '';
   venues: any[] = [];
   filteredVenues: any[] = [];
@@ -22,17 +21,41 @@ throw new Error('Method not implemented.');
   selectedImages: string[] = [];
   currentImageIndex = 0;
 
+  private routerSubscription?: Subscription;
+
   constructor(
-    private venueService: ViewVenueService, 
+    private venueService: ViewVenueService,
     private router: Router,
-  ) {}
+  ) {
+    // Disable route reuse to force component refresh on navigation
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+
+    // Optionally scroll to top on navigation end
+    this.routerSubscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        window.scrollTo(0, 0);
+        // Reset search and other states if needed here
+        this.resetState();
+      });
+  }
 
   ngOnInit(): void {
     this.loadVenues();
   }
 
   ngOnDestroy() {
-    // Cleanup if needed
+    this.routerSubscription?.unsubscribe();
+  }
+
+  private resetState() {
+    this.searchTerm = '';
+    this.inlineViewerVisible = false;
+    this.selectedImages = [];
+    this.currentImageIndex = 0;
+    this.currentSlideIndices = [];
+    this.filteredVenues = [];
+    this.venues = [];
   }
 
   loadVenues(): void {
@@ -53,21 +76,18 @@ throw new Error('Method not implemented.');
 
   prevSlide(index: number): void {
     if (this.venues[index].venueImages?.length) {
-      this.currentSlideIndices[index] = 
-        (this.currentSlideIndices[index] - 1 + this.venues[index].venueImages.length) % 
+      this.currentSlideIndices[index] =
+        (this.currentSlideIndices[index] - 1 + this.venues[index].venueImages.length) %
         this.venues[index].venueImages.length;
     }
   }
 
   nextSlide(index: number): void {
     if (this.venues[index].venueImages?.length) {
-      this.currentSlideIndices[index] = 
-        (this.currentSlideIndices[index] + 1) % 
-        this.venues[index].venueImages.length;
+      this.currentSlideIndices[index] =
+        (this.currentSlideIndices[index] + 1) % this.venues[index].venueImages.length;
     }
   }
-
-  // === New inline image viewer methods ===
 
   openInlineImageViewer(images: string[], index: number): void {
     this.selectedImages = images;

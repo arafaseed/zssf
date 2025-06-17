@@ -53,53 +53,65 @@
     
   </div>
 </div>
+<!-- Venue Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
 
-  <!-- Venue Grid -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-4">
+  <div
+    *ngFor="let venue of venues.slice(0, 10); let i = index"
+    class="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transform transition duration-300 hover:scale-105 hover:shadow-xl max-w-sm mx-auto"
+  >
+    <mat-card class="p-4 flex flex-col h-full">
 
-    <div
-      *ngFor="let venue of venues.slice(0, 10); let i = index"
-      class="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer transform transition duration-300 hover:scale-105 hover:shadow-2xl"
-    >
-      <mat-card class="p-5 flex flex-col h-full">
+      <!-- Header -->
+   <mat-card-header class="mb-3">
+  <mat-card-title
+    class="text-5xl font-black text-center text-[#2A7261] uppercase tracking-wide font-[Poppins, sans-serif]"
+  >
+    Venue: {{ venue.venueName }}
+  </mat-card-title>
+</mat-card-header>
 
-        <mat-card-header>
-          <mat-card-title class="text-xl font-semibold text-green-800">VENUE: {{ venue.venueName }}</mat-card-title>
-        </mat-card-header>
 
-        <mat-card-content class="flex-grow">
-          <!-- Image Thumbnail -->
-          <img
-            [src]="venue.venueImages[currentSlideIndices[i] || 0]"
-            alt="Venue Image"
-            matTooltip="Tap to view"
-            class="w-full h-64 object-cover rounded-md mb-4"
-            (click)="openInlineImageViewer(venue.venueImages, currentSlideIndices[i] || 0)"
-          />
+      <!-- Content -->
+      <mat-card-content class="flex-grow">
 
-          <!-- Venue Info -->
-          <div class="text-gray-800 text-base space-y-1">
-            <p><strong>Capacity:</strong> {{ venue.capacity }}</p>
-            <p><strong>Description:</strong> {{ venue.description }}</p>
-          </div>
-        </mat-card-content>
+        <!-- Venue Image -->
+        <img
+          [src]="venue.venueImages[currentSlideIndices[i] || 0]"
+          alt="Venue Image"
+          matTooltip="Tap to view"
+          class="w-full h-40 object-cover rounded-md mb-4"
+          (click)="openInlineImageViewer(venue.venueImages, currentSlideIndices[i] || 0)"
+        />
 
-        <!-- Book Button -->
-        <mat-card-actions class="mt-6 flex justify-end">
-          <button
-            mat-raised-button
-            color="primary"
-            (click)="goToBookingPage(venue)"
-            class="bg-gradient-to-r from-green-400 to-green-700 hover:from-green-500 hover:to-green-800 text-white px-6 py-3 rounded-lg font-semibold shadow-lg transition duration-300 flex items-center gap-2"
-          >
-            <mat-icon>event_available</mat-icon>
-            Book Now
-          </button>
-        </mat-card-actions>
+        <!-- Venue Info -->
+        <div class="text-gray-700 text-sm space-y-1">
+          <p><strong>Capacity:</strong> {{ venue.capacity }}</p>
+          <p><strong>Description:</strong> {{ venue.description }}</p>
+        </div>
+      </mat-card-content>
 
-      </mat-card>
-    </div>
+      <!-- Book Button -->
+<mat-card-actions class="mt-6 flex justify-center">
+  <button
+    (click)="goToBookingPage(venue)"
+    class="bg-gradient-to-r from-green-600 via-green-700 to-green-800
+           hover:from-green-700 hover:via-green-800 hover:to-green-900
+           text-white px-6 py-3 rounded-lg font-bold shadow-lg
+           transition-transform duration-300 ease-in-out
+           hover:scale-105 flex items-center gap-2 ring-2 ring-green-700 ring-offset-2"
+  >
+    <mat-icon>event_available</mat-icon>
+    Book Now
+  </button>
+</mat-card-actions>
+
+
+    </mat-card>
   </div>
+
+</div>
+
 
   <!-- Inline Image Viewer Overlay -->
   <div
