@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { NavigationEnd, Router } from '@angular/router';
-import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { filter } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
@@ -10,37 +10,35 @@ import { CommonModule } from '@angular/common';
   selector: 'app-header',
   templateUrl: './header.component.html',
   imports: [
-     MatToolbarModule,
-     MatButtonModule,
-     MatIconModule,
-     MatButtonModule,
-     CommonModule
-   ],
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    CommonModule
+  ],
   styleUrls: ['./header.component.css'],
   exportAs: 'appHeader',
+  standalone: true // Add if using standalone components
 })
 export class HeaderComponent {
-  
-  constructor(private router: Router) {} // Inject the Router service
-   isHomePage: boolean = false; // ✅ Declare the property
-   ngOnInit(): void {
-    this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
-        const currentUrl = this.router.url;
-        // ✅ ONLY hide on homepage
-        this.isHomePage = currentUrl === '/venue' || currentUrl === '/venue';
-      });
+  isHomePage: boolean = false;
+  isBookingPage: boolean = false;
+
+  constructor(public router: Router) {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      const currentUrl = event.urlAfterRedirects;
+      this.isHomePage = currentUrl === '/venue';
+      this.isBookingPage = currentUrl === '/mybooking';
+    });
   }
- 
- 
+
   goHome(): void {
     this.router.navigate(['/venue']);
-   }
-   gomybooking(): void {
-    this.router.navigate(['/mybooking']);
-   }
-   
-   
   }
+
+  gomybooking(): void {
+    this.router.navigate(['/mybooking']);
+  }
+}
 

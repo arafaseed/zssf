@@ -9,6 +9,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./venue-view.component.css']
 })
 export class VenueViewComponent implements OnInit, OnDestroy {
+openImageViewer(arg0: any,arg1: number) {
+throw new Error('Method not implemented.');
+}
   searchTerm: string = '';
   venues: any[] = [];
   filteredVenues: any[] = [];
