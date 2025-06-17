@@ -28,8 +28,8 @@ export class HeaderComponent {
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
       const currentUrl = event.urlAfterRedirects;
-      this.isHomePage = currentUrl === '/venue';
-      this.isBookingPage = currentUrl === '/mybooking';
+      this.isHomePage = currentUrl.startsWith('/venue');
+      this.isBookingPage = currentUrl.startsWith('/mybooking');
     });
   }
 

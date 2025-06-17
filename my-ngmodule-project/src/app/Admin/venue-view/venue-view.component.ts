@@ -100,6 +100,7 @@ export class VenueViewComponent implements OnInit, OnDestroy {
     this.inlineViewerVisible = false;
     this.selectedImages = [];
     document.body.style.overflow = 'auto';
+    this.router.navigate(['/']);  
   }
 
   prevInlineImage(): void {

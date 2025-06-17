@@ -1,0 +1,7 @@
+::ng-deep .tooltip-follow {
+  font-size: 13px;
+  padding: 4px 8px;
+  background-color: #2A7261 !important;
+  color: white;
+  border-radius: 4px;
+}
