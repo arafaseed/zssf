@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { StaffBookingService, BookingDTO, VenueHandOverDTO } from '../../staff-booking.service';
+import { StaffBookingService, BookingDTO } from '../../staff-booking.service';
 
 @Component({
   selector: 'app-check-out-list',
-  standalone: false,
+  standalone:false,
   templateUrl: './check-out-list.component.html',
   styleUrls: ['./check-out-list.component.css']
 })
@@ -12,19 +12,12 @@ export class CheckOutListComponent implements OnInit {
   loading = true;
   errorMessage: string | null = null;
 
-//   private venueId!: number;
-//   private staffIDN!: string;
+  venueId!: number;
+  staffIDN!: string;
 
-  public venueId!: number;
-  public staffIDN!: string;
-
-  // And the modal flags:
-  public showModal = false;
-  public selectedBooking!: BookingDTO;
-
-//   // For modal
-//   showModal = false;
-//   selectedBooking!: BookingDTO;
+  // Modal state
+  showModal = false;
+  selectedBooking!: BookingDTO;
 
   constructor(private bookingService: StaffBookingService) {}
 
@@ -37,51 +30,27 @@ export class CheckOutListComponent implements OnInit {
       this.loading = false;
       return;
     }
+
     this.venueId = +vid;
     this.staffIDN = sid;
-
-    this.loadData();
+    this.loadPendingCheckOuts();
   }
 
-  private loadData(): void {
+  private loadPendingCheckOuts(): void {
     this.loading = true;
     this.errorMessage = null;
 
-    // 1) Fetch completed bookings
-    this.bookingService.getCompletedBookingsByVenue(this.venueId).subscribe({
-      next: (completedBookings) => {
-        // 2) Fetch all handovers for this venue
-        this.bookingService.getVenueHandOvers(this.venueId).subscribe({
-          next: (handovers) => {
-            // Build a set of bookingIds that have been checked in
-            const checkedInSet = new Set<number>(
-              handovers.filter(h => h.checkInTime && !h.checkOutTime)
-                       .map(h => h.forBooking)
-            );
-
-            // Now filter completed bookings to those that have been checked-in but not yet checked-out
-            const toCheckOut = completedBookings
-              .filter(b => checkedInSet.has(b.bookingId))
-              // Sort by bookingDate descending
-              .sort((a, b) => {
-                const da = new Date(a.bookingDate).getTime();
-                const db = new Date(b.bookingDate).getTime();
-                return db - da;
-              });
-
-            this.bookings = toCheckOut;
-            this.loading = false;
-          },
-          error: (err) => {
-            this.errorMessage = 'Failed to load handover records.';
-            console.error(err);
-            this.loading = false;
-          }
-        });
+    this.bookingService.getPendingCheckOuts(this.venueId).subscribe({
+      next: (pending) => {
+        // pending already filtered to “checked-in and not checked-out”
+        this.bookings = pending
+          // sort by bookingDate descending
+          .sort((a, b) => new Date(b.bookingDate).getTime() - new Date(a.bookingDate).getTime());
+        this.loading = false;
       },
       error: (err) => {
-        this.errorMessage = 'Failed to load completed bookings.';
         console.error(err);
+        this.errorMessage = 'Could not load pending check‑outs.';
         this.loading = false;
       }
     });
@@ -97,7 +66,7 @@ export class CheckOutListComponent implements OnInit {
   }
 
   onCheckedOut(): void {
-    // Remove from list and close modal
+    // Remove the booking from the list when checkout completes
     this.bookings = this.bookings.filter(b => b.bookingId !== this.selectedBooking.bookingId);
     this.showModal = false;
   }

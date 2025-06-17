@@ -57,13 +57,9 @@
   <ng-container [ngSwitch]="activeTab">
     <!-- Only when activeTab === 'checkin' do we render CheckInListComponent -->
     <app-check-in-list *ngSwitchCase="'checkin'"></app-check-in-list>
-
-    <!-- Example: if you later implement check-out, cancelled, or reports,
-         you’d add <app-check-out-list> or similar here: -->
-    <!--
-    <app-check-out-list *ngSwitchCase="'checkout'"></app-check-out-list>
     <app-cancelled-list *ngSwitchCase="'cancelled'"></app-cancelled-list>
-    <app-reports-list *ngSwitchCase="'reports'"></app-reports-list>
-    -->
+    <app-check-out-list *ngSwitchCase="'checkout'"></app-check-out-list>
+    <app-reports *ngSwitchCase="'reports'"></app-reports>
+    
   </ng-container>
 </div>
