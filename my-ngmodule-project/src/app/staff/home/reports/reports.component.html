@@ -1,0 +1,53 @@
+<div class="p-4">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center py-8">
+    <svg class="animate-spin h-8 w-8 text-blue-600 mx-auto" xmlns="http://www.w3.org/2000/svg"
+         fill="none" viewBox="0 0 24 24">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+    </svg>
+    <p class="mt-2 text-gray-500">Loading reports…</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!loading && errorMessage" class="text-center text-red-600 py-4">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Table -->
+  <div *ngIf="!loading && !errorMessage" class="overflow-x-auto">
+    <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+      <thead class="bg-blue-100">
+        <tr>
+          <th class="px-4 py-2 border-b">Booking Code</th>
+          <th class="px-4 py-2 border-b">Customer</th>
+          <th class="px-4 py-2 border-b">Phone</th>
+          <th class="px-4 py-2 border-b">Venue</th>
+          <th class="px-4 py-2 border-b">Package</th>
+          <th class="px-4 py-2 border-b">Price</th>
+          <th class="px-4 py-2 border-b">Check-In</th>
+          <th class="px-4 py-2 border-b">Check-Out</th>
+          <th class="px-4 py-2 border-b">Condition</th>
+          <th class="px-4 py-2 border-b">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of reports" class="hover:bg-gray-50">
+          <td class="px-4 py-2 border-b">{{ r.forBookingId }}</td>
+          <td class="px-4 py-2 border-b">{{ r.customerFullName }}</td>
+          <td class="px-4 py-2 border-b">{{ r.customerPhone }}</td>
+          <td class="px-4 py-2 border-b">{{ r.venueName }}</td>
+          <td class="px-4 py-2 border-b">{{ r.packageName }}</td>
+          <td class="px-4 py-2 border-b">{{ r.price | currency:'TZS':'symbol' }}</td>
+          <td class="px-4 py-2 border-b">{{ r.checkInTime ? (r.checkInTime | date:'short') : '–' }}</td>
+          <td class="px-4 py-2 border-b">{{ r.checkOutTime ? (r.checkOutTime | date:'short') : '–' }}</td>
+          <td class="px-4 py-2 border-b">{{ r.conditionStatus || '–' }}</td>
+          <td class="px-4 py-2 border-b">{{ r.conditionDescription || '–' }}</td>
+        </tr>
+        <tr *ngIf="reports.length===0">
+          <td colspan="10" class="text-center py-8 text-gray-500">No reports available.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

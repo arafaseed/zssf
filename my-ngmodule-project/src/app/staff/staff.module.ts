@@ -10,6 +10,10 @@ import { RouterModule } from '@angular/router';
 import { CheckInListComponent } from './home/check-in-list/check-in-list.component';
 import { CheckOutListComponent } from './home/check-out-list/check-out-list.component';
 import { CheckoutModalComponent } from './modals/checkout-modal/checkout-modal.component';
+import { CancelledListComponent } from './home/cancelled-list/cancelled-list.component';
+import { ReportsComponent } from './home/reports/reports.component';
+
+
 
 
 
@@ -20,7 +24,9 @@ import { CheckoutModalComponent } from './modals/checkout-modal/checkout-modal.c
     HomeComponent,
     CheckInListComponent,
     CheckOutListComponent,
-    CheckoutModalComponent
+    CheckoutModalComponent,
+    CancelledListComponent,
+    ReportsComponent
    ],
   imports: [
     CommonModule,
