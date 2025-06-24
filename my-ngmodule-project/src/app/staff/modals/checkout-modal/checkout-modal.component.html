@@ -6,7 +6,7 @@
     </h2>
     <button 
       (click)="onCancel()" 
-      class="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-100 transition"
+      class="text-gray-500 hover:text-gray-700 p-1 rounded-md-full hover:bg-gray-100 transition"
       aria-label="Close"
     >
       <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -32,7 +32,7 @@
         <select
           id="conditionStatus"
           formControlName="conditionStatus"
-          class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+          class="w-full p-3 border border-gray-300 rounded-md-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
         >
           <option value="" disabled selected>Select status</option>
           <option *ngFor="let s of conditionStatuses" [value]="s">{{ s }}</option>
@@ -52,7 +52,7 @@
           id="conditionDescription"
           formControlName="conditionDescription"
           rows="4"
-          class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+          class="w-full p-3 border border-gray-300 rounded-md-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
           placeholder="Describe the venue condition..."
         ></textarea>
         <div *ngIf="form.get('conditionDescription')?.touched && form.get('conditionDescription')?.invalid"
@@ -66,14 +66,14 @@
         <button
           type="button"
           (click)="onCancel()"
-          class="px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium rounded-lg transition"
+          class="px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium rounded-md-lg transition"
           [disabled]="submitting"
         >
           Cancel
         </button>
         <button
           type="submit"
-          class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition flex justify-center items-center"
+          class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md-lg transition flex justify-center items-center"
           [disabled]="form.invalid || submitting"
         >
           <svg *ngIf="submitting" class="animate-spin h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

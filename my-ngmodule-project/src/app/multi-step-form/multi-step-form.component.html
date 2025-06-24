@@ -2,7 +2,7 @@
 
 <div class="min-h-screen p-4 mt-8 bg-gray-50">
   <div
-    class="max-w-3xl p-6 mx-auto mb-8 text-center bg-white shadow-lg rounded-xl"
+    class="max-w-3xl p-6 mx-auto mb-8 text-center bg-white shadow-lg rounded-md-xl"
     style="margin-top: 4rem;"
   >
     <h4 class="mb-4 text-2xl font-bold text-blue-700">Booking Form</h4>
@@ -13,7 +13,7 @@
     <form
       [formGroup]="bookingForm"
       (ngSubmit)="onSubmit()"
-      class="p-6 mb-8 bg-white border-2 border-blue-300 shadow-md rounded-xl"
+      class="p-6 mb-8 bg-white border-2 border-blue-300 shadow-md rounded-md-xl"
     >
       <!-- Step 1: Select Date Range, Venue, Package, Session -->
       <div *ngIf="currentStep === 1" class="space-y-6">
@@ -140,6 +140,32 @@
                 class="text-red-500"
               >
                 Session is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <!-- Activity selection-->
+           <div>
+            <mat-form-field appearance="fill" class="w-full">
+              <mat-label class="font-medium text-blue-700">Activity</mat-label>
+              <mat-select formControlName="venueActivityId">
+                <mat-option
+                  *ngFor="let act of activityOptions"
+                  [value]="act.activityId"
+                >
+                  <div class="flex flex-col p-3.5 mt-2 bg-blue-100 w-2xl">
+                    <span class="font-semibold">{{ act.activityName }}</span>
+                    <span class="text-gray-800 text-l">
+                      ; Maelezo: {{ act.activityDescription }}
+                    </span>
+                  </div>
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="bookingForm.get('venueActivityId')?.hasError('required')"
+                class="text-red-500"
+              >
+                Please select accepteptable activity!
               </mat-error>
             </mat-form-field>
           </div>

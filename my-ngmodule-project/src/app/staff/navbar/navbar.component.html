@@ -15,7 +15,7 @@
   <ul *ngIf="!loading && !errorMessage" class="space-y-2">
     <li *ngFor="let venue of venues">
       <button
-        class="w-full text-left px-4 py-2 rounded transition duration-200"
+        class="w-full text-left px-4 py-2 rounded-md transition duration-200"
         [ngClass]="{
           'bg-blue-500 text-white': isActive(venue),
           'bg-gray-50 text-gray-800 hover:bg-blue-100': !isActive(venue)
@@ -26,6 +26,11 @@
       </button>
     </li>
   </ul>
+
+    <!--DASHBOARD SWITCHER-->
+      <div class="absolute bottom-4 left-0 right-0 p-2 mb-8 border-t border-slate-700">
+        <app-dashboard-switch></app-dashboard-switch>
+      </div>
 
   <!-- LOGOUT button (sticky at bottom) -->
   <div class="absolute bottom-0 left-0 right-0 p-2 border-t border-slate-700 bg-gray-800">

@@ -1,0 +1,9 @@
+<!-- Show switch button only if user is admin -->
+<div *ngIf="isAdmin" class="text-right p-2">
+  <button
+    (click)="switchDashboard()"
+    class="bg-gray-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl shadow transition-all duration-200"
+  >
+    Switch to {{ currentDashboard === 'admin' ? 'Staff' : 'Admin' }} Dashboard
+  </button>
+</div>

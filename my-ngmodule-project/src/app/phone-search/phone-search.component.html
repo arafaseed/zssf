@@ -6,7 +6,7 @@
   <!-- Search Card -->
   <div class="flex justify-center">
     <div class="w-full md:w-1/2">
-      <div class="bg-white shadow rounded-xl p-6">
+      <div class="bg-white shadow rounded-md-xl p-6">
         <h3 class="text-xl font-semibold text-center text-gray-800 mb-4">Search Bookings by Phone</h3>
         <form (ngSubmit)="onSubmit()" #searchForm="ngForm">
           <div class="mb-4">
@@ -49,7 +49,7 @@
         *ngIf="booking.invoiceId"
         [href]="'/invoice/' + booking.invoiceId"
         target="_blank"
-        class="inline-block mt-2 text-sm px-3 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 transition"
+        class="inline-block mt-2 text-sm px-3 py-1 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 transition"
       >
         View Invoice
       </a>

@@ -14,7 +14,7 @@
   <!-- admin chip -->
   <div class="flex items-center space-x-2">
     <span class="hidden sm:inline text-xs">{{ adminId || 'Admin' }}</span>
-    <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center font-bold uppercase">
+    <div class="w-8 h-8 rounded-md-full bg-indigo-500 flex items-center justify-center font-bold uppercase">
       {{ adminId ? adminId.charAt(0) : '?' }}
     </div>
   </div>
@@ -59,6 +59,10 @@
        <a routerLink="/admin/activitytable" routerLinkActive="!bg-slate-800 bg-indigo-600" class="nav-link">
         Activity
       </a>
+      <!--DASHBOARD SWITCHER-->
+      <div class="absolute bottom-4 left-0 right-0 p-2 mb-8 border-t border-slate-700">
+        <app-dashboard-switch></app-dashboard-switch>
+      </div>
 
       <!-- LOGOUT button (sticky at bottom) -->
         <div class="absolute bottom-0 left-0 right-0 p-2 border-t border-slate-700">

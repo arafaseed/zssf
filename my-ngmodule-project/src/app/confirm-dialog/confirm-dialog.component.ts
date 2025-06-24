@@ -14,6 +14,7 @@ export class ConfirmDialogComponent {
       fullName: string;
       venue: string;
       packageName: string;
+      activityName: string;
       price: number;
       phoneNumber?: string;
       startDate?: Date;

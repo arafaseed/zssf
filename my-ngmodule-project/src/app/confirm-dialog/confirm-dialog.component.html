@@ -1,6 +1,6 @@
-<!-- Outer container: responsive width with padding and rounded corners -->
+<!-- Outer container: responsive width with padding and rounded-md corners -->
 <div
-  class="w-full max-w-lg px-4 py-6 mx-auto bg-white rounded-lg shadow-xl  sm:px-6 sm:py-8 md:px-8"
+  class="w-full max-w-lg px-4 py-6 mx-auto bg-white rounded-md-lg shadow-xl  sm:px-6 sm:py-8 md:px-8"
 >
   <!-- Title -->
   <h2
@@ -33,6 +33,11 @@
     <div class="flex flex-col sm:flex-row sm:space-x-2">
       <span class="w-32 font-medium text-gray-800">Package:</span>
       <span>{{ data.packageName }}</span>
+    </div>
+
+    <div class="flex flex-col sm:flex-row sm:space-x-2">
+      <span class="w-32 font-medium text-gray-800">Activity:</span>
+      <span>{{ data.activityName }}</span>
     </div>
 
     <div class="flex flex-col sm:flex-row sm:space-x-2">

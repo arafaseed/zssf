@@ -15,7 +15,7 @@ h2[mat-dialog-title] {
   padding: 0;
 }
 
-/* If you want a slight rounded edge on the overlay container itself: */
+/* If you want a slight rounded-md edge on the overlay container itself: */
 .mat-dialog-container {
   background: transparent; /* so our inner <div> background shows */
 }

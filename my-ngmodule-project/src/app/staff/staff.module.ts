@@ -12,8 +12,7 @@ import { CheckOutListComponent } from './home/check-out-list/check-out-list.comp
 import { CheckoutModalComponent } from './modals/checkout-modal/checkout-modal.component';
 import { CancelledListComponent } from './home/cancelled-list/cancelled-list.component';
 import { ReportsComponent } from './home/reports/reports.component';
-
-
+import { DashboardSwitchComponent } from './dashboard-switch/dashboard-switch.component';
 
 
 
@@ -26,15 +25,17 @@ import { ReportsComponent } from './home/reports/reports.component';
     CheckOutListComponent,
     CheckoutModalComponent,
     CancelledListComponent,
-    ReportsComponent
+    ReportsComponent,
+    DashboardSwitchComponent,
    ],
   imports: [
     CommonModule,
-    ReactiveFormsModule, 
+    ReactiveFormsModule,
     StaffRoutingModule,
     HttpClientModule,
     RouterModule
-  ],
-  exports: []
+],
+  exports: [DashboardSwitchComponent]
+
 })
 export class StaffModule { }

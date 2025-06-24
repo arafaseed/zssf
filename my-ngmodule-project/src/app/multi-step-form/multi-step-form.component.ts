@@ -9,15 +9,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
-
 import { BookingService } from '../Services/booking.service';
 import { MultiStepFormService } from '../Services/multi-step-form.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { InvoiceServiceService } from '../Services/invoice-service.service';
 
 interface BookedSlot {
-  date: string;        // e.g. "2025-03-22"
-  startTime: string;   // e.g. "08:00:00"
+  date: string;
+  startTime: string;
   endTime?: string;
 }
 
@@ -39,9 +38,10 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
   selectedVenueName = '';
   venueOptions: { venueId: number; venueName: string; capacity: number }[] = [];
   packageOptions: { leaseId: number; packageName: string; price: number }[] = [];
+  activityOptions: { activityId: number; activityName: string; activityDescription: string }[] = [];
   venueId!: number;
 
-  bookedDatesSet = new Set<string>(); // stores YYYY-MM-DD for booked days
+  bookedDatesSet = new Set<string>();
   private fetchIntervalId: any;
 
   // Base URL for booking-related endpoints
@@ -113,6 +113,7 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
       }),
       venueId: ['', Validators.required],
       venuePackageId: ['', Validators.required],
+      venueActivityId: ['', Validators.required],
       startTime: ['', Validators.required],
       endTime: ['', Validators.required],
       session: ['SIKU NZIMA', Validators.required], // preselect
@@ -147,6 +148,9 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
 
         // Load packages (leases) for this venue
         this.loadLeases(this.venueId);
+
+        //Load activity for this venue
+        this.loadActivities(this.venueId);
       }
     });
 
@@ -199,11 +203,15 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  /**
-   * dateFilter disables any date that is:
-   *  - Before today
-   *  - Already in bookedDatesSet
-   */
+  //Load Activities for the choosen venue
+  private loadActivities(venueId: number): void {
+    this.multiStepFormService.getActivitiesByVenue(venueId).subscribe({
+      next: (activities) => (this.activityOptions = activities),
+      error: (err) => console.error('Error loading activities:', err)
+    });
+  }
+
+   //* dateFilter disables any date that is:Before today & Already in bookedDatesSet
   dateFilter = (d: Date | null): boolean => {
     if (!d) return false;
     const cell = new Date(d);
@@ -221,12 +229,8 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
     return true;
   };
 
-  /**
-   * dateClass applies custom CSS classes to each date cell:
-   *  - Past or today → gray and unselectable
-   *  - Booked → red and unselectable
-   *  - Available → green
-   */
+   // dateClass applies custom CSS classes to each date cell:
+
   dateClass = (cellDate: Date, view: string): string => {
     if (view !== 'month') {
       return '';
@@ -294,6 +298,7 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
     const requiredFields = [
       'dateRangeGroup.startDate',
       'venueId',
+      'venueActivityId',
       'venuePackageId',
       'startTime',
       'endTime',
@@ -378,6 +383,9 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
     const selectedPkg = this.packageOptions.find(
       (p) => p.leaseId === this.bookingForm.value.venuePackageId
     );
+    const selectedAtvt = this.activityOptions.find(
+      (a) => a.activityId === this.bookingForm.value.venueActivityId
+    );
     const pricePerDay = selectedPkg?.price || 0;
     const totalPrice = pricePerDay * durationInDays;
 
@@ -388,6 +396,7 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
     fullName: this.bookingForm.value.fullName,
     phoneNumber: this.bookingForm.value.phoneNumber,
     venue: this.selectedVenueName || 'N/A',
+    activityName: selectedAtvt?.activityName || 'N/A',
     packageName: selectedPkg?.packageName || 'N/A',
     price: totalPrice,
     startDate: this.bookingForm.value.dateRangeGroup.startDate,
@@ -405,6 +414,7 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
       // 6) Create the booking via BookingService
       const payload = {
         venueId: this.bookingForm.value.venueId,
+        venueActivityId: this.bookingForm.value.venueActivityId,
         venuePackageId: this.bookingForm.value.venuePackageId,
         startDate: this.bookingForm.value.dateRangeGroup.startDate,
         startTime: this.bookingForm.value.startTime,
@@ -416,8 +426,7 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
         phoneNumber: this.bookingForm.value.phoneNumber,
         email: this.bookingForm.value.email,
         address: this.bookingForm.value.address,
-        // discountRate: this.bookingForm.value.discountRate,
-        session: this.bookingForm.value.session
+        discountRate: this.bookingForm.value.discountRate,
       };
 
       this.bookingService.createBooking(payload).subscribe({

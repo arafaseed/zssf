@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { TokenStorageService } from '../Services/token-storage.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -35,9 +36,14 @@ export class AuthInterceptor implements HttpInterceptor {
       return next.handle(authReq);
     }
 
+    //Outgoing request
+    console.log('Outgoing request:', req.method, req.url, req.body);
+
     // No token case: still allow request
     console.info('No auth token found. Sending request without Authorization header.');
-    return next.handle(req);
+    return next.handle(req).pipe(
+      tap(event => console.log('Response:', event))
+    );
   }
 }
 

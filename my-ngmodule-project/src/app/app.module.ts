@@ -63,6 +63,8 @@ import { AdminbookingComponent } from './adminbooking/adminbooking.component';
 import { ActivityTableComponent } from './activitytable/activitytable.component';
 import { ActivityEditFormComponent } from './Form/activity-edit-form/activity-edit-form.component';
 import { PhoneSearchComponent } from './phone-search/phone-search.component';
+import { StaffModule } from "./staff/staff.module";
+// import { DashboardSwitchComponent } from './Admin/dashboard-switch/dashboard-switch.component';
 
 
 @NgModule({
@@ -96,9 +98,7 @@ import { PhoneSearchComponent } from './phone-search/phone-search.component';
     ActivityTableComponent,
     ActivityEditFormComponent,
     PhoneSearchComponent,
-  
-  
-
+    // DashboardSwitchComponent,
 
   ],
   imports: [
@@ -127,8 +127,8 @@ import { PhoneSearchComponent } from './phone-search/phone-search.component';
     MatFormFieldModule,
     BrowserModule,
     MatInputModule,
-    MatDatepickerModule,    // import MatDatepickerModule
-    MatInputModule,         // import MatInputModule for the input field
+    MatDatepickerModule, // import MatDatepickerModule
+    MatInputModule, // import MatInputModule for the input field
     MatNativeDateModule,
     MatToolbarModule,
     CommonModule,
@@ -156,9 +156,9 @@ import { PhoneSearchComponent } from './phone-search/phone-search.component';
     CommonModule,
     BrowserModule,
     DatePipe,
-
-
-  ],
+    StaffModule
+],
+  // exports: [DashboardSwitchComponent],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     provideAnimationsAsync(),

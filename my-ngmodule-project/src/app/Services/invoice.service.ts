@@ -14,5 +14,5 @@ export class InvoiceService {
   constructor(private http: HttpClient) {}
 
   getInvoiceByBookingId(bookingId: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/view/${bookingId}`);
+    return this.http.get(`${this.baseUrl}/view/by-booking/${bookingId}`);
   }}

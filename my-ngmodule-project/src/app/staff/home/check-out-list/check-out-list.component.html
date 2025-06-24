@@ -32,7 +32,7 @@
   <!-- “To Check Out” Card Grid -->
   <div *ngIf="!loading && !errorMessage" class="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
     <div *ngFor="let booking of bookings"
-         class="bg-white rounded-lg shadow-md p-4 flex flex-col justify-between"
+         class="bg-white rounded-md-lg shadow-md p-4 flex flex-col justify-between"
     >
       <div>
         <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ booking.venueName }}</h3>
@@ -48,7 +48,7 @@
       </div>
       <button
         (click)="openCheckoutModal(booking)"
-        class="mt-4 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 rounded-lg transition"
+        class="mt-4 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 rounded-md-lg transition"
       >
         Check Out
       </button>
@@ -63,7 +63,7 @@
   <!-- Modal Overlay -->
   <ng-container *ngIf="showModal">
 <div class="fixed inset-0 bg-[rgba(15,23,42,0.78)] backdrop-blur-md flex items-center justify-center z-50">
-        <div class="bg-white rounded-lg shadow-xl w-11/12 max-w-lg p-6">
+        <div class="bg-white rounded-md-lg shadow-xl w-11/12 max-w-lg p-6">
         <app-checkout-modal
           [booking]="selectedBooking"
           [staffIDN]="staffIDN"

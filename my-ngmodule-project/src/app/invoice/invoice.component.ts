@@ -7,9 +7,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { BookingService } from '../Services/booking.service';
 
-
-
-
 import html2canvas from 'html2canvas';
 import { InvoiceService } from '../Services/invoice.service';
 

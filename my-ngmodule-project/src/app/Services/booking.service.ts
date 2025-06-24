@@ -101,14 +101,22 @@ export class BookingService {
 
   // Placeholder methods to be implemented
   getLeasesByVenue(venueId: number) {
-    throw new Error('Method not implemented.');
+    throw new Error('Method get lease by venue not implemented.');
+  }
+
+  getActivitiesByVenue(venueId: number) {
+    throw new Error('Method get ActivitiesByVenue not implemented.');
   }
 
   getVenues() {
-    throw new Error('Method not implemented.');
+    throw new Error('Method Get venues not implemented.');
   }
 
   getPackages(venueId: any) {
-    throw new Error('Method not implemented.');
+    throw new Error('Method getPackages not implemented.');
+  }
+
+  getActivities(venueId: any) {
+    throw new Error('Method  getActivities not implemented.');
   }
 }

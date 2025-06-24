@@ -25,7 +25,7 @@
 
 /* Increase card shadow, subtle rounding for mat-select popups */
 .mat-card {
-  border-radius: 0.75rem; /* rounded-lg */
+  border-radius: 0.75rem; /* rounded-md-lg */
 }
 
 .mat-select-panel .mat-option .mat-option-text {
@@ -34,7 +34,7 @@
 
 .mat-form-field-appearance-fill .mat-form-field-flex {
   background-color: #ecfdf5; /* Tailwind’s green-50 */
-  border-radius: 0.5rem;   /* rounded-lg */
+  border-radius: 0.5rem;   /* rounded-md-lg */
 }
 
 .mat-form-field-appearance-fill .mat-form-field-underline {
@@ -55,7 +55,7 @@
   display: flex;
   flex-direction: column;
   border: 1px solid #d1fae5; /* Tailwind’s green-200 */
-  border-radius: 0.5rem;     /* rounded-lg */
+  border-radius: 0.5rem;     /* rounded-md-lg */
   margin: 0.25rem 0;         /* small vertical gap */
   padding: 0.5rem;           /* p-2 */
   background-color: #ecfdf5; /* Tailwind’s green-50 */
