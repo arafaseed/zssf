@@ -4,8 +4,8 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-phone-search',
   templateUrl: './phone-search.component.html',
-  standalone:false,
-  styleUrls: ['./phone-search.component.css']
+  styleUrls: ['./phone-search.component.css'],
+  standalone: false
 })
 export class PhoneSearchComponent {
   phoneNumber: string = '';
@@ -17,7 +17,7 @@ export class PhoneSearchComponent {
 
   onSubmit() {
     if (!this.phoneNumber.trim()) return;
-    
+
     this.searching = true;
     this.noResults = false;
     this.bookings = [];
@@ -30,9 +30,26 @@ export class PhoneSearchComponent {
           this.searching = false;
         },
         error: (err) => {
+          console.error('Error fetching bookings:', err);
           this.noResults = true;
           this.searching = false;
-          console.error('Error fetching bookings:', err);
+        }
+      });
+  }
+
+  cancelBooking(bookingId: number) {
+    const confirmCancel = confirm('Are you sure you want to cancel this booking?');
+    if (!confirmCancel) return;
+
+    this.http.put<any>(`http://localhost:8080/api/bookings/cancel/${bookingId}`, {})
+      .subscribe({
+        next: () => {
+          // Refresh the search result after successful cancellation
+          this.onSubmit();
+        },
+        error: (err) => {
+          console.error('Error cancelling booking:', err);
+          alert('Failed to cancel booking. Please try again.');
         }
       });
   }

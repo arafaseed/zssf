@@ -30,6 +30,6 @@ export class ViewVenueService {
   searchVenuesByName(name: string): Observable<any> {
     return this.http.get(`${this.venueApiUrl}/search?name=${name}`);
   }
-  
+
   
 }
