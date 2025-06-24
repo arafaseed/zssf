@@ -93,7 +93,7 @@ export class VenueViewComponent implements OnInit, OnDestroy {
     this.selectedImages = images;
     this.currentImageIndex = index;
     this.inlineViewerVisible = true;
-    document.body.style.overflow = 'hidden'; // disable background scroll
+   
   }
 
   closeInlineImageViewer(): void {
