@@ -64,6 +64,8 @@ import { ActivityTableComponent } from './activitytable/activitytable.component'
 import { ActivityEditFormComponent } from './Form/activity-edit-form/activity-edit-form.component';
 import { PhoneSearchComponent } from './phone-search/phone-search.component';
 import { StaffModule } from "./staff/staff.module";
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 // import { DashboardSwitchComponent } from './Admin/dashboard-switch/dashboard-switch.component';
 
 
@@ -156,7 +158,8 @@ import { StaffModule } from "./staff/staff.module";
     CommonModule,
     BrowserModule,
     DatePipe,
-    StaffModule
+    StaffModule,
+    MatProgressSpinnerModule 
 ],
   // exports: [DashboardSwitchComponent],
   providers: [
