@@ -3,7 +3,8 @@
 
   <main class="flex-grow px-6 py-6">
     <!-- Hero Section -->
-    <div id="home-page" class="pt-24 px-4 w-full flex justify-center">
+    <div id="home-page" class="pt-16 px-4 w-full flex justify-center">
+
       <div
         class="w-full max-w-[1600px] p-6 text-center rounded-2xl
                bg-gradient-to-r from-[#e8f5f1] to-white
@@ -23,8 +24,8 @@
     </div>
 
     <!-- Search Bar -->
-    <div class="max-w-xl mx-auto mt-8 mb-12">
-      <div class="flex items-center gap-2 bg-white shadow-lg rounded-full px-5 py-3 border border-gray-300">
+    <div class="max-w-xl mx-auto mt-6 mb-12">
+      <div class="flex items-center gap-2 bg-white shadow-lg rounded-full px-3 py-3 border border-gray-300">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-5 w-5 text-gray-400 mr-2"
@@ -44,7 +45,7 @@
           [(ngModel)]="searchTerm"
           (input)="searchVenues()"
           placeholder="Search venue name or capacity..."
-          class="w-full bg-transparent outline-none text-gray-700 text-base placeholder-gray-400"
+          class="w-full bg-transparent outline-none text-gray-600 text-base placeholder-gray-400"
         />
         <button
           *ngIf="searchTerm"
@@ -70,7 +71,7 @@
 
     <!-- Venue Grid -->
     <div
-      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8"
+      cl  class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-6 mt-[-16px]"
       *ngIf="!inlineViewerVisible"
     >
       <ng-container *ngFor="let venue of venues.slice(0, 10); let i = index">
@@ -111,7 +112,7 @@
                 (click)="goToBookingPage(venue)"
                 class="bg-gradient-to-r from-green-600 via-green-700 to-green-800
                        hover:from-green-700 hover:via-green-800 hover:to-green-900
-                       text-white px-6 py-3 rounded-lg font-bold shadow-lg
+                       text-white px-5 py-3 rounded-lg font-bold shadow-lg
                        transition-transform duration-300 ease-in-out
                        hover:scale-105 flex items-center gap-2 ring-2 ring-green-700 ring-offset-2"
               >

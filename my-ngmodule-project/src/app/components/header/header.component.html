@@ -1,50 +1,50 @@
 <mat-toolbar
   style="background-color: #05a393;"
-  class="fixed top-0 left-0 right-0 z-[9999] shadow-lg border-b border-gray-200 py-4 px-6"
+  class="fixed top-0 left-0 right-0 z-[9999] shadow-lg border-b border-gray-200 py-4 px-4 sm:px-6"
 >
-  <div class="w-full flex flex-row flex-wrap items-center justify-between gap-4">
+  <div class="w-full flex flex-row sm:flex-row sm:items-center justify-between gap-4">
 
-    <!-- Logo + Title -->
-    <div class="flex items-center gap-3 flex-shrink-0">
-      <img src="zssf.png" alt="ZSSF Logo" class="h-12 sm:h-14 object-contain" />
-      <span class="text-white text-xl sm:text-3xl font-bold tracking-wide uppercase font-sans leading-tight">
+    <!-- Logo (no title on small screens) -->
+    <div class="flex items-center gap-3 flex-shrink-0 min-w-0">
+      <img src="zssf.png" alt="ZSSF Logo" class="h-12 object-contain" />
+      <span class="hidden sm:inline text-white text-2xl font-bold tracking-wide uppercase font-sans leading-tight truncate">
         <span class="text-yellow-300">ZSSF</span> Booking Venue
       </span>
     </div>
 
     <!-- Navigation + Contact -->
-    <div class="flex items-center gap-6 text-sm sm:text-base text-white flex-wrap">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-6 text-sm sm:text-base w-full sm:w-auto">
 
       <!-- Navigation Buttons -->
-      <div class="flex items-center gap-4">
+      <div class="flex flex-wrap items-center gap-4 w-full sm:w-auto">
         <button 
           *ngIf="!isHomePage" 
           (click)="goHome()" 
-          class="flex items-center gap-1 hover:text-yellow-300 transition duration-200 whitespace-nowrap"
+          class="flex items-center gap-1 transition duration-200 whitespace-nowrap text-white hover:text-yellow-300"
         >
-          <mat-icon>cottage</mat-icon>
+          <mat-icon class="text-2xl">cottage</mat-icon>
           <span class="hidden sm:inline">Home</span>
         </button>
 
         <button 
           *ngIf="!isBookingPage" 
           (click)="gomybooking()" 
-          class="flex items-center gap-1 hover:text-yellow-300 transition duration-200 whitespace-nowrap"
+          class="flex items-center gap-1 transition duration-200 whitespace-nowrap text-white hover:text-yellow-300"
         >
-          <mat-icon>event</mat-icon>
+          <mat-icon class="text-2xl">event</mat-icon>
           <span class="hidden sm:inline">My Booking</span>
         </button>
       </div>
 
       <!-- Contact Info -->
-      <div class="flex items-center gap-4 whitespace-nowrap">
+      <div class="flex flex-wrap gap-4 w-full sm:w-auto text-white">
         <div class="flex items-center gap-1 transition hover:text-yellow-300">
           <mat-icon>call</mat-icon>
-          <span>+255 242 230 242</span>
+          <span class="text-xs sm:text-sm truncate">+255 242 230 242</span>
         </div>
         <div class="flex items-center gap-1 transition hover:text-yellow-300">
           <mat-icon>mark_email_read</mat-icon>
-          <span>info&#64;zssf.com</span>
+          <span class="text-xs sm:text-sm truncate">info&#64;zssf.com</span>
         </div>
       </div>
 
