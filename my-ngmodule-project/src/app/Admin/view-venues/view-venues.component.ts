@@ -8,14 +8,16 @@ import { ViewVenueService } from '../../Services/view-venue.service';
 
 @Component({
   selector: 'app-view-venues',
-  standalone: false,
   templateUrl: './view-venues.component.html',
+  standalone:false,
   styleUrls: ['./view-venues.component.css']
 })
 export class ViewVenuesComponent implements OnInit {
 
   venues: any[] = [];
-  displayedColumns: string[] = ['venueName', 'capacity', 'description', 'leasePackages','addStaff', 'actions'];
+  displayedColumns: string[] = ['venueName', 'capacity', 'description', 'leasePackages', 'addStaff', 'actions'];
+  staffList: any[] = [];
+  selectedVenueId: number | null = null;
 
   constructor(
     private venueService: ViewVenueService,
@@ -34,15 +36,13 @@ export class ViewVenuesComponent implements OnInit {
       next: (data: any[]) => {
         this.venues = data;
 
-        // Fetch lease packages for each venue
+        // Load lease packages for each venue
         this.venues.forEach(venue => {
           this.http.get<any[]>(`http://localhost:8080/api/lease-packages/venue/${venue.venueId}`).subscribe({
-            next: (packages) => {
-              venue.leasePackages = packages;
-            },
+            next: (packages) => venue.leasePackages = packages,
             error: (error) => {
-              console.error(`Error fetching packages for venue ${venue.venueId}:`, error);
-              venue.leasePackages = []; // Assign empty array to avoid undefined
+              console.error(`Error loading packages for venue ${venue.venueId}:`, error);
+              venue.leasePackages = [];
             }
           });
         });
@@ -53,13 +53,13 @@ export class ViewVenuesComponent implements OnInit {
     });
   }
 
-  openEditVenueModal(venueId: number): void {
+  editVenue(venueId: number): void {
     const dialogRef = this.dialog.open(EditVenueComponentComponent, {
       width: '500px',
-      data: { venueId: venueId }
+      data: { venueId }
     });
 
-    dialogRef.afterClosed().subscribe((result: any) => {
+    dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.loadVenues();
         this.showToast('Venue updated successfully!', 'success');
@@ -67,15 +67,45 @@ export class ViewVenuesComponent implements OnInit {
     });
   }
 
-  editVenue(venueId: number): void {
-    this.openEditVenueModal(venueId);
+  toggleStaffList(venueId: number): void {
+    if (this.selectedVenueId === venueId) {
+      this.selectedVenueId = null;
+      return;
+    }
+
+    this.selectedVenueId = venueId;
+    this.staffList = []; // clear previous data
+
+    this.http.get<any[]>('http://localhost:8080/api/staff/all').subscribe({
+      next: (data) => {
+        this.staffList = data;
+        console.log('Staff list loaded:', this.staffList);
+      },
+      error: (error) => {
+        console.error('Failed to fetch staff list:', error);
+        this.showToast('Failed to load staff list', 'error');
+      }
+    });
   }
-  addStaff(venueId: number): void {
-  this.router.navigate(['/admin/add-staff', venueId]);
-}
 
+  assignStaff(staffId: number, venueId: number): void {
+    const payload = { venueId };
 
-  deleteVenue(venueId: number) {
+    console.log(`Assigning staff ${staffId} to venue ${venueId}`);
+    this.http.post(`http://localhost:8080/api/staff/assign-venue/${staffId}`, payload).subscribe({
+      next: () => {
+        console.log(`Staff ${staffId} assigned to venue ${venueId}`);
+        this.showToast('Staff assigned to venue!', 'success');
+        this.selectedVenueId = null;
+      },
+      error: (error) => {
+        console.error('Failed to assign staff:', error);
+        this.showToast('Failed to assign staff', 'error');
+      }
+    });
+  }
+
+  deleteVenue(venueId: number): void {
     if (confirm("Are you sure you want to delete this venue?")) {
       this.venueService.deleteVenue(venueId).subscribe({
         next: () => {
@@ -94,7 +124,8 @@ export class ViewVenuesComponent implements OnInit {
       duration: 4000,
       horizontalPosition: 'right',
       verticalPosition: 'top',
-      panelClass: type === 'success' ? 'snackbar-success' : type === 'error' ? 'snackbar-error' : 'snackbar-info'
+      panelClass: type === 'success' ? 'snackbar-success' :
+                 type === 'error' ? 'snackbar-error' : 'snackbar-info'
     });
   }
 }

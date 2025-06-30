@@ -1,66 +1,83 @@
-<!-- Fixed App Header -->
 <app-header></app-header>
 
-<!-- Page Content -->
-<div class="px-4 pt-32 pb-8 max-w-screen-lg mx-auto">
-  <!-- Search Card -->
-  <div class="flex justify-center">
-    <div class="w-full md:w-1/2">
-      <div class="bg-white shadow rounded-md-xl p-6">
-        <h3 class="text-xl font-semibold text-center text-gray-800 mb-4">Search Bookings by Phone</h3>
-        <form (ngSubmit)="onSubmit()" #searchForm="ngForm">
-          <div class="mb-4">
-            <label for="phoneNumber" class="block font-medium text-gray-600 mb-1">Phone Number</label>
-            <input
-              type="text"
-              id="phoneNumber"
-              required
-              [(ngModel)]="phoneNumber"
-              name="phoneNumber"
-              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-            />
-          </div>
-          <button
-            type="submit"
-            [disabled]="searching"
-            class="w-full py-2 bg-green-600 text-white font-semibold rounded-md shadow hover:bg-green-700 transition"
-          >
-            Search
-          </button>
-        </form>
+<!-- Page Wrapper -->
+<div class="min-h-screen flex flex-col bg-gray-50">
+  <main class="flex-grow px-4 pt-32 pb-12 max-w-screen-lg mx-auto w-full">
+    <!-- Search Card -->
+    <div class="flex justify-center mb-10">
+      <div class="w-full md:w-2/3 lg:w-1/2">
+        <div class="bg-white shadow-lg rounded-xl p-6 border border-gray-200">
+          <h3 class="text-2xl font-bold text-center text-black mb-4">Search Bookings by Phone</h3>
+          <form (ngSubmit)="onSubmit()" #searchForm="ngForm" class="space-y-4">
+            <div>
+              <label for="phoneNumber" class="block font-medium text-gray-700 mb-1">Phone Number</label>
+              <input
+                type="text"
+                id="phoneNumber"
+                name="phoneNumber"
+                [(ngModel)]="phoneNumber"
+                required
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#2A7261] focus:outline-none"
+              />
+            </div>
+            <button
+              type="submit"
+              [disabled]="searching"
+              class="w-full py-2 bg-green-600 text-white font-semibold rounded-md shadow hover:bg-green-700 transition"
+            >
+              {{ searching ? 'Searching...' : 'Search' }}
+            </button>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Results -->
-  <div *ngIf="bookings?.length" class="mt-10">
-    <h4 class="text-lg font-semibold mb-4">Results</h4>
-    <div
-      *ngFor="let booking of bookings"
-      class="bg-gray-100 border-l-4 border-blue-500 rounded-md shadow-sm mb-4 p-4"
-    >
-      <p class="mb-1"><strong>Booking Code:</strong> {{ booking.bookingCode }}</p>
-      <p class="mb-1"><strong>Start:</strong> {{ booking.startDate }} {{ booking.startTime }}</p>
-      <p class="mb-1"><strong>End:</strong> {{ booking.endDate }} {{ booking.endTime }}</p>
-      <p class="mb-1"><strong>Status:</strong> {{ booking.status }}</p>
-      <p class="mb-1"><strong>Venue ID:</strong> {{ booking.venueId }}</p>
-      <p class="mb-1"><strong>Invoice ID:</strong> {{ booking.invoiceId || 'Not Available' }}</p>
-      <a
-        *ngIf="booking.invoiceId"
-        [href]="'/invoice/' + booking.invoiceId"
-        target="_blank"
-        class="inline-block mt-2 text-sm px-3 py-1 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 transition"
+    <!-- Results -->
+    <div *ngIf="bookings && bookings.length > 0" class="space-y-6">
+      <h4 class="text-xl font-semibold text-gray-800 mb-2">Search Results</h4>
+
+      <div
+        *ngFor="let booking of bookings"
+        class="bg-white border border-gray-200 rounded-xl shadow-md p-6"
       >
-        View Invoice
-      </a>
-    </div>
-  </div>
+        <div class="space-y-2 text-gray-700">
+          <p><strong>Booking Code:</strong> {{ booking.bookingCode }}</p>
+          <p><strong>Start:</strong> {{ booking.startDate }} {{ booking.startTime }}</p>
+          <p><strong>End:</strong> {{ booking.endDate }} {{ booking.endTime }}</p>
+          <p><strong>Status:</strong> {{ booking.status }}</p>
+          <p><strong>Venue ID:</strong> {{ booking.venueId }}</p>
+          <p><strong>Invoice ID:</strong> {{ booking.invoiceId || 'Not Available' }}</p>
+        </div>
 
-  <!-- No Results -->
-  <div
-    *ngIf="noResults"
-    class="mt-6 bg-yellow-100 text-yellow-800 p-4 rounded-md text-center text-base font-medium"
-  >
-    No bookings found for phone number {{ phoneNumber }}.
-  </div>
+        <!-- Action Buttons -->
+        <div class="flex flex-wrap gap-3 mt-4">
+          <a
+            *ngIf="booking.invoiceId"
+            [href]="'/invoice/' + booking.invoiceId"
+            target="_blank"
+            class="px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition"
+          >
+            View Invoice
+          </a>
+
+          <button
+            class="px-4 py-2 bg-red-600 text-white font-medium rounded-md hover:bg-red-700 transition"
+            (click)="cancelBooking(booking.bookingId)"
+          >
+            Cancel Booking
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Results -->
+    <div
+      *ngIf="noResults"
+      class="mt-8 text-center text-yellow-700 bg-yellow-100 border border-yellow-300 rounded-md p-4 font-medium"
+    >
+      No bookings found for phone number <strong>{{ phoneNumber }}</strong>.
+    </div>
+  </main>
+
+  <app-footer></app-footer>
 </div>
