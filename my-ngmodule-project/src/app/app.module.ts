@@ -46,7 +46,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { LoginComponent } from './login/login.component';
 // import { StaffDashboardComponent } from './staff/staff-dashboard/staff-dashboard.component';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { EditVenueComponentComponent } from './edit-venue-component/edit-venue-component.component'; // For grid layouts
+import { EditVenueComponentComponent } from './edit-venue-component/edit-venue-component.component';
 import { BookingService } from './Services/booking.service';
 import { MultiStepFormComponent } from './multi-step-form/multi-step-form.component';
 import { BookingListComponent } from './booking-list/booking-list.component';
@@ -99,6 +99,7 @@ import { StaffModule } from "./staff/staff.module";
     ActivityEditFormComponent,
     PhoneSearchComponent,
     // DashboardSwitchComponent,
+    
 
   ],
   imports: [

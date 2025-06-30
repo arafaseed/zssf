@@ -1,449 +1,195 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy
+} from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
-  Validators,
-  FormControl
+  Validators
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
-import { HttpClient } from '@angular/common/http';
 import { BookingService } from '../Services/booking.service';
 import { MultiStepFormService } from '../Services/multi-step-form.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { InvoiceServiceService } from '../Services/invoice-service.service';
-
-interface BookedSlot {
-  date: string;
-  startTime: string;
-  endTime?: string;
-}
 
 @Component({
   selector: 'app-multi-step-form',
-  standalone: false,
+  standalone:false,
   templateUrl: './multi-step-form.component.html',
   styleUrls: ['./multi-step-form.component.css']
 })
 export class MultiStepFormComponent implements OnInit, OnDestroy {
-  sessionOptions = [
-    // Only one option—SIKU NZIMA—preselected
-    { label: 'SIKU NZIMA', start: '06:00', end: '00:00' }
-  ];
-  selectedSessionTime: string | null = '06:00 – 00:00';
-  currentStep = 1;
   bookingForm: FormGroup;
-
-  selectedVenueName = '';
-  venueOptions: { venueId: number; venueName: string; capacity: number }[] = [];
-  packageOptions: { leaseId: number; packageName: string; price: number }[] = [];
-  activityOptions: { activityId: number; activityName: string; activityDescription: string }[] = [];
-  venueId!: number;
-
-  bookedDatesSet = new Set<string>();
-  private fetchIntervalId: any;
-
-  // Base URL for booking-related endpoints
-  private bookingApiUrl = 'http://localhost:8080/api/bookings';
-
-  // Today's date for datePicker.min
+  currentStep = 1;
   minDate = new Date();
 
-  onDateChange(
-  event: { value: Date | null },
-  which: 'start' | 'end'
-): void {
-  const selected: Date | null = event.value;
-  if (!selected) {
-    return;
-  }
+  selectedVenueName = '';
+  venueOptions: any[] = [];
+  packageOptions: any[] = [];
+  activityOptions: any[] = [];
 
-  // Create a midnight‐normalized copy
-  const cell = new Date(selected);
-  cell.setHours(0, 0, 0, 0);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  sessionOptions = [
+    { label: 'SIKU NZIMA', start: '06:00', end: '00:00' }
+  ];
 
-  const iso = cell.toISOString().split('T')[0];
-  if (cell < today) {
-    this.snackBar.open('Cannot pick a past date.', 'Close', { duration: 3000 });
-    // Revert: clear whichever control was clicked
-    if (which === 'start') {
-      (this.bookingForm.get('dateRangeGroup.startDate') as FormControl).reset();
-    } else {
-      (this.bookingForm.get('dateRangeGroup.endDate') as FormControl).reset();
-    }
-    return;
-  }
-  if (this.bookedDatesSet.has(iso)) {
-    this.snackBar.open(
-      'This date is already booked. Please choose another.',
-      'Close',
-      { duration: 3000 }
-    );
-    if (which === 'start') {
-      (this.bookingForm.get('dateRangeGroup.startDate') as FormControl).reset();
-    } else {
-      (this.bookingForm.get('dateRangeGroup.endDate') as FormControl).reset();
-    }
-    return;
-  }
-
-  // Otherwise accept it—no additional action needed (the form value is already set)
-}
+  private venueId!: number;
+  private pollId: any;
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient,
-    private bookingService: BookingService,
-    private multiStepFormService: MultiStepFormService,
-    private snackBar: MatSnackBar,
     private route: ActivatedRoute,
-    private router: Router,
+    private snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private invoiceService: InvoiceServiceService
+    private router: Router,
+    private msForm: MultiStepFormService,
+    private bookingService: BookingService
   ) {
-    // Build the form
     this.bookingForm = this.fb.group({
-      // Group for date range: startDate and endDate
-      dateRangeGroup: this.fb.group({
-        startDate: ['', Validators.required],
-        endDate: [''] // optional; we’ll treat same‐as‐start if blank
-      }),
+      startDate: ['', Validators.required],
+      daysCount: [1, [Validators.required, Validators.min(1)]],
+      endDate: [{ value: '', disabled: true }],
+
       venueId: ['', Validators.required],
       venuePackageId: ['', Validators.required],
       venueActivityId: ['', Validators.required],
-      startTime: ['', Validators.required],
-      endTime: ['', Validators.required],
-      session: ['SIKU NZIMA', Validators.required], // preselect
-      fullName: ['', Validators.required],
-      phoneNumber: [
-        '',
-        [Validators.required, Validators.pattern('^\\+?[0-9]*$')]
-      ],
-      email: ['', [Validators.email]], // no longer required
-      address: ['', Validators.required],
-      discountRate: [0]
-    });
+      session: ['SIKU NZIMA', Validators.required],
 
-    // Ensure default times are set, so validation won't fail:
-    this.bookingForm.patchValue({
-      startTime: '06:00',
-      endTime: '00:00'
+      fullName: ['', Validators.required],
+      phoneNumber: ['', [Validators.required, Validators.pattern('^\\+?[0-9]*$')]],
+      email: ['', [Validators.email]],
+      address: ['', Validators.required]
     });
   }
 
   ngOnInit(): void {
-    // 1) Read venueId from query params
-    this.route.queryParams.subscribe((params) => {
-      const vid = params['venueId'];
-      if (vid) {
-        this.venueId = Number(vid);
+    this.route.queryParams.subscribe(params => {
+      if (params['venueId']) {
+        this.venueId = +params['venueId'];
         this.bookingForm.patchValue({ venueId: this.venueId });
-
-        // Start polling booked slots
-        this.fetchBookedSlots();
-        this.fetchIntervalId = setInterval(() => this.fetchBookedSlots(), 2000);
-
-        // Load packages (leases) for this venue
-        this.loadLeases(this.venueId);
-
-        //Load activity for this venue
-        this.loadActivities(this.venueId);
+        this.loadVenueDetails(this.venueId);
       }
     });
-
-    // 2) Load all venues (for drop-down and display name)
-    this.loadVenues();
   }
 
   ngOnDestroy(): void {
-    if (this.fetchIntervalId) {
-      clearInterval(this.fetchIntervalId);
+    clearInterval(this.pollId);
+  }
+
+  private loadVenueDetails(vid: number) {
+    // Fetch name, packages & activities
+    this.msForm.getVenues().subscribe(v => {
+      const found = v.find(x => x.venueId === vid);
+      if (found) this.selectedVenueName = found.venueName;
+    });
+    this.msForm.getLeasesByVenue(vid).subscribe(pk => this.packageOptions = pk);
+    this.msForm.getActivitiesByVenue(vid).subscribe(act => this.activityOptions = act);
+
+    // Optionally poll for booked slots if you disable dates later…
+  }
+
+  calculateEndDate() {
+    const start: Date = this.bookingForm.value.startDate;
+    const days: number = this.bookingForm.value.daysCount;
+    if (!start || days < 1) return;
+    const ctrl = new Date(start);
+    ctrl.setDate(ctrl.getDate() + (days - 1));
+    this.bookingForm.get('endDate')!.setValue(ctrl);
+  }
+
+  nextStep() {
+  // mark the Step‑1 fields as touched:
+  ['startDate','daysCount','venuePackageId','venueActivityId','session']
+    .forEach(ctrlName => this.bookingForm.get(ctrlName)!.markAsTouched());
+
+  // now if any are invalid, bail out and let mat‑error appear
+  if (this.bookingForm.get('startDate')!.invalid ||
+      this.bookingForm.get('daysCount')!.invalid ||
+      this.bookingForm.get('venuePackageId')!.invalid ||
+      this.bookingForm.get('venueActivityId')!.invalid ||
+      this.bookingForm.get('session')!.invalid) {
+    this.snackBar.open('Please fill all Step 1 fields first.', 'Close', { duration: 3000 });
+    return;
+  }
+  this.currentStep = 2;
+}
+
+
+  prevStep() {
+    this.currentStep = 1;
+  }
+
+  onSubmit() {
+  // 1) Mark Step 2 fields as touched so errors show up
+  ['fullName','phoneNumber','address']
+    .forEach(ctrl => this.bookingForm.get(ctrl)!.markAsTouched());
+
+  // 2) If any required Step 2 field is invalid, stop and show a snackbar
+  if (this.bookingForm.get('fullName')!.invalid ||
+      this.bookingForm.get('phoneNumber')!.invalid ||
+      this.bookingForm.get('address')!.invalid) {
+    this.snackBar.open('Please fill required Step 2 fields first.', 'Close', { duration: 3000 });
+    return;
+  }
+
+  // 3) Gather the values we need for the confirmation dialog:
+  const daysCount = this.bookingForm.value.daysCount;
+  const startDate: Date = this.bookingForm.value.startDate;
+  const endDate: Date  = this.bookingForm.value.endDate;
+  
+  // Find package & activity objects from the lists
+  const selectedPkg = this.packageOptions.find(p => p.leaseId === this.bookingForm.value.venuePackageId)!;
+  const selectedAtvt = this.activityOptions.find(a => a.activityId === this.bookingForm.value.venueActivityId)!;
+
+  // Calculate total price
+  const totalPrice = (selectedPkg.price || 0) * daysCount;
+
+  // 4) Open the confirmation dialog with exactly the data shape we need:
+  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    data: {
+      fullName:       this.bookingForm.value.fullName,
+      phoneNumber:    this.bookingForm.value.phoneNumber,
+      venue:          this.selectedVenueName,
+      packageName:    selectedPkg.packageName,
+      activityName:   selectedAtvt.activityName,
+      price:          totalPrice,
+      startDate:      startDate,
+      endDate:        endDate,
+      durationInDays: daysCount
     }
-  }
+  });
 
-  /** Fetch booked slots every 2 seconds and populate bookedDatesSet */
-  private fetchBookedSlots(): void {
-    if (!this.venueId) return;
-    this.http
-      .get<BookedSlot[]>(`${this.bookingApiUrl}/venue/${this.venueId}/booked-slots`)
-      .subscribe({
-        next: (slots) => {
-          this.bookedDatesSet.clear();
-          slots.forEach((slot) => {
-            const iso = slot.date; // “YYYY-MM-DD”
-            this.bookedDatesSet.add(iso);
-          });
-        },
-        error: (error) => console.error('Error fetching booked slots:', error)
-      });
-  }
+  // 5) If the user confirmed, send the booking
+  dialogRef.afterClosed().subscribe(confirmed => {
+    if (!confirmed) return;
 
-  /** Load all venues to populate drop-down & set selectedVenueName */
-  private loadVenues(): void {
-    this.multiStepFormService.getVenues().subscribe({
-      next: (venues) => {
-        this.venueOptions = venues;
-        const found = venues.find((v) => v.venueId === this.venueId);
-        if (found) {
-          this.selectedVenueName = found.venueName;
-        }
+    // build the actual payload exactly as your backend expects:
+    const payload = {
+      venueId:           this.bookingForm.value.venueId,
+      venueActivityId:   this.bookingForm.value.venueActivityId,
+      venuePackageId:    this.bookingForm.value.venuePackageId,
+      startDate:         startDate,
+      startTime:         selectedPkg.start || '06:00',
+      endDate:           endDate,
+      endTime:           selectedPkg.end   || '00:00',
+      fullName:          this.bookingForm.value.fullName,
+      phoneNumber:       this.bookingForm.value.phoneNumber,
+      email:             this.bookingForm.value.email,
+      address:           this.bookingForm.value.address
+    };
+
+    this.bookingService.createBooking(payload).subscribe({
+      next: (res: any) => {
+        this.snackBar.open('Booking created successfully!', 'Close', { duration: 3000 });
+        this.router.navigate(['/invoice', res.bookingId]);
       },
-      error: (err) => console.error('Error loading venues:', err)
-    });
-  }
-
-  /** Load packages (leases) for the chosen venue */
-  private loadLeases(venueId: number): void {
-    this.multiStepFormService.getLeasesByVenue(venueId).subscribe({
-      next: (leases) => (this.packageOptions = leases),
-      error: (err) => console.error('Error loading leases:', err)
-    });
-  }
-
-  //Load Activities for the choosen venue
-  private loadActivities(venueId: number): void {
-    this.multiStepFormService.getActivitiesByVenue(venueId).subscribe({
-      next: (activities) => (this.activityOptions = activities),
-      error: (err) => console.error('Error loading activities:', err)
-    });
-  }
-
-   //* dateFilter disables any date that is:Before today & Already in bookedDatesSet
-  dateFilter = (d: Date | null): boolean => {
-    if (!d) return false;
-    const cell = new Date(d);
-    cell.setHours(0, 0, 0, 0);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    if (cell <= today) {
-      return false;
-    }
-    const iso = cell.toISOString().split('T')[0]; // "YYYY-MM-DD"
-    if (this.bookedDatesSet.has(iso)) {
-      return false;
-    }
-    return true;
-  };
-
-   // dateClass applies custom CSS classes to each date cell:
-
-  dateClass = (cellDate: Date, view: string): string => {
-    if (view !== 'month') {
-      return '';
-    }
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const cell = new Date(cellDate);
-    cell.setHours(0, 0, 0, 0);
-    const iso = cell.toISOString().split('T')[0];
-
-    // Past or today → gray
-    if (cell <= today) {
-      return 'bg-gray-200 text-gray-600';
-    }
-
-    // Booked dates → red
-    if (this.bookedDatesSet.has(iso)) {
-      return 'bg-red-200 text-red-800';
-    }
-
-    // Available → green
-    return 'bg-green-200 text-green-800';
-  };
-
-  /** Returns how many days are selected in the range (inclusive). */
-  getDurationDays(): number {
-    const drGroup = this.bookingForm.get('dateRangeGroup') as FormGroup;
-    const start: Date = drGroup.get('startDate')!.value;
-    let end: Date = drGroup.get('endDate')!.value;
-
-    if (!start) return 0;
-    if (!end) {
-      // If no endDate chosen, treat as single‐day booking
-      end = start;
-    }
-    const msPerDay = 1000 * 3600 * 24;
-    const diff =
-      Math.floor((new Date(end).getTime() - new Date(start).getTime()) / msPerDay) + 1;
-    return diff > 0 ? diff : 1;
-  }
-
-  /** Move to next step after validating Step 1 fields. */
-  nextStep(): void {
-    const drGroup = this.bookingForm.get('dateRangeGroup') as FormGroup;
-    const startDate: Date = drGroup.get('startDate')!.value;
-    let endDate: Date = drGroup.get('endDate')!.value || startDate;
-
-    // 1) Prevent selecting a start date earlier than the current time:
-    const stTime: string = this.bookingForm.value.startTime;
-    if (startDate && stTime) {
-      const [hh, mm] = stTime.split(':').map((x) => Number(x));
-      const combined = new Date(startDate);
-      combined.setHours(hh, mm, 0, 0);
-      if (combined < new Date()) {
-        this.snackBar.open('Oops!Cannot pick a start day or time in the past.', 'Close', {
-          duration: 3000
-        });
-        return;
-      }
-    }
-
-    // 2) Validate Step 1 required fields
-    const requiredFields = [
-      'dateRangeGroup.startDate',
-      'venueId',
-      'venueActivityId',
-      'venuePackageId',
-      'startTime',
-      'endTime',
-      'session'
-    ];
-    let hasErr = false;
-    requiredFields.forEach((path) => {
-      const ctrl = this.bookingForm.get(path);
-      if (ctrl && ctrl.invalid) {
-        ctrl.markAsTouched();
-        hasErr = true;
+      error: () => {
+        this.snackBar.open('Booking failed. Please try again.', 'Close', { duration: 3000 });
       }
     });
-    if (hasErr) {
-      this.snackBar.open('Please fill all required fields in Step 1.', 'Close', {
-        duration: 3000
-      });
-      return;
-    }
-
-    this.currentStep++;
-  }
-
-  prevStep(): void {
-    this.currentStep--;
-  }
-
-  /** If session changes (only one option anyway), update start/end times */
-  onSessionChange(): void {
-    const sessLabel = this.bookingForm.get('session')!.value;
-    const sess = this.sessionOptions.find((s) => s.label === sessLabel);
-    if (sess) {
-      this.selectedSessionTime = `${sess.start} – ${sess.end}`;
-      this.bookingForm.patchValue({
-        startTime: sess.start,
-        endTime: sess.end
-      });
-    }
-  }
-
-  onSubmit(): void {
-    // 1) Prevent booking for date/time in the past once more
-    const drGroup = this.bookingForm.get('dateRangeGroup') as FormGroup;
-    const startDate: Date = drGroup.get('startDate')!.value;
-    let endDate: Date = drGroup.get('endDate')!.value || startDate;
-    const stTime: string = this.bookingForm.value.startTime;
-
-    if (startDate && stTime) {
-      const [hh, mm] = stTime.split(':').map((x) => Number(x));
-      const combined = new Date(startDate);
-      combined.setHours(hh, mm, 0, 0);
-      if (combined < new Date()) {
-        this.snackBar.open('Cannot book for a date/time in the past.', 'Close', {
-          duration: 3000
-        });
-        return;
-      }
-    }
-
-    // 2) Final form validation
-    if (this.bookingForm.invalid) {
-      this.bookingForm.markAllAsTouched();
-      return;
-    }
-
-    // 3) Ensure the session times are re-patched
-    const sessLabel = this.bookingForm.value.session;
-    const sess = this.sessionOptions.find((s) => s.label === sessLabel);
-    if (sess) {
-      this.bookingForm.patchValue({
-        startTime: sess.start,
-        endTime: sess.end
-      });
-    }
-
-    // 4) Calculate duration & total price
-    const sd = new Date(startDate);
-    const ed = new Date(endDate);
-    const msPerDay = 1000 * 3600 * 24;
-    const durationInDays =
-      Math.floor((ed.getTime() - sd.getTime()) / msPerDay) + 1;
-    const selectedPkg = this.packageOptions.find(
-      (p) => p.leaseId === this.bookingForm.value.venuePackageId
-    );
-    const selectedAtvt = this.activityOptions.find(
-      (a) => a.activityId === this.bookingForm.value.venueActivityId
-    );
-    const pricePerDay = selectedPkg?.price || 0;
-    const totalPrice = pricePerDay * durationInDays;
-
-    // 5) Open confirmation dialog
-    
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-  data: {
-    fullName: this.bookingForm.value.fullName,
-    phoneNumber: this.bookingForm.value.phoneNumber,
-    venue: this.selectedVenueName || 'N/A',
-    activityName: selectedAtvt?.activityName || 'N/A',
-    packageName: selectedPkg?.packageName || 'N/A',
-    price: totalPrice,
-    startDate: this.bookingForm.value.dateRangeGroup.startDate,
-    endDate: this.bookingForm.value.dateRangeGroup.endDate || this.bookingForm.value.dateRangeGroup.startDate,
-    durationInDays: this.getDurationDays()
-  }
-});
-
-
-
-    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
-      if (!confirmed) {
-        return;
-      }
-      // 6) Create the booking via BookingService
-      const payload = {
-        venueId: this.bookingForm.value.venueId,
-        venueActivityId: this.bookingForm.value.venueActivityId,
-        venuePackageId: this.bookingForm.value.venuePackageId,
-        startDate: this.bookingForm.value.dateRangeGroup.startDate,
-        startTime: this.bookingForm.value.startTime,
-        endDate:
-          this.bookingForm.value.dateRangeGroup.endDate ||
-          this.bookingForm.value.dateRangeGroup.startDate,
-        endTime: this.bookingForm.value.endTime,
-        fullName: this.bookingForm.value.fullName,
-        phoneNumber: this.bookingForm.value.phoneNumber,
-        email: this.bookingForm.value.email,
-        address: this.bookingForm.value.address,
-        discountRate: this.bookingForm.value.discountRate,
-      };
-
-      this.bookingService.createBooking(payload).subscribe({
-        next: (resp: any) => {
-          this.snackBar.open('Booking created successfully!', 'Close', {
-            duration: 3000
-          });
-          // Navigate to invoice page, passing new bookingId
-          const newBookingId = resp.bookingId;
-          this.router.navigate(['/invoice', newBookingId]);
-        },
-        error: () => {
-          this.snackBar.open('Booking failed. Please try again.', 'Close', {
-            duration: 3000
-          });
-        }
-      });
-    });
-  }
+  });
+}
 }
