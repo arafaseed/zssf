@@ -1,136 +1,91 @@
 <app-header></app-header>
 
-<!-- ===== Invoice Container ===== -->
-<div
-  id="invoice"
-  class="max-w-[800px] mx-auto my-10 p-10 mt-20 bg-white rounded-md-xl shadow-lg font-[Segoe_UI] text-gray-800 border-2 border-green-300"
->
+<div id="invoice" class="invoice-container">
   <!-- Header -->
-  <div class="text-center mb-10">
-    <h1 class="text-3xl font-bold text-green-600 tracking-widest">ZSSF VENUE BOOKING INVOICE</h1>
-    <p class="mt-2 text-sm text-gray-600">
-      Invoice Code: {{ invoiceData.invoiceCode }}
-    </p>
+  <div class="invoice-header">
+    <h1>ZSSF VENUE BOOKING INVOICE</h1>
+    <p class="invoice-code">Invoice Code: {{ invoiceData.invoiceCode }}</p>
   </div>
 
   <!-- Customer Information -->
-  <section class="mb-8">
-    <h2
-      class="text-lg font-semibold text-green-600 border-b border-gray-300 pb-1 mb-3"
-    >
-      Customer Information
-    </h2>
-
-    <div class="flex justify-between mb-2">
-      <span class="font-semibold w-2/5">Name:</span>
-      <span class="w-3/5 text-right text-gray-700">
-        {{ invoiceData.customerName }}
-      </span>
+  <section class="invoice-section">
+    <h2>Customer Information</h2>
+    <div class="invoice-line">
+      <span class="label">Name:</span>
+      <span class="value">{{ invoiceData.customerName }}</span>
     </div>
-    <div class="flex justify-between mb-2">
-      <span class="font-semibold w-2/5">Phone:</span>
-      <span class="w-3/5 text-right text-gray-700">
-        {{ invoiceData.customerPhone }}
-      </span>
+    <div class="invoice-line">
+      <span class="label">Phone:</span>
+      <span class="value">{{ invoiceData.customerPhone }}</span>
     </div>
-    <div class="flex justify-between">
-      <span class="font-semibold w-2/5">Email:</span>
-      <span class="w-3/5 text-right text-gray-700">
-        {{ invoiceData.customerEmail }}
-      </span>
+    <div class="invoice-line">
+      <span class="label">Email:</span>
+      <span class="value">{{ invoiceData.customerEmail }}</span>
     </div>
   </section>
 
   <!-- Invoice Details -->
-  <section class="mb-8">
-    <h2
-      class="text-lg font-semibold text-green-600 border-b border-gray-300 pb-1 mb-3"
-    >
-      Invoice Details
-    </h2>
-
-    <div class="flex justify-between mb-2">
-      <span class="font-semibold w-2/5">Issued Date:</span>
-      <span class="w-3/5 text-right">{{ invoiceData.issuedDate }}</span>
+  <section class="invoice-section">
+    <h2>Invoice Details</h2>
+    <div class="invoice-line">
+      <span class="label">Issued Date:</span>
+      <span class="value">{{ invoiceData.issuedDate }}</span>
     </div>
-    <div class="flex justify-between mb-2">
-      <span class="font-semibold w-2/5">Due Date:</span>
-      <span class="w-3/5 text-right">
-        {{ invoiceData.dueDate || 'Not Specified' }}
-      </span>
+    <div class="invoice-line">
+      <span class="label">Due Date:</span>
+      <span class="value">{{ invoiceData.dueDate || 'Not Specified' }}</span>
     </div>
-    <div class="flex justify-between mb-2">
-      <span class="font-semibold w-2/5">Status:</span>
-      <span class="w-3/5 text-right">{{ invoiceData.status }}</span>
+    <div class="invoice-line">
+      <span class="label">Status:</span>
+      <span class="value">{{ invoiceData.status }}</span>
     </div>
-    <div class="flex justify-between">
-      <span class="font-semibold w-2/5">Control Number:</span>
-      <span class="w-3/5 text-right">{{ invoiceData.controlNumber}}</span>
+    <div class="invoice-line">
+      <span class="label">Control Number:</span>
+      <span class="value">{{ invoiceData.controlNumber }}</span>
     </div>
-    
-     <div class="flex justify-between">
-      <span class="font-semibold w-2/5">Start event date:</span>
-      <span class="w-3/5 text-right">{{ invoiceData.startDate }}</span>
+    <div class="invoice-line">
+      <span class="label">Start Event Date:</span>
+      <span class="value">{{ invoiceData.startDate }}</span>
     </div>
-     <div class="flex justify-between">
-      <span class="font-semibold w-2/5">End event date:</span>
-      <span class="w-3/5 text-right">{{ invoiceData.endDate }}</span>
+    <div class="invoice-line">
+      <span class="label">End Event Date:</span>
+      <span class="value">{{ invoiceData.endDate }}</span>
     </div>
-     <div class="flex justify-between">
-      <span class="font-semibold w-2/5">BookingCode :</span>
-      <span class="w-3/5 text-right">{{ invoiceData.bookingCode }}</span>
+    <div class="invoice-line">
+      <span class="label">Booking Code:</span>
+      <span class="value">{{ invoiceData.bookingCode }}</span>
     </div>
   </section>
 
   <!-- Description -->
-  <section class="mb-8">
-    <h2
-      class="text-lg font-semibold text-green-600 border-b border-gray-300 pb-1 mb-3"
-    >
-      Description
-    </h2>
-    <p class="text-gray-700 leading-relaxed">
-      {{ invoiceData.description }}
-    </p>
+  <section class="invoice-section">
+    <h2>Description</h2>
+    <p class="description">{{ invoiceData.description }}</p>
   </section>
 
   <!-- Amount Summary -->
-  <section
-    class="bg-gray-50 border border-gray-200 rounded-md-lg p-6 text-base mb-4"
-  >
-    <h2 class="text-lg font-semibold text-green-600 mb-4">Amount Summary</h2>
-
-    <div class="flex justify-between mb-2">
+  <section class="amount-summary">
+    <h2>Amount Summary</h2>
+    <div class="amount-line">
       <span>Amount:</span>
-      <span>{{ invoiceData.amount | number : '1.2-2' }} TZS</span>
+      <span>{{ invoiceData.amount | number:'1.2-2' }} TZS</span>
     </div>
-    <div class="flex justify-between mb-2">
+    <div class="amount-line">
       <span>Discount:</span>
-      <span>{{ invoiceData.discountApplied | number : '1.2-2' }} TZS</span>
+      <span>{{ invoiceData.discountApplied | number:'1.2-2' }} TZS</span>
     </div>
-    <div class="flex justify-between font-bold border-t border-gray-300 pt-2">
+    <div class="amount-line total">
       <span>Total:</span>
-      <span>{{ invoiceData.netAmount | number : '1.2-2' }} TZS</span>
+      <span>{{ invoiceData.netAmount | number:'1.2-2' }} TZS</span>
     </div>
   </section>
 </div>
 
-<!-- Loading / Buttons -->
-<div *ngIf="loading" class="text-center my-6 text-gray-600">
+<div *ngIf="loading" class="loading">
   Generating Invoice PDF…
 </div>
 
-<div *ngIf="!loading" class="flex justify-center gap-4 my-10">
-  <button
-    class="bg-green-600 text-white px-6 py-2 rounded-md-lg hover:bg-green-700 transition"
-    (click)="printInvoice()"
-  >
-    🖨️ Print Invoice
-  </button>
-  <button
-    class="bg-green-600 text-white px-6 py-2 rounded-md-lg hover:bg-green-700 transition"
-    (click)="generatePDF()"
-  >
-    📄 Download PDF
-  </button>
+<div *ngIf="!loading" class="invoice-actions">
+  <button class="btn btn-primary" (click)="printInvoice()">🖨️ Print Invoice</button>
+  <button class="btn btn-primary" (click)="generatePDF()">📄 Download PDF</button>
 </div>

@@ -1,0 +1,120 @@
+/* Container */
+.invoice-container {
+  max-width: 800px;
+  margin: 2cm auto 2rem auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", sans-serif;
+  color: #334155;
+  border: 2px solid #81e6d9;
+}
+
+/* Header */
+.invoice-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+}
+.invoice-header h1 {
+  font-size: 2.25rem;
+  color: #00b5d8;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+}
+.invoice-header .invoice-code {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+/* Sections */
+.invoice-section {
+  margin-bottom: 1.5rem auto;
+  padding: 1.5rem auto;
+  margin-top: 2rem;
+}
+.invoice-section h2 {
+  font-size: 1.125rem;
+  color: #00b5d8;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+/* Lines */
+.invoice-line {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+.invoice-line .label {
+  font-weight: 600;
+  width: 40%;
+}
+.invoice-line .value {
+  width: 55%;
+  text-align: right;
+  color: #475569;
+}
+
+/* Description Paragraph */
+.description {
+  line-height: 1.6;
+  color: #475569;
+  margin-top: 2rem;
+}
+
+/* Amount Summary */
+.amount-summary {
+  background: #f0fdfa;
+  border: 1px solid #c6f6d5;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+.amount-summary h2 {
+  font-size: 1.125rem;
+  color: #0bc5ea;
+  margin-bottom: 1rem;
+}
+.amount-line {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+.amount-line.total {
+  font-weight: 700;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 0.75rem;
+}
+
+/* Loading & Actions */
+.loading {
+  text-align: center;
+  margin: 1.5rem 0;
+  color: #64748b;
+}
+.invoice-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.5rem 0;
+  margin: 2rem 0;
+}
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-primary {
+  background-color: #00b5d8;
+  color: white;
+}
+.btn-primary:hover {
+  background-color: #00a1c4;
+}

@@ -3,3 +3,8 @@
   font-weight: 500;
   font-size: 14px;
 }
+
+::ng-deep .mat-datepicker-content {
+  background-color: #e0f2fe !important; /* Light blue background */
+}
+

@@ -55,7 +55,7 @@
               <mat-label>Package</mat-label>
               <mat-select  formControlName="venuePackageId">
                 <mat-option *ngFor="let p of packageOptions" [value]="p.leaseId">
-                  <div class="p-2 bg-blue-50 rounded mb-1.5 w-max">
+                  <div class="p-2 bg-blue-50 rounded mb-1.5 w-full">
                     <span class="font-semibold">{{ p.packageName }}</span>
                     <span class="block text-sm text-gray-700">Tzs {{ p.price }}</span>
                     <span class="block text-sm text-gray-700">{{ p.description }}</span>

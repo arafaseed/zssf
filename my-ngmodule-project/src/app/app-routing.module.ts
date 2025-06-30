@@ -28,7 +28,6 @@ import { PhoneSearchComponent } from './phone-search/phone-search.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'venue', pathMatch: 'full' },
-  // { path: 'home', component: HomeComponent },
   { path: 'venue', component: VenueViewComponent },
   { path: 'reservation', component: HomeComponent }, 
    
@@ -52,7 +51,7 @@ const routes: Routes = [
   {
     path: 'admin',
     component: LayoutComponent,
-    canActivate: [AuthGuard], 
+    canActivate: [AuthGuard],
     data: { roles: ['ADMIN'] },
     children: [
       { path: 'dashboard', component: DashboardComponent },
