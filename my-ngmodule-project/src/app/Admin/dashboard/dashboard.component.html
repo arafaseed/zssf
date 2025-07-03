@@ -5,55 +5,59 @@
     <p>Here's an overview of your dashboard</p>
   </div>
 
-  <!-- Dashboard Overview Cards -->
+  <!-- Summary Cards -->
   <div class="dashboard-cards">
+    <div class="card">
+      <h3>Total Bookings</h3>
+      <p class="card-value">{{ totalBookings }}</p>
+      <button (click)="goToBookingList()">View All</button>
+    </div>
     <div class="card">
       <h3>Total Users</h3>
       <p class="card-value">{{ totalUsers }}</p>
-      <button mat-button color="primary">View Users</button>
     </div>
     <div class="card">
-      <h3>New Bookings</h3>
-      <p class="card-value">{{ totalBookings }}</p>
-      <button mat-button color="primary">View Bookings</button>
-    </div>
-    <div class="card">
-      <h3>Venue Availability</h3>
-      <p class="card-value">{{ venueAvailability }}</p>
-      <button mat-button color="primary">Check Availability</button>
+      <h3>Total Booked Venues</h3>
+      <p class="card-value">{{ totalBookedVenues }}</p>
     </div>
   </div>
 
-<!-- Search Filters -->
-<div class="search-filters">
-  <input type="text" placeholder="Search by Phone" [(ngModel)]="searchPhone">
-  <input type="date" [(ngModel)]="searchDate">
-  <div class="search-buttons">
-    <button mat-raised-button color="primary" (click)="searchBookings()">Search</button>
-    <button mat-raised-button color="warn" (click)="clearSearch()">Reset</button>
+  <!-- Search Filters -->
+  <div class="search-filters" aria-label="Search Bookings">
+    <input type="text" placeholder="Search by Phone" [(ngModel)]="searchPhone" aria-label="Search by Phone Number">
+    <input type="date" [(ngModel)]="searchDate" aria-label="Search by Start Date">
+    <div class="search-buttons">
+      <button mat-raised-button color="primary" (click)="searchBookings()">Search</button>
+      <button mat-raised-button color="warn" (click)="clearSearch()">Reset</button>
+    </div>
   </div>
-</div>
 
-
-<!-- Recent Bookings Table -->
-<div class="recent-activity">
-  <h3>Recent Bookings</h3>
-  <table>
-    <tr>
-      <th>Booking Code</th>
-      <th>Customer Name</th>
-      <th>Phone Number</th>
-      <th>Venue Name</th>
-      <th>Status</th>
-      <th>Start Date</th>
-    </tr>
-    <tr *ngFor="let booking of filteredBookings.slice(-5).reverse()">
-      <td>{{ booking.bookingCode }}</td>
-      <td>{{ booking.customer?.fullName}}</td>
-      <td>{{ booking.customer?.phoneNumber || 'N/A' }}</td>
-      <td>{{ booking.venue?.venueName || 'N/A' }}</td>
-      <td>{{ booking.status }}</td>
-      <td>{{ booking.startDate | date:'shortDate' }}</td>
-    </tr>
-  </table>
+  <!-- Recent Bookings Table -->
+  <div class="recent-activity" aria-live="polite" aria-relevant="all">
+    <h3>Recent Bookings</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Booking Code</th>
+          <th>Customer Name</th>
+          <th>Phone Number</th>
+          <th>Venue Name</th>
+          <th>Status</th>
+          <th>Start Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let booking of filteredBookings.slice(-5).reverse()" tabindex="0">
+          <td>{{ booking.bookingCode }}</td>
+          <td>{{ booking.customer?.fullName }}</td>
+          <td>{{ booking.customer?.phoneNumber || 'N/A' }}</td>
+          <td>{{ booking.venue?.venueName || 'N/A' }}</td>
+          <td [ngClass]="{'status-booked': booking.status === 'BOOKED', 'status-cancelled': booking.status === 'CANCELLED'}">
+            {{ booking.status }}
+          </td>
+          <td>{{ booking.startDate | date:'shortDate' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

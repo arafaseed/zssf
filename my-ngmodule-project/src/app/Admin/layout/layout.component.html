@@ -31,34 +31,52 @@
 >
 
     <nav class="mt-4 flex flex-col space-y-2 px-2">
+<nav class="mt-4 flex flex-col space-y-3 px-2 text-sm font-medium"> <!-- just increased spacing and added font-medium -->
 
-      <a routerLink="/admin/dashboard"
-         routerLinkActive="!bg-slate-800 bg-indigo-600"
-         class="nav-link">
-        Dashboard
-      </a>
+  <a routerLink="/admin/dashboard"
+     routerLinkActive="!bg-slate-800 bg-indigo-600"
+     class="nav-link mt-6 px-3 py-2 rounded-md hover:bg-indigo-500 transition-colors duration-200">
+    Dashboard
+  </a>
 
-      <a routerLink="/admin/leasepackagetable" routerLinkActive="!bg-slate-800 bg-indigo-600" class="nav-link">
-        Lease Packages
-      </a>
+  <a routerLink="/admin/leasepackagetable"
+     routerLinkActive="!bg-slate-800 bg-indigo-600"
+     class="nav-link px-3 py-2 rounded-md hover:bg-indigo-500 transition-colors duration-200">
+    Lease Packages
+  </a>
 
-      <a routerLink="/admin/buildings" routerLinkActive="!bg-slate-800 bg-indigo-600" class="nav-link">
-        Buildings
-      </a>
+  <a routerLink="/admin/buildings"
+     routerLinkActive="!bg-slate-800 bg-indigo-600"
+     class="nav-link px-3 py-2 rounded-md hover:bg-indigo-500 transition-colors duration-200">
+    Buildings
+  </a>
 
-      <a routerLink="/admin/venueView" routerLinkActive="!bg-slate-800 bg-indigo-600" class="nav-link">
-        Venues
-      </a>
+  <a routerLink="/admin/venueView"
+     routerLinkActive="!bg-slate-800 bg-indigo-600"
+     class="nav-link px-3 py-2 rounded-md hover:bg-indigo-500 transition-colors duration-200">
+    Venues
+  </a>
 
-      <a routerLink="/admin/bookinglist" routerLinkActive="!bg-slate-800 bg-indigo-600" class="nav-link">
-        Bookings
-      </a>
-      <a routerLink="/admin/addstaff" routerLinkActive="!bg-slate-800 bg-indigo-600" class="nav-link">
-       Staff
-      </a>
-       <a routerLink="/admin/activitytable" routerLinkActive="!bg-slate-800 bg-indigo-600" class="nav-link">
-        Activity
-      </a>
+  <a routerLink="/admin/bookinglist"
+     routerLinkActive="!bg-slate-800 bg-indigo-600"
+     class="nav-link px-3 py-2 rounded-md hover:bg-indigo-500 transition-colors duration-200">
+    Bookings
+  </a>
+
+  <a routerLink="/admin/addstaff"
+     routerLinkActive="!bg-slate-800 bg-indigo-600"
+     class="nav-link px-3 py-2 rounded-md hover:bg-indigo-500 transition-colors duration-200">
+    Staff
+  </a>
+
+  <a routerLink="/admin/activitytable"
+     routerLinkActive="!bg-slate-800 bg-indigo-600"
+     class="nav-link px-3 py-2 rounded-md hover:bg-indigo-500 transition-colors duration-200">
+    Activity
+  </a>
+
+</nav>
+
       <!--DASHBOARD SWITCHER-->
       <div class="absolute bottom-4 left-0 right-0 p-2 mb-8 border-t border-slate-700">
         <app-dashboard-switch></app-dashboard-switch>

@@ -8,9 +8,10 @@ import { Booking, BookingService } from '../Services/booking.service';
   styleUrl: './booking-list.component.css'
 })
 export class BookingListComponent implements OnInit {
-  bookings: Booking[] = [];
-  filteredBookings: { [key: string]: Booking[] } = { PENDING: [], COMPLETE: [], CANCELLED: [] };
-  showSection: string = ''; // default: don't show anything
+   bookings: Booking[] = [];
+  filteredResults: Booking[] = [];
+  searchDate: string = '';
+  currentStatus: string = 'ALL';
 
   constructor(private bookingService: BookingService) {}
 
@@ -20,16 +21,34 @@ export class BookingListComponent implements OnInit {
 
   fetchBookings(): void {
     this.bookingService.getBookings().subscribe((data) => {
-      this.bookings = data;
-      this.filterBookings();
+      // Sort by startDate
+      this.bookings = data.sort((a, b) =>
+        new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+      );
+      this.filteredResults = [...this.bookings]; // show all by default
     });
   }
 
-  filterBookings(): void {
-    this.filteredBookings = {
-      PENDING: this.bookings.filter(b => b.status === 'PENDING'),
-      COMPLETE: this.bookings.filter(b => b.status === 'COMPLETE'),
-      CANCELLED: this.bookings.filter(b => b.status === 'CANCELLED'),
-    };
+  filterByStatus(status: string): void {
+    this.currentStatus = status;
+    this.searchDate = ''; // reset search
+    if (status === 'ALL') {
+      this.filteredResults = [...this.bookings];
+    } else {
+      this.filteredResults = this.bookings.filter(b => b.status === status);
+    }
+  }
+
+  searchByDate(): void {
+    if (!this.searchDate) {
+      this.filteredResults = this.currentStatus === 'ALL'
+        ? [...this.bookings]
+        : this.bookings.filter(b => b.status === this.currentStatus);
+    } else {
+      this.filteredResults = this.bookings.filter(b =>
+        b.startDate === this.searchDate &&
+        (this.currentStatus === 'ALL' || b.status === this.currentStatus)
+      );
+    }
   }
 }

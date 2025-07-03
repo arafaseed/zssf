@@ -1,209 +1,167 @@
-/* Container for the dashboard */
-.dashboard-container {
-  padding: 20px;
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  background-color: #e5ebf0; /* Light background for a clean look */
-  min-height: 100vh;
-}
-
-/* Header styles */
+/* Welcome header background accent */
 .dashboard-header {
   text-align: center;
   margin-bottom: 30px;
+  padding: 20px 0;
+  background: linear-gradient(90deg, #007bff 0%, rgb(12, 20, 41)100%);
+  color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
 }
 
-.dashboard-header h1 {
-  font-size: 32px;
-  color: #007bff;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-.dashboard-header p {
-  font-size: 18px;
-  color: #444;
-}
-
-/* Dashboard cards container */
+/* Cards container adjustments */
 .dashboard-cards {
   display: flex;
-  justify-content: space-between; /* Ensures space between left, center, and right cards */
-  gap: 30px; /* Adds space between the cards */
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 40px;
 }
 
-/* Individual Cards */
+/* Card hover effect */
 .card {
-  background-color: #f7f3f3;
+  background-color: white;
   padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  box-shadow: 0 6px 18px rgba(0, 123, 255, 0.15);
   text-align: center;
-  height: 220px; /* Adjusted height */
-  width: 30%; /* Set width for balanced layout */
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  height: 200px;
+  width: 30%;
+  cursor: default;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.2);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0, 123, 255, 0.35);
 }
 
 .card h3 {
-  font-size: 22px;
-  color: #333;
-  font-weight: 600;
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: #007bff;
+  font-weight: 700;
 }
 
 .card .card-value {
-  font-size: 40px;
-  color: #007bff;
-  font-weight: bold;
-  margin: 12px 0;
+  font-size: 48px;
+  font-weight: 800;
+  color: #0056b3;
+  margin-bottom: 20px;
 }
 
-/* Improved Button Styles */
 .card button {
+  padding: 10px 25px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 10px;
   background-color: #007bff;
   color: white;
   border: none;
-  padding: 10px 15px;
-  font-size: 16px;
-  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+  transition: background-color 0.3s ease, transform 0.2s ease;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
-  box-shadow: 0 3px 10px rgba(0, 123, 255, 0.2);
 }
 
 .card button:hover {
-  background-color: #0056b3;
-  transform: scale(1.05);
+  background-color: #004a99;
+  transform: scale(1.1);
 }
 
-/* Recent activity section */
-.recent-activity {
-  margin-top: 50px;
-}
-
-.recent-activity h3 {
-  font-size: 24px;
-  color: #007bff;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
+/* Table styling */
 .recent-activity table {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
+  border-collapse: separate;
+  border-spacing: 0 10px;
   background-color: white;
-  border-radius: 8px;
+  border-radius: 15px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
-.recent-activity th,
-.recent-activity td {
-  padding: 14px;
+.recent-activity th, .recent-activity td {
+  padding: 15px 20px;
   text-align: left;
-  border-bottom: 1px solid #ddd;
 }
 
 .recent-activity th {
-  background-color: rgb(12, 20, 41);
-  color: #fff;
+  background-color:rgb(12, 20, 41);
+  color: white;
+  font-weight: 700;
   text-transform: uppercase;
-  font-weight: 600;
+  letter-spacing: 1px;
+  border-bottom: none;
 }
 
-.recent-activity tr:nth-child(even) {
-  background-color: #f9f9f9;
+.recent-activity tr {
+  background: #f9fbff;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
 }
 
-/* Search Filters Styling */
-.search-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  align-items: center;
-  justify-content: center;
-  margin-top: 30px;
-  padding: 20px;
-  background-color: #f2f6fa;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgb(12, 20, 41);}
-
-.search-filters input[type="text"],
-.search-filters input[type="date"] {
-  padding: 12px 15px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 16px;
-  width: 220px;
-  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-}
-
-.search-filters input:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+.recent-activity tr:hover,
+.recent-activity tr:focus-within {
+  background-color: #d0e4ff;
   outline: none;
 }
 
-.search-buttons {
+.status-booked {
+  color: green;
+  font-weight: 700;
+}
+
+.status-cancelled {
+  color: red;
+  font-weight: 700;
+}
+
+/* Search Filters enhancements */
+.search-filters {
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.12);
+  padding: 20px 25px;
   display: flex;
-  gap: 10px;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 50px;
 }
 
-.search-buttons button {
-  font-weight: 600;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-size: 16px;
-  text-transform: uppercase;
-  box-shadow: 0 3px 10px rgba(0, 123, 255, 0.2);
-  transition: transform 0.2s ease, background-color 0.3s ease;
+.search-filters input[type="text"],
+.search-filters input[type="date"] {
+  width: 230px;
+  padding: 12px 20px;
+  font-size: 17px;
+  border-radius: 12px;
+  border: 1.5px solid #b3c7f9;
+  transition: border-color 0.3s ease;
 }
 
-.search-buttons button:hover {
-  transform: scale(1.05);
+.search-filters input[type="text"]:focus,
+.search-filters input[type="date"]:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 6px #3399ff88;
 }
 
-/* Responsive adjustments */
-@media (max-width: 600px) {
+/* Responsive tweaks */
+@media (max-width: 900px) {
+  .dashboard-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    width: 90%;
+    margin-bottom: 25px;
+  }
+
   .search-filters {
     flex-direction: column;
-  }
-
-  .search-buttons {
-    flex-direction: column;
-    width: 100%;
-    align-items: stretch;
-  }
-
-  .search-buttons button {
-    width: 100%;
+    gap: 15px;
   }
 
   .search-filters input {
     width: 100%;
-  }
-}
-
-
-.recent-activity tr:hover {
-  background-color: #f1f1f1;
-}
-
-/* Responsive Styles */
-@media (max-width: 768px) {
-  .dashboard-cards {
-      flex-direction: column; /* Stack cards vertically on small screens */
-      align-items: center;
-  }
-
-  .card {
-      width: 90%; /* Make the cards wider on smaller screens */
-      margin-bottom: 20px;
   }
 }

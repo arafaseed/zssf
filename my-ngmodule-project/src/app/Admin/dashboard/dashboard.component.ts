@@ -9,54 +9,61 @@ import { DashboardService } from '../../Services/dashboard.service';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-   totalBookings: number = 0;
+     totalBookings: number = 0;
   totalUsers: number = 0;
-  venueAvailability: string = 'N/A';
+  totalBookedVenues: number = 0;  // new metric
+
   bookings: any[] = [];
   filteredBookings: any[] = [];
   venues: any[] = [];
 
   searchPhone: string = '';
   searchDate: string = '';
+  router: any;
 
   constructor(private dashboardService: DashboardService) {}
 
-ngOnInit() {
-  this.loadDashboardData();
+  ngOnInit() {
+    this.loadDashboardData();
 
-  this.dashboardService.getAllVenues().subscribe(
-    (venues) => {
-      this.venues = venues;
-      this.attachVenueNames(); // match venue names to bookings
-    },
-    (error) => console.error('Error fetching venues', error)
-  );
-}
-attachVenueNames() {
-  this.bookings.forEach(booking => {
-    const matchedVenue = this.venues.find(v => v.venueId === booking.venueId);
-    booking.venue = matchedVenue || {}; // safely add venue object
-  });
+    this.dashboardService.getAllVenues().subscribe(
+      (venues) => {
+        this.venues = venues;
+        this.attachVenueNames(); // match venue names to bookings
+      },
+      (error) => console.error('Error fetching venues', error)
+    );
+  }
 
-  this.filteredBookings = [...this.bookings]; // re-assign to trigger Angular change detection
-}
+  attachVenueNames() {
+    this.bookings.forEach(booking => {
+      const matchedVenue = this.venues.find(v => v.venueId === booking.venueId);
+      booking.venue = matchedVenue || {};
+    });
 
+    this.filteredBookings = [...this.bookings];
+  }
 
   loadDashboardData() {
     this.dashboardService.getAllBookings().subscribe(
       (data: any[]) => {
         this.bookings = data;
-        this.filteredBookings = data; // default view
+        this.filteredBookings = data;
         this.totalBookings = data.length;
 
-        const totalVenues = 100;
-        const bookedVenues = data.filter(b => b.status === 'BOOKED').length;
-        this.venueAvailability = `${100 - (bookedVenues / totalVenues * 100)}%`;
+        // Calculate totalUsers by counting distinct phone numbers
+        const uniquePhones = new Set(
+          data
+            .map(b => b.customer?.phoneNumber)
+            .filter(phone => phone) // filter out undefined or null
+        );
+        this.totalUsers = uniquePhones.size;
+
+        // Calculate totalBookedVenues by counting bookings with status 'BOOKED'
+        this.totalBookedVenues = data.filter(b => b.status === 'COMPLETE').length;
       },
       error => console.error('Error fetching bookings', error)
     );
-
-    this.totalUsers = 350;
   }
 
   searchBookings() {
@@ -66,7 +73,10 @@ attachVenueNames() {
       return matchesPhone && matchesDate;
     });
   }
-  
+
+   goToBookingList() {
+    this.router.navigate(['/admin/bookinglist']);
+  }
 
   clearSearch() {
     this.searchPhone = '';
