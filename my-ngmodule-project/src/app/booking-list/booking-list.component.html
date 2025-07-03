@@ -39,7 +39,14 @@
           <td>{{ booking.startTime }}</td>
           <td>{{ booking.endDate }}</td>
           <td>{{ booking.endTime }}</td>
-          <td>{{ booking.status }}</td>
+          <td [style.color]="
+            booking.status === 'CANCELLED' ? 'red' :
+            booking.status === 'COMPLETE' ? 'green' :
+            booking.status === 'PENDING' ? 'goldenrod' : 'black'
+          ">
+            {{ booking.status }}
+          </td>
+
         </tr>
       </tbody>
     </table>

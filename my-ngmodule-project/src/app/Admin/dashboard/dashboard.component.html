@@ -17,7 +17,7 @@
       <p class="card-value">{{ totalUsers }}</p>
     </div>
     <div class="card">
-      <h3>Total Booked Venues</h3>
+      <h3>Total  Complete Bookeing </h3>
       <p class="card-value">{{ totalBookedVenues }}</p>
     </div>
   </div>
@@ -52,9 +52,14 @@
           <td>{{ booking.customer?.fullName }}</td>
           <td>{{ booking.customer?.phoneNumber || 'N/A' }}</td>
           <td>{{ booking.venue?.venueName || 'N/A' }}</td>
-          <td [ngClass]="{'status-booked': booking.status === 'BOOKED', 'status-cancelled': booking.status === 'CANCELLED'}">
+          <td [style.color]="
+            booking.status === 'CANCELLED' ? 'red' :
+            booking.status === 'COMPLETE' ? 'green' :
+            booking.status === 'PENDING' ? 'goldenrod' : 'black'
+          ">
             {{ booking.status }}
           </td>
+
           <td>{{ booking.startDate | date:'shortDate' }}</td>
         </tr>
       </tbody>
