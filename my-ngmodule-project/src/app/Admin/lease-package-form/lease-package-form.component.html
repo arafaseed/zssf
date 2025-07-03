@@ -39,10 +39,11 @@
         </div>
       </div>
 
-      <div class="text-center">
+      <div class="text-center d-flex justify-content-center gap-4 mt-4">
         <button class="btn btn-primary" type="submit" [disabled]="leaseForm.invalid">
           Submit
         </button>
+        <button class="btn cancel-btn" type="button" (click)="onCancel()">Cancel</button>
       </div>
     </form>
   </div>

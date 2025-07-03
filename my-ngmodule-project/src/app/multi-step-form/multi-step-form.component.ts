@@ -26,6 +26,8 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
   bookingForm: FormGroup;
   currentStep = 1;
   minDate = new Date();
+  bookedDatesSet = new Set<string>();
+  dateError: string | null = null;
 
   selectedVenueName = '';
   venueOptions: any[] = [];
@@ -73,11 +75,63 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
         this.loadVenueDetails(this.venueId);
       }
     });
+
+    // const venueId = /* get your venueId from route or session */;
+    this.bookingService.getBookedSlots(this.venueId).subscribe(slots => {
+      for (const s of slots) {
+        this.bookedDatesSet.add(s.date);
+      }
+    });
   }
 
   ngOnDestroy(): void {
     clearInterval(this.pollId);
   }
+
+  /** Called whenever the user picks (or types) a date */
+  onStartDateChange(event: MatDatepickerInputEvent<Date>) {
+    const d = event.value;
+    if (!d) {
+      this.dateError = null;
+      return;
+    }
+    const cell = new Date(d);
+    const today = new Date();
+    const iso = d.toISOString().split('T')[0];
+
+    if (this.bookedDatesSet.has(iso)) {
+      // booked → show error and clear field
+      this.dateError = 'That date is already booked';
+      this.bookingForm.get('startDate')!.reset();
+    } else if(cell <= today) {
+      this.dateError = 'Cannot book for today or on past dates';
+      this.bookingForm.get('startDate')!.reset();
+    } else {
+      this.dateError = null;
+      this.calculateEndDate();
+    }
+    
+    
+  }
+
+  /** Tint booked dates red, past dates gray */
+  dateClass = (d: Date, view: string): string => {
+  if (view !== 'month') return '';
+
+  const cell = new Date(d);
+  cell.setHours(0,0,0,0);
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const iso = cell.toISOString().split('T')[0];
+
+  if (cell <= today) {
+    return 'past-date';
+  }
+  if (this.bookedDatesSet.has(iso)) {
+    return 'booked-date';
+  }
+  return 'available-date';
+};
 
   private loadVenueDetails(vid: number) {
     // Fetch name, packages & activities
@@ -130,8 +184,8 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
     this.currentStep = 1;
   }
 
-  onSubmit() {
-  // 1) Mark Step 2 fields as touched so errors show up
+  assurance(){
+    // 1) Mark Step 2 fields as touched so errors show up
   ['fullName','phoneNumber','address']
     .forEach(ctrl => this.bookingForm.get(ctrl)!.markAsTouched());
 
@@ -140,6 +194,16 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
       this.bookingForm.get('phoneNumber')!.invalid ||
       this.bookingForm.get('address')!.invalid) {
     this.snackBar.open('Please fill required Step 2 fields first.', 'Close', { duration: 3000 });
+    return;
+  }
+  }
+
+  onSubmit() {
+  // mark *all* fields touched so errors show up
+  Object.values(this.bookingForm.controls).forEach(ctrl => ctrl.markAsTouched());
+
+  if (this.bookingForm.invalid) {
+    this.snackBar.open('Please complete all fields.', 'Close', { duration: 3000 });
     return;
   }
 

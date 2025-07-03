@@ -5,6 +5,11 @@
 }
 
 ::ng-deep .mat-datepicker-content {
-  background-color: #e0f2fe !important; /* Light blue background */
+  background-color: #e0f2fe !important;
+  padding: 1rem !important;
+  border-radius: 8px !important;
+  border-color: #9f9fb4;
+  border-width: 2px;
+  
 }
 
