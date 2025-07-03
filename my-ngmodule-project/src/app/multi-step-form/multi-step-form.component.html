@@ -14,15 +14,33 @@
           <div class="space-y-4">
             <!-- Start Date -->
             <mat-form-field appearance="fill" class="w-full">
-              <mat-label>Start Date</mat-label>
-              <input matInput [matDatepicker]="picker" formControlName="startDate"
-                     (dateChange)="calculateEndDate()">
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker [startAt]="minDate"></mat-datepicker>
-              <mat-error class="text-red-500" *ngIf="bookingForm.get('startDate')?.hasError('required')">
-                Start date is required
-              </mat-error>
-            </mat-form-field>
+  <mat-label>Start Date
+    <mat-error *ngIf="dateError" class="text-red-500">
+    {{ dateError }}
+  </mat-error>
+  </mat-label>
+  
+  <input
+    matInput
+    [matDatepicker]="picker"
+    formControlName="startDate"
+    [min]="minDate"
+    (dateChange)="onStartDateChange($event)"
+  />
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker
+    #picker
+    [startAt]="minDate"
+    [dateClass]="dateClass"
+    panelClass="my-custom-picker"
+  >
+  </mat-datepicker>
+  <mat-error *ngIf="bookingForm.get('startDate')?.hasError('required')" class="text-red-500">
+    Start date is required
+  </mat-error>
+</mat-form-field>
+
+
 
             <!-- Days Counter -->
             <mat-form-field appearance="fill" class="w-full">
@@ -158,10 +176,8 @@
               Previous
             </button>
             <button type="submit"
-                    (click)="onSubmit"
+                    (click)="assurance()"
                     class="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700">
-                                        <!-- [disabled]="bookingForm.invalid" -->
-
               Submit
             </button>
           </div>
