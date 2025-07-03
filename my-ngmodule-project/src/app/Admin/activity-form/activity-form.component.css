@@ -73,6 +73,7 @@ h3 {
   padding: 12px 25px;
   font-size: 1.1rem;
   border-radius: 10px;
+  margin-right: 15px; /* ✅ Add spacing between buttons */
 }
 
 /* File upload button */
@@ -121,3 +122,26 @@ span.ml-2 {
   }
 }
 
+/* Cancel button styling */
+button.cancel-btn {
+  display: inline-flex;
+  align-items: center;
+  background-color: #dc3545; /* Red for cancel */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border-radius: 10px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button.cancel-btn:hover {
+  background-color: #c82333;
+  transform: scale(1.05);
+}
+
+button.cancel-btn:active {
+  background-color: #bd2130;
+  transform: scale(0.98);
+}

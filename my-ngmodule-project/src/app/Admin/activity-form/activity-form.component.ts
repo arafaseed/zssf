@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-activity-form',
   templateUrl: './activity-form.component.html',
-  standalone:false,
+  standalone: false,
   styleUrls: ['./activity-form.component.css']
 })
 export class ActivityFormComponent implements OnInit {
@@ -43,18 +43,22 @@ export class ActivityFormComponent implements OnInit {
         next: () => {
           this.showToast('Activity added successfully!', 'success');
           this.activityForm.reset();
-          this.router.navigate(['/admin/activitytable']); // Optional route
+          this.router.navigate(['/admin/activitytable']); // Redirect after submit
         },
         error: (err) => this.showToast('Failed to add activity: ' + err.message, 'error')
       });
     }
   }
 
+  onCancel(): void {
+    this.router.navigate(['/admin/activitytable']); // Cancel and go back
+  }
+
   private showToast(message: string, type: 'success' | 'error') {
     this.snackBar.open(message, 'Close', {
       duration: 4000,
-      horizontalPosition:'center',
-      verticalPosition:'bottom',
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
       panelClass: type === 'success' ? 'snackbar-success' : 'snackbar-error'
     });
   }
