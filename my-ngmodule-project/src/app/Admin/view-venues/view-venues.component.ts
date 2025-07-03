@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EditVenueComponentComponent } from '../../edit-venue-component/edit-venue-component.component';
 import { HttpClient } from '@angular/common/http';
 import { ViewVenueService } from '../../Services/view-venue.service';
+import { NgIfContext } from '@angular/common';
 
 @Component({
   selector: 'app-view-venues',
@@ -18,6 +19,8 @@ export class ViewVenuesComponent implements OnInit {
   displayedColumns: string[] = ['venueName', 'capacity', 'description', 'leasePackages', 'addStaff', 'actions'];
   staffList: any[] = [];
   selectedVenueId: number | null = null;
+venue: any;
+
 
   constructor(
     private venueService: ViewVenueService,
@@ -31,27 +34,43 @@ export class ViewVenuesComponent implements OnInit {
     this.loadVenues();
   }
 
-  loadVenues(): void {
-    this.venueService.getAllVenues().subscribe({
-      next: (data: any[]) => {
-        this.venues = data;
+loadVenues(): void {
+  this.venueService.getAllVenues().subscribe({
+    next: (data: any[]) => {
+      this.venues = data;
 
-        // Load lease packages for each venue
-        this.venues.forEach(venue => {
-          this.http.get<any[]>(`http://localhost:8080/api/lease-packages/venue/${venue.venueId}`).subscribe({
-            next: (packages) => venue.leasePackages = packages,
-            error: (error) => {
-              console.error(`Error loading packages for venue ${venue.venueId}:`, error);
-              venue.leasePackages = [];
+      // Load lease packages
+      this.venues.forEach(venue => {
+        this.http.get<any[]>(`http://localhost:8080/api/lease-packages/venue/${venue.venueId}`).subscribe({
+          next: (packages) => venue.leasePackages = packages,
+          error: (error) => {
+            console.error(`Error loading packages for venue ${venue.venueId}:`, error);
+            venue.leasePackages = [];
+          }
+        });
+      });
+
+      // Fetch staff assignments and map them to the venue
+      this.http.get<any[]>('http://localhost:8080/api/staff/all').subscribe({
+        next: (staffList) => {
+          this.venues.forEach(venue => {
+            const staff = staffList.find(s => s.assignedVenueIds?.includes(venue.venueId));
+            if (staff) {
+              venue.assignedStaffId = staff.staffId; // 🟢 Dynamically map staffId
             }
           });
-        });
-      },
-      error: (error) => {
-        this.showToast('Error fetching venues: ' + error.message, 'error');
-      }
-    });
-  }
+        },
+        error: (error) => {
+          console.error('Failed to fetch staff assignments:', error);
+        }
+      });
+    },
+    error: (error) => {
+      this.showToast('Error fetching venues: ' + error.message, 'error');
+    }
+  });
+}
+
 
   editVenue(venueId: number): void {
     const dialogRef = this.dialog.open(EditVenueComponentComponent, {
@@ -88,22 +107,34 @@ export class ViewVenuesComponent implements OnInit {
     });
   }
 
-  assignStaff(staffId: number, venueId: number): void {
-    const payload = { venueId };
+assignStaff(staffId: number, venueId: number): void {
+  const payload = { venueId };
 
-    console.log(`Assigning staff ${staffId} to venue ${venueId}`);
-    this.http.post(`http://localhost:8080/api/staff/assign-venue/${staffId}`, payload).subscribe({
-      next: () => {
-        console.log(`Staff ${staffId} assigned to venue ${venueId}`);
-        this.showToast('Staff assigned to venue!', 'success');
-        this.selectedVenueId = null;
-      },
-      error: (error) => {
-        console.error('Failed to assign staff:', error);
-        this.showToast('Failed to assign staff', 'error');
+  console.log(`Assigning staff ${staffId} to venue ${venueId}`);
+  this.http.post(`http://localhost:8080/api/staff/assign-venue/${staffId}`, payload).subscribe({
+    next: () => {
+      console.log(`Staff ${staffId} assigned to venue ${venueId}`);
+      this.showToast('Staff assigned to venue!', 'success');
+
+      // Update the assigned staff in the venue
+      const assignedVenue = this.venues.find(v => v.venueId === venueId);
+      if (assignedVenue) {
+        assignedVenue.assignedStaffId = staffId;  // 👈 Add this line
       }
-    });
-  }
+
+      this.selectedVenueId = null;
+    },
+    error: (error) => {
+      console.error('Failed to assign staff:', error);
+      this.showToast('Failed to assign staff', 'error');
+    }
+  });
+}
+
+  
+
+  // OR open a modal to select staff, depending on your UX design
+
 
   deleteVenue(venueId: number): void {
     if (confirm("Are you sure you want to delete this venue?")) {

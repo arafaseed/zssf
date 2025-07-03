@@ -46,14 +46,25 @@
     </ng-container>
 
     <!-- Add Staff Button -->
-    <ng-container matColumnDef="addStaff">
-      <th mat-header-cell *matHeaderCellDef>Add Staff</th>
-      <td mat-cell *matCellDef="let venue">
-        <button mat-mini-fab color="accent" (click)="toggleStaffList(venue.venueId)">
-          <mat-icon>person_add</mat-icon>
-        </button>
-      </td>
+    <!-- Add Staff Button or Staff ID -->
+<ng-container matColumnDef="addStaff">
+  <th mat-header-cell *matHeaderCellDef>Add Staff</th>
+  <td mat-cell *matCellDef="let venue">
+    <ng-container *ngIf="venue.assignedStaffId; else showAddButton">
+      <span class="text-green-700 font-semibold">
+        Staff ID: {{ venue.assignedStaffId }}
+      </span>
     </ng-container>
+
+    <ng-template #showAddButton>
+      <button mat-mini-fab color="accent" (click)="toggleStaffList(venue.venueId)">
+        <mat-icon>person_add</mat-icon>
+      </button>
+    </ng-template>
+  </td>
+</ng-container>
+
+
 
     <!-- Actions -->
     <ng-container matColumnDef="actions">

@@ -143,4 +143,5 @@ export class VenueViewComponent implements OnInit, OnDestroy {
       this.router.navigate(['/login']);
     }
   }
+
 }
