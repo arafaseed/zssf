@@ -31,6 +31,7 @@ export class CancelledListComponent implements OnInit, OnDestroy {
     });
   }
 
+
   ngOnDestroy(): void {
     if (this.sessionCheckSub) {
       this.sessionCheckSub.unsubscribe();

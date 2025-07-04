@@ -79,9 +79,6 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Default admin page
       { path: '**', redirectTo: 'dashboard' }, // Catch-all
 
-    
-
-
     ]
   }
 

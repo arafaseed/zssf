@@ -10,7 +10,6 @@ import { BookingService } from '../Services/booking.service';
 import html2canvas from 'html2canvas';
 import { InvoiceService } from '../Services/invoice.service';
 
-
 @Component({
   selector: 'app-invoice',
   standalone: false,

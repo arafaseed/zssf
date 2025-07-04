@@ -1,26 +1,7 @@
 <div class="p-4">
   <!-- Loading Spinner -->
   <div *ngIf="loading" class="text-center py-8">
-    <svg
-      class="animate-spin h-8 w-8 text-blue-600 mx-auto"
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24">
-      <circle
-        class="opacity-25"
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        stroke-width="4">
-      </circle>
-      <path
-        class="opacity-75"
-        fill="currentColor"
-        d="M4 12a8 8 0 018-8v8H4z">
-      </path>
-    </svg>
-    <p class="mt-2 text-gray-500">Loading bookings…</p>
+    <!-- …existing spinner… -->
   </div>
 
   <!-- Error Message -->
@@ -29,31 +10,30 @@
   </div>
 
   <!-- Cards Grid -->
-  <div *ngIf="!loading && !errorMessage" class="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
-    <!-- One card per booking -->
-    <div
-      *ngFor="let booking of bookings"
-      class="bg-white rounded-md-lg shadow-md p-4 flex flex-col justify-between border-2 border-cyan-300"
-    >
-      <div>
-        <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ booking.venueName }}</h3>
-        <p class="text-gray-700"><strong>Package:</strong> {{ booking.packageName }}</p>
-        <p class="text-gray-700 mb-2">
-          <strong>Price:</strong> {{ booking.price | currency:'TZS':'symbol' }}
+  <div *ngIf="!loading && !errorMessage" class="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+    <mat-card *ngFor="let booking of bookings" class="shadow-lg">
+      <mat-card-header>
+        <mat-card-title>{{ booking.venueName }}</mat-card-title>
+        <mat-card-subtitle>#{{ booking.bookingCode }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p><strong>Package:</strong> {{ booking.packageName }} &mdash; {{ booking.price | currency:'TZS':'symbol' }}</p>
+        <p><strong>Activity:</strong> {{ booking.activityName }}</p>
+        <p><strong>Customer:</strong> {{ booking.customerName }} ({{ booking.customerPhone }})</p>
+        <p><strong>Dates:</strong>
+          {{ booking.startDate | date:'mediumDate' }}
+          <ng-container *ngIf="booking.endDate"> — {{ booking.endDate | date:'mediumDate' }}</ng-container>
         </p>
-        <p class="text-gray-700"><strong>Customer:</strong> {{ booking.customerName }}</p>
-        <p class="text-gray-700 mb-2"><strong>Phone:</strong> {{ booking.customerPhone }}</p>
-        <p class="text-gray-600 text-sm italic">
-          Booking Date: {{ booking.bookingDate | date:'medium' }}
-        </p>
-      </div>
-      <button
-        (click)="onCheckIn(booking)"
-        class="mt-4 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-md-lg transition"
-      >
-        Check In
-      </button>
-    </div>
+        <p><strong>Status:</strong> {{ booking.status }}</p>
+      </mat-card-content>
+
+      <mat-card-actions align="end">
+        <button mat-flat-button color="primary" (click)="onCheckIn(booking)">
+          Check In
+        </button>
+      </mat-card-actions>
+    </mat-card>
 
     <!-- No remaining bookings -->
     <div *ngIf="!bookings.length" class="col-span-full text-center py-8 text-gray-500">
