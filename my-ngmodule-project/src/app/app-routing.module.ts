@@ -30,7 +30,11 @@ const routes: Routes = [
   { path: '', redirectTo: 'venue', pathMatch: 'full' },
   { path: 'venue', component: VenueViewComponent },
   { path: 'reservation', component: HomeComponent }, 
+<<<<<<< Updated upstream
    
+=======
+  
+>>>>>>> Stashed changes
   { path: 'dash', component: DashboardComponent },
 
   { path: 'layout', component: LayoutComponent },
@@ -38,8 +42,11 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'booking', component: MultiStepFormComponent },
   { path: 'invoice/:bookingId', component: InvoiceComponent },
+<<<<<<< Updated upstream
 
    { path: 'mybooking', component: PhoneSearchComponent },
+=======
+>>>>>>> Stashed changes
 
   {
     path: 'staff',

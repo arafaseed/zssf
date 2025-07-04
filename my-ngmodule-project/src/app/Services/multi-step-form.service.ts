@@ -33,6 +33,7 @@ export class MultiStepFormService {
     return this.http.get<any[]>(this.packageApiUrl);
   }
 
+<<<<<<< Updated upstream
   getLeasesByVenue(venueId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.packageApiUrl}/venue/${venueId}`);
   }
@@ -40,10 +41,17 @@ export class MultiStepFormService {
   getActivitiesByVenue(venueId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.activityApiUrl}/venue/${venueId}`);
   }
+=======
+>>>>>>> Stashed changes
 
   // multi-step-form.service.ts
 getInvoiceByBookingId(bookingId: number): Observable<any> {
   return this.http.get<any>(`http://localhost:8080/api/invoices/view/by-booking?bookingId=${bookingId}`);
 }
 
+<<<<<<< Updated upstream
+=======
+  
+  
+>>>>>>> Stashed changes
 }

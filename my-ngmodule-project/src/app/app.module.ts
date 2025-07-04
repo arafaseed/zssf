@@ -159,10 +159,16 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     CommonModule,
     BrowserModule,
     DatePipe,
+<<<<<<< Updated upstream
     StaffModule,
     MatProgressSpinnerModule 
 ],
   // exports: [DashboardSwitchComponent],
+=======
+
+
+  ],
+>>>>>>> Stashed changes
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     provideAnimationsAsync(),
