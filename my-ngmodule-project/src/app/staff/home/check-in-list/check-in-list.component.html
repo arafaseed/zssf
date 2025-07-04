@@ -1,27 +1,43 @@
 <div class="p-4">
-  <div *ngIf="loading" class="text-center py-8">...loading spinner...</div>
-  <div *ngIf="!loading && errorMessage" class="text-center text-red-600 py-4">{{ errorMessage }}</div>
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="text-center py-8">
+    <!-- …existing spinner… -->
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="!loading && errorMessage" class="text-center text-red-600 py-4">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Cards Grid -->
   <div *ngIf="!loading && !errorMessage" class="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-    <mat-card *ngFor="let item of bookings" class="booking-card h-full flex flex-col">
+    <mat-card *ngFor="let booking of bookings" class="shadow-lg">
       <mat-card-header>
-        <mat-card-title>{{ item.booking.venueName }}</mat-card-title>
-        <mat-card-subtitle>#{{ item.booking.bookingCode }}</mat-card-subtitle>
+        <mat-card-title>{{ booking.venueName }}</mat-card-title>
+        <mat-card-subtitle>#{{ booking.bookingCode }}</mat-card-subtitle>
       </mat-card-header>
 
-      <mat-card-content class="py-2 flex-grow">
-        <p><strong>Package:</strong> {{ item.packageName }}</p>
-        <p><strong>Price:</strong> {{ item.price | number:'1.0-0' }} TZS</p>
-        <p><strong>Activity:</strong> {{ item.activityName }}</p>
-        <p><strong>Start:</strong> {{ item.booking.startDate | date:'mediumDate' }} ({{ item.booking.startTime }})</p>
-        <p *ngIf="item.booking.endDate"><strong>End:</strong> {{ item.booking.endDate | date:'mediumDate' }} ({{ item.booking.endTime }})</p>
-        <p><strong>Status:</strong> {{ item.booking.status }}</p>
+      <mat-card-content>
+        <p><strong>Package:</strong> {{ booking.packageName }} &mdash; {{ booking.price | currency:'TZS':'symbol' }}</p>
+        <p><strong>Activity:</strong> {{ booking.activityName }}</p>
+        <p><strong>Customer:</strong> {{ booking.customerName }} ({{ booking.customerPhone }})</p>
+        <p><strong>Dates:</strong>
+          {{ booking.startDate | date:'mediumDate' }}
+          <ng-container *ngIf="booking.endDate"> — {{ booking.endDate | date:'mediumDate' }}</ng-container>
+        </p>
+        <p><strong>Status:</strong> {{ booking.status }}</p>
       </mat-card-content>
 
       <mat-card-actions align="end">
-        <button mat-raised-button color="primary" (click)="onCheckIn(item)">
+        <button mat-flat-button color="primary" (click)="onCheckIn(booking)">
           Check In
         </button>
       </mat-card-actions>
     </mat-card>
+
+    <!-- No remaining bookings -->
+    <div *ngIf="!bookings.length" class="col-span-full text-center py-8 text-gray-500">
+      No bookings pending check-in.
+    </div>
   </div>
 </div>

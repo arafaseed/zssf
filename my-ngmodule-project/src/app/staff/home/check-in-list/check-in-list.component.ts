@@ -1,14 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StaffBookingService, BookingDTO, VenueHandOverDTO } from '../../staff-booking.service';
-import { switchMap, map, forkJoin, catchError, of } from 'rxjs';
-
-
-interface DisplayBooking {
-  booking: BookingDTO;
-  packageName: string;
-  price: number;
-  activityName: string;
-}
+import { forkJoin, of } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-check-in-list',
@@ -17,8 +10,7 @@ interface DisplayBooking {
   styleUrls: ['./check-in-list.component.css']
 })
 export class CheckInListComponent implements OnInit {
-  // bookings: BookingDTO[] = [];
-  bookings: DisplayBooking[] = [];
+  bookings: Array<BookingDTO & { packageName?: string; activityName?: string }> = [];
   loading = true;
   errorMessage: string | null = null;
 
@@ -28,20 +20,15 @@ export class CheckInListComponent implements OnInit {
   constructor(private bookingService: StaffBookingService) {}
 
   ngOnInit(): void {
-    // 1) Retrieve from sessionStorage
     const vid = sessionStorage.getItem('activeVenueId');
     const sidn = sessionStorage.getItem('auth-username');
-
     if (!vid || !sidn) {
       this.errorMessage = 'Venue or Staff IDN not found in session. Please log in again.';
       this.loading = false;
       return;
     }
-
     this.venueId = +vid;
     this.staffIDN = sidn;
-
-    // 2) Load data
     this.loadData();
   }
 
@@ -50,51 +37,53 @@ export class CheckInListComponent implements OnInit {
     this.errorMessage = null;
 
     this.bookingService.getCompletedBookingsByVenue(this.venueId).pipe(
-      switchMap(bookings =>
-        this.bookingService.getVenueHandOvers(this.venueId).pipe(
-          map(handovers => {
-            const checkedInSet = new Set(handovers.map(h => h.forBooking));
-            return bookings.filter(b => !checkedInSet.has(b.bookingId));
-          })
-        )
-      ),
-      switchMap(pending => {
-        return forkJoin(pending.map(b =>
-          forkJoin({
-            pkg: this.bookingService.getPackageById(b.venuePackageId).pipe(catchError(() => of({ packageName: '—', price: 0 }))),
-            act: this.bookingService.getActivityById(b.venueActivityId).pipe(catchError(() => of({ activityName: '—' })))
-          }).pipe(
-            map(({ pkg, act }) => ({
-              booking: b,
-              packageName: pkg.packageName,
-              price: pkg.price,
-              activityName: act.activityName
-            }))
-          )
-        ));
-      })
+      switchMap(completed => this.bookingService.getVenueHandOvers(this.venueId).pipe(
+        switchMap(handovers => {
+          const checkedIn = new Set(handovers.map(h => h.forBooking));
+          const pending = completed
+            .filter(b => !checkedIn.has(b.bookingId))
+            .sort((a, b) => new Date(b.bookingDate).getTime() - new Date(a.bookingDate).getTime());
+          // now enrich each pending booking
+          const enriched$ = pending.map(b => {
+            // fetch package and activity in parallel
+            return forkJoin({
+              pkg: this.bookingService.getLeaseById(b.venuePackageId).pipe(catchError(() => of({ packageName: '—', price: 0 }))),
+              act: this.bookingService.getActivityById(b.venueActivityId).pipe(catchError(() => of({ activityName: '—' })))
+            }).pipe(
+              switchMap(({ pkg, act }) => {
+                return of({
+                  ...b,
+                  packageName: pkg.packageName,
+                  price: pkg.price,
+                  activityName: act.activityName
+                });
+              })
+            );
+          });
+          // wait for *all* enriched bookings
+          return forkJoin(enriched$);
+        })
+      ))
     ).subscribe({
-      next: list => {
-        this.bookings = list.sort((a, b) =>
-          new Date(b.booking.bookingDate).getTime() - new Date(a.booking.bookingDate).getTime()
-        );
+      next: enrichedList => {
+        this.bookings = enrichedList;
         this.loading = false;
       },
       error: err => {
         console.error(err);
-        this.errorMessage = 'Failed to load bookings or related data.';
+        this.errorMessage = 'Failed to load bookings';
         this.loading = false;
       }
     });
   }
 
-  onCheckIn(item: DisplayBooking): void {
-    this.bookingService.checkIn(item.booking.bookingCode, this.staffIDN).subscribe({
+  onCheckIn(booking: BookingDTO): void {
+    this.bookingService.checkIn(booking.bookingCode, this.staffIDN).subscribe({
       next: () => {
-        this.bookings = this.bookings.filter(b => b.booking.bookingId !== item.booking.bookingId);
+        this.bookings = this.bookings.filter(b => b.bookingId !== booking.bookingId);
       },
       error: err => {
-        console.error(err);
+        console.error('Check-in failed', err);
         alert('Check-in failed: ' + (err.error?.message || err.message));
       }
     });

@@ -5,8 +5,8 @@ import { Observable } from 'rxjs';
 export interface BookingDTO {
   bookingId: number;
   bookingCode: string;
-  venueActivityId: number;
   venuePackageId: number;
+  venueActivityId: number;
   bookingDate: string;   // e.g. "2025-05-22"
   startDate: string;
   startTime: string;
@@ -62,7 +62,7 @@ export class StaffBookingService {
 
   //  Get completed bookings for a venue
   getCompletedBookingsByVenue(venueId: number): Observable<BookingDTO[]> {
-    return this.http.get<BookingDTO[]>(`${this.baseUrl}/bookings/venue/pending-checkin/${venueId}`);
+    return this.http.get<BookingDTO[]>(`${this.baseUrl}/bookings/venue/completed/${venueId}`);
   }
 
   // Get all handovers (checked-in) for a venue
@@ -102,15 +102,17 @@ export class StaffBookingService {
     );
   }
 
-  getPackageById(leaseId: number): Observable<{ leaseId: number; packageName: string; price: number }> {
+  /** Fetch one lease package by its ID */
+  getLeaseById(leaseId: number): Observable<{ leaseId: number; packageName: string; price: number }> {
     return this.http.get<{ leaseId: number; packageName: string; price: number }>(
-      `http://localhost:8080/api/lease-packages/leaseBy/${leaseId}`
+      `${this.baseUrl}/lease-packages/leaseBy/${leaseId}`
     );
   }
 
-  getActivityById(activityId: number): Observable<{ activityId: number; activityName: string }> {
-    return this.http.get<{ activityId: number; activityName: string }>(
-      `http://localhost:8080/api/activities/${activityId}`
+  /** Fetch one activity by its ID */
+  getActivityById(activityId: number): Observable<{ activityId: number; activityName: string; activityDescription: string }> {
+    return this.http.get<{ activityId: number; activityName: string; activityDescription: string }>(
+      `${this.baseUrl}/activities/${activityId}`
     );
   }
 

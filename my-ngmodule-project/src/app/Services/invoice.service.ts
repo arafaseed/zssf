@@ -14,9 +14,5 @@ export class InvoiceService {
   constructor(private http: HttpClient) {}
 
   getInvoiceByBookingId(bookingId: number): Observable<any> {
-<<<<<<< Updated upstream
     return this.http.get(`${this.baseUrl}/view/by-booking/${bookingId}`);
-=======
-    return this.http.get(`${this.baseUrl}/view/${bookingId}`);
->>>>>>> Stashed changes
   }}
