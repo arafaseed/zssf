@@ -13,22 +13,33 @@ export class BookingListComponent implements OnInit {
   searchDate: string = '';
   currentStatus: string = 'ALL';
 
+
+    venueMap: { [key: number]: string } = {};
   constructor(private bookingService: BookingService) {}
 
   ngOnInit(): void {
     this.fetchBookings();
   }
 
-  fetchBookings(): void {
-    this.bookingService.getBookings().subscribe((data) => {
-      // Sort by startDate
-      this.bookings = data.sort((a, b) =>
-        new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
-      );
-      this.filteredResults = [...this.bookings]; // show all by default
+   fetchBookings(): void {
+    this.bookingService.getAllVenues().subscribe(venues => {
+      this.venueMap = {};
+      venues.forEach(v => {
+        this.venueMap[v.venueId] = v.venueName;
+      });
+
+      this.bookingService.getBookings().subscribe((data) => {
+        this.bookings = data.map(b => ({
+          ...b,
+          venue: {
+            ...b.venue,
+            venueName: this.venueMap[b.venueId] || 'Unknown'
+          }
+        }));
+        this.filteredResults = [...this.bookings];
+      });
     });
   }
-
   filterByStatus(status: string): void {
     this.currentStatus = status;
     this.searchDate = ''; // reset search

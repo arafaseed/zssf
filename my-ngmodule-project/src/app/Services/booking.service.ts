@@ -16,6 +16,10 @@ export interface Booking {
     customerId: number;
     fullName: string;
   };
+  venue: {
+  venueId: number;
+  venueName: string;
+  };
 }
 
 export interface BookedSlot {
@@ -119,4 +123,9 @@ export class BookingService {
   getActivities(venueId: any) {
     throw new Error('Method  getActivities not implemented.');
   }
+
+  getAllVenues(): Observable<any[]> {
+  return this.http.get<any[]>('http://localhost:8080/api/venues/view/all');
+}
+
 }
