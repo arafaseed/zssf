@@ -217,7 +217,6 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
 
   // 3) Gather the values we need for the confirmation dialog:
   const daysCount = this.bookingForm.value.daysCount;
-  // const startDate: Date = this.bookingForm.value.startDate;
   const rawStartDate: Date = this.bookingForm.value.startDate;
   const endDate: Date  = this.bookingForm.value.endDate;
   
@@ -237,7 +236,6 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
       packageName:    selectedPkg.packageName,
       activityName:   selectedAtvt.activityName,
       price:          totalPrice,
-      // startDate:      startDate,
       startDate:      rawStartDate,
       endDate:        endDate,
       durationInDays: daysCount
@@ -248,46 +246,19 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
   dialogRef.afterClosed().subscribe(confirmed => {
     if (!confirmed) return;
 
-    // build the actual payload exactly as your backend expects:
-<<<<<<< Updated upstream
-  const payload = {
-  venueId: this.bookingForm.value.venueId,
-  venueActivityId: this.bookingForm.value.venueActivityId,
-  venuePackageId: this.bookingForm.value.venuePackageId,
-  startDate: startDate,
-  startTime: selectedPkg.start || '06:00',
-  // Get endDate directly from the form control, not from form.value object:
-  endDate: this.bookingForm.get('endDate')!.value,
-  endTime: selectedPkg.end || '00:00',
-  fullName: this.bookingForm.value.fullName,
-  phoneNumber: this.bookingForm.value.phoneNumber,
-  email: this.bookingForm.value.email,
-  address: this.bookingForm.value.address
-};
-
-=======
     const payload = {
       venueId:           this.bookingForm.value.venueId,
       venueActivityId:   this.bookingForm.value.venueActivityId,
       venuePackageId:    this.bookingForm.value.venuePackageId,
       startDate:         this.formatDate(this.bookingForm.get('startDate')!.value),
-      // startDate:         this.formatDate(rawStartDate),
-      // endDate:           this.formatDate(this.bookingForm.value.endDate),
       endDate:           this.formatDate(this.bookingForm.get('endDate')!.value),
-
-
-      // startDate:         startDate,
-      // startDate:         rawStartDate.toISOString().split('T')[0],
       startTime:         selectedPkg.start || '06:00',
-      // endDate:           endDate,
-      // endDate:           this.bookingForm.value.endDate?.toISOString().split('T')[0],
       endTime:           selectedPkg.end   || '00:00',
       fullName:          this.bookingForm.value.fullName,
       phoneNumber:       this.bookingForm.value.phoneNumber,
       email:             this.bookingForm.value.email,
       address:           this.bookingForm.value.address
     };
->>>>>>> Stashed changes
 
     this.bookingService.createBooking(payload).subscribe({
       next: (res: any) => {
