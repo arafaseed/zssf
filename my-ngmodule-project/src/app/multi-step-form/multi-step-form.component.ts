@@ -22,18 +22,7 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
   templateUrl: './multi-step-form.component.html',
   styleUrls: ['./multi-step-form.component.css']
 })
-<<<<<<< Updated upstream
 export class MultiStepFormComponent implements OnInit, OnDestroy {
-=======
-export class MultiStepFormComponent implements OnInit {
-  sessionOptions = [
-    { label: 'Session 1: Asubuhi- Mchana', start: '06:00', end: '13:00' },
-    { label: 'Session 2: Alasiri- Usiku',  start: '14:00', end: '00:00' },
-    { label: 'SIKU NZIMA:', start: '06:00', end: '00:00' }
-  ];
-  selectedSessionTime: string | null = null;
-  currentStep = 1;
->>>>>>> Stashed changes
   bookingForm: FormGroup;
   currentStep = 1;
   minDate = new Date();

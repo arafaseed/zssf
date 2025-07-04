@@ -1,5 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { StaffBookingService, BookingDTO, VenueHandOverDTO } from '../../staff-booking.service';
+import { switchMap, map, forkJoin, catchError, of } from 'rxjs';
+
+
+interface DisplayBooking {
+  booking: BookingDTO;
+  packageName: string;
+  price: number;
+  activityName: string;
+}
 
 @Component({
   selector: 'app-check-in-list',
@@ -8,7 +17,8 @@ import { StaffBookingService, BookingDTO, VenueHandOverDTO } from '../../staff-b
   styleUrls: ['./check-in-list.component.css']
 })
 export class CheckInListComponent implements OnInit {
-  bookings: BookingDTO[] = [];
+  // bookings: BookingDTO[] = [];
+  bookings: DisplayBooking[] = [];
   loading = true;
   errorMessage: string | null = null;
 
@@ -39,51 +49,52 @@ export class CheckInListComponent implements OnInit {
     this.loading = true;
     this.errorMessage = null;
 
-    // Make parallel requests: completed bookings & existing handovers
-    this.bookingService.getCompletedBookingsByVenue(this.venueId).subscribe({
-      next: (completedBookings) => {
-        this.bookingService.getVenueHandOvers(this.venueId).subscribe({
-          next: (handovers) => {
-            const checkedInSet = new Set<number>(
-              handovers.map(h => h.forBooking)
-            );
-
-            // Filter out already checked-in bookings
-            const pending = completedBookings
-              .filter(b => !checkedInSet.has(b.bookingId))
-              // Sort by bookingDate descending (most recent first)
-              .sort((a, b) => {
-                const dateA = new Date(a.bookingDate);
-                const dateB = new Date(b.bookingDate);
-                return dateB.getTime() - dateA.getTime();
-              });
-
-            this.bookings = pending;
-            this.loading = false;
-          },
-          error: (err) => {
-            this.errorMessage = 'Failed to load check-in records.';
-            console.error(err);
-            this.loading = false;
-          }
-        });
+    this.bookingService.getCompletedBookingsByVenue(this.venueId).pipe(
+      switchMap(bookings =>
+        this.bookingService.getVenueHandOvers(this.venueId).pipe(
+          map(handovers => {
+            const checkedInSet = new Set(handovers.map(h => h.forBooking));
+            return bookings.filter(b => !checkedInSet.has(b.bookingId));
+          })
+        )
+      ),
+      switchMap(pending => {
+        return forkJoin(pending.map(b =>
+          forkJoin({
+            pkg: this.bookingService.getPackageById(b.venuePackageId).pipe(catchError(() => of({ packageName: '—', price: 0 }))),
+            act: this.bookingService.getActivityById(b.venueActivityId).pipe(catchError(() => of({ activityName: '—' })))
+          }).pipe(
+            map(({ pkg, act }) => ({
+              booking: b,
+              packageName: pkg.packageName,
+              price: pkg.price,
+              activityName: act.activityName
+            }))
+          )
+        ));
+      })
+    ).subscribe({
+      next: list => {
+        this.bookings = list.sort((a, b) =>
+          new Date(b.booking.bookingDate).getTime() - new Date(a.booking.bookingDate).getTime()
+        );
+        this.loading = false;
       },
-      error: (err) => {
-        this.errorMessage = 'Failed to load completed bookings.';
+      error: err => {
         console.error(err);
+        this.errorMessage = 'Failed to load bookings or related data.';
         this.loading = false;
       }
     });
   }
 
-  onCheckIn(booking: BookingDTO): void {
-    this.bookingService.checkIn(booking.bookingCode, this.staffIDN).subscribe({
+  onCheckIn(item: DisplayBooking): void {
+    this.bookingService.checkIn(item.booking.bookingCode, this.staffIDN).subscribe({
       next: () => {
-        // Remove from list so it disappears
-        this.bookings = this.bookings.filter(b => b.bookingId !== booking.bookingId);
+        this.bookings = this.bookings.filter(b => b.booking.bookingId !== item.booking.bookingId);
       },
-      error: (err) => {
-        console.error('Check-in failed', err);
+      error: err => {
+        console.error(err);
         alert('Check-in failed: ' + (err.error?.message || err.message));
       }
     });

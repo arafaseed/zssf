@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 export interface BookingDTO {
   bookingId: number;
   bookingCode: string;
+  venueActivityId: number;
+  venuePackageId: number;
   bookingDate: string;   // e.g. "2025-05-22"
   startDate: string;
   startTime: string;
@@ -97,6 +99,18 @@ export class StaffBookingService {
   getReportsByVenue(venueId: number): Observable<Report[]> {
     return this.http.get<Report[]>(
       `${this.baseUrl}/venue-handover/venue-detailed/${venueId}`
+    );
+  }
+
+  getPackageById(leaseId: number): Observable<{ leaseId: number; packageName: string; price: number }> {
+    return this.http.get<{ leaseId: number; packageName: string; price: number }>(
+      `http://localhost:8080/api/lease-packages/leaseBy/${leaseId}`
+    );
+  }
+
+  getActivityById(activityId: number): Observable<{ activityId: number; activityName: string }> {
+    return this.http.get<{ activityId: number; activityName: string }>(
+      `http://localhost:8080/api/activities/${activityId}`
     );
   }
 

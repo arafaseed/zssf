@@ -13,6 +13,10 @@ import { CheckoutModalComponent } from './modals/checkout-modal/checkout-modal.c
 import { CancelledListComponent } from './home/cancelled-list/cancelled-list.component';
 import { ReportsComponent } from './home/reports/reports.component';
 import { DashboardSwitchComponent } from './dashboard-switch/dashboard-switch.component';
+import { MatCardModule }   from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+// … other imports
+
 
 
 
@@ -33,7 +37,9 @@ import { DashboardSwitchComponent } from './dashboard-switch/dashboard-switch.co
     ReactiveFormsModule,
     StaffRoutingModule,
     HttpClientModule,
-    RouterModule
+    RouterModule,
+    MatCardModule,
+    MatButtonModule
 ],
   exports: [DashboardSwitchComponent]
 
