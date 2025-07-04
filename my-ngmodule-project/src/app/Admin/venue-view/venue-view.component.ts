@@ -3,6 +3,7 @@ import { ViewVenueService } from '../../Services/view-venue.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-venue-view',
@@ -15,6 +16,7 @@ export class VenueViewComponent implements OnInit, OnDestroy {
   venues: any[] = [];
   filteredVenues: any[] = [];
   currentSlideIndices: number[] = [];
+  activities: any[] = [];
 
   // --- Inline Image Viewer state ---
   inlineViewerVisible = false;
@@ -26,22 +28,22 @@ export class VenueViewComponent implements OnInit, OnDestroy {
   constructor(
     private venueService: ViewVenueService,
     private router: Router,
+    private http: HttpClient
   ) {
     // Disable route reuse to force component refresh on navigation
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
 
-    // Optionally scroll to top on navigation end
+    // Scroll to top on navigation
     this.routerSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
         window.scrollTo(0, 0);
-        // Reset search and other states if needed here
         this.resetState();
       });
   }
 
   ngOnInit(): void {
-    this.loadVenues();
+    this.loadActivitiesAndVenues();
   }
 
   ngOnDestroy() {
@@ -58,15 +60,28 @@ export class VenueViewComponent implements OnInit, OnDestroy {
     this.venues = [];
   }
 
-  loadVenues(): void {
-    this.venueService.getAllVenues().subscribe((data: any[]) => {
-      this.venues = data.map(venue => ({
-        ...venue,
-        showDescription: false,
-        venueImages: venue.venueImages || []
-      }));
-      this.filteredVenues = [...this.venues];
-      this.currentSlideIndices = new Array(this.venues.length).fill(0);
+  loadActivitiesAndVenues(): void {
+    // First load all activities
+    this.http.get<any[]>('http://localhost:8080/api/activities').subscribe((activityData) => {
+      this.activities = activityData;
+
+      // Then load venues and attach activity names
+      this.venueService.getAllVenues().subscribe((venueData: any[]) => {
+        this.venues = venueData.map(venue => {
+          const activityNames = this.activities
+            .filter(a => a.venueId === venue.venueId)
+            .map(a => a.activityName);
+          return {
+            ...venue,
+            activityNames,
+            showDescription: false,
+            venueImages: venue.venueImages || []
+          };
+        });
+
+        this.filteredVenues = [...this.venues];
+        this.currentSlideIndices = new Array(this.venues.length).fill(0);
+      });
     });
   }
 
@@ -93,14 +108,13 @@ export class VenueViewComponent implements OnInit, OnDestroy {
     this.selectedImages = images;
     this.currentImageIndex = index;
     this.inlineViewerVisible = true;
-   
   }
 
   closeInlineImageViewer(): void {
     this.inlineViewerVisible = false;
     this.selectedImages = [];
     document.body.style.overflow = 'auto';
-    this.router.navigate(['/']);  
+    this.router.navigate(['/']);
   }
 
   prevInlineImage(): void {
@@ -122,10 +136,15 @@ export class VenueViewComponent implements OnInit, OnDestroy {
   }
 
   searchVenues(): void {
-    if (this.searchTerm.trim()) {
+    const term = this.searchTerm.trim().toLowerCase();
+
+    if (term) {
       this.venues = this.filteredVenues.filter((venue) =>
-        venue.venueName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        venue.capacity.toString().includes(this.searchTerm.trim())
+        venue.venueName.toLowerCase().includes(term) ||
+        venue.capacity.toString().includes(term) ||
+        (venue.activityNames && venue.activityNames.some((name: string) =>
+          name.toLowerCase().includes(term)
+        ))
       );
     } else {
       this.venues = [...this.filteredVenues];
@@ -143,5 +162,4 @@ export class VenueViewComponent implements OnInit, OnDestroy {
       this.router.navigate(['/login']);
     }
   }
-
 }
