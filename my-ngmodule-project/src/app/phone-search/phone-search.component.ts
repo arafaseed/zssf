@@ -15,27 +15,29 @@ export class PhoneSearchComponent {
 
   constructor(private http: HttpClient) {}
 
-  onSubmit() {
-    if (!this.phoneNumber.trim()) return;
+ onSubmit() {
+  if (!this.phoneNumber.trim()) return;
 
-    this.searching = true;
-    this.noResults = false;
-    this.bookings = [];
+  this.searching = true;
+  this.noResults = false;
+  this.bookings = [];
 
-    this.http.get<any[]>(`http://localhost:8080/api/bookings/view/by-phone/${this.phoneNumber}`)
-      .subscribe({
-        next: (data) => {
-          this.bookings = data;
-          this.noResults = data.length === 0;
-          this.searching = false;
-        },
-        error: (err) => {
-          console.error('Error fetching bookings:', err);
-          this.noResults = true;
-          this.searching = false;
-        }
-      });
-  }
+  this.http.get<any[]>(`http://localhost:8080/api/bookings/view/by-phone/${this.phoneNumber}`)
+    .subscribe({
+      next: (data) => {
+        // Filter out canceled bookings
+        this.bookings = data.filter(b => b.status.toLowerCase() !== 'cancelled');
+        this.noResults = this.bookings.length === 0;
+        this.searching = false;
+      },
+      error: (err) => {
+        console.error('Error fetching bookings:', err);
+        this.noResults = true;
+        this.searching = false;
+      }
+    });
+}
+
 
   cancelBooking(bookingId: number) {
     const confirmCancel = confirm('Are you sure you want to cancel this booking?');
