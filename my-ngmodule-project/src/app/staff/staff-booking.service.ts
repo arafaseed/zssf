@@ -60,7 +60,7 @@ export class StaffBookingService {
 
   //  Get completed bookings for a venue
   getCompletedBookingsByVenue(venueId: number): Observable<BookingDTO[]> {
-    return this.http.get<BookingDTO[]>(`${this.baseUrl}/bookings/venue/completed/${venueId}`);
+    return this.http.get<BookingDTO[]>(`${this.baseUrl}/bookings/venue/pending-checkin/${venueId}`);
   }
 
   // Get all handovers (checked-in) for a venue

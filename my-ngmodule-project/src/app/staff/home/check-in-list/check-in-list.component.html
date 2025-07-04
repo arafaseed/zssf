@@ -29,11 +29,11 @@
   </div>
 
   <!-- Cards Grid -->
-  <div *ngIf="!loading && !errorMessage" class="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
+  <div *ngIf="!loading && !errorMessage" class="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ">
     <!-- One card per booking -->
     <div
       *ngFor="let booking of bookings"
-      class="bg-white rounded-md-lg shadow-md p-4 flex flex-col justify-between border-2 border-cyan-300"
+      class="bg-white rounded-md-lg shadow-2xl p-4 flex flex-col justify-between border-2 border-cyan-300"
     >
       <div>
         <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ booking.venueName }}</h3>
