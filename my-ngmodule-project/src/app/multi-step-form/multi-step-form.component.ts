@@ -249,23 +249,6 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
     if (!confirmed) return;
 
     // build the actual payload exactly as your backend expects:
-<<<<<<< Updated upstream
-  const payload = {
-  venueId: this.bookingForm.value.venueId,
-  venueActivityId: this.bookingForm.value.venueActivityId,
-  venuePackageId: this.bookingForm.value.venuePackageId,
-  startDate: startDate,
-  startTime: selectedPkg.start || '06:00',
-  // Get endDate directly from the form control, not from form.value object:
-  endDate: this.bookingForm.get('endDate')!.value,
-  endTime: selectedPkg.end || '00:00',
-  fullName: this.bookingForm.value.fullName,
-  phoneNumber: this.bookingForm.value.phoneNumber,
-  email: this.bookingForm.value.email,
-  address: this.bookingForm.value.address
-};
-
-=======
     const payload = {
       venueId:           this.bookingForm.value.venueId,
       venueActivityId:   this.bookingForm.value.venueActivityId,
@@ -287,7 +270,6 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
       email:             this.bookingForm.value.email,
       address:           this.bookingForm.value.address
     };
->>>>>>> Stashed changes
 
     this.bookingService.createBooking(payload).subscribe({
       next: (res: any) => {
