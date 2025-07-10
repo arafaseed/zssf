@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../Services/auth.service';
+import { VenueStateService } from '../../Services/venue-state.service';
 
 interface Venue {
   venueId: number;
@@ -24,7 +25,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   constructor(
     private http: HttpClient,
-    private auth: AuthService
+    private auth: AuthService,
+    private venueState: VenueStateService
   ) {}
 
   ngOnInit(): void {
@@ -85,6 +87,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     try {
       sessionStorage.setItem('activeVenueId', venue.venueId.toString());
       sessionStorage.setItem('activeVenueName', venue.venueName);
+      this.venueState.notifyVenueChange();
     } catch (e) {
       console.warn('Could not store active venue in sessionStorage.', e);
     }

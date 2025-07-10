@@ -1,10 +1,10 @@
 <app-header></app-header>
 
-<div class="min-h-screen bg-gray-50 p-4 pt-24 rounded-md-lg">
+<div class="min-h-screen p-4 pt-24 bg-gray-50 rounded-md-lg">
   <div class="max-w-3xl mx-auto">
     <!-- Card Container -->
-    <div class="bg-white border border-gray-200 rounded-lg shadow-lg p-6">
-      <h2 class="text-2xl font-bold text-center text-blue-700 mb-6">
+    <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-lg">
+      <h2 class="mb-6 text-2xl font-bold text-center text-blue-700">
         Booking Form
       </h2>
 
@@ -70,7 +70,7 @@
 
             <!-- Package -->
             <mat-form-field appearance="fill" class="w-full">
-              <mat-label>Package</mat-label>
+              <mat-label>Price Plan</mat-label>
               <mat-select  formControlName="venuePackageId">
                 <mat-option *ngFor="let p of packageOptions" [value]="p.leaseId">
                   <div class="p-2 bg-blue-50 rounded mb-1.5 w-full">
@@ -115,11 +115,16 @@
             </mat-form-field>
           </div>
 
-          <!-- Next Button -->
-          <div class="mt-6 text-right rounded-md-lg">
+          <!-- Back home & Next Button -->
+          <div class="flex justify-between mt-6 text-right rounded-md-lg">
+            <button type="button"
+                    (click)="back()"
+                    class="px-6 py-2 text-white bg-gray-600 rounded hover:bg-gray-700">
+              Back to Venue Explorer
+            </button>
             <button type="button"
                     (click)="nextStep()"
-                    class="px-10 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700">
+                    class="px-10 py-2 font-semibold text-white bg-blue-600 rounded hover:bg-blue-700">
               Next
             </button>
           </div>
@@ -140,12 +145,14 @@
             <!-- Phone -->
             <mat-form-field appearance="fill" class="w-full">
               <mat-label>Phone Number</mat-label>
-              <input matInput formControlName="phoneNumber" placeholder="+255...">
+              <input matInput formControlName="phoneNumber" placeholder="i.e 07xx...">
               <mat-error class="text-red-500" *ngIf="bookingForm.get('phoneNumber')?.hasError('required')">
                 Phone is required
               </mat-error>
-              <mat-error class="text-red-500" *ngIf="bookingForm.get('phoneNumber')?.hasError('pattern')">
-                Invalid format
+              <mat-error class="text-red-500" *ngIf="bookingForm.get('phoneNumber')?.hasError('pattern') ||
+              bookingForm.get('phoneNumber')?.hasError('minlength') ||
+              bookingForm.get('phoneNumber')?.hasError('maxlength')">
+                Invalid format, Must start with 06,07 or 08 and be 10 digits
               </mat-error>
             </mat-form-field>
 
@@ -169,15 +176,15 @@
           </div>
 
           <!-- Prev & Submit -->
-          <div class="mt-6 flex justify-between">
+          <div class="flex justify-between mt-6">
             <button type="button"
                     (click)="prevStep()"
-                    class="px-6 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">
+                    class="px-6 py-2 text-white bg-gray-600 rounded hover:bg-gray-700">
               Previous
             </button>
             <button type="submit"
                     (click)="assurance()"
-                    class="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+                    class="px-6 py-2 text-white bg-green-600 rounded hover:bg-green-700">
               Submit
             </button>
           </div>

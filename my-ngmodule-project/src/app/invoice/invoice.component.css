@@ -1,7 +1,7 @@
 /* Container */
 .invoice-container {
   max-width: 800px;
-  margin: 2cm auto 2rem auto;
+  margin: 1cm auto 1rem auto;
   padding: 2rem;
   background: #ffffff;
   border-radius: 0.75rem;
@@ -117,4 +117,9 @@
 }
 .btn-primary:hover {
   background-color: #00a1c4;
+}
+
+#controlNum {
+  font-weight: 600;
+  font-size: 20px;
 }

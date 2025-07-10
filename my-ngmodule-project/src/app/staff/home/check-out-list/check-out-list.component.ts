@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { StaffBookingService, BookingDTO } from '../../staff-booking.service';
 
+interface EnrichedBooking extends BookingDTO {
+  packageName: string;
+  price: number;
+  activityName: string;
+}
+
 @Component({
   selector: 'app-check-out-list',
   standalone:false,
@@ -42,6 +48,7 @@ export class CheckOutListComponent implements OnInit {
 
     this.bookingService.getPendingCheckOuts(this.venueId).subscribe({
       next: (pending) => {
+        
         // pending already filtered to “checked-in and not checked-out”
         this.bookings = pending
           // sort by bookingDate descending

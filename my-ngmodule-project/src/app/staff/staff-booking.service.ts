@@ -2,25 +2,43 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+// export interface BookingDTO {
+//   bookingId: number;
+//   bookingCode: string;
+//   bookingDate: string;   // e.g. "2025-05-22"
+//   startDate: string;
+//   startTime: string;
+//   endDate: string;
+//   endTime: string;
+//   status: string;        // e.g. "COMPLETE"
+//   venueName: string;     // assume backend populates this
+//   packageName: string;
+//   price: number;
+//   customerName: string;
+//   customerPhone: string;
+//   // …any other fields you need…
+// }
 export interface BookingDTO {
   bookingId: number;
   bookingCode: string;
-  venuePackageId: number;
-  venueActivityId: number;
-  bookingDate: string;   // e.g. "2025-05-22"
+  bookingDate: string;
   startDate: string;
-  startTime: string;
-  endDate: string;
-  endTime: string;
-  status: string;        // e.g. "COMPLETE"
-  venueName: string;     // assume backend populates this
+  endDate: string | null;
+  venueName: string;
   packageName: string;
   price: number;
-  customerName: string;
-  customerPhone: string;
-  // …any other fields you need…
+  status: string;
+  customer: {
+    customerId: number;
+    fullName: string;
+    phoneNumber: string;
+    address: string;
+    email: string;
+  };
+  venuePackageId: number;
+  venueActivityId: number;
+  // …etc…
 }
-
 export interface VenueHandOverDTO {
   handOverId: number;
   forBooking: number;    // the bookingId that was checked in
@@ -40,6 +58,7 @@ export interface Report {
   customerFullName: string;
   customerPhone: string;
   packageName: string;
+  activityName: string;
   price: number;
   checkInTime: string | null;
   checkOutTime: string | null;
@@ -62,7 +81,7 @@ export class StaffBookingService {
 
   //  Get completed bookings for a venue
   getCompletedBookingsByVenue(venueId: number): Observable<BookingDTO[]> {
-    return this.http.get<BookingDTO[]>(`${this.baseUrl}/bookings/venue/completed/${venueId}`);
+    return this.http.get<BookingDTO[]>(`${this.baseUrl}/bookings/venue/pending-checkin/${venueId}`);
   }
 
   // Get all handovers (checked-in) for a venue

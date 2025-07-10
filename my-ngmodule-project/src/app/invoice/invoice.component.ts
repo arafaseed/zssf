@@ -1,14 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import jsPDF from 'jspdf';
-import { InvoiceServiceService } from '../Services/invoice-service.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
-
-import { BookingService } from '../Services/booking.service';
-
+import { ActivatedRoute } from '@angular/router';
 import html2canvas from 'html2canvas';
-import { InvoiceService } from '../Services/invoice.service';
+import { InvoiceService,StaffDTO } from '../Services/invoice.service';
 
 @Component({
   selector: 'app-invoice',
@@ -18,8 +12,9 @@ import { InvoiceService } from '../Services/invoice.service';
 
 })
 export class InvoiceComponent  {
-   bookingId!: number;
+  bookingId!: number;
   invoiceData: any;
+  staffList: StaffDTO[] = [];
   loading = true;
 
   constructor(
@@ -39,9 +34,23 @@ export class InvoiceComponent  {
       next: (data) => {
         this.invoiceData = data;
         this.loading = false;
+        this.fetchStaff(data.venueId);
       },
       error: (err) => {
         console.error('Error fetching invoice:', err);
+        this.loading = false;
+      }
+    });
+  }
+
+  private fetchStaff(venueId: number): void {
+    this.invoiceService.getStaffByAssignedVenue(venueId).subscribe({
+      next: staff => {
+        this.staffList = staff.filter(s => s.fullName !== 'Default Admin');
+        this.loading = false;
+      },
+      error: err => {
+        console.error('Error fetching staff:', err);
         this.loading = false;
       }
     });
@@ -70,102 +79,53 @@ generatePDF(): void {
   });
 }
 
-
-// generatePDF(): void {
-//   const doc = new jsPDF();
-
-//   doc.setFontSize(18);
-//   doc.text('INVOICE', 90, 15);
-
-//   doc.setFontSize(12);
-//   doc.text(`Invoice Code: ${this.invoiceData.invoiceCode}`, 15, 30);
-//   doc.text(`Customer: ${this.invoiceData.customerName}`, 15, 40);
-//   doc.text(`Phone: ${this.invoiceData.customerPhone}`, 15, 50);
-//   doc.text(`Email: ${this.invoiceData.customerEmail}`, 15, 60);
-//   doc.text(`Date Issued: ${this.invoiceData.issuedDate}`, 15, 70);
-//   doc.text(`Status: ${this.invoiceData.status}`, 15, 80);
-//   doc.text(`Control Number: ${this.invoiceData.controlNumber}`, 15, 90);
-
-//   // Wrap and print long description
-//   const pageWidth = doc.internal.pageSize.getWidth();
-//   const margin = 15;
-//   const maxLineWidth = pageWidth - margin * 2;
-
-//   const descriptionLines = doc.splitTextToSize(this.invoiceData.description, maxLineWidth);
-  
-//   doc.text('Description:', margin, 100);
-//   doc.text(descriptionLines, margin, 110);
-
-//   doc.text('Amount:', margin, 110 + descriptionLines.length * 10);
-//   doc.text(`${this.invoiceData.amount.toLocaleString()} TZS`, margin + 30, 110 + descriptionLines.length * 10);
-
-//   doc.text('Discount Applied:', margin, 120 + descriptionLines.length * 10);
-//   doc.text(`${this.invoiceData.discountApplied.toLocaleString()} TZS`, margin + 50, 120 + descriptionLines.length * 10);
-
-//   doc.text('Net Amount:', margin, 130 + descriptionLines.length * 10);
-//   doc.text(`${this.invoiceData.netAmount.toLocaleString()} TZS`, margin + 30, 130 + descriptionLines.length * 10);
-
-//   doc.save(`${this.invoiceData.invoiceCode}.pdf`);
-// }
-
 printInvoice(): void {
-  const invoiceHtml = document.getElementById('invoice')?.outerHTML;
-  if (!invoiceHtml) return;
+  const invoiceEl = document.getElementById('invoice');
+  if (!invoiceEl) return;
 
-  const popup = window.open('', '_blank', 'width=900,height=700');
+  // 1) Open a fresh blank popup
+  const popup = window.open('', '_blank', 'width=800,height=600');
   if (!popup) return;
 
-  // Link Tailwind CDN so printed view uses the same classes
+  // 2) Grab all of the page's existing <link> and <style> tags so the printout
+  //    uses exactly the same CSS you’ve defined.
+  const clonedHead = Array.from(document.head.querySelectorAll('link, style'))
+    .map(el => el.outerHTML)
+    .join('');
+
+  // 3) Build the new document
   popup.document.open();
   popup.document.write(`
+    <!doctype html>
     <html>
       <head>
         <title>Print Invoice</title>
-        <link
-          href="https://cdn.jsdelivr.net/npm/tailwindcss@^3/dist/tailwind.min.css"
-          rel="stylesheet"
-        />
+        ${clonedHead}
         <style>
+          /* Any print-only overrides go here */
           @media print {
-            body { padding: 0; margin: 0; }
-            .print-hidden { display: none !important; }
+            body {
+              margin: 0;
+            }
           }
         </style>
       </head>
-      <body onload="window.print(); window.close();" class="p-6 bg-white">
-        ${invoiceHtml}
+      <body>
+        <div class="invoice-container">
+          ${invoiceEl.innerHTML}
+        </div>
       </body>
     </html>
   `);
   popup.document.close();
+
+  // 4) Wait for the styles to load, then trigger print & close
+  popup.onload = () => {
+    popup.focus();
+    popup.print();
+    popup.close();
+  };
 }
 
-
-// printInvoice(): void {
-//   const printContents = document.getElementById('invoice')?.innerHTML;
-//   if (!printContents) return;
-
-//   const popupWin = window.open('', '_blank', 'width=800,height=600');
-//   if (!popupWin) return;
-
-//   popupWin.document.open();
-//   popupWin.document.write(`
-//     <html>
-//       <head>
-//         <title>Print Invoice</title>
-//         <style>
-//           /* Add any styles for print here */
-//           body { font-family: Arial, sans-serif; padding: 20px; }
-//           .invoice-container { max-width: 600px; margin: auto; }
-//         </style>
-//       </head>
-//       <body onload="window.print(); window.close();">
-//         <div class="invoice-container">
-//           ${printContents}
-//         </div>
-//       </body>
-//     </html>`);
-//   popupWin.document.close();
-// }
 
 }

@@ -57,10 +57,6 @@ export class BookingService {
     this.fetchBookings().subscribe();
   }
 
-  getBookedDates(venueId: number): Observable<string[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/venue/${venueId}/booked-slots`);
-  }
-
    // A method to get booked slots
   getBookedSlots(venueId: number): Observable<Array<{ date: string; startTime: string; endTime: string }>> {
   return this.http.get<Array<{ date: string; startTime: string; endTime: string }>>(
@@ -99,24 +95,4 @@ export class BookingService {
     return this.http.get<Booking[]>(`${this.apiUrl}/customer/${customerId}`);
   }
 
-  // Placeholder methods to be implemented
-  getLeasesByVenue(venueId: number) {
-    throw new Error('Method get lease by venue not implemented.');
-  }
-
-  getActivitiesByVenue(venueId: number) {
-    throw new Error('Method get ActivitiesByVenue not implemented.');
-  }
-
-  getVenues() {
-    throw new Error('Method Get venues not implemented.');
-  }
-
-  getPackages(venueId: any) {
-    throw new Error('Method getPackages not implemented.');
-  }
-
-  getActivities(venueId: any) {
-    throw new Error('Method  getActivities not implemented.');
-  }
 }

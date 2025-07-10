@@ -1,45 +1,11 @@
-<<<<<<< Updated upstream
 <app-header></app-header>
 
+<h2 class="mb-2 text-2xl font-semibold text-center mt-17 text-cyan-600">Receive your invoice below </h2>
 <div id="invoice" class="invoice-container">
   <!-- Header -->
   <div class="invoice-header">
     <h1>ZSSF VENUE BOOKING INVOICE</h1>
     <p class="invoice-code">Invoice Code: {{ invoiceData.invoiceCode }}</p>
-=======
-<div id="invoice" class="invoice-container">
-  <div class="invoice-header">
-    <h1>INVOICE</h1>
-    <div>Invoice Code: {{ invoiceData.invoiceCode }}</div>
-  </div>
-
-  <div class="invoice-section">
-    <div class="section-title">Customer Information</div>
-    <div class="info-row"><div class="info-label">Name:</div><div class="info-value">{{ invoiceData.customerName }}</div></div>
-    <div class="info-row"><div class="info-label">Phone:</div><div class="info-value">{{ invoiceData.customerPhone }}</div></div>
-    <div class="info-row"><div class="info-label">Email:</div><div class="info-value">{{ invoiceData.customerEmail }}</div></div>
-  </div>
-
-  <div class="invoice-section">
-    <div class="section-title">Invoice Details</div>
-    <div class="info-row"><div class="info-label">Issued Date:</div><div class="info-value">{{ invoiceData.issuedDate }}</div></div>
-    <div class="info-row"><div class="info-label">Due Date:</div><div class="info-value">{{ invoiceData.dueDate || 'Not Specified' }}</div></div>
-    <div class="info-row"><div class="info-label">Status:</div><div class="info-value">{{ invoiceData.status }}</div></div>
-    <div class="info-row"><div class="info-label">Control Number:</div><div class="info-value">{{ invoiceData.controlNumber }}</div></div>
-   
-  </div>
-    <div class="invoice-section">
-      <div class="section-title">Description </div>
-      <p>{{ invoiceData.description }}</p>
-    
-  </div>
-
-  <div class="invoice-section amount-summary">
-    <div class="section-title">Amount Summary</div>
-    <div class="amount-row"><div>Amount:</div><div>{{ invoiceData.amount | number:'1.2-2' }} TZS</div></div>
-    <div class="amount-row"><div>Discount:</div><div>{{ invoiceData.discountApplied | number:'1.2-2' }} TZS</div></div>
-    <div class="amount-row total"><div>Total:</div><div>{{ invoiceData.netAmount | number:'1.2-2' }} TZS</div></div>
->>>>>>> Stashed changes
   </div>
 
   <!-- Customer Information -->
@@ -76,7 +42,7 @@
     </div>
     <div class="invoice-line">
       <span class="label">Control Number:</span>
-      <span class="value">{{ invoiceData.controlNumber }}</span>
+      <span class="value" id="controlNum"><u>{{ invoiceData.controlNumber }}</u></span>
     </div>
     <div class="invoice-line">
       <span class="label">Start Event Date:</span>
@@ -87,8 +53,12 @@
       <span class="value">{{ invoiceData.endDate }}</span>
     </div>
     <div class="invoice-line">
-      <span class="label">Booking Code:</span>
-      <span class="value">{{ invoiceData.bookingCode }}</span>
+      <span class="label">Venue</span>
+      <span class="value">{{ invoiceData.venueName }}</span>
+    </div>
+    <div class="invoice-line">
+      <span class="label">Package Price Plan</span>
+      <span class="value">{{ invoiceData.packageName }}</span>
     </div>
   </section>
 
@@ -125,9 +95,21 @@
   <button class="btn btn-primary" (click)="generatePDF()">📄 Download PDF</button>
 </div>
 
-<div *ngIf="loading">Generating Invoice PDF...</div>
-
-<div *ngIf="!loading" class="button-group">
-  <button (click)="printInvoice()">🖨️ Print Invoice</button>
-  <button (click)="generatePDF()">📄 Download PDF</button>
+<!-- staff cards -->
+<div *ngIf="!loading" class="max-w-3xl mx-auto my-8">
+  <h2 class="mb-4 text-2xl font-semibold text-cyan-600">For any inquiry, Please call.. </h2>
+  <div class="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+    <div *ngFor="let staff of staffList"
+         class="flex flex-col p-4 mb-10 bg-white border rounded-lg shadow-xl border-cyan-200">
+      <h3 class="mb-2 text-xl font-bold text-gray-800">{{ staff.fullName }}</h3>
+      <p class="text-gray-700"><strong>Phone:</strong> {{ staff.phoneNumber }}</p>
+      <p class="mt-auto text-sm font-medium"
+         [ngClass]="{
+           'text-blue-600': staff.role === 'STAFF'
+         }">
+        {{ staff.role }}
+      </p>
+    </div>
+  </div>
 </div>
+

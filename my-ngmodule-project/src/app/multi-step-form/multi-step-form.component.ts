@@ -15,6 +15,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { BookingService } from '../Services/booking.service';
 import { MultiStepFormService } from '../Services/multi-step-form.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-multi-step-form',
@@ -48,7 +49,8 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private router: Router,
     private msForm: MultiStepFormService,
-    private bookingService: BookingService
+    private bookingService: BookingService,
+    private cdr: ChangeDetectorRef
   ) {
     this.bookingForm = this.fb.group({
       startDate: ['', Validators.required],
@@ -61,7 +63,13 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
       session: ['SIKU NZIMA', Validators.required],
 
       fullName: ['', Validators.required],
-      phoneNumber: ['', [Validators.required, Validators.pattern('^\\+?[0-9]*$')]],
+      phoneNumber: [
+    '',[
+      Validators.required,
+      Validators.pattern('^(06|07|08)\\d{8}$'),
+      Validators.minLength(10),
+      Validators.maxLength(10)
+      ]],
       email: ['', [Validators.email]],
       address: ['', Validators.required]
     });
@@ -79,8 +87,11 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
     // const venueId = /* get your venueId from route or session */;
     this.bookingService.getBookedSlots(this.venueId).subscribe(slots => {
       for (const s of slots) {
-        this.bookedDatesSet.add(s.date);
+        const dateOnly = new Date(s.date).toISOString().split('T')[0];
+        this.bookedDatesSet.add(dateOnly);
+        // this.bookedDatesSet.add(s.date);
       }
+      this.cdr.detectChanges();
     });
   }
 
@@ -168,7 +179,9 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
   this.bookingForm.get('endDate')!.setValue(ctrl);
 }
 
-
+  back() {
+    this.router.navigate(['/venue']);
+  }
 
   nextStep() {
   // mark the Step‑1 fields as touched:
