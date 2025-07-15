@@ -28,8 +28,6 @@
 .dashboard-cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  grid-auto-rows: masonry;            /* experimental; some browsers */
-  grid-auto-flow: dense;              /* fill gaps */
   gap: 1.5rem;
   margin-bottom: 2.5rem;
 }
@@ -43,7 +41,6 @@
   box-shadow: 0 4px 16px rgba(0,0,0,0.05);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .card:hover {
@@ -51,6 +48,7 @@
   box-shadow: 0 8px 24px rgba(0,0,0,0.1);
 }
 
+/* Title + Value */
 .card h3 {
   font-size: 1.125rem;
   color: #00b5d8;
@@ -79,19 +77,16 @@
   background: #d0f7f2;
 }
 
-/* Wide card spans two columns */
-.card-wide {
-  grid-column: span 2;
+/* Fixed-height cards: handle uniformity */
+.fixed-card {
+  height: 200px;
 }
 
-/* Lists inside cards */
-.available-list,
-.top-list {
-  margin-top: 0.75rem;
-  padding-left: 1rem;
-  color: #4a5568;
-  font-size: 0.9rem;
+/* Flexible cards expand with content */
+.flexible-card {
+  /* no fixed height—will grow/shrink */
 }
+.card-wide { grid-column: span 2; }
 
 /* Search Filters */
 .search-filters {
@@ -156,6 +151,27 @@
   outline: none;
 }
 
-/* Status colors */
-.status-booked    { color: green; font-weight: 700; }
-.status-cancelled { color: red;   font-weight: 700; }
+/* Revenue mini-table */
+.revenue-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.75rem;
+}
+.revenue-table th,
+.revenue-table td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+.revenue-table th {
+  text-align: left;
+  font-size: 0.875rem;
+  color: #2c7aa8;
+  border-bottom: 2px solid #bee3f8;
+}
+.revenue-table td.numeric {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.revenue-table tr:last-child td {
+  border-bottom: none;
+}

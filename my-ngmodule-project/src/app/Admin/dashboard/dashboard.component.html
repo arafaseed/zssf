@@ -2,102 +2,142 @@
   <!-- Welcome Header -->
   <div class="dashboard-header">
     <h1>Welcome Back, Admin!</h1>
-    <p>Here's an overview of your dashboard</p>
+    <p>Here is a general summary and Quick access to useful data</p>
   </div>
 
-  <!-- Summary Cards -->
+  <!-- Summary Cards Grid -->
   <div class="dashboard-cards">
-    <div class="card">
+    <div class="card fixed-card">
       <h3>Total Bookings</h3>
       <p class="card-value">{{ totalBookings }}</p>
       <button (click)="goToBookingList()">View All</button>
     </div>
-    <div class="card">
+
+    <div class="card fixed-card">
       <h3>Total Users</h3>
       <p class="card-value">{{ totalUsers }}</p>
     </div>
-    <div class="card">
-      <h3>Total  Complete Bookings </h3>
+
+    <div class="card fixed-card">
+      <h3>Total Complete Bookings</h3>
       <p class="card-value">{{ totalBookedVenues }}</p>
     </div>
-    <!-- added -->
-     <!-- 1. Total Revenue -->
-    <div class="card">
+
+    <div class="card fixed-card">
       <h3>Total Revenue</h3>
-      <p class="card-value">{{ totalRevenue | number:'1.2-2' }} TZS</p>
+      <p class="card-value">{{ totalRevenue | number:'1.0-0' }} TZS</p>
     </div>
 
-    <!-- 2. Monthly Revenue -->
-    <div class="card">
+    <div class="card fixed-card">
       <h3>Revenue This Month</h3>
-      <p class="card-value">
-        {{ monthlyLabel || '–' }}:
-        {{ monthlyRevenue | number:'1.2-2' }} TZS</p>
+      <p class="card-value">{{ monthlyLabel || '–' }}: {{ monthlyRevenue | number:'1.0-0' }} TZS</p>
     </div>
 
-    <!-- 3. Most Booked Venue (All statuses) -->
-    <div class="card">
+    <div class="card fixed-card">
       <h3>Most Booked Venue</h3>
       <p class="card-value">{{ mostBookedVenue?.venueName || '–' }}</p>
     </div>
 
-    <!-- 4. Most Booked Venue (Completed) -->
-    <div class="card">
+    <div class="card fixed-card">
       <h3>Top Completed Venue</h3>
       <p class="card-value">{{ mostBookedCompletedVenue?.venueName || '–' }}</p>
     </div>
 
-    <!-- 5. Available Venues by Date -->
-    <div class="card">
+    <div class="card fixed-card">
+      <h3>Best Revenue Venue</h3>
+      <ng-container *ngIf="bestRevenueVenue; else none">
+        <p class="font-semibold text-lg">{{ bestRevenueVenue.venue.venueName }}</p>
+        <p>Capacity: {{ bestRevenueVenue.venue.capacity }}</p>
+        <p class="card-value">{{ bestRevenueVenue.revenue | number:'1.0-0' }} TZS</p>
+      </ng-container>
+      <ng-template #none><p class="text-gray-500">–</p></ng-template>
+    </div>
+    <br>
+
+    <!-- Flexible: Available Venues by Date -->
+    <div class="card flexible-card card-wide">
       <h3>Available Venues</h3>
-      <input type="date" [(ngModel)]="availabilityDate" />
-      <button (click)="loadAvailableVenues()">Check</button>
-      <ul class="available-list">
-        <li *ngFor="let v of availableVenues">{{ v.venueName }}</li>
-        <li *ngIf="!availableVenues.length">None</li>
+      <div class="flex items-center gap-2 mt-2">
+        <input
+          type="date"
+          [(ngModel)]="availabilityDate"
+          class="border px-2 py-1 rounded"
+        />
+        <button
+          (click)="loadAvailableVenues()"
+          [disabled]="!availabilityDate"
+          class="btn-primary"
+        >Check</button>
+        <button
+          *ngIf="availableVenues.length || availableVenueCount || availableError"
+          (click)="resetAvailableVenues()"
+          class="btn-secondary"
+        >Reset</button>
+      </div>
+      <p *ngIf="availableError" class="text-red-600 mt-2">{{ availableError }}</p>
+      <p *ngIf="availableVenueCount !== null && !availableError" class="mt-2 font-semibold">
+        Count: {{ availableVenueCount }}
+      </p>
+      <ul class="available-list mt-2 space-y-2">
+        <li
+          *ngFor="let v of availableVenues"
+          class="border rounded p-2 flex justify-between"
+        >
+          <span>{{ v.venueName }}</span>
+          <span>Capacity: {{ v.capacity }}</span>
+        </li>
+        <li *ngIf="!availableVenues.length && availabilityDate && !availableError"
+            class="italic text-gray-500">
+          None Available
+        </li>
       </ul>
     </div>
 
-    <!-- 6. Best Revenue Venue -->
-    <div class="card">
-      <h3>Best Revenue Venue</h3>
-      <ng-container *ngIf="bestRevenueVenue; else none">
-    <p class="font-semibold text-lg">{{ bestRevenueVenue.venue.venueName }}</p>
-    <p>Capacity: {{ bestRevenueVenue.venue.capacity }}</p>
-    <p class="card-value">
-      {{ bestRevenueVenue.revenue | number:'1.0-0' }} TZS
-    </p>
-  </ng-container>
-  <ng-template #none>
-    <p class="text-gray-500">–</p>
-  </ng-template>
-    </div>
-
-    <!-- 7. Top-3 Venues by Revenue -->
-    <div class="card card-wide">
+    <!-- Flexible: Top-3 Venues by Revenue -->
+    <div class="card flexible-card card-wide">
       <h3>Top 3 Venues by Revenue</h3>
-      <ol class="top-list">
-        <li *ngFor="let v of topRevenueVenues">
-          {{ v.venueName }} — {{ v.revenue | number:'1.2-2' }} TZS
-        </li>
-      </ol>
+      <table class="revenue-table">
+        <thead>
+          <tr>
+            <th>Venue Name</th>
+            <th>Bookings</th>
+            <th>Revenue (TZS)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let v of topRevenueVenues">
+            <td>{{ v.venueName }}</td>
+            <td class="numeric">{{ v.bookingCount }}</td>
+            <td class="numeric">{{ v.revenue | number:'1.0-0' }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
-   
 
-  <!-- Search Filters -->
-  <div class="search-filters" aria-label="Search Bookings">
-    <input type="text" placeholder="Search by Phone" [(ngModel)]="searchPhone" aria-label="Search by Phone Number">
-    <input type="date" [(ngModel)]="searchDate" aria-label="Search by Start Date">
+  <!-- Search Filters (outside grid!) -->
+
+
+  <!-- Recent Bookings Table (also outside grid!) -->
+  <div class="recent-activity" aria-live="polite" aria-relevant="all">
+    <h2>Recent Bookings</h2>
+      <div class="search-filters" aria-label="Search Bookings">
+    <input
+      type="text"
+      placeholder="Search by Phone"
+      [(ngModel)]="searchPhone"
+      aria-label="Search by Phone Number"
+    />
+    <input
+      type="date"
+      [(ngModel)]="searchDate"
+      aria-label="Search by Start Date"
+    />
     <div class="search-buttons">
       <button mat-raised-button color="primary" (click)="searchBookings()">Search</button>
       <button mat-raised-button color="warn" (click)="clearSearch()">Reset</button>
     </div>
   </div>
-
-  <!-- Recent Bookings Table -->
-  <div class="recent-activity" aria-live="polite" aria-relevant="all">
-    <h3>Recent Bookings</h3>
     <table>
       <thead>
         <tr>
@@ -118,11 +158,10 @@
           <td [style.color]="
             booking.status === 'CANCELLED' ? 'red' :
             booking.status === 'COMPLETE' ? 'green' :
-            booking.status === 'PENDING' ? 'goldenrod' : 'black'
+            booking.status === 'PENDING'  ? 'goldenrod' : 'black'
           ">
             {{ booking.status }}
           </td>
-
           <td>{{ booking.startDate | date:'shortDate' }}</td>
         </tr>
       </tbody>

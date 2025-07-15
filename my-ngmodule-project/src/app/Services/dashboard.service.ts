@@ -8,6 +8,16 @@ export interface VenueRevenue {
   revenue: number;
 }
 
+export interface RawVenueRevenue {
+  venue: {
+    venueId: number;
+    venueName: string;
+    bookingIds: number[];
+    // …etc
+  };
+  revenue: number;
+}
+
 export interface BestRevenueVenue {
   venue: {
     venueId:      number;
@@ -66,19 +76,20 @@ getAllVenues(): Observable<any[]> {
     return this.http.get<{ venueName: string }>(`${this.apiUrl}/bookings/most-booked/completed`);
   }
 
-  getAvailableVenues(date: string): Observable<Array<{ venueId: number; venueName: string }>> {
-    return this.http.get<Array<{ venueId: number; venueName: string }>>(
-      `${this.apiUrl}/bookings/list-available-venues`, { params: { date } }
-    );
-  }
-
+  getAvailableVenues(date: string): Observable<{ count: number, venues: any[] }> {
+  return this.http.get<{ count: number, venues: any[] }>(
+    `${this.apiUrl}/bookings/list-available-venues`, { params: { date } }
+  );
+}
   getBestRevenueVenue(): Observable<BestRevenueVenue> {
     return this.http.get<BestRevenueVenue>(
       `${this.apiUrl}/analytics/venues/revenue/best`);
   }
 
-  getTopVenuesByRevenue(): Observable<VenueRevenue[]> {
-    return this.http.get<VenueRevenue[]>(`${this.apiUrl}/analytics/venues/revenue/all`);
+   getTopVenuesByRevenue(): Observable<RawVenueRevenue[]> {
+    return this.http.get<RawVenueRevenue[]>(
+      `${this.apiUrl}/analytics/venues/revenue/all`
+    );
   }
 
 

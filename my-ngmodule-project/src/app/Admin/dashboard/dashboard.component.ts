@@ -1,10 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { DashboardService,BestRevenueVenue } from '../../Services/dashboard.service';
+import {
+  DashboardService,
+  BestRevenueVenue,
+  RawVenueRevenue
+ } from '../../Services/dashboard.service';
 
 interface VenueRevenue {
   venueId: number;
   venueName: string;
+  revenue: number;
+}
+
+interface TopVenue {
+  venueName: string;
+  bookingCount: number;
   revenue: number;
 }
 
@@ -27,10 +37,12 @@ export class DashboardComponent implements OnInit {
   mostBookedCompletedVenue: { venueName: string } | null = null;
 
   availabilityDate: string = '';
-  availableVenues: { venueId: number; venueName: string }[] = [];
+  availableVenues: any[] = [];
+  availableVenueCount = 0;
+  availableError: string | null = null;
 
   bestRevenueVenue: BestRevenueVenue | null = null;
-  topRevenueVenues: VenueRevenue[] = [];
+  topRevenueVenues: TopVenue[] = [];
 
   bookings: any[] = [];
   filteredBookings: any[] = [];
@@ -84,7 +96,15 @@ export class DashboardComponent implements OnInit {
       .subscribe(v => this.bestRevenueVenue = v);
 
     this.dashboardService.getTopVenuesByRevenue()
-      .subscribe(list => this.topRevenueVenues = list.slice(0,3));
+      .subscribe((list) => {
+        this.topRevenueVenues = list
+          .slice(0, 3)
+          .map(item => ({
+            venueName:    item.venue.venueName,
+            bookingCount: item.venue.bookingIds.length,
+            revenue:      item.revenue
+          }));
+      });
   }
 
   attachVenueNames() {
@@ -99,9 +119,34 @@ export class DashboardComponent implements OnInit {
 
   loadAvailableVenues() {
     if (!this.availabilityDate) return;
-    this.dashboardService.getAvailableVenues(this.availabilityDate)
-      .subscribe(vs => this.availableVenues = vs);
+
+    // parse date & zero-out time
+    const sel = new Date(this.availabilityDate);
+    const today = new Date();
+    today.setHours(0,0,0,0);
+
+    if (sel < today) {
+      this.availableError = "Can't check for past dates";
+      this.availableVenues = [];
+      this.availableVenueCount = 0;
+      return;
+    }
+    this.availableError = null;
+
+    this.dashboardService
+      .getAvailableVenues(this.availabilityDate)
+      .subscribe(response => {
+        this.availableVenueCount = response.count;
+        this.availableVenues      = response.venues;
+      });
   }
+
+ resetAvailableVenues() {
+    this.availabilityDate = '';
+    this.availableVenueCount = 0;
+    this.availableVenues = [];
+  }
+
 
   searchBookings() {
     this.filteredBookings = this.bookings.filter(b => {
