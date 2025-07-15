@@ -15,7 +15,7 @@ interface EnrichedBooking extends BookingDTO {
 
 @Component({
   selector: 'app-check-in-list',
-  standalone:false,
+  standalone: false,
   templateUrl: './check-in-list.component.html',
   styleUrls: ['./check-in-list.component.css']
 })
@@ -34,7 +34,8 @@ export class CheckInListComponent implements OnInit {
     const sidn = sessionStorage.getItem('auth-username');
 
     if (!vid || !sidn) {
-      this.errorMessage = 'Venue or Staff IDN not found in session. Please log in again.';
+      this.errorMessage = 
+        'Venue or Staff IDN not found in session. Please log in again.';
       this.loading = false;
       return;
     }
@@ -53,9 +54,16 @@ export class CheckInListComponent implements OnInit {
         this.bookingService.getVenueHandOvers(this.venueId).pipe(
           map(handovers => {
             const checkedIn = new Set(handovers.map(h => h.forBooking));
+            // 1) only those not yet checked in
+            // 2) exclude CANCELLED
             return completedBookings
-              .filter(b => !checkedIn.has(b.bookingId))
-              .sort((a, b) => new Date(b.bookingDate).getTime() - new Date(a.bookingDate).getTime());
+              .filter(b => 
+                !checkedIn.has(b.bookingId) && b.status !== 'CANCELLED'
+              )
+              .sort((a, b) => 
+                new Date(b.bookingDate).getTime() 
+                - new Date(a.bookingDate).getTime()
+              );
           })
         )
       ),
@@ -63,7 +71,7 @@ export class CheckInListComponent implements OnInit {
         if (pending.length === 0) {
           return of([] as EnrichedBooking[]);
         }
-        // for each booking, fetch lease-package & activity
+        // 3) enrich each
         const enriched$ = pending.map(b =>
           forkJoin({
             base: of(b),
@@ -97,15 +105,35 @@ export class CheckInListComponent implements OnInit {
     });
   }
 
+  /** 
+   * A booking is “check-in-able” only if its status is not PENDING
+   * and its startDate matches today. 
+   */
+  isCheckInEnabled(b: EnrichedBooking): boolean {
+    return b.status !== 'PENDING';
+  }
+
   onCheckIn(booking: EnrichedBooking): void {
-    this.bookingService.checkIn(booking.bookingCode, this.staffIDN).subscribe({
-      next: () => {
-        this.bookings = this.bookings.filter(b => b.bookingId !== booking.bookingId);
-      },
-      error: err => {
-        console.error('Check-in failed', err);
-        alert('Check-in failed: ' + (err.error?.message || err.message));
+    if (!this.isCheckInEnabled(booking)) {
+      if (booking.status === 'PENDING') {
+        alert('This booking is still pending confirmation.');
+      } else {
+        alert('You can only check in on the booking start date.');
       }
-    });
+      return;
+    }
+
+    this.bookingService.checkIn(booking.bookingCode, this.staffIDN)
+      .subscribe({
+        next: () => {
+          // remove from list
+          this.bookings = this.bookings
+            .filter(b => b.bookingId !== booking.bookingId);
+        },
+        error: err => {
+          console.error('Check-in failed', err);
+          alert('Check-in failed: ' + (err.error?.message || err.message));
+        }
+      });
   }
 }

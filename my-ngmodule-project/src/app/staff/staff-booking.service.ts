@@ -2,22 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-// export interface BookingDTO {
-//   bookingId: number;
-//   bookingCode: string;
-//   bookingDate: string;   // e.g. "2025-05-22"
-//   startDate: string;
-//   startTime: string;
-//   endDate: string;
-//   endTime: string;
-//   status: string;        // e.g. "COMPLETE"
-//   venueName: string;     // assume backend populates this
-//   packageName: string;
-//   price: number;
-//   customerName: string;
-//   customerPhone: string;
-//   // …any other fields you need…
-// }
+
 export interface BookingDTO {
   bookingId: number;
   bookingCode: string;

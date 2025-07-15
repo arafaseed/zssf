@@ -109,7 +109,7 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
     }
     const cell = new Date(d);
     const today = new Date();
-    const iso = d.toISOString().split('T')[0];
+    const iso = `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`;
 
     if (this.bookedDatesSet.has(iso)) {
       // booked → show error and clear field
@@ -118,12 +118,10 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
     } else if(cell <= today) {
       this.dateError = 'Cannot book for today or on past dates';
       this.bookingForm.get('startDate')!.reset();
-    } else {
+    }  else {
       this.dateError = null;
       this.calculateEndDate();
     }
-    
-    
   }
 
   /** Tint booked dates red, past dates gray */
