@@ -17,10 +17,63 @@
       <p class="card-value">{{ totalUsers }}</p>
     </div>
     <div class="card">
-      <h3>Total  Complete Bookeing </h3>
+      <h3>Total  Complete Bookings </h3>
       <p class="card-value">{{ totalBookedVenues }}</p>
     </div>
+    <!-- added -->
+     <!-- 1. Total Revenue -->
+    <div class="card">
+      <h3>Total Revenue</h3>
+      <p class="card-value">{{ totalRevenue | number:'1.2-2' }} TZS</p>
+    </div>
+
+    <!-- 2. Monthly Revenue -->
+    <div class="card">
+      <h3>Revenue This Month</h3>
+      <p class="card-value">{{ monthlyRevenue | number:'1.2-2' }} TZS</p>
+    </div>
+
+    <!-- 3. Most Booked Venue (All statuses) -->
+    <div class="card">
+      <h3>Most Booked Venue</h3>
+      <p class="card-value">{{ mostBookedVenue?.venueName || '–' }}</p>
+    </div>
+
+    <!-- 4. Most Booked Venue (Completed) -->
+    <div class="card">
+      <h3>Top Completed Venue</h3>
+      <p class="card-value">{{ mostBookedCompletedVenue?.venueName || '–' }}</p>
+    </div>
+
+    <!-- 5. Available Venues by Date -->
+    <div class="card">
+      <h3>Available Venues</h3>
+      <input type="date" [(ngModel)]="availabilityDate" />
+      <button (click)="loadAvailableVenues()">Check</button>
+      <ul class="available-list">
+        <li *ngFor="let v of availableVenues">{{ v.venueName }}</li>
+        <li *ngIf="!availableVenues.length">None</li>
+      </ul>
+    </div>
+
+    <!-- 6. Best Revenue Venue -->
+    <div class="card">
+      <h3>Best Revenue Venue</h3>
+      <p class="card-value">{{ bestRevenueVenue?.venueName || '–' }}</p>
+      <small>{{ bestRevenueVenue?.revenue | number:'1.2-2' }} TZS</small>
+    </div>
+
+    <!-- 7. Top-3 Venues by Revenue -->
+    <div class="card card-wide">
+      <h3>Top 3 Venues by Revenue</h3>
+      <ol class="top-list">
+        <li *ngFor="let v of topRevenueVenues">
+          {{ v.venueName }} — {{ v.revenue | number:'1.2-2' }} TZS
+        </li>
+      </ol>
+    </div>
   </div>
+   
 
   <!-- Search Filters -->
   <div class="search-filters" aria-label="Search Bookings">
