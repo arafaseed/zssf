@@ -141,20 +141,26 @@
                 Name is required
               </mat-error>
             </mat-form-field>
+            <!-- Phone Number -->
+           <mat-form-field appearance="fill" class="w-full">
+  <mat-label>Phone Number</mat-label>
+  <input
+    matInput
+    formControlName="phoneNumber"
+    placeholder="i.e 0xx..."
+    maxlength="10"
+    (keypress)="allowOnlyNumbers($event)"
+  >
+  <mat-error class="text-red-500" *ngIf="bookingForm.get('phoneNumber')?.hasError('required')">
+    Phone is required
+  </mat-error>
+  <mat-error class="text-red-500" *ngIf="bookingForm.get('phoneNumber')?.hasError('pattern') ||
+    bookingForm.get('phoneNumber')?.hasError('minlength') ||
+    bookingForm.get('phoneNumber')?.hasError('maxlength')">
+    Invalid format, Must start with 06,07 or 08 and be 10 digits
+  </mat-error>
+</mat-form-field>
 
-            <!-- Phone -->
-            <mat-form-field appearance="fill" class="w-full">
-              <mat-label>Phone Number</mat-label>
-              <input matInput formControlName="phoneNumber" placeholder="i.e 07xx...">
-              <mat-error class="text-red-500" *ngIf="bookingForm.get('phoneNumber')?.hasError('required')">
-                Phone is required
-              </mat-error>
-              <mat-error class="text-red-500" *ngIf="bookingForm.get('phoneNumber')?.hasError('pattern') ||
-              bookingForm.get('phoneNumber')?.hasError('minlength') ||
-              bookingForm.get('phoneNumber')?.hasError('maxlength')">
-                Invalid format, Must start with 06,07 or 08 and be 10 digits
-              </mat-error>
-            </mat-form-field>
 
             <!-- Email -->
             <mat-form-field appearance="fill" class="w-full">

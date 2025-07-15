@@ -55,7 +55,8 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
     this.bookingForm = this.fb.group({
       startDate: ['', Validators.required],
       daysCount: [1, [Validators.required, Validators.min(1)]],
-      endDate: [{ value: '', disabled: true }],
+      // endDate: [{ value: '', disabled: true }],
+   endDate: [''], // make it enabled
 
       venueId: ['', Validators.required],
       venuePackageId: ['', Validators.required],
@@ -286,4 +287,16 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
     });
   });
 }
+
+allowOnlyNumbers(event: KeyboardEvent) {
+  const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab'];
+  if (allowedKeys.includes(event.key)) {
+    return; // allow control keys
+  }
+  const pattern = /[0-9]/;
+  if (!pattern.test(event.key)) {
+    event.preventDefault();
+  }
+}
+
 }

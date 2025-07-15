@@ -12,6 +12,10 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./venue-view.component.css']
 })
 export class VenueViewComponent implements OnInit, OnDestroy {
+isNumber(value: any): boolean {
+  return !isNaN(parseFloat(value)) && isFinite(value);
+}
+
   searchTerm: string = '';
   venues: any[] = [];
   filteredVenues: any[] = [];
@@ -61,29 +65,38 @@ export class VenueViewComponent implements OnInit, OnDestroy {
   }
 
   loadActivitiesAndVenues(): void {
-    // First load all activities
-    this.http.get<any[]>('http://localhost:8080/api/activities').subscribe((activityData) => {
-      this.activities = activityData;
+  this.http.get<any[]>('http://localhost:8080/api/activities').subscribe((activityData) => {
+    this.activities = activityData;
 
-      // Then load venues and attach activity names
-      this.venueService.getAllVenues().subscribe((venueData: any[]) => {
-        this.venues = venueData.map(venue => {
-          const activityNames = this.activities
-            .filter(a => a.venueId === venue.venueId)
-            .map(a => a.activityName);
-          return {
-            ...venue,
-            activityNames,
-            showDescription: false,
-            venueImages: venue.venueImages || []
-          };
+    this.venueService.getAllVenues().subscribe((venueData: any[]) => {
+      this.venues = venueData.map(venue => ({
+        ...venue,
+        activityNames: this.activities
+          .filter(a => a.venueId === venue.venueId)
+          .map(a => a.activityName),
+        showDescription: false,
+        venueImages: venue.venueImages || [],
+        price: null  // Initialize price as null
+      }));
+
+      // For each venue, get lease packages and find lowest price
+      this.venues.forEach((venue, index) => {
+        this.venueService.getLeasePackagesByVenue(venue.venueId).subscribe(leasePackages => {
+          if (leasePackages.length > 0) {
+            const prices = leasePackages.map(lp => lp.price);
+            const lowestPrice = Math.min(...prices);
+            this.venues[index].price = lowestPrice;
+          } else {
+            this.venues[index].price = 'N/A';
+          }
         });
-
-        this.filteredVenues = [...this.venues];
-        this.currentSlideIndices = new Array(this.venues.length).fill(0);
       });
+
+      this.filteredVenues = [...this.venues];
+      this.currentSlideIndices = new Array(this.venues.length).fill(0);
     });
-  }
+  });
+}
 
   goToBookingPage(venue: any): void {
     this.router.navigate(['/book'], { queryParams: { venueId: venue.venueId } });
