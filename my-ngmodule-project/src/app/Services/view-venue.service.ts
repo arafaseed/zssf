@@ -30,6 +30,9 @@ export class ViewVenueService {
   searchVenuesByName(name: string): Observable<any> {
     return this.http.get(`${this.venueApiUrl}/search?name=${name}`);
   }
+getLeasePackagesByVenue(venueId: number) {
+  return this.http.get<any[]>(`http://localhost:8080/api/lease-packages/venue/${venueId}`);
+}
 
   
 }

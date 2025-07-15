@@ -101,9 +101,13 @@
                   (click)="openInlineImageViewer(venue.venueImages, currentSlideIndices[i] || 0)"
                 />
               </div>
+              <br>
               <div class="text-gray-700 text-sm space-y-1">
-                <p><strong>Capacity:</strong> {{ venue.capacity }}</p>
-                <p><strong>Description:</strong> {{ venue.description }}</p>
+                <p><strong>CAPACITY:</strong> {{ venue.capacity }}</p>
+                <p><strong>DESCRIPTION:</strong> {{ venue.description }}</p>
+          <p><strong>PRICE:</strong> {{ venue.price != null && isNumber(venue.price) ? (venue.price | currency:'TZS') : 'N/A' }}</p>
+
+
               </div>
             </mat-card-content>
 
