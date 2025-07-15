@@ -46,7 +46,6 @@
           <p><strong>End:</strong> {{ booking.endDate }} {{ booking.endTime }}</p>
           <p><strong>Status:</strong> {{ booking.status }}</p>
           <p><strong>Venue ID:</strong> {{ booking.venueId }}</p>
-          <p><strong>Invoice ID:</strong> {{ booking.invoiceId || 'Not Available' }}</p>
         </div>
 
         <!-- Action Buttons -->
@@ -60,12 +59,14 @@
             View Invoice
           </a>
 
-          <button
-            class="px-4 py-2 bg-red-600 text-white font-medium rounded-md hover:bg-red-700 transition"
-            (click)="cancelBooking(booking.bookingId)"
-          >
-            Cancel Booking
-          </button>
+        <button
+  *ngIf="booking.status.toLowerCase() !== 'complete'"
+  class="px-4 py-2 bg-red-600 text-white font-medium rounded-md hover:bg-red-700 transition"
+  (click)="cancelBooking(booking.bookingId)"
+>
+  Cancel Booking
+</button>
+
         </div>
       </div>
     </div>
