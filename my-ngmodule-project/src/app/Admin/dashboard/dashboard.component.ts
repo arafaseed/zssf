@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { DashboardService } from '../../Services/dashboard.service';
+import { DashboardService,BestRevenueVenue } from '../../Services/dashboard.service';
 
 interface VenueRevenue {
   venueId: number;
@@ -21,6 +21,7 @@ export class DashboardComponent implements OnInit {
 
   totalRevenue = 0;
   monthlyRevenue = 0;
+  monthlyLabel = '';
 
   mostBookedVenue: { venueName: string } | null = null;
   mostBookedCompletedVenue: { venueName: string } | null = null;
@@ -28,7 +29,7 @@ export class DashboardComponent implements OnInit {
   availabilityDate: string = '';
   availableVenues: { venueId: number; venueName: string }[] = [];
 
-  bestRevenueVenue: VenueRevenue | null = null;
+  bestRevenueVenue: BestRevenueVenue | null = null;
   topRevenueVenues: VenueRevenue[] = [];
 
   bookings: any[] = [];
@@ -63,7 +64,15 @@ export class DashboardComponent implements OnInit {
 
   private loadRevenueData() {
     this.dashboardService.getTotalRevenue().subscribe(r => this.totalRevenue = r);
-    this.dashboardService.getMonthlyRevenue().subscribe(r => this.monthlyRevenue = r);
+    // this.dashboardService.getMonthlyRevenue().subscribe(r => this.monthlyRevenue = r);
+    this.dashboardService.getMonthlyRevenue()
+      .subscribe(obj => {
+        // obj looks like: { "MAY 2025": 5000000.0 }
+        const entries = Object.entries(obj);
+        if (entries.length) {
+          [ this.monthlyLabel, this.monthlyRevenue ] = entries[0];
+        }
+      });
   }
 
   private loadVenueStats() {

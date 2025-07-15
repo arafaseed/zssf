@@ -87,9 +87,9 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
     // const venueId = /* get your venueId from route or session */;
     this.bookingService.getBookedSlots(this.venueId).subscribe(slots => {
       for (const s of slots) {
-        const dateOnly = new Date(s.date).toISOString().split('T')[0];
-        this.bookedDatesSet.add(dateOnly);
-        // this.bookedDatesSet.add(s.date);
+        // const dateOnly = new Date(s.date).toISOString().split('T')[0];
+        // this.bookedDatesSet.add(dateOnly);
+        this.bookedDatesSet.add(s.date);
       }
       this.cdr.detectChanges();
     });
@@ -133,7 +133,9 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
   cell.setHours(0,0,0,0);
   const today = new Date();
   today.setHours(0,0,0,0);
-  const iso = cell.toISOString().split('T')[0];
+  // const iso = cell.toISOString().split('T')[0];
+  const iso = `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`;
+
 
   if (cell <= today) {
     return 'past-date';

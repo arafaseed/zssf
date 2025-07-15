@@ -30,7 +30,9 @@
     <!-- 2. Monthly Revenue -->
     <div class="card">
       <h3>Revenue This Month</h3>
-      <p class="card-value">{{ monthlyRevenue | number:'1.2-2' }} TZS</p>
+      <p class="card-value">
+        {{ monthlyLabel || '–' }}:
+        {{ monthlyRevenue | number:'1.2-2' }} TZS</p>
     </div>
 
     <!-- 3. Most Booked Venue (All statuses) -->
@@ -59,8 +61,16 @@
     <!-- 6. Best Revenue Venue -->
     <div class="card">
       <h3>Best Revenue Venue</h3>
-      <p class="card-value">{{ bestRevenueVenue?.venueName || '–' }}</p>
-      <small>{{ bestRevenueVenue?.revenue | number:'1.2-2' }} TZS</small>
+      <ng-container *ngIf="bestRevenueVenue; else none">
+    <p class="font-semibold text-lg">{{ bestRevenueVenue.venue.venueName }}</p>
+    <p>Capacity: {{ bestRevenueVenue.venue.capacity }}</p>
+    <p class="card-value">
+      {{ bestRevenueVenue.revenue | number:'1.0-0' }} TZS
+    </p>
+  </ng-container>
+  <ng-template #none>
+    <p class="text-gray-500">–</p>
+  </ng-template>
     </div>
 
     <!-- 7. Top-3 Venues by Revenue -->

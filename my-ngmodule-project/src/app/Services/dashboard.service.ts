@@ -8,29 +8,45 @@ export interface VenueRevenue {
   revenue: number;
 }
 
+export interface BestRevenueVenue {
+  venue: {
+    venueId:      number;
+    venueName:    string;
+    capacity:     number;
+    description:  string;
+    venueImages:  string[];
+    buildingId:   number;
+    leasePackageIds:    number[];
+    assignedStaffIds:   number[];
+    bookingIds:         number[];
+    activitiesAllowedIds:number[];
+  };
+  revenue: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardService {
 
-  private apiUrl = 'http://localhost:8080/api/bookings';
+  private apiUrl = 'http://localhost:8080/api';
 
   constructor(private http: HttpClient) {}
 
   getAllBookings(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/all`);
+    return this.http.get<any[]>(`${this.apiUrl}/bookings/all`);
   }
 
   searchBookings(phone: string, date: string): Observable<any[]> {
   const params: any = {};
   if (phone) params.phone = phone;
   if (date) params.date = date;
-  return this.http.get<any[]>(`${this.apiUrl}/search`, { params });
+  return this.http.get<any[]>(`${this.apiUrl}/bookings/search`, { params });
 }
 
 // dashboard.service.ts
 getAllVenues(): Observable<any[]> {
-  return this.http.get<any[]>('http://localhost:8080/api/venues/view/all');
+  return this.http.get<any[]>('${this.apiUrl}/venues/view/all');
 }
   
   
@@ -56,8 +72,9 @@ getAllVenues(): Observable<any[]> {
     );
   }
 
-  getBestRevenueVenue(): Observable<VenueRevenue> {
-    return this.http.get<VenueRevenue>(`${this.apiUrl}/analytics/venues/revenue/best`);
+  getBestRevenueVenue(): Observable<BestRevenueVenue> {
+    return this.http.get<BestRevenueVenue>(
+      `${this.apiUrl}/analytics/venues/revenue/best`);
   }
 
   getTopVenuesByRevenue(): Observable<VenueRevenue[]> {
