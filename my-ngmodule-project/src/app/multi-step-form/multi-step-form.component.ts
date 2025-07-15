@@ -55,7 +55,8 @@ export class MultiStepFormComponent implements OnInit, OnDestroy {
     this.bookingForm = this.fb.group({
       startDate: ['', Validators.required],
       daysCount: [1, [Validators.required, Validators.min(1)]],
-      endDate: [{ value: '', disabled: true }],
+      // endDate: [{ value: '', disabled: true }],
+      endDate: [''], // make it enabled
 
       venueId: ['', Validators.required],
       venuePackageId: ['', Validators.required],
