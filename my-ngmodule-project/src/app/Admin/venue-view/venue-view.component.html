@@ -81,35 +81,52 @@
         >
           <mat-card class="p-4 flex flex-col h-full">
             <mat-card-header class="mb-3">
-              <mat-card-title
-                class="text-5xl font-black text-center text-[#2A7261] uppercase tracking-wide font-[Poppins,sans-serif]"
-              >
-                Venue: {{ venue.venueName }}
-              </mat-card-title>
+<mat-card-title
+  class="text-3xl font-extrabold text-green-700 mt-1 text-center uppercase tracking-wide"
+  style="font-family: 'Montserrat', sans-serif; font-weight: 900 !important;"
+>
+  Venue: {{ venue.venueName }}
+</mat-card-title>
+
+
+
+
             </mat-card-header>
+<mat-card-content class="flex-grow">
+  <!-- Image Section -->
+  <div class="w-[100%] mx-auto aspect-[3/2] overflow-hidden rounded-md mb-4">
+    <img
+      [src]="venue.venueImages[currentSlideIndices[i] || 0]"
+      alt="Venue Image"
+      matTooltip="Tap to view"
+      matTooltipPosition="above"
+      matTooltipShowDelay="0"
+      matTooltipClass="tooltip-follow"
+      class="w-full h-full object-cover cursor-pointer"
+      (click)="openInlineImageViewer(venue.venueImages, currentSlideIndices[i] || 0)"
+    />
+  </div>
 
-            <mat-card-content class="flex-grow ">
-              <div class="w-[100%] mx-auto aspect-[3/2] overflow-hidden rounded-md mb-4">
-                <img
-                  [src]="venue.venueImages[currentSlideIndices[i] || 0]"
-                  alt="Venue Image"
-                  matTooltip="Tap to view"
-                  matTooltipPosition="above"
-                  matTooltipShowDelay="0"
-                  matTooltipClass="tooltip-follow"
-                  class="w-full h-full object-cover cursor-pointer"
-                  (click)="openInlineImageViewer(venue.venueImages, currentSlideIndices[i] || 0)"
-                />
-              </div>
-              <br>
-              <div class="text-gray-700 text-sm space-y-1">
-                <p><strong>CAPACITY:</strong> {{ venue.capacity }}</p>
-                <p><strong>DESCRIPTION:</strong> {{ venue.description }}</p>
-          <p><strong>PRICE:</strong> {{ venue.price != null && isNumber(venue.price) ? (venue.price | currency:'TZS') : 'N/A' }}</p>
+  <!-- Condensed Details -->
+  <div class="text-gray-800 text-sm px-2" style="font-family: 'Montserrat', sans-serif;">
+<p class="text-lg">
+  This venue accommodates <span class="font-bold text-[#2A7261]">{{ venue.capacity }}</span> people and features
+  <span class="text-gray-700 font-medium">{{ venue.description }}</span>.
+</p>
 
 
-              </div>
-            </mat-card-content>
+ <p *ngIf="venue.price != null && isNumber(venue.price)" class="text-lg font-extrabold text-green-700 mt-1">
+  <span class="mr-1">TZS</span>{{ venue.price | number }}
+</p>
+
+  </div>
+</mat-card-content>
+
+<!-- Scoped Font Import -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+</style>
+
 
             <mat-card-actions class="mt-6 flex justify-center">
               <button

@@ -16,8 +16,6 @@ export class PhoneSearchComponent {
   constructor(private http: HttpClient) {}
 
  onSubmit() {
-  if (!this.phoneNumber.trim()) return;
-
   this.searching = true;
   this.noResults = false;
   this.bookings = [];
@@ -55,4 +53,11 @@ export class PhoneSearchComponent {
         }
       });
   }
+  validateNumberInput(event: KeyboardEvent) {
+  const allowed = /[0-9]/;
+  if (!allowed.test(event.key)) {
+    event.preventDefault();
+  }
+}
+
 }
