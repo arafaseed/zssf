@@ -84,12 +84,12 @@
 
                 <div class="text-gray-800 text-sm px-2" style="font-family: 'Montserrat', sans-serif;">
                   <p class="text-lg">
-                    This venue accommodates <span class="font-bold text-[#2A7261]">{{ venue.capacity }}</span>
+                    This venue accommodates <span class="font-bold text-[bg-black]">{{ venue.capacity }}</span>
                     people and features <span class="text-gray-700 font-medium">{{ venue.description }}</span>.
                   </p>
 
                   <p *ngIf="venue.price != null && isNumber(venue.price)"
-                    class="text-lg font-extrabold text-green-700 mt-1">
+                    class="text-lg font-extrabold text-black-700 mt-1">
                     <span class="mr-1">TZS</span>{{ venue.price | number }}
                   </p>
                 </div>
