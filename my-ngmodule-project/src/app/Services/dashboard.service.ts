@@ -64,8 +64,8 @@ getAllVenues(): Observable<any[]> {
     return this.http.get<number>(`${this.apiUrl}/payments/revenue/total`);
   }
 
-  getMonthlyRevenue(): Observable<number> {
-    return this.http.get<number>(`${this.apiUrl}/payments/revenue/monthly`);
+  getMonthlyRevenue(): Observable<{ [key: string]: number }> {
+    return this.http.get<{ [key: string]: number }>(`${this.apiUrl}/payments/revenue/monthly`);
   }
 
   getMostBookedVenue(): Observable<{ venueName: string }> {

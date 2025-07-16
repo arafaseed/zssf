@@ -3,7 +3,7 @@ import { StaffBookingService, Report } from '../../staff-booking.service';
 
 @Component({
   selector: 'app-reports',
-  standalone:false,
+  standalone: false,
   templateUrl: './reports.component.html',
   styles: []
 })
@@ -24,11 +24,10 @@ export class ReportsComponent implements OnInit, OnDestroy {
       return;
     }
     this.venueId = +vid;
-     this.loadReports();
+    this.loadReports();
   }
 
-  ngOnDestroy(): void {
-  }
+  ngOnDestroy(): void {}
 
   private loadReports(): void {
     const vid = sessionStorage.getItem('activeVenueId');
@@ -40,7 +39,8 @@ export class ReportsComponent implements OnInit, OnDestroy {
 
     this.bookingService.getReportsByVenue(this.venueId).subscribe({
       next: data => {
-        this.reports = data;
+        const filtered = this.filterReportsWithCheckOutTime(data);
+        this.reports = filtered;
         this.loading = false;
       },
       error: err => {
@@ -49,5 +49,16 @@ export class ReportsComponent implements OnInit, OnDestroy {
         this.loading = false;
       }
     });
+  }
+
+  /**
+   * Filters out reports that have a missing, null, or empty checkOutTime.
+   */
+  private filterReportsWithCheckOutTime(reports: Report[]): Report[] {
+    return reports.filter(r =>
+      r.checkOutTime !== null &&
+      r.checkOutTime !== undefined &&
+      r.checkOutTime.trim() !== ''
+    );
   }
 }

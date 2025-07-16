@@ -75,17 +75,40 @@ export class DashboardComponent implements OnInit {
   }
 
   private loadRevenueData() {
-    this.dashboardService.getTotalRevenue().subscribe(r => this.totalRevenue = r);
-    // this.dashboardService.getMonthlyRevenue().subscribe(r => this.monthlyRevenue = r);
-    this.dashboardService.getMonthlyRevenue()
-      .subscribe(obj => {
-        // obj looks like: { "MAY 2025": 5000000.0 }
-        const entries = Object.entries(obj);
-        if (entries.length) {
-          [ this.monthlyLabel, this.monthlyRevenue ] = entries[0];
-        }
-      });
-  }
+  this.dashboardService.getTotalRevenue().subscribe(r => this.totalRevenue = r);
+
+  this.dashboardService.getMonthlyRevenue()
+  .subscribe((obj: { [key: string]: number }) => {
+    const currentMonthKey = this.getCurrentMonthKey();
+
+    if (obj.hasOwnProperty(currentMonthKey)) {
+      this.monthlyLabel = currentMonthKey;
+      this.monthlyRevenue = obj[currentMonthKey];
+    } else {
+      const entries = Object.entries(obj);
+      if (entries.length) {
+        [this.monthlyLabel, this.monthlyRevenue] = entries[0];
+      } else {
+        this.monthlyLabel = currentMonthKey;
+        this.monthlyRevenue = 0;
+      }
+    }
+  });
+
+}
+
+private getCurrentMonthKey(): string {
+  const now = new Date();
+  const monthNames = [
+    'JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY',
+    'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER',
+    'NOVEMBER', 'DECEMBER'
+  ];
+  const month = monthNames[now.getMonth()];
+  const year = now.getFullYear();
+  return `${month} ${year}`;
+}
+
 
   private loadVenueStats() {
     this.dashboardService.getMostBookedVenue().subscribe(v => this.mostBookedVenue = v);
@@ -96,15 +119,17 @@ export class DashboardComponent implements OnInit {
       .subscribe(v => this.bestRevenueVenue = v);
 
     this.dashboardService.getTopVenuesByRevenue()
-      .subscribe((list) => {
-        this.topRevenueVenues = list
-          .slice(0, 3)
-          .map(item => ({
-            venueName:    item.venue.venueName,
-            bookingCount: item.venue.bookingIds.length,
-            revenue:      item.revenue
-          }));
-      });
+  .subscribe((list) => {
+    this.topRevenueVenues = list
+      .sort((a, b) => b.revenue - a.revenue) // Sort descending by revenue
+      .slice(0, 3) // Take top 3
+      .map(item => ({
+        venueName:    item.venue.venueName,
+        bookingCount: item.venue.bookingIds.length,
+        revenue:      item.revenue
+      }));
+  });
+
   }
 
   attachVenueNames() {

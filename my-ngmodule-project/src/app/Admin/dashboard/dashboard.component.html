@@ -8,18 +8,18 @@
   <!-- Summary Cards Grid -->
   <div class="dashboard-cards">
     <div class="card fixed-card">
-      <h3>Total Bookings</h3>
+      <h3>Total Overall Bookings</h3>
       <p class="card-value">{{ totalBookings }}</p>
       <button (click)="goToBookingList()">View All</button>
     </div>
 
     <div class="card fixed-card">
-      <h3>Total Users</h3>
+      <h3>Number of Customers</h3>
       <p class="card-value">{{ totalUsers }}</p>
     </div>
 
     <div class="card fixed-card">
-      <h3>Total Complete Bookings</h3>
+      <h3>Total 'COMPLETE' Bookings</h3>
       <p class="card-value">{{ totalBookedVenues }}</p>
     </div>
 
@@ -34,12 +34,12 @@
     </div>
 
     <div class="card fixed-card">
-      <h3>Most Booked Venue</h3>
+      <h3>Most Overall Booked Venue</h3>
       <p class="card-value">{{ mostBookedVenue?.venueName || '–' }}</p>
     </div>
 
     <div class="card fixed-card">
-      <h3>Top Completed Venue</h3>
+      <h3>Top Venue with most 'COMPLETE' Bookings</h3>
       <p class="card-value">{{ mostBookedCompletedVenue?.venueName || '–' }}</p>
     </div>
 
@@ -95,7 +95,7 @@
 
     <!-- Flexible: Top-3 Venues by Revenue -->
     <div class="card flexible-card card-wide">
-      <h3>Top 3 Venues by Revenue</h3>
+      <h3>Top Venues by Revenue</h3>
       <table class="revenue-table">
         <thead>
           <tr>
