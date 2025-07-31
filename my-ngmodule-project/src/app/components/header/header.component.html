@@ -1,53 +1,54 @@
-<mat-toolbar
-  style="background-color:  #020d2a;"
-  class="fixed top-0 left-0 right-0 z-[9999] shadow-lg border-b border-gray-200 py-4 px-4 sm:px-6"
->
-  <div class="w-full flex flex-row sm:flex-row sm:items-center justify-between gap-4">
-
-    <!-- Logo (no title on small screens) -->
-    <div class="flex items-center gap-3 flex-shrink-0 min-w-0">
-      <img src="zssf.png" alt="ZSSF Logo" class="h-12 object-contain" />
-      <span class="hidden sm:inline text-white text-2xl font-bold tracking-wide uppercase font-sans leading-tight truncate">
-        <span class="text-yellow-300">ZSSF</span> Booking Venue
-      </span>
-    </div>
-
-    <!-- Navigation + Contact -->
-    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-6 text-sm sm:text-base w-full sm:w-auto">
-
-      <!-- Navigation Buttons -->
-      <div class="flex flex-wrap items-center gap-4 w-full sm:w-auto">
-        <button 
-          *ngIf="!isHomePage" 
-          (click)="goHome()" 
-          class="flex items-center gap-1 transition duration-200 whitespace-nowrap text-white hover:text-yellow-300"
-        >
-          <mat-icon class="text-2xl">cottage</mat-icon>
-          <span class="hidden sm:inline">Home</span>
-        </button>
-
-        <button 
-          *ngIf="!isBookingPage" 
-          (click)="gomybooking()" 
-          class="flex items-center gap-1 transition duration-200 whitespace-nowrap text-white hover:text-yellow-300"
-        >
-          <mat-icon class="text-2xl">event</mat-icon>
-          <span class="hidden sm:inline">My Booking</span>
-        </button>
-      </div>
-
-      <!-- Contact Info -->
-      <div class="flex flex-wrap gap-4 w-full sm:w-auto text-white">
-        <div class="flex items-center gap-1 transition hover:text-yellow-300">
-          <mat-icon>call</mat-icon>
-          <span class="text-xs sm:text-sm truncate">+255 242 230 242</span>
-        </div>
-        <div class="flex items-center gap-1 transition hover:text-yellow-300">
-          <mat-icon>mark_email_read</mat-icon>
-          <span class="text-xs sm:text-sm truncate">info&#64;zssf.com</span>
-        </div>
-      </div>
-
-    </div>
+<!-- CONTACT BAR -->
+<!-- CONTACT BAR -->
+<div class="contact-bar">
+  <div class="contact-left">
+    <span class="contact-item"><i class="fas fa-phone icon"></i> +255 24 2230242 | TOLL FREE: 0800710140</span>
+    <span class="contact-item"><i class="fas fa-envelope icon"></i> <a href="mailto:info@zssf.or.tz">info&#64;zssf.or.tz</a></span>
+    <span class="contact-item"><i class="fab fa-whatsapp icon"></i> ZSSF whatsapp</span>
+    <span class="contact-item"><i class="fas fa-globe icon"></i> Online Services</span>
   </div>
-</mat-toolbar>
+
+  <div class="contact-right">
+    <span class="contact-item"><i class="fas fa-lock icon"></i></span>
+    <span class="contact-item"><i class="fas fa-book icon"></i></span>
+    <span class="contact-item"><i class="fas fa-lightbulb icon"></i></span>
+    <span class="contact-item"><i class="fas fa-folder icon"></i></span>
+    <span class="font-bold contact-item">FAQ</span>
+  </div>
+</div>
+
+
+
+<!-- HEADER -->
+<div class="header-container">
+  <img src="smz_logo.png" alt="Logo Left" class="logo-left" />
+  
+  <div class="header-text">
+    <h1>ZANZIBAR SOCIAL SECURITY FUND (ZSSF)</h1>
+    <p><i class="fas fa-key key-icon"></i> KEY TO THE FUTURE</p>
+  </div>
+  
+  <img src="zssf-logo.png" alt="Logo Right" class="logo-right" />
+</div>
+
+<!-- DATE + CENTERED NAVIGATION BAR -->
+<!-- NAV CONTAINER -->
+<div class="nav-container bg-white text-black text-sm px-4 py-4 flex justify-between items-center shadow-md min-h-[80px]">
+
+  <!-- Date Box -->
+  <div class="date-box text-lg text-[#138C82] font-semibold ml-6 flex items-center">
+    <i class="fas fa-calendar-alt mr-2 text-xl"></i>
+    {{ currentDate }}
+  </div>
+
+  <!-- (Optional) Centered Navigation -->
+  <nav class="flex gap-6 font-medium mx-auto">
+    <a routerLink="/venue" class="hover:text-blue-600">HOME</a>
+    <a routerLink="/booking" class="hover:text-blue-600">ABOUT US</a>
+    <a routerLink="/schemes" class="hover:text-blue-600">SCHEMES</a>
+    <a routerLink="/benefits" class="hover:text-blue-600">BENEFITS</a>
+    <a routerLink="/investments" class="hover:text-blue-600">INVESTMENTS</a>
+    <a routerLink="/publications" class="hover:text-blue-600">PUBLICATIONS</a>
+    <a routerLink="/contact" class="hover:text-blue-600">CONTACT US</a>
+  </nav>
+</div>

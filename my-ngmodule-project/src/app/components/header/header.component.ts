@@ -22,6 +22,7 @@ import { CommonModule } from '@angular/common';
 export class HeaderComponent {
   isHomePage: boolean = false;
   isBookingPage: boolean = false;
+   menuOpen = false;
 
   constructor(public router: Router) {
     this.router.events.pipe(
@@ -40,5 +41,16 @@ export class HeaderComponent {
   gomybooking(): void {
     this.router.navigate(['/mybooking']);
   }
+  currentDate = new Date().toLocaleDateString('en-GB', {
+    day: '2-digit', month: 'long', year: 'numeric'
+  });
+  
+   toggleMenu() {
+  this.menuOpen = !this.menuOpen;
 }
+
+
+ 
+}
+
 

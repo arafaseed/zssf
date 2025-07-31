@@ -1,7 +1,150 @@
-app-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 50; /* Ensure it's above content */
+.contact-bar {
+  background-color: #009688;
+  color: white;
+  font-size: 14px;
+  padding: 16px 24px; /* Increased vertical padding */
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Vertically center content */
+  flex-wrap: wrap;
+  min-height: 48px; /* Optional: ensure minimum height */
 }
+
+.contact-left,
+.contact-right {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: center; /* Ensure vertical alignment */
+}
+
+.icon {
+  color: #FFEB3B; /* Yellow icons */
+  margin-right: 6px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+/* Hover effect: icon + text yellow */
+.contact-item:hover {
+  color: #FFEB3B;
+}
+
+.contact-item a {
+  color: inherit;
+  text-decoration: underline;
+}
+.header-container {
+  background-color: white;
+  padding: 16px 120px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 6px; /* adds consistent spacing between items */
+}
+
+.logo-left,
+.logo-right {
+  height: 80px; /* keep larger logos */
+  width: auto;
+  flex-shrink: 0; /* prevent shrinking */
+}
+
+.header-text {
+  flex: 1;
+  text-align: center;
+  margin: 0 10px; /* reduce horizontal margin */
+  min-width: 0; /* prevents overflow */
+}
+
+.header-text h1 {
+  font-weight: 700;
+  font-size: 1.75rem;
+  margin: 0;
+}
+
+.header-text p {
+  font-size: 0.9rem;
+  margin: 4px 0 0 0;
+  color: #555;
+}
+
+.nav-container {
+  background-color: white;
+  color: black;
+  font-size: 0.875rem; /* text-sm */
+  padding: 16px 24px; /* increased vertical and horizontal padding */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  position: relative;
+  min-height: 64px; /* increase height */
+}
+
+.date-box {
+  position: absolute;
+  left: 34px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #138C82;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 600;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+  width: 100%;
+  max-width: 900px;
+  font-weight: 500;
+  font-size: medium;
+  margin-top: 0; /* removed mt-8 */
+}
+
+.nav-link {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #3592c9; /* optional: teal hover color */
+}
+
+/* Responsive: smaller padding on small screens */
+@media (max-width: 600px) {
+  .nav-container {
+    padding: 12px 16px;
+    min-height: 56px;
+  }
+  
+  .date-box {
+    left: 16px;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+  }
+  
+  .nav-links {
+    gap: 16px;
+  }
+}
+.header-container {
+  /* existing styles... */
+  border-bottom: 2px solid #ccc; /* light gray line */
+}
+
