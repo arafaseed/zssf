@@ -35,7 +35,7 @@ getLeasePackagesByVenue(venueId: number) {
 }
 
 getBuildingById(buildingId: number): Observable<any> {
-  return this.http.get(`http://localhost:8080/api/buildings/view/1`);
+  return this.http.get(`http://localhost:8080/api/buildings/view/${buildingId}`);
 }
 
   
