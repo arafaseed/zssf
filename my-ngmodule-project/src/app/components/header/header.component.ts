@@ -48,6 +48,9 @@ export class HeaderComponent {
    toggleMenu() {
   this.menuOpen = !this.menuOpen;
 }
+ navigateTo(path: string) {
+    this.router.navigate([path]);
+  }
 
 
  

@@ -10,9 +10,16 @@ import { Router } from '@angular/router';
 
 export class AppComponent {
   title = 'zssf-project';
+  isLoading = true;
+
 
   constructor(router: Router) {
       console.log(router.config);
   }
-
+ngOnInit() {
+    // Simulate loading delay (e.g., wait for services)
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1000); // Adjust time or use actual API loading
+  }
 }
