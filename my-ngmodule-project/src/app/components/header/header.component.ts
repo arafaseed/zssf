@@ -7,6 +7,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { filter } from 'rxjs';
 
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -18,6 +19,7 @@ import { filter } from 'rxjs';
     MatIconModule,
     CommonModule,
     TranslateModule,
+    
    
   ],
   exportAs: 'appHeader'

@@ -67,9 +67,11 @@ import { ActivityEditFormComponent } from './Form/activity-edit-form/activity-ed
 import { PhoneSearchComponent } from './phone-search/phone-search.component';
 import { StaffModule } from "./staff/staff.module";
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ViewBuildingComponent } from './view-building/view-building.component';
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { MatMenuModule } from '@angular/material/menu';
 
 
 // Translate Http Loader Factory with new signature
@@ -109,6 +111,10 @@ export function createTranslateLoader(http: HttpClient) {
     ActivityTableComponent,
     ActivityEditFormComponent,
     PhoneSearchComponent,
+    ViewBuildingComponent,
+    // DashboardSwitchComponent,
+    
+
   ],
   imports: [
     BrowserModule,

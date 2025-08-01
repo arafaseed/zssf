@@ -12,32 +12,25 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./venue-view.component.css']
 })
 export class VenueViewComponent implements OnInit, OnDestroy {
-isNumber(value: any): boolean {
-  return !isNaN(parseFloat(value)) && isFinite(value);
-}
-
-  searchTerm: string = '';
+ searchTerm: string = '';
   venues: any[] = [];
   filteredVenues: any[] = [];
   currentSlideIndices: number[] = [];
   activities: any[] = [];
-
-  // --- Inline Image Viewer state ---
-  inlineViewerVisible = false;
-  selectedImages: string[] = [];
-  currentImageIndex = 0;
+  groupedVenuesByBuilding: { [buildingId: string]: { buildingName: string, venues: any[] } } = {};
 
   private routerSubscription?: Subscription;
+  inlineViewerVisible: boolean = false;
+  selectedImages: never[] = [];
+  currentImageIndex: number | undefined;
 
   constructor(
     private venueService: ViewVenueService,
     private router: Router,
     private http: HttpClient
   ) {
-    // Disable route reuse to force component refresh on navigation
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
 
-    // Scroll to top on navigation
     this.routerSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
@@ -64,39 +57,71 @@ isNumber(value: any): boolean {
     this.venues = [];
   }
 
+  isNumber(value: any): boolean {
+    return !isNaN(parseFloat(value)) && isFinite(value);
+  }
+
   loadActivitiesAndVenues(): void {
-  this.http.get<any[]>('http://localhost:8080/api/activities').subscribe((activityData) => {
-    this.activities = activityData;
+    this.http.get<any[]>('http://localhost:8080/api/activities').subscribe((activityData) => {
+      this.activities = activityData;
 
-    this.venueService.getAllVenues().subscribe((venueData: any[]) => {
-      this.venues = venueData.map(venue => ({
-        ...venue,
-        activityNames: this.activities
-          .filter(a => a.venueId === venue.venueId)
-          .map(a => a.activityName),
-        showDescription: false,
-        venueImages: venue.venueImages || [],
-        price: null  // Initialize price as null
-      }));
+      this.venueService.getAllVenues().subscribe((venueData: any[]) => {
+        this.venues = venueData.map(venue => ({
+          ...venue,
+          activityNames: this.activities
+            .filter(a => a.venueId === venue.venueId)
+            .map(a => a.activityName),
+          venueImages: venue.venueImages || [],
+          price: null,
+          buildingName: 'Loading...'
+        }));
 
-      // For each venue, get lease packages and find lowest price
-      this.venues.forEach((venue, index) => {
-        this.venueService.getLeasePackagesByVenue(venue.venueId).subscribe(leasePackages => {
-          if (leasePackages.length > 0) {
-            const prices = leasePackages.map(lp => lp.price);
-            const lowestPrice = Math.min(...prices);
-            this.venues[index].price = lowestPrice;
+        this.venues.forEach((venue, index) => {
+          this.venueService.getLeasePackagesByVenue(venue.venueId).subscribe(leasePackages => {
+            if (leasePackages.length > 0) {
+              const prices = leasePackages.map(lp => lp.price);
+              this.venues[index].price = Math.min(...prices);
+            } else {
+              this.venues[index].price = 'N/A';
+            }
+          });
+
+          if (venue.buildingId) {
+            this.venueService.getBuildingById(venue.buildingId).subscribe({
+              next: (buildingData: any) => {
+                this.venues[index].buildingName = buildingData.buildingName;
+                this.groupVenues();
+              },
+              error: () => {
+                this.venues[index].buildingName = 'Unknown';
+                this.groupVenues();
+              }
+            });
           } else {
-            this.venues[index].price = 'N/A';
+            this.venues[index].buildingName = 'Not Assigned';
+            this.groupVenues();
           }
         });
-      });
 
-      this.filteredVenues = [...this.venues];
-      this.currentSlideIndices = new Array(this.venues.length).fill(0);
+        this.filteredVenues = [...this.venues];
+        this.currentSlideIndices = new Array(this.venues.length).fill(0);
+      });
     });
-  });
-}
+  }
+
+  groupVenues() {
+    this.groupedVenuesByBuilding = {};
+    this.venues.forEach(venue => {
+      const buildingId = venue.buildingId || 'No Building';
+      if (!this.groupedVenuesByBuilding[buildingId]) {
+        this.groupedVenuesByBuilding[buildingId] = {
+          buildingName: venue.buildingName || 'Unknown',
+          venues: []
+        };
+      }
+      this.groupedVenuesByBuilding[buildingId].venues.push(venue);
+    });
+  }
 
   goToBookingPage(venue: any): void {
     this.router.navigate(['/book'], { queryParams: { venueId: venue.venueId } });
@@ -117,37 +142,6 @@ isNumber(value: any): boolean {
     }
   }
 
-  openInlineImageViewer(images: string[], index: number): void {
-    this.selectedImages = images;
-    this.currentImageIndex = index;
-    this.inlineViewerVisible = true;
-  }
-
-  closeInlineImageViewer(): void {
-    this.inlineViewerVisible = false;
-    this.selectedImages = [];
-    document.body.style.overflow = 'auto';
-    this.router.navigate(['/']);
-  }
-
-  prevInlineImage(): void {
-    if (this.selectedImages.length > 0) {
-      this.currentImageIndex =
-        (this.currentImageIndex - 1 + this.selectedImages.length) % this.selectedImages.length;
-    }
-  }
-
-  nextInlineImage(): void {
-    if (this.selectedImages.length > 0) {
-      this.currentImageIndex =
-        (this.currentImageIndex + 1) % this.selectedImages.length;
-    }
-  }
-
-  goToSlide(venueIndex: number, slideIndex: number): void {
-    this.currentSlideIndices[venueIndex] = slideIndex;
-  }
-
   searchVenues(): void {
     const term = this.searchTerm.trim().toLowerCase();
 
@@ -162,11 +156,14 @@ isNumber(value: any): boolean {
     } else {
       this.venues = [...this.filteredVenues];
     }
+
+    this.groupVenues();
   }
 
   clearSearch(): void {
     this.searchTerm = '';
     this.venues = [...this.filteredVenues];
+    this.groupVenues();
   }
 
   @HostListener('document:keydown', ['$event'])

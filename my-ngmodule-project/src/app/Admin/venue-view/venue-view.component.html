@@ -1,92 +1,72 @@
 <div class="flex flex-col min-h-screen relative">
-  <!-- Foreground Content -->
-   <app-header></app-header>
-<!-- Page background -->
-<div class="relative min-h-screen bg-cover bg-center" style="background-image: url('hall-room.jpg');">
- 
+  <app-header></app-header>
 
-  <!-- Main content with overlay -->
-  <div class="relative z-10 px-4 pt-13 pb-12 min-h-screen">
-    <div class="max-w-6xl mx-auto">
+  <div class="relative min-h-screen bg-cover bg-center" style="background-image: url('hall-room.jpg');">
+    <div class="relative z-10 px-4 pt-13 pb-12 min-h-screen">
+      <div class="max-w-6xl mx-auto">
+        <!-- Search Box -->
+        <div class="bg-white bg-opacity-90 rounded-lg shadow p-6 mb-10">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="text-sm font-semibold text-gray-600">Venue</label>
+              <input type="text" [(ngModel)]="searchTerm" (input)="searchVenues()" placeholder="e.g. Golden Hall"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+            </div>
 
-    
+            <div>
+              <label class="text-sm font-semibold text-gray-600">Activity</label>
+              <select [(ngModel)]="searchTerm" (change)="searchVenues()"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+                <option value="">All Activities</option>
+                <option *ngFor="let activity of activities" [value]="activity.activityName">{{ activity.activityName }}</option>
+              </select>
+            </div>
 
-      <!-- Booking.com-style search box -->
-      <div class="bg-white bg-opacity-90 rounded-lg shadow p-6 mb-10">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-           <!-- Heading -->
-            <div class="bg-white bg-opacity-5"></div>
-  <h2 class="text-2xl font-bold text-gray-800 mb-4">Check venue Availability</h2> 
-              <div class="bg-white bg-opacity-5"></div>
-<!-- Venue Grid Section -->
-<!-- <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4">
-  <div *ngFor="let venue of filteredVenues" class="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow" (click)="goToVenue(venue)">
-    <img [src]="venue.imageUrl" alt="{{ venue.venueName }}" class="w-full h-40 object-cover">
-    <div class="p-4">
-      <h3 class="text-lg font-semibold text-gray-800">{{ venue.venueName }}</h3>
-      <p class="text-sm text-gray-600">{{ venue.buildingName }}</p>
-    </div>
-  </div>
-</div> -->
-          <!-- Venue Name -->
-          <div>
-            <label class="text-sm font-semibold text-gray-600">Venue</label>
-            <input type="text" [(ngModel)]="searchTerm" (input)="searchVenues()" placeholder="e.g. Golden Hall"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
-          </div>
-
-          <!-- Activity -->
-          <div>
-            <label class="text-sm font-semibold text-gray-600">Activity</label>
-            <select [(ngModel)]="searchTerm" (change)="searchVenues()"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
-              <option value="">All Activities</option>
-              <option *ngFor="let activity of activities" [value]="activity.activityName">{{ activity.activityName }}</option>
-            </select>
-          </div>
-
-          <!-- Date -->
-          <div>
-            <label class="text-sm font-semibold text-gray-600">Date</label>
-            <input type="date" [(ngModel)]="searchTerm" (change)="searchVenues()"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+            <div>
+              <label class="text-sm font-semibold text-gray-600">Date</label>
+              <input type="date" [(ngModel)]="searchTerm" (change)="searchVenues()"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Venue Cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div *ngFor="let venue of venues; let i = index" class="bg-white rounded-lg shadow overflow-hidden">
-          <!-- Image slider -->
-          <div class="relative h-48 overflow-hidden">
-            <img [src]="venue.venueImages[currentSlideIndices[i]]" alt="Venue image" class="w-full h-full object-cover">
+        <!-- Grouped Venues by Building -->
+        <div *ngFor="let group of groupedVenuesByBuilding | keyvalue">
+      <div class="w-full text-center my-8">
+  <h2 class="inline-block text-3xl font-extrabold uppercase text-white bg-gradient-to-r from-blue-700 to-blue-900 px-8 py-4 rounded-full shadow-lg tracking-wide">
+    {{ group.value.buildingName | uppercase }} BUILDING HALLS
+  </h2>
+</div>
 
-            <!-- Slide controls -->
-            <button (click)="prevSlide(i)" class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-90 p-1 rounded-full">
-              ‹
-            </button>
-            <button (click)="nextSlide(i)" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-90 p-1 rounded-full">
-              ›
-            </button>
-          </div>
 
-          <!-- Venue info -->
-          <div class="p-4">
-            <h2 class="text-lg font-semibold text-blue-800">{{ venue.venueName }}</h2>
-            <p class="text-gray-600 text-sm mb-1">{{ venue.description || 'No description available.' }}</p>
-            <p class="text-gray-500 text-sm mb-1">Capacity: {{ venue.capacity }}</p>
-            <p class="text-gray-500 text-sm mb-1">
-              Activities: <span *ngFor="let act of venue.activityNames; let last = last">{{ act }}<span *ngIf="!last">, </span></span>
-            </p>
-            <p class="text-green-700 font-bold mt-1">TZS {{ isNumber(venue.price) ? venue.price : 'N/A' }}</p>
-            <button (click)="goToBookingPage(venue)"
-              class="mt-3 w-full py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-md font-semibold">
-              Book Now
-            </button>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <div *ngFor="let venue of group.value.venues; let i = index" class="bg-white rounded-lg shadow overflow-hidden">
+              <div class="relative h-48 overflow-hidden">
+                <img [src]="venue.venueImages[currentSlideIndices[i]]" alt="Venue image" class="w-full h-full object-cover">
+                <button (click)="prevSlide(i)" class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-90 p-1 rounded-full">‹</button>
+                <button (click)="nextSlide(i)" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-90 p-1 rounded-full">›</button>
+              </div>
+
+              <div class="p-4">
+                <h2 class="text-lg font-semibold text-blue-800">{{ venue.venueName }}</h2>
+                <p class="text-gray-600 text-sm mb-1">{{ venue.description || 'No description available.' }}</p>
+                <p class="text-gray-500 text-sm mb-1">Capacity: {{ venue.capacity }}</p>
+                <p class="text-gray-500 text-sm mb-1">
+                  Activities:
+                  <span *ngFor="let act of venue.activityNames; let last = last">{{ act }}<span *ngIf="!last">, </span></span>
+                </p>
+                <p class="text-green-700 font-bold mt-1">TZS {{ isNumber(venue.price) ? venue.price : 'N/A' }}</p>
+                <button (click)="goToBookingPage(venue)" class="mt-3 w-full py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-md font-semibold">
+                  Book Now
+                </button>
+              </div>
+            </div>
           </div>
         </div>
+
       </div>
     </div>
+    <app-footer></app-footer>
   </div>
-   <app-footer></app-footer>
 </div>
