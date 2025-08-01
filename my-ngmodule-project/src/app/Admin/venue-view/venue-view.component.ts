@@ -12,6 +12,9 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./venue-view.component.css']
 })
 export class VenueViewComponent implements OnInit, OnDestroy {
+goToVenue(_t15: any) {
+throw new Error('Method not implemented.');
+}
 isNumber(value: any): boolean {
   return !isNaN(parseFloat(value)) && isFinite(value);
 }
@@ -76,20 +79,34 @@ isNumber(value: any): boolean {
           .map(a => a.activityName),
         showDescription: false,
         venueImages: venue.venueImages || [],
-        price: null  // Initialize price as null
+        price: null,
+        buildingName: 'Loading...' // default
       }));
 
-      // For each venue, get lease packages and find lowest price
       this.venues.forEach((venue, index) => {
+        // Get price
         this.venueService.getLeasePackagesByVenue(venue.venueId).subscribe(leasePackages => {
           if (leasePackages.length > 0) {
             const prices = leasePackages.map(lp => lp.price);
-            const lowestPrice = Math.min(...prices);
-            this.venues[index].price = lowestPrice;
+            this.venues[index].price = Math.min(...prices);
           } else {
             this.venues[index].price = 'N/A';
           }
         });
+
+        // Get building name only if buildingId exists
+        if (venue.buildingId) {
+          this.venueService.getBuildingById(venue.buildingId).subscribe({
+            next: (buildingData: any) => {
+              this.venues[index].buildingName = buildingData.buildingName || 'Unknown';
+            },
+            error: () => {
+              this.venues[index].buildingName = 'Unknowneeeeee';
+            }
+          });
+        } else {
+          this.venues[index].buildingName = 'Not Assigned';
+        }
       });
 
       this.filteredVenues = [...this.venues];
@@ -97,6 +114,7 @@ isNumber(value: any): boolean {
     });
   });
 }
+
 
   goToBookingPage(venue: any): void {
     this.router.navigate(['/book'], { queryParams: { venueId: venue.venueId } });

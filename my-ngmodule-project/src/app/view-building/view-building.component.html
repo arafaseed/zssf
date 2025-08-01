@@ -1,0 +1,72 @@
+<div class="flex flex-col min-h-screen relative">
+  <!-- Foreground Content -->
+    <app-header></app-header>
+<!-- Page background -->
+<div class="relative min-h-screen bg-cover bg-center" style="background-image: url('hall-room.jpg');">
+  <!-- Main content with overlay -->
+  <div class="relative z-10 px-4 pt-13 pb-12 min-h-screen">
+    <div class="max-w-6xl mx-auto">
+
+      <!-- Header -->
+      <!-- <div class="text-center text-black mb-8">
+        <h1 class="text-4xl font-bold mb-2">Discover Amazing Venues</h1>
+        <p class="text-lg">Book venues for weddings, birthdays, meetings and more</p>
+      </div> -->
+
+      <!-- Booking.com-style search box -->
+      <div class="bg-white bg-opacity-90 rounded-lg shadow p-6 mb-10">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+ <!-- Heading -->
+            <div class="bg-white bg-opacity-5"></div>
+  <h2 class="text-2xl font-bold text-gray-800 mb-4">Check venue Availability</h2> 
+              <div class="bg-white bg-opacity-5"></div>
+<!-- Venue Grid Section -->
+
+          <!-- Venue Name -->
+         
+
+
+          <!-- Date -->
+          <div>
+            <label class="text-sm font-semibold text-gray-600">Date</label>
+            <div class="min-h-screen bg-gray-100 py-10 px-4">
+  <div class="max-w-6xl mx-auto bg-white shadow-md rounded-lg p-6">
+    <h2 class="text-3xl font-bold text-blue-800 mb-6 text-center">List of Buildings</h2>
+
+    <div *ngIf="buildings.length === 0" class="text-center text-gray-500">
+      No buildings found.
+    </div>
+
+    <div *ngFor="let building of buildings" class="mb-4 p-4 border rounded shadow-sm bg-gray-50">
+      <h3 class="text-xl font-semibold text-blue-700">{{ building.buildingName }}</h3>
+      <p class="text-gray-600">Address: {{ building.address }}</p>
+    </div>
+  </div>
+</div>
+
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+          </div>
+        </div>
+      </div>
+
+ <div class="min-h-screen bg-gray-100 py-10 px-4">
+  <div class="max-w-6xl mx-auto bg-white shadow-md rounded-lg p-6">
+    <h2 class="text-3xl font-bold text-blue-800 mb-6 text-center">List of Buildings</h2>
+
+    <div *ngIf="buildings.length === 0" class="text-center text-gray-500">
+      No buildings found.
+    </div>
+
+    <div *ngFor="let building of buildings" class="mb-4 p-4 border rounded shadow-sm bg-gray-50">
+      <h3 class="text-xl font-semibold text-blue-700">{{ building.buildingName }}</h3>
+      <p class="text-gray-600">Address: {{ building.address }}</p>
+    </div>
+  </div>
+</div>
+
+
+      </div>
+    </div>
+  </div>
+   <app-footer></app-footer>
+</div>

@@ -6,6 +6,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class BuildingService {
+  getAllBuildings() {
+    throw new Error('Method not implemented.');
+  }
 
   private apiUrl = 'http://localhost:8080/api/buildings/add';
   private apUrl = 'http://localhost:8080/api/buildings';

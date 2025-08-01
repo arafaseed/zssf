@@ -65,6 +65,7 @@ import { ActivityEditFormComponent } from './Form/activity-edit-form/activity-ed
 import { PhoneSearchComponent } from './phone-search/phone-search.component';
 import { StaffModule } from "./staff/staff.module";
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ViewBuildingComponent } from './view-building/view-building.component';
 
 // import { DashboardSwitchComponent } from './Admin/dashboard-switch/dashboard-switch.component';
 
@@ -100,6 +101,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     ActivityTableComponent,
     ActivityEditFormComponent,
     PhoneSearchComponent,
+    ViewBuildingComponent,
     // DashboardSwitchComponent,
     
 
