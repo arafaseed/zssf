@@ -1,4 +1,17 @@
 
-<router-outlet></router-outlet>
+<!-- app.component.html -->
+
+<div *ngIf="isLoading" class="fixed inset-0 flex items-center justify-center bg-white z-[9999]">
+  <div class="relative w-28 h-28">
+    <div class="absolute inset-0 rounded-full border-4 border-teal-500 border-t-transparent animate-spin"></div>
+    <div class="absolute inset-4 rounded-full border-4 border-teal-200 border-b-transparent animate-spin reverse-spin"></div>
+    <div class="absolute inset-8 flex items-center justify-center">
+      <img src="zssf-logo.png" alt="Logo" class="w-12 h-12  animate-pulse" />
+    </div>
+  </div>
+</div>
+
+<router-outlet *ngIf="!isLoading"></router-outlet>
+
 
 

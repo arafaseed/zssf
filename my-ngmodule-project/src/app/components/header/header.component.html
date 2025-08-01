@@ -1,14 +1,13 @@
 <!-- CONTACT BAR -->
-<!-- CONTACT BAR -->
-<div class="contact-bar">
-  <div class="contact-left">
-    <span class="contact-item"><i class="fas fa-phone icon"></i> +255 24 2230242 | TOLL FREE: 0800710140</span>
-    <span class="contact-item"><i class="fas fa-envelope icon"></i> <a href="mailto:info@zssf.or.tz">info&#64;zssf.or.tz</a></span>
-    <span class="contact-item"><i class="fab fa-whatsapp icon"></i> ZSSF whatsapp</span>
-    <span class="contact-item"><i class="fas fa-globe icon"></i> Online Services</span>
+<div class="contact-bar bg-[#009688] text-white text-sm py-2 px-4 flex flex-wrap justify-between items-center">
+  <div class="contact-left flex flex-wrap gap-4 items-center">
+    <span class="contact-item flex items-center gap-1"><i class="fas fa-phone icon"></i> +255 24 2230242 | TOLL FREE: 0800710140</span>
+    <span class="contact-item flex items-center gap-1"><i class="fas fa-envelope icon"></i> <a href="mailto:info@zssf.or.tz">info&#64;zssf.or.tz</a></span>
+    <span class="contact-item flex items-center gap-1"><i class="fab fa-whatsapp icon"></i> ZSSF whatsapp</span>
+    <span class="contact-item flex items-center gap-1"><i class="fas fa-globe icon"></i> Online Services</span>
   </div>
 
-  <div class="contact-right">
+  <div class="contact-right flex gap-4 mt-2 sm:mt-0">
     <span class="contact-item"><i class="fas fa-lock icon"></i></span>
     <span class="contact-item"><i class="fas fa-book icon"></i></span>
     <span class="contact-item"><i class="fas fa-lightbulb icon"></i></span>
@@ -17,38 +16,33 @@
   </div>
 </div>
 
-
-
 <!-- HEADER -->
-<div class="header-container">
-  <img src="smz_logo.png" alt="Logo Left" class="logo-left" />
-  
-  <div class="header-text">
-    <h1>ZANZIBAR SOCIAL SECURITY FUND (ZSSF)</h1>
-    <p><i class="fas fa-key key-icon"></i> KEY TO THE FUTURE</p>
+<div class="header-container flex flex-wrap justify-between items-center px-4 py-4 bg-white">
+  <img src="smz_logo.png" alt="Logo Left" class="logo-left w-20 sm:w-24 h-auto" />
+
+  <div class="header-text text-center flex-1 px-4">
+    <h1 class="text-xl sm:text-2xl font-bold text-gray-700">ZANZIBAR SOCIAL SECURITY FUND (ZSSF)</h1>
+    <small style="text-align: center; font-size: 13px; font-weight: 700; color: #444;">
+      <span class="fa fa-key mr-1"></span> KEY TO THE FUTURE
+    </small>
   </div>
-  
-  <img src="zssf-logo.png" alt="Logo Right" class="logo-right" />
+
+  <img src="zssf-logo.png" alt="Logo Right" class="logo-right w-20 sm:w-24 h-auto" />
 </div>
 
-<!-- DATE + CENTERED NAVIGATION BAR -->
-<!-- NAV CONTAINER -->
-<div class="nav-container bg-white text-black text-sm px-4 py-4 flex justify-between items-center shadow-md min-h-[80px]">
+<!-- DATE + NAVIGATION BAR -->
+<div class="nav-container bg-white text-black text-sm px-4 py-4 flex flex-wrap justify-between items-center shadow-md min-h-[80px] font-[Poppins,sans-serif]">
 
   <!-- Date Box -->
-  <div class="date-box text-lg text-[#138C82] font-semibold ml-6 flex items-center">
+  <div class="date-box text-lg text-[#138C82] font-semibold flex items-center mb-2 sm:mb-0">
     <i class="fas fa-calendar-alt mr-2 text-xl"></i>
     {{ currentDate }}
   </div>
 
-  <!-- (Optional) Centered Navigation -->
-  <nav class="flex gap-6 font-medium mx-auto">
-    <a routerLink="/venue" class="hover:text-blue-600">HOME</a>
-    <a routerLink="/booking" class="hover:text-blue-600">ABOUT US</a>
-    <a routerLink="/schemes" class="hover:text-blue-600">SCHEMES</a>
-    <a routerLink="/benefits" class="hover:text-blue-600">BENEFITS</a>
-    <a routerLink="/investments" class="hover:text-blue-600">INVESTMENTS</a>
-    <a routerLink="/publications" class="hover:text-blue-600">PUBLICATIONS</a>
-    <a routerLink="/contact" class="hover:text-blue-600">CONTACT US</a>
+  <!-- Navigation -->
+  <nav class="flex flex-wrap justify-center gap-4 sm:gap-6 font-medium text-center text-base text-gray-600">
+    <a (click)="navigateTo('/venue')" class="hover:text-blue-600 cursor-pointer nav-link">HOME</a>
+    <a (click)="navigateTo('/mybooking')" class="hover:text-blue-600 cursor-pointer nav-link">MY BOOKING</a>
+    <a (click)="navigateTo('/login')" class="hover:text-blue-600 cursor-pointer nav-link">LOGIN</a>
   </nav>
 </div>
