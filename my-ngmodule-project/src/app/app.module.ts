@@ -1,9 +1,11 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { HomeComponent } from './components/home/home.component';
@@ -17,15 +19,17 @@ import { LayoutComponent } from './Admin/layout/layout.component';
 import { UserComponent } from './Admin/user/user.component';
 import { SettingComponent } from './Admin/setting/setting.component';
 import { BuildingComponent } from './Admin/building/building.component';
-import { MatCard, MatCardModule, MatCardTitle } from '@angular/material/card';
-import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+
+import { MatCardModule, MatCard, MatCardTitle } from '@angular/material/card';
+import { MatFormFieldModule, MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { VenueFormComponent } from './Admin/venue-form/venue-form.component';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, HttpClient } from '@angular/common/http';
 import { BuildingService } from './Services/building.service';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -38,13 +42,12 @@ import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/le
 import { BuildinglistComponent } from './Admin/buildinglist/buildinglist.component';
 import { VenueViewComponent } from './Admin/venue-view/venue-view.component';
 import { ViewVenuesComponent } from './Admin/view-venues/view-venues.component';
-import { MatError } from '@angular/material/form-field';
+
 import { CommonModule, DatePipe } from '@angular/common';
 import { MajengoComponent } from './Admin/majengo/majengo.component';
 import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { LoginComponent } from './login/login.component';
-// import { StaffDashboardComponent } from './staff/staff-dashboard/staff-dashboard.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { EditVenueComponentComponent } from './edit-venue-component/edit-venue-component.component';
 import { BookingService } from './Services/booking.service';
@@ -55,10 +58,9 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { StaffAddComponent } from './staff-add/staff-add.component';
-import { MatSnackBarModule }   from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivityFormComponent } from './Admin/activity-form/activity-form.component';
-
 import { AdminbookingComponent } from './adminbooking/adminbooking.component';
 import { ActivityTableComponent } from './activitytable/activitytable.component';
 import { ActivityEditFormComponent } from './Form/activity-edit-form/activity-edit-form.component';
@@ -66,9 +68,16 @@ import { PhoneSearchComponent } from './phone-search/phone-search.component';
 import { StaffModule } from "./staff/staff.module";
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-// import { DashboardSwitchComponent } from './Admin/dashboard-switch/dashboard-switch.component';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 
+// Translate Http Loader Factory with new signature
+
+export function createTranslateLoader(http: HttpClient) {
+  // Just pass http, no other arguments — this is new in v7+
+  return new TranslateHttpLoader(http, "./assets/i18n/", '.json');
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -100,69 +109,52 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     ActivityTableComponent,
     ActivityEditFormComponent,
     PhoneSearchComponent,
-    // DashboardSwitchComponent,
-    
-
   ],
   imports: [
-    MatTooltipModule,
-    MatDatepickerModule,
-    FullCalendarModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatGridListModule,
-    MatInputModule,
-    MatButtonModule,
-    ReactiveFormsModule,
-    MatDialogModule,
-    MatInputModule,
-    MatButtonModule,
-    ReactiveFormsModule,
     BrowserModule,
-    MatSelectModule,
     AppRoutingModule,
-    MatToolbarModule,
-    MatStepperModule,
-    HeaderComponent,
+    BrowserAnimationsModule,
+    // Angular Material modules
+    TranslateModule,
     MatButtonModule,
-    MatFormField,
-    MatCardModule,
-    MatFormFieldModule,
-    BrowserModule,
-    MatInputModule,
-    MatDatepickerModule, // import MatDatepickerModule
-    MatInputModule, // import MatInputModule for the input field
-    MatNativeDateModule,
     MatToolbarModule,
-    CommonModule,
-    MatDialogModule,
-    MatSnackBarModule,
+    HeaderComponent,
+    MatIconModule,
     MatSidenavModule,
     MatListModule,
     MatCardModule,
-    MatCardModule,
-    MatButtonModule,
-    MatIconModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatInputModule,
     MatNativeDateModule,
-    MatError,
-    MatCardTitle,
-    FormsModule,
-    MatCard,
-    BrowserModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    MatButtonModule,
+    MatSelectModule,
+    MatDialogModule,
     MatTableModule,
     MatSortModule,
-    MatLabel,
+    MatStepperModule,
+    MatSnackBarModule,
+    MatTooltipModule,
+    MatGridListModule,
+    MatProgressSpinnerModule,
+
     FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+
     CommonModule,
-    BrowserModule,
-    DatePipe,
+    FullCalendarModule,
     StaffModule,
-    MatProgressSpinnerModule 
-],
-  // exports: [DashboardSwitchComponent],
+
+ TranslateModule.forRoot({
+  loader: {
+    provide: TranslateLoader,
+    useFactory: createTranslateLoader,
+    deps: [HttpClient]
+  },
+
+})
+
+  ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     provideAnimationsAsync(),
@@ -172,5 +164,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
   ],
   bootstrap: [AppComponent],
+  
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }
