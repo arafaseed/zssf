@@ -14,7 +14,35 @@ h3 {
   margin-bottom: 20px;
   font-weight: bold;
   color: #333;
-  align-self: center;
+  text-align: center;
+}
+
+/* Custom input field styling */
+.custom-input {
+  margin-bottom: 15px;
+}
+
+.custom-input .form-label {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.custom-input input,
+.custom-input select {
+  width: 100%;
+  padding: 12px 15px;
+  border: none;
+  background-color: transparent;
+  outline: none;
+  border-bottom: 1px solid #ced4da;
+  font-size: 1rem;
+}
+
+.custom-input input:focus,
+.custom-input select:focus {
+  border-bottom: 2px solid #007bff;
 }
 
 /* Error message styling */
@@ -40,47 +68,87 @@ h3 {
 
 /* Buttons */
 .btn-primary {
-  padding: 12px 25px;
-  font-size: 1.1rem;
-  border-radius: 10px;
-
-  background-color: #4caf50;  /* green */
+ display: inline-flex;
+  align-items: center;
+  background-color: #4caf50;
   color: white;
   border: none;
-
-  margin-right: 15px; /* Space between Submit and Cancel buttons */
+  padding: 10px 15px;
+  border-radius: 5px;
 }
 
 .btn-primary:hover {
-  background-color: #388e3c; /* darker green */
-  cursor: pointer;
+  background-color: #388e3c;
   transition: background-color 0.3s ease-in-out;
+
+}
+.d-flex.gap-3 > * {
+  margin-left: 8px;
+  margin-right: 8px;
+}
+.circular-loader {
+  border: 6px solid #e0e0e0;            /* Light gray background */
+  border-top: 6px solid #007bff;         /* Blue spinner color */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
 }
 
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.fullscreen-spinner {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.85); /* slightly opaque white */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+  backdrop-filter: blur(1px); /* subtle blur for nice effect */
+}
+
+
+
+
+/* Cancel button (styled separately) */
 .cancel-btn {
   background-color: #dc3545;
-  color: white;
-  padding: 12px 25px;
-  font-size: 1.1rem;
-  border-radius: 10px;
-  border: none;
 }
 
 .cancel-btn:hover {
   background-color: #c82333;
-  cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
 }
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
 
 /* Responsive layout */
 @media (max-width: 768px) {
-  .text-center.d-flex.justify-content-center.gap-3.mt-4 {
-    flex-direction: column;
-    gap: 10px;
+  .col-md-6 {
+    width: 100%;
+    margin-bottom: 15px;
   }
 
-  .btn-primary, .cancel-btn {
+  .row:last-child {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .btn-primary,
+  .cancel-btn {
     width: 100%;
-    margin-right: 0; /* remove right margin on small screens */
+    margin-bottom: 10px;
   }
 }

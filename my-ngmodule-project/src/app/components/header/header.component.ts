@@ -30,6 +30,7 @@ export class HeaderComponent {
   menuOpen = false;
   fullTitle = '';
   displayedText = ''; 
+  isAnimating = false;
 
   currentDate: string;
 
@@ -83,6 +84,7 @@ export class HeaderComponent {
   }
 
   switchLanguage(lang: string): void {
+    if (this.isAnimating) return;
     this.translate.use(lang);
     localStorage.setItem('app_language', lang);
     this.setAnimatedTitle(); 
@@ -114,15 +116,24 @@ export class HeaderComponent {
       this.displayedText += this.fullTitle.charAt(index);
       setTimeout(() => this.animateText(index + 1), 80); // speed in ms
     }
+    else {
+      this.isAnimating = false;
+    }
   }
 setAnimatedTitle(): void {
+   if (this.isAnimating) return;
   this.translate.get('header.title').subscribe(res => {
     console.log('Translated title:', res); // check the output here
     this.fullTitle = res;
     this.displayedText = '';
+    this.isAnimating = true;
     this.animateText(0);
   });
 }
 
+switchLanguageFromEvent(event: Event) {
+  const selectElement = event.target as HTMLSelectElement;
+  this.switchLanguage(selectElement.value);
+}
 
 }

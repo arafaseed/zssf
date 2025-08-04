@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 export class LeasePackageFormComponent implements OnInit {
   leaseForm: FormGroup;
   venues: any[] = []; // Store venue list
+  isSubmitting = false;
 
   constructor(
     private fb: FormBuilder,
@@ -38,26 +39,29 @@ export class LeasePackageFormComponent implements OnInit {
       }
     });
   }
+onSubmit(): void {
+  if (this.leaseForm.valid) {
+    this.isSubmitting = true; // Show spinner
 
-  onSubmit(): void {
-    if (this.leaseForm.valid) {
-      const leasePackage = {
-        ...this.leaseForm.value,
-        venueId: this.leaseForm.value.venueId ? parseInt(this.leaseForm.value.venueId, 10) : null
-      };
+    const leasePackage = {
+      ...this.leaseForm.value,
+      venueId: this.leaseForm.value.venueId ? parseInt(this.leaseForm.value.venueId, 10) : null
+    };
 
-      this.leasePackageService.addLeasePackage(leasePackage, leasePackage.venueId).subscribe({
-        next: (response) => {
-          this.showToast('Lease package added successfully!', 'success');
-          this.leaseForm.reset();
-          this.router.navigate(['/admin/leasepackagetable']);
-        },
-        error: (error) => {
-          this.showToast('Error adding lease package: ' + error.message, 'error');
-        }
-      });
-    }
+    this.leasePackageService.addLeasePackage(leasePackage, leasePackage.venueId).subscribe({
+      next: (response) => {
+        this.showToast('Lease package added successfully!', 'success');
+        this.leaseForm.reset();
+        this.isSubmitting = false; // Hide spinner
+        this.router.navigate(['/admin/leasepackagetable']);
+      },
+      error: (error) => {
+        this.showToast('Error adding lease package: ' + error.message, 'error');
+        this.isSubmitting = false; // Hide spinner on error
+      }
+    });
   }
+}
 
   onCancel(): void {
     // Navigate back to lease package table or wherever you want on cancel

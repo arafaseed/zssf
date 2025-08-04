@@ -1,0 +1,57 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-8">
+  <div class="w-full max-w-2xl bg-white rounded-2xl shadow-md p-6 sm:p-8">
+    <h2 class="text-2xl sm:text-3xl font-bold text-center text-[#2A7261] mb-6">
+      Feedback & Comments
+    </h2>
+
+    <form (submit)="submitFeedback()" #feedbackForm="ngForm" class="space-y-5">
+      <!-- Name -->
+      <div>
+        <label for="name" class="block mb-1 font-medium text-sm sm:text-base text-gray-700">Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          [(ngModel)]="feedback.name"
+          required
+          class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#2A7261]"
+        />
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label for="email" class="block mb-1 font-medium text-sm sm:text-base text-gray-700">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="feedback.email"
+          required
+          class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#2A7261]"
+        />
+      </div>
+
+      <!-- Comment -->
+      <div>
+        <label for="comment" class="block mb-1 font-medium text-sm sm:text-base text-gray-700">Comment</label>
+        <textarea
+          id="comment"
+          name="comment"
+          rows="4"
+          [(ngModel)]="feedback.comment"
+          required
+          class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#2A7261]"
+        ></textarea>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        [disabled]="!feedbackForm.form.valid"
+        class="w-full bg-[#2A7261] text-white py-2 rounded-xl text-sm sm:text-base font-semibold hover:bg-[#256354] transition-all disabled:opacity-50"
+      >
+        Submit Feedback
+      </button>
+    </form>
+  </div>
+</div>

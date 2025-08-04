@@ -11,8 +11,8 @@
     "slogan": "KEY TO THE FUTURE"
   },
   "nav": {
-    "home": "HOME",
-    "my_booking": "MY BOOKING",
-    "login": "LOGIN"
+    "home": "Home",
+    "my_booking": "My Booking",
+    "login": "Login"
   }
 }

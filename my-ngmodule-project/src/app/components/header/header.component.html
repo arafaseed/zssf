@@ -20,10 +20,7 @@
   </div>
 
   <div class="contact-right flex gap-4 mt-2 sm:mt-0 items-center">
-    <span class="contact-item"><i class="fas fa-lock icon"></i></span>
-    <span class="contact-item"><i class="fas fa-book icon"></i></span>
-    <span class="contact-item"><i class="fas fa-lightbulb icon"></i></span>
-    <span class="contact-item"><i class="fas fa-folder icon"></i></span>
+   
     <span class="contact-item">{{ 'contact.faq' | translate }}</span>
 
     <!-- Language Switch Buttons -->
@@ -52,10 +49,11 @@
     <h1 class="text-xl sm:text-2xl font-bold text-gray-700">
     {{ displayedText }}
     </h1>
-    <small style="text-align: center; font-size: 13px; font-weight: 700; color: #444;">
+    <small style="text-align: center; font-size: 15px; font-weight: 500; color: #444;">
       <span class="fa fa-key mr-1"></span>
       {{ 'header.slogan' | translate }}
     </small>
+
   </div>
 
   <img src="zssf-logo.png" alt="Logo Right" class="logo-right w-20 sm:w-24 h-auto" />
@@ -74,5 +72,7 @@
     <a (click)="navigateTo('/venue')" class="hover:text-blue-600 cursor-pointer nav-link">{{ 'nav.home' | translate }}</a>
     <a (click)="navigateTo('/mybooking')" class="hover:text-blue-600 cursor-pointer nav-link">{{ 'nav.my_booking' | translate }}</a>
     <a (click)="navigateTo('/login')" class="hover:text-blue-600 cursor-pointer nav-link">{{ 'nav.login' | translate }}</a>
+    <a (click)="navigateTo('/agreeterms')" class="hover:text-blue-600 cursor-pointer nav-link"> Agree Terms & Conditions </a>
+     <a (click)="navigateTo('/feedback')" class="hover:text-blue-600 cursor-pointer nav-link"> Feedback & comment </a>
   </nav>
 </div>
