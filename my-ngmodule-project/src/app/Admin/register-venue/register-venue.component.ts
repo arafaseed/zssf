@@ -140,6 +140,9 @@ export class RegisterVenueComponent implements OnInit {
       console.error("Form is invalid:", this.venueForm.errors);
       alert("Please fill in all required fields.");
     }
+    complete: () => {
+        this.isSubmitting = false; // ✅ Only stop spinner after operation ends
+      }
   }
 
   resetForm(): void {
@@ -153,8 +156,6 @@ export class RegisterVenueComponent implements OnInit {
     if (confirm('Are you sure you want to delete this venue?')) {
       this.venueService.deleteVenue(venueId).subscribe(
         () => {
-          console.log('Venue deleted successfully');
-          alert('Venue deleted successfully!');
           this.loadVenues(); // Refresh venue list
         },
         (error: HttpErrorResponse) => {

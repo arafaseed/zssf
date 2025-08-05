@@ -1,6 +1,6 @@
 <div class="min-h-screen flex items-center justify-center bg-gray-100 p-4">
   <div class="w-full max-w-3xl bg-white rounded-2xl shadow-md p-6 sm:p-8">
-    <h2 class="text-2xl sm:text-3xl font-bold text-center text-[#2A7261] mb-6">
+    <h2 class="text-2xl sm:text-3xl font-bold text-center text-blue-700 mb-6">
       Terms & Conditions
     </h2>
 
@@ -22,15 +22,15 @@
         type="checkbox"
         id="accept"
         [(ngModel)]="accepted"
-        class="w-4 h-4 text-[#2A7261] bg-gray-100 border-gray-300 rounded focus:ring-[#2A7261]"
+        class="w-4 h-4 text-bg-green-700 border-gray-300 rounded focus:ring-[#2A7261]"
       />
-      <label for="accept" class="ml-2 text-sm sm:text-base text-gray-700">
+      <label for="accept" class="ml-2 text-sm sm:text-base text-blue-700">
         I agree to the Terms and Conditions
       </label>
     </div>
 
     <button
-      class="mt-6 w-full bg-[#2A7261] text-white py-2 px-4 rounded-xl text-sm sm:text-base font-medium hover:bg-[#256354] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+      class="mt-6 w-full bg-green-700 text-white py-2 px-4 rounded-xl text-sm sm:text-base font-medium hover:bg-green-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
       [disabled]="!accepted"
       (click)="onAgree()"
     >

@@ -31,8 +31,10 @@ export class HeaderComponent {
   fullTitle = '';
   displayedText = ''; 
   isAnimating = false;
-
+showLangDropdown = false;
+currentLang = 'en'; // default
   currentDate: string;
+
 
   constructor(
     private router: Router,
@@ -85,6 +87,7 @@ export class HeaderComponent {
 
   switchLanguage(lang: string): void {
     if (this.isAnimating) return;
+     this.currentLang = lang;  
     this.translate.use(lang);
     localStorage.setItem('app_language', lang);
     this.setAnimatedTitle(); 

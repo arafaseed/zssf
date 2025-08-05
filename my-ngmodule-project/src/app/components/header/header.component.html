@@ -1,45 +1,53 @@
-<!-- CONTACT BAR -->
-<div class="contact-bar bg-[#009688] text-white text-sm py-2 px-4 flex flex-wrap justify-between items-center">
+<div class="contact-bar bg-[#009688] text-white text-sm py-1 px-4 flex flex-wrap justify-between items-center">
   <div class="contact-left flex flex-wrap gap-4 items-center">
-    <span class="contact-item flex items-center gap-1">
-      <i class="fas fa-phone icon"></i>
-      {{'contact.phone' | translate }}
+    <span class="contact-item flex items-center gap-2 text-base">
+      <i class="fas fa-phone icon text-base"></i>
+      {{ 'contact.phone' | translate }}
     </span>
-    <span class="contact-item flex items-center gap-1">
-      <i class="fas fa-envelope icon"></i>
+    <span class="contact-item flex items-center gap-2 text-base">
+      <i class="fas fa-envelope icon text-base"></i>
       <a href="mailto:info@zssf.or.tz" class="underline">{{ 'contact.email' | translate }}</a>
     </span>
-    <span class="contact-item flex items-center gap-1">
-      <i class="fab fa-whatsapp icon"></i>
+    <span class="contact-item flex items-center gap-2 text-base">
+      <i class="fab fa-whatsapp icon text-base"></i>
       {{ 'contact.whatsapp' | translate }}
     </span>
-    <span class="contact-item flex items-center gap-1">
-      <i class="fas fa-globe icon"></i>
-      {{ 'contact.online_services' | translate }}
-    </span>
   </div>
 
-  <div class="contact-right flex gap-4 mt-2 sm:mt-0 items-center">
-   
-    <span class="contact-item">{{ 'contact.faq' | translate }}</span>
+  <div class="contact-right relative mt-2 sm:mt-0">
+    <button
+      (click)="showLangDropdown = !showLangDropdown"
+      class="flex items-center gap-2 bg-white text-[#009688] border border-[#009688] px-4 py-1.5 rounded-full font-semibold hover:bg-[#009688] hover:text-white transition text-base"
+    >
 
-    <!-- Language Switch Buttons -->
-    <button
-      class="contact-item bg-white text-[#009688] rounded px-2 py-1 font-semibold hover:bg-gray-200"
-      (click)="switchLanguage('en')"
-      aria-label="Switch to English"
-    >
-      English
+      {{ currentLang === 'sw' ? 'Kiswahili' : 'English' }}
+      <svg class="w-4 h-4 ml-1"  viewBox="0 0 20 20">
+        <path
+          d="M5.23 7.21a.75.75 0 011.06-.02L10 10.67l3.71-3.48a.75.75 0 111.04 1.08l-4.25 4a.75.75 0 01-1.04 0l-4.25-4a.75.75 0 01-.02-1.06z" />
+      </svg>
     </button>
-    <button
-      class="contact-item bg-white text-[#009688] rounded px-2 py-1 font-semibold hover:bg-gray-200"
-      (click)="switchLanguage('sw')"
-      aria-label="Switch to Kiswahili"
+
+    <div
+      *ngIf="showLangDropdown"
+      class="absolute right-0 mt-2 w-36 rounded-lg shadow-md bg-white ring-1 ring-black ring-opacity-5 z-50"
     >
-      Kiswahili
-    </button>
+      <button
+        (click)="switchLanguage('en'); showLangDropdown = false"
+        class="w-full text-left px-4 py-2 text-base text-gray-700 hover:bg-[#009688] hover:text-white rounded-t-lg"
+      >
+        English
+      </button>
+      <button
+        (click)="switchLanguage('sw'); showLangDropdown = false"
+        class="w-full text-left px-4 py-2 text-base text-gray-700 hover:bg-[#009688] hover:text-white rounded-b-lg"
+      >
+        Kiswahili
+      </button>
+    </div>
   </div>
 </div>
+
+
 
 <!-- HEADER -->
 <div class="header-container flex flex-wrap justify-between items-center px-4 py-4 bg-white">
