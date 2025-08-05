@@ -17,6 +17,7 @@ export class RegisterVenueComponent implements OnInit {
   isEditing = false;
   VenueId: number | null = null; // Store the venue ID being edited
   venues: any[] = []; // Updated: Initialize venues array as an empty array
+   isSubmitting = false;
 
   constructor(private fb: FormBuilder, private venueService: VenueService, private router: Router) {}
 
@@ -83,6 +84,7 @@ export class RegisterVenueComponent implements OnInit {
 
   onSubmit(): void {
     if (this.venueForm.valid) {
+    this.isSubmitting = true; // Show spinner
       const formData = new FormData();
       const formValue = this.venueForm.value;
 
@@ -102,6 +104,7 @@ export class RegisterVenueComponent implements OnInit {
       }
 
       if (this.isEditing && this.VenueId !== null) {
+         this.isSubmitting = false; // Hide spinner
         // Update existing venue
         this.venueService.updateVenue(this.VenueId, formData).subscribe(
           (response: any) => {
@@ -120,6 +123,7 @@ export class RegisterVenueComponent implements OnInit {
         // Add new venue
         this.venueService.registerVenue(formData).subscribe(
           (response: any) => {
+            this.isSubmitting = false; // Hide spinner
             console.log("Venue registered successfully:", response);
             alert("Venue registered successfully!");
             this.resetForm();
@@ -136,6 +140,9 @@ export class RegisterVenueComponent implements OnInit {
       console.error("Form is invalid:", this.venueForm.errors);
       alert("Please fill in all required fields.");
     }
+    complete: () => {
+        this.isSubmitting = false; // ✅ Only stop spinner after operation ends
+      }
   }
 
   resetForm(): void {
@@ -149,8 +156,6 @@ export class RegisterVenueComponent implements OnInit {
     if (confirm('Are you sure you want to delete this venue?')) {
       this.venueService.deleteVenue(venueId).subscribe(
         () => {
-          console.log('Venue deleted successfully');
-          alert('Venue deleted successfully!');
           this.loadVenues(); // Refresh venue list
         },
         (error: HttpErrorResponse) => {

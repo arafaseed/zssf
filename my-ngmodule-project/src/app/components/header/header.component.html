@@ -1,30 +1,67 @@
-<!-- CONTACT BAR -->
-<div class="contact-bar bg-[#009688] text-white text-sm py-2 px-4 flex flex-wrap justify-between items-center">
+<div class="contact-bar bg-[#009688] text-white text-sm py-1 px-4 flex flex-wrap justify-between items-center">
   <div class="contact-left flex flex-wrap gap-4 items-center">
-    <span class="contact-item flex items-center gap-1"><i class="fas fa-phone icon"></i> +255 24 2230242 | TOLL FREE: 0800710140</span>
-    <span class="contact-item flex items-center gap-1"><i class="fas fa-envelope icon"></i> <a href="mailto:info@zssf.or.tz">info&#64;zssf.or.tz</a></span>
-    <span class="contact-item flex items-center gap-1"><i class="fab fa-whatsapp icon"></i> ZSSF whatsapp</span>
-    <span class="contact-item flex items-center gap-1"><i class="fas fa-globe icon"></i> Online Services</span>
+    <span class="contact-item flex items-center gap-2 text-base">
+      <i class="fas fa-phone icon text-base"></i>
+      {{ 'contact.phone' | translate }}
+    </span>
+    <span class="contact-item flex items-center gap-2 text-base">
+      <i class="fas fa-envelope icon text-base"></i>
+      <a href="mailto:info@zssf.or.tz" class="underline">{{ 'contact.email' | translate }}</a>
+    </span>
+    <span class="contact-item flex items-center gap-2 text-base">
+      <i class="fab fa-whatsapp icon text-base"></i>
+      {{ 'contact.whatsapp' | translate }}
+    </span>
   </div>
 
-  <div class="contact-right flex gap-4 mt-2 sm:mt-0">
-    <span class="contact-item"><i class="fas fa-lock icon"></i></span>
-    <span class="contact-item"><i class="fas fa-book icon"></i></span>
-    <span class="contact-item"><i class="fas fa-lightbulb icon"></i></span>
-    <span class="contact-item"><i class="fas fa-folder icon"></i></span>
-    <span class="font-bold contact-item">FAQ</span>
+  <div class="contact-right relative mt-2 sm:mt-0">
+    <button
+      (click)="showLangDropdown = !showLangDropdown"
+      class="flex items-center gap-2 bg-white text-[#009688] border border-[#009688] px-4 py-1.5 rounded-full font-semibold hover:bg-[#009688] hover:text-white transition text-base"
+    >
+
+      {{ currentLang === 'sw' ? 'Kiswahili' : 'English' }}
+      <svg class="w-4 h-4 ml-1"  viewBox="0 0 20 20">
+        <path
+          d="M5.23 7.21a.75.75 0 011.06-.02L10 10.67l3.71-3.48a.75.75 0 111.04 1.08l-4.25 4a.75.75 0 01-1.04 0l-4.25-4a.75.75 0 01-.02-1.06z" />
+      </svg>
+    </button>
+
+    <div
+      *ngIf="showLangDropdown"
+      class="absolute right-0 mt-2 w-36 rounded-lg shadow-md bg-white ring-1 ring-black ring-opacity-5 z-50"
+    >
+      <button
+        (click)="switchLanguage('en'); showLangDropdown = false"
+        class="w-full text-left px-4 py-2 text-base text-gray-700 hover:bg-[#009688] hover:text-white rounded-t-lg"
+      >
+        English
+      </button>
+      <button
+        (click)="switchLanguage('sw'); showLangDropdown = false"
+        class="w-full text-left px-4 py-2 text-base text-gray-700 hover:bg-[#009688] hover:text-white rounded-b-lg"
+      >
+        Kiswahili
+      </button>
+    </div>
   </div>
 </div>
+
+
 
 <!-- HEADER -->
 <div class="header-container flex flex-wrap justify-between items-center px-4 py-4 bg-white">
   <img src="smz_logo.png" alt="Logo Left" class="logo-left w-20 sm:w-24 h-auto" />
 
   <div class="header-text text-center flex-1 px-4">
-    <h1 class="text-xl sm:text-2xl font-bold text-gray-700">ZANZIBAR SOCIAL SECURITY FUND (ZSSF)</h1>
-    <small style="text-align: center; font-size: 13px; font-weight: 700; color: #444;">
-      <span class="fa fa-key mr-1"></span> KEY TO THE FUTURE
+    <h1 class="text-xl sm:text-2xl font-bold text-gray-700">
+    {{ displayedText }}
+    </h1>
+    <small style="text-align: center; font-size: 15px; font-weight: 500; color: #444;">
+      <span class="fa fa-key mr-1"></span>
+      {{ 'header.slogan' | translate }}
     </small>
+
   </div>
 
   <img src="zssf-logo.png" alt="Logo Right" class="logo-right w-20 sm:w-24 h-auto" />
@@ -32,7 +69,6 @@
 
 <!-- DATE + NAVIGATION BAR -->
 <div class="nav-container bg-white text-black text-sm px-4 py-4 flex flex-wrap justify-between items-center shadow-md min-h-[80px] font-[Poppins,sans-serif]">
-
   <!-- Date Box -->
   <div class="date-box text-lg text-[#138C82] font-semibold flex items-center mb-2 sm:mb-0">
     <i class="fas fa-calendar-alt mr-2 text-xl"></i>
@@ -41,8 +77,10 @@
 
   <!-- Navigation -->
   <nav class="flex flex-wrap justify-center gap-4 sm:gap-6 font-medium text-center text-base text-gray-600">
-    <a (click)="navigateTo('/venue')" class="hover:text-blue-600 cursor-pointer nav-link">HOME</a>
-    <a (click)="navigateTo('/mybooking')" class="hover:text-blue-600 cursor-pointer nav-link">MY BOOKING</a>
-    <a (click)="navigateTo('/login')" class="hover:text-blue-600 cursor-pointer nav-link">LOGIN</a>
+    <a (click)="navigateTo('/venue')" class="hover:text-blue-600 cursor-pointer nav-link">{{ 'nav.home' | translate }}</a>
+    <a (click)="navigateTo('/mybooking')" class="hover:text-blue-600 cursor-pointer nav-link">{{ 'nav.my_booking' | translate }}</a>
+    <a (click)="navigateTo('/login')" class="hover:text-blue-600 cursor-pointer nav-link">{{ 'nav.login' | translate }}</a>
+    <a (click)="navigateTo('/agreeterms')" class="hover:text-blue-600 cursor-pointer nav-link"> Agree Terms & Conditions </a>
+     <a (click)="navigateTo('/feedback')" class="hover:text-blue-600 cursor-pointer nav-link"> Feedback & comment </a>
   </nav>
 </div>

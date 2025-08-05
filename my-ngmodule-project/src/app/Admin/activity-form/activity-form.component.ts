@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 export class ActivityFormComponent implements OnInit {
   activityForm: FormGroup;
   venues: any[] = [];
+  isSubmitting = false;
 
   constructor(
     private fb: FormBuilder,
@@ -36,6 +37,7 @@ export class ActivityFormComponent implements OnInit {
 
   onSubmit(): void {
     if (this.activityForm.valid) {
+       this.isSubmitting = true;
       const activity = this.activityForm.value;
       const venueId = parseInt(activity.venueId, 10);
 
@@ -43,10 +45,15 @@ export class ActivityFormComponent implements OnInit {
         next: () => {
           this.showToast('Activity added successfully!', 'success');
           this.activityForm.reset();
+          this.isSubmitting = false;
           this.router.navigate(['/admin/activitytable']); // Redirect after submit
         },
+        
         error: (err) => this.showToast('Failed to add activity: ' + err.message, 'error')
       });
+    complete: () => {
+        this.isSubmitting = false; // ✅ Only stop spinner after operation ends
+      }
     }
   }
 

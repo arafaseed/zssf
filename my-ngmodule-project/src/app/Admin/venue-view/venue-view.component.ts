@@ -12,17 +12,19 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./venue-view.component.css']
 })
 export class VenueViewComponent implements OnInit, OnDestroy {
- searchTerm: string = '';
   venues: any[] = [];
   filteredVenues: any[] = [];
   currentSlideIndices: number[] = [];
   activities: any[] = [];
   groupedVenuesByBuilding: { [buildingId: string]: { buildingName: string, venues: any[] } } = {};
 
+  searchVenue: string = '';
+  searchActivity: string = '';
+  searchCapacity: number | null = null;
+  searchDate: string = '';
+
+
   private routerSubscription?: Subscription;
-  inlineViewerVisible: boolean = false;
-  selectedImages: never[] = [];
-  currentImageIndex: number | undefined;
 
   constructor(
     private venueService: ViewVenueService,
@@ -30,7 +32,6 @@ export class VenueViewComponent implements OnInit, OnDestroy {
     private http: HttpClient
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-
     this.routerSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
@@ -48,11 +49,9 @@ export class VenueViewComponent implements OnInit, OnDestroy {
   }
 
   private resetState() {
-    this.searchTerm = '';
-    this.inlineViewerVisible = false;
-    this.selectedImages = [];
-    this.currentImageIndex = 0;
-    this.currentSlideIndices = [];
+    this.searchVenue = '';
+    this.searchActivity = '';
+    this.searchCapacity = null;
     this.filteredVenues = [];
     this.venues = [];
   }
@@ -123,6 +122,40 @@ export class VenueViewComponent implements OnInit, OnDestroy {
     });
   }
 
+  searchVenues(): void {
+    const venueTerm = this.searchVenue?.trim().toLowerCase() || '';
+    const activityTerm = this.searchActivity?.trim().toLowerCase() || '';
+    const capacity = this.searchCapacity;
+
+    this.venues = this.filteredVenues.filter((venue) => {
+      const matchesVenue =
+        venue.venueName.toLowerCase().includes(venueTerm) ||
+        venue.buildingName.toLowerCase().includes(venueTerm);
+
+      const matchesActivity = activityTerm
+        ? venue.activityNames?.some((a: string) =>
+            a.toLowerCase().includes(activityTerm)
+          )
+        : true;
+
+      const matchesCapacity = capacity
+        ? +venue.capacity >= +capacity
+        : true;
+
+      return matchesVenue && matchesActivity && matchesCapacity;
+    });
+
+    this.groupVenues();
+  }
+
+  clearSearch(): void {
+    this.searchVenue = '';
+    this.searchActivity = '';
+    this.searchCapacity = null;
+    this.venues = [...this.filteredVenues];
+    this.groupVenues();
+  }
+
   goToBookingPage(venue: any): void {
     this.router.navigate(['/book'], { queryParams: { venueId: venue.venueId } });
   }
@@ -140,30 +173,6 @@ export class VenueViewComponent implements OnInit, OnDestroy {
       this.currentSlideIndices[index] =
         (this.currentSlideIndices[index] + 1) % this.venues[index].venueImages.length;
     }
-  }
-
-  searchVenues(): void {
-    const term = this.searchTerm.trim().toLowerCase();
-
-    if (term) {
-      this.venues = this.filteredVenues.filter((venue) =>
-        venue.venueName.toLowerCase().includes(term) ||
-        venue.capacity.toString().includes(term) ||
-        (venue.activityNames && venue.activityNames.some((name: string) =>
-          name.toLowerCase().includes(term)
-        ))
-      );
-    } else {
-      this.venues = [...this.filteredVenues];
-    }
-
-    this.groupVenues();
-  }
-
-  clearSearch(): void {
-    this.searchTerm = '';
-    this.venues = [...this.filteredVenues];
-    this.groupVenues();
   }
 
   @HostListener('document:keydown', ['$event'])

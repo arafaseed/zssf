@@ -25,6 +25,8 @@ import { StaffAddComponent } from './staff-add/staff-add.component';
 import { ActivityFormComponent } from './Admin/activity-form/activity-form.component';
 import { ActivityTableComponent } from './activitytable/activitytable.component';
 import { PhoneSearchComponent } from './phone-search/phone-search.component';
+import { TermsAndConditionsComponent } from './terms-and-conditions/terms-and-conditions.component';
+import { FeedbackComponent } from './feedback/feedback.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'venue', pathMatch: 'full' },
@@ -40,7 +42,9 @@ const routes: Routes = [
   { path: 'invoice/:bookingId', component: InvoiceComponent },
 
    { path: 'mybooking', component: PhoneSearchComponent },
+   { path: 'agreeterms', component: TermsAndConditionsComponent},
 
+{ path: 'feedback', component: FeedbackComponent},
   {
     path: 'staff',
     loadChildren: () => import('./staff/staff.module').then(m => m.StaffModule),

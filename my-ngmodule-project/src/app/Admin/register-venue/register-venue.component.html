@@ -1,4 +1,7 @@
 <div class="container mt-4">
+  <div *ngIf="isSubmitting" class="fullscreen-spinner">
+  <div class="circular-loader"></div>
+</div>
   <div class="form-card">
     <form [formGroup]="venueForm" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
       <div class="row">
