@@ -66,6 +66,9 @@ import { PhoneSearchComponent } from './phone-search/phone-search.component';
 import { StaffModule } from "./staff/staff.module";
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ViewBuildingComponent } from './view-building/view-building.component';
+import { MatDialogContent } from '@angular/material/dialog';
+import { MatDialogActions } from '@angular/material/dialog';
+
 
 // import { DashboardSwitchComponent } from './Admin/dashboard-switch/dashboard-switch.component';
 
@@ -162,7 +165,10 @@ import { ViewBuildingComponent } from './view-building/view-building.component';
     BrowserModule,
     DatePipe,
     StaffModule,
-    MatProgressSpinnerModule 
+    MatProgressSpinnerModule,
+    MatDialogContent, 
+    MatDialogActions
+   
 ],
   // exports: [DashboardSwitchComponent],
   providers: [

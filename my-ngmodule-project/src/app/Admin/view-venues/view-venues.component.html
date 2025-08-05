@@ -12,6 +12,10 @@
     No venues available.
   </div>
 
+  <!-- Debug Info: Total Venues and Raw JSON -->
+  <h3>Total Venues: {{ venues.length }}</h3>
+  
+
   <!-- Table displaying venue data -->
   <table mat-table [dataSource]="venues" class="mat-elevation-z8 full-width-table">
 
@@ -45,26 +49,36 @@
       </td>
     </ng-container>
 
-    <!-- Add Staff Button -->
-    <!-- Add Staff Button or Staff ID -->
-<ng-container matColumnDef="addStaff">
-  <th mat-header-cell *matHeaderCellDef>Add Staff</th>
-  <td mat-cell *matCellDef="let venue">
-    <ng-container *ngIf="venue.assignedStaffId; else showAddButton">
-      <span class="text-green-700 font-semibold">
-        Staff ID: {{ venue.assignedStaffId }}
-      </span>
+    <!-- Preview Image Column -->
+    <ng-container matColumnDef="preview">
+      <th mat-header-cell *matHeaderCellDef>Preview</th>
+      <td mat-cell *matCellDef="let venue">
+        <button mat-mini-fab color="primary" (click)="openPreview(venue.venueImages)">
+          <mat-icon>visibility</mat-icon>
+        </button>
+      </td>
     </ng-container>
 
-    <ng-template #showAddButton>
-      <button mat-mini-fab color="accent" (click)="toggleStaffList(venue.venueId)">
-        <mat-icon>person_add</mat-icon>
-      </button>
-    </ng-template>
-  </td>
-</ng-container>
+    <!-- Add Staff Button or Staff ID -->
+    <ng-container matColumnDef="addStaff">
+      <th mat-header-cell *matHeaderCellDef>Add Staff</th>
+      <td mat-cell *matCellDef="let venue">
+        <ng-container *ngIf="venue.assignedStaffId; else showAddButton">
+    <span class="text-green-700 font-semibold" *ngIf="venue.assignedStaffName && venue.assignedStaffPhone">
+  {{ venue.assignedStaffName }} ({{ venue.assignedStaffPhone }})
+</span>
 
 
+
+        </ng-container>
+
+        <ng-template #showAddButton>
+          <button mat-mini-fab color="accent" (click)="toggleStaffList(venue.venueId)">
+            <mat-icon>person_add</mat-icon>
+          </button>
+        </ng-template>
+      </td>
+    </ng-container>
 
     <!-- Actions -->
     <ng-container matColumnDef="actions">
@@ -79,37 +93,55 @@
       </td>
     </ng-container>
 
-   <!-- Table Rows -->
-<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
+    <!-- Single pair of header and row definitions -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-<!-- Staff list panel below the table -->
-<div *ngFor="let venue of venues">
-  <div *ngIf="selectedVenueId === venue.venueId" class="mt-6 p-6 rounded-2xl shadow-md bg-white border border-gray-200">
-    <h4 class="text-xl font-semibold text-gray-800 mb-4">Assign Staff to <span class="text-primary">{{ venue.venueName }}</span></h4>
+  </table>
 
-    <div *ngIf="staffList.length > 0; else loading">
-      <ul class="space-y-3">
-        <li *ngFor="let staff of staffList" class="flex items-center justify-between bg-gray-50 p-4 rounded-lg hover:bg-gray-100 transition">
-          <div>
-            <p class="font-medium text-gray-800">{{ staff.fullName }}</p>
-            <p class="text-sm text-gray-500">{{ staff.role || 'Staff' }}</p>
-          </div>
-          <button
-            (click)="assignStaff(staff.staffId, venue.venueId)"
-            class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition duration-200"
-          >
-            Assign
-          </button>
-        </li>
-      </ul>
-    </div>
-
-    <ng-template #loading>
-      <div class="flex justify-center items-center py-6">
-        <mat-spinner diameter="40"></mat-spinner>
+  <!-- TEMPLATE for popup dialog -->
+  <ng-template #previewDialog let-data="data">
+    <h2 mat-dialog-title>Venue Images</h2>
+    <mat-dialog-content>
+      <div *ngFor="let img of data.images" class="mb-3">
+        <img [src]="img" alt="Venue Image"
+             style="width: 100%; border-radius: 10px; margin-bottom: 15px;">
       </div>
-    </ng-template>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close>Close</button>
+    </mat-dialog-actions>
+  </ng-template>
+
+  <!-- Staff list panel below the table -->
+  <div *ngFor="let venue of venues">
+    <div *ngIf="selectedVenueId === venue.venueId" class="mt-6 p-6 rounded-2xl shadow-md bg-white border border-gray-200">
+      <h4 class="text-xl font-semibold text-gray-800 mb-4">
+        Assign Staff to <span class="text-primary">{{ venue.venueName }}</span>
+      </h4>
+
+      <div *ngIf="staffList.length > 0; else loading">
+        <ul class="space-y-3">
+          <li *ngFor="let staff of staffList" class="flex items-center justify-between bg-gray-50 p-4 rounded-lg hover:bg-gray-100 transition">
+            <div>
+              <p class="font-medium text-gray-800">{{ staff.fullName }}</p>
+              <p class="text-sm text-gray-500">{{ staff.role || 'Staff' }}</p>
+            </div>
+            <button
+              (click)="assignStaff(staff.staffId, venue.venueId)"
+              class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition duration-200"
+            >
+              Assign
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <ng-template #loading>
+        <div class="flex justify-center items-center py-6">
+          <mat-spinner diameter="40"></mat-spinner>
+        </div>
+      </ng-template>
+    </div>
   </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -7,27 +7,33 @@ import { HttpClient } from '@angular/common/http';
 import { ViewVenueService } from '../../Services/view-venue.service';
 import { NgIfContext } from '@angular/common';
 
+
+
 @Component({
   selector: 'app-view-venues',
   templateUrl: './view-venues.component.html',
   standalone:false,
   styleUrls: ['./view-venues.component.css']
 })
+
+
 export class ViewVenuesComponent implements OnInit {
 
   venues: any[] = [];
-  displayedColumns: string[] = ['venueName', 'capacity', 'description', 'leasePackages', 'addStaff', 'actions'];
+  displayedColumns: string[] = ['venueName', 'capacity', 'description','preview', 'leasePackages', 'addStaff', 'actions'];
   staffList: any[] = [];
   selectedVenueId: number | null = null;
 venue: any;
 
 
+@ViewChild('previewDialog') previewDialog!: TemplateRef<any>;
   constructor(
     private venueService: ViewVenueService,
     private http: HttpClient,
     private router: Router,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
+    
   ) {}
 
   ngOnInit(): void {
@@ -36,6 +42,7 @@ venue: any;
 
 loadVenues(): void {
   this.venueService.getAllVenues().subscribe({
+    
     next: (data: any[]) => {
       this.venues = data;
 
@@ -54,10 +61,13 @@ loadVenues(): void {
       this.http.get<any[]>('http://localhost:8080/api/staff/all').subscribe({
         next: (staffList) => {
           this.venues.forEach(venue => {
-            const staff = staffList.find(s => s.assignedVenueIds?.includes(venue.venueId));
-            if (staff) {
-              venue.assignedStaffId = staff.staffId; // 🟢 Dynamically map staffId
-            }
+          const staff = staffList.find(s => s.assignedVenueIds?.includes(venue.venueId));
+if (staff) {
+   venue.assignedStaffId = staff.staffId;
+   venue.assignedStaffName = staff.fullName;
+   venue.assignedStaffPhone = staff.phoneNumber;
+}
+
           });
         },
         error: (error) => {
@@ -93,7 +103,6 @@ loadVenues(): void {
     }
 
     this.selectedVenueId = venueId;
-    this.staffList = []; // clear previous data
 
     this.http.get<any[]>('http://localhost:8080/api/staff/all').subscribe({
       next: (data) => {
@@ -107,21 +116,50 @@ loadVenues(): void {
     });
   }
 
+  previewDialogData: any = {};
+openPreview(images: string[]): void {
+  this.dialog.open(this.previewDialog, {
+    width: '600px',
+    data: { images: images }
+  });
+}
+
+
+currentImageIndex: number = 0;
+
+previousImage() {
+  if (this.currentImageIndex > 0) {
+    this.currentImageIndex--;
+  }
+}
+
+nextImage() {
+  if (this.currentImageIndex < (this.previewDialogData.images.length - 1)) {
+    this.currentImageIndex++;
+  }
+}
+
+
+
+  
+
 assignStaff(staffId: number, venueId: number): void {
   const payload = { venueId };
 
   console.log(`Assigning staff ${staffId} to venue ${venueId}`);
   this.http.post(`http://localhost:8080/api/staff/assign-venue/${staffId}`, payload).subscribe({
     next: () => {
-      console.log(`Staff ${staffId} assigned to venue ${venueId}`);
       this.showToast('Staff assigned to venue!', 'success');
 
-      // Update the assigned staff in the venue
       const assignedVenue = this.venues.find(v => v.venueId === venueId);
       if (assignedVenue) {
-        assignedVenue.assignedStaffId = staffId;  // 👈 Add this line
-      }
+        const selectedStaff = this.staffList.find(s => s.staffId === staffId);
 
+        // 🟢 Save the extra info you want to display
+        assignedVenue.assignedStaffId = staffId;
+        assignedVenue.assignedStaffName = selectedStaff?.fullName;
+        assignedVenue.assignedStaffPhone = selectedStaff?.phoneNumber;
+      }
       this.selectedVenueId = null;
     },
     error: (error) => {
@@ -131,6 +169,7 @@ assignStaff(staffId: number, venueId: number): void {
   });
 }
 
+
   
 
   // OR open a modal to select staff, depending on your UX design
@@ -139,6 +178,7 @@ assignStaff(staffId: number, venueId: number): void {
   deleteVenue(venueId: number): void {
     if (confirm("Are you sure you want to delete this venue?")) {
       this.venueService.deleteVenue(venueId).subscribe({
+        
         next: () => {
           this.showToast("Venue deleted successfully", 'success');
           this.loadVenues();
@@ -160,3 +200,7 @@ assignStaff(staffId: number, venueId: number): void {
     });
   }
 }
+function openPreview(images: any, arg1: any) {
+  throw new Error('Function not implemented.');
+}
+

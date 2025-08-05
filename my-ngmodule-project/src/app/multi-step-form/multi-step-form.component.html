@@ -13,7 +13,7 @@
           <div class="space-y-4">
             <!-- Start Date -->
             <mat-form-field appearance="fill" class="w-full">
-  <mat-label>Start Date
+  <mat-label>Event Start Date
     <mat-error *ngIf="dateError" class="text-red-500">
     {{ dateError }}
   </mat-error>
@@ -35,7 +35,7 @@
   >
   </mat-datepicker>
   <mat-error *ngIf="bookingForm.get('startDate')?.hasError('required')" class="text-red-500">
-    Start date is required
+    Event Start date is required
   </mat-error>
 </mat-form-field>
 
@@ -56,7 +56,7 @@
 
             <!-- Computed End Date -->
             <mat-form-field appearance="fill" class="w-full">
-              <mat-label>End Date</mat-label>
+              <mat-label>Event End Date</mat-label>
               <input matInput [value]="bookingForm.get('endDate')?.value | date:'mediumDate'" disabled>
             </mat-form-field>
 
@@ -69,7 +69,7 @@
 
             <!-- Package -->
             <mat-form-field appearance="fill" class="w-full">
-              <mat-label>Price Plan</mat-label>
+              <mat-label>Price </mat-label>
               <mat-select  formControlName="venuePackageId">
                 <mat-option *ngFor="let p of packageOptions" [value]="p.leaseId">
                   <div class="p-2 bg-blue-50 rounded mb-1.5 w-full">
@@ -80,26 +80,26 @@
                 </mat-option>
               </mat-select>
               <mat-error class="text-red-500" *ngIf="bookingForm.get('venuePackageId')?.hasError('required')">
-                Package is required
+                Price is required
               </mat-error>
             </mat-form-field>
 
             <!-- Session -->
             <mat-form-field appearance="fill" class="w-full">
-              <mat-label>Session</mat-label>
+              <mat-label>Time</mat-label>
               <mat-select formControlName="session">
                 <mat-option *ngFor="let s of sessionOptions" [value]="s.label">
                   {{ s.label }} ({{ s.start }}–{{ s.end }})
                 </mat-option>
               </mat-select>
               <mat-error class="text-red-500" *ngIf="bookingForm.get('session')?.hasError('required')">
-                Session is required
+                Time is required
               </mat-error>
             </mat-form-field>
 
             <!-- Activity -->
             <mat-form-field  appearance="fill" class="w-full">
-              <mat-label>Activity</mat-label>
+              <mat-label>Purpose</mat-label>
               <mat-select  formControlName="venueActivityId">
                 <mat-option *ngFor="let a of activityOptions" [value]="a.activityId">
                   <div class="p-2 bg-blue-50 rounded mb-1.5">
