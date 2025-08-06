@@ -118,6 +118,9 @@ if (staff) {
 
   previewDialogData: any = {};
 openPreview(images: string[]): void {
+  this.previewDialogData = { images: images };   // 👈 Add this line
+  this.currentImageIndex = 0;
+
   this.dialog.open(this.previewDialog, {
     width: '600px',
     data: { images: images }

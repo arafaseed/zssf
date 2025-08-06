@@ -157,14 +157,6 @@ export function createTranslateLoader(http: HttpClient) {
     CommonModule,
     FullCalendarModule,
     StaffModule,
-<<<<<<< HEAD
-    MatProgressSpinnerModule,
-    MatDialogContent, 
-    MatDialogActions
-   
-],
-  // exports: [DashboardSwitchComponent],
-=======
 
  TranslateModule.forRoot({
   loader: {
@@ -176,7 +168,6 @@ export function createTranslateLoader(http: HttpClient) {
 })
 
   ],
->>>>>>> e206e0ce37f2be3b12af868d75f301708913fd57
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     provideAnimationsAsync(),
