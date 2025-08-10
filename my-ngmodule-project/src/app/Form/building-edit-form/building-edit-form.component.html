@@ -1,0 +1,32 @@
+<h3 mat-dialog-title class="text-center mb-4">🏢 Edit Building</h3>
+
+<form [formGroup]="buildingForm" (ngSubmit)="onSubmit()">
+  <div mat-dialog-content>
+
+    <!-- Building Name -->
+    <div class="mb-3">
+      <label for="buildingName" class="form-label">Building Name</label>
+      <input id="buildingName" type="text" class="form-control"
+             formControlName="buildingName" placeholder="Enter building name">
+      <div class="error" *ngIf="buildingForm.get('buildingName')?.invalid && buildingForm.get('buildingName')?.touched">
+        Building name is required (min 3 characters)
+      </div>
+    </div>
+
+    <!-- Address -->
+    <div class="mb-3">
+      <label for="address" class="form-label">Address</label>
+      <input id="address" type="text" class="form-control"
+             formControlName="address" placeholder="Enter address">
+      <div class="error" *ngIf="buildingForm.get('address')?.invalid && buildingForm.get('address')?.touched">
+        Address is required (min 5 characters)
+      </div>
+    </div>
+
+  </div>
+
+  <div mat-dialog-actions class="text-center">
+    <button mat-button type="submit" [disabled]="buildingForm.invalid">Update</button>
+    <button mat-button type="button" (click)="closeDialog()">Cancel</button>
+  </div>
+</form>

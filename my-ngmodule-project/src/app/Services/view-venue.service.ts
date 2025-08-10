@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -6,37 +6,42 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ViewVenueService {
-  [x: string]: any;
+  private venueApiUrl = 'http://localhost:8080/api/venues';
+  private buildingApiUrl = 'http://localhost:8080/api/buildings';
+  private leasePackageApiUrl = 'http://localhost:8080/api/lease-packages';
 
-  private venueApiUrl ='http://localhost:8080/api/venues';
-
-  
   constructor(private http: HttpClient) {}
 
-  getAllVenues(): Observable<any> {
-    return this.http.get (`${this.venueApiUrl}/view/all`);
-
+  // Helper to get auth headers
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
-  
-  
+
+  // Venues
+  getAllVenues(): Observable<any> {
+    return this.http.get(`${this.venueApiUrl}/view/all`, { headers: this.getAuthHeaders() });
+  }
+
   getVenueById(id: number): Observable<any> {
-    return this.http.get(`${this.venueApiUrl}/view/${id}`);
+    return this.http.get(`${this.venueApiUrl}/view/${id}`, { headers: this.getAuthHeaders() });
   }
 
   deleteVenue(id: number): Observable<any> {
-    return this.http.delete(`http://localhost:8080/api/venues/delete/${id}`, { responseType: 'text' });
+    return this.http.delete(`${this.venueApiUrl}/delete/${id}`, { headers: this.getAuthHeaders(), responseType: 'text' });
   }
 
   searchVenuesByName(name: string): Observable<any> {
-    return this.http.get(`${this.venueApiUrl}/search?name=${name}`);
+    return this.http.get(`${this.venueApiUrl}/search?name=${name}`, { headers: this.getAuthHeaders() });
   }
-getLeasePackagesByVenue(venueId: number) {
-  return this.http.get<any[]>(`http://localhost:8080/api/lease-packages/venue/${venueId}`);
-}
 
-getBuildingById(buildingId: number): Observable<any> {
-  return this.http.get(`http://localhost:8080/api/buildings/view/${buildingId}`);
-}
+  // Lease Packages
+  getLeasePackagesByVenue(venueId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.leasePackageApiUrl}/venue/${venueId}`, { headers: this.getAuthHeaders() });
+  }
 
-  
+  // Buildings
+  getBuildingById(id: number): Observable<any> {
+    return this.http.get(`${this.buildingApiUrl}/view/${id}`, { headers: this.getAuthHeaders() });
+  }
 }
