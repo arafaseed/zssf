@@ -162,11 +162,11 @@
           <td>{{ booking.customer?.fullName }}</td>
           <td>{{ booking.customer?.phoneNumber || 'N/A' }}</td>
           <td>{{ booking.venue?.venueName || 'N/A' }}</td>
-          <td [ngClass]="{
-              'status-cancelled': booking.status === 'CANCELLED',
-              'status-complete': booking.status === 'COMPLETE',
-              'status-pending': booking.status === 'PENDING'
-            }">
+         <td [style.color]="
+            booking.status === 'CANCELLED' ? 'red' :
+            booking.status === 'COMPLETE' ? 'green' :
+            booking.status === 'PENDING'  ? 'goldenrod' : 'black'
+          ">
             {{ booking.status }}
           </td>
           <td>{{ booking.startDate | date:'shortDate' }}</td>
