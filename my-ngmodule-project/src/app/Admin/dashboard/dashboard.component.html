@@ -120,8 +120,10 @@
 
   <!-- Recent Bookings Table (also outside grid!) -->
   <div class="recent-activity" aria-live="polite" aria-relevant="all">
-    <h2>Recent Bookings</h2>
-      <div class="search-filters" aria-label="Search Bookings">
+  <h2>Recent Bookings</h2>
+
+  <!-- Search Filters (same style as booking list) -->
+  <div class="search-filters" aria-label="Search Bookings">
     <input
       type="text"
       placeholder="Search by Phone"
@@ -138,7 +140,10 @@
       <button mat-raised-button color="warn" (click)="clearSearch()">Reset</button>
     </div>
   </div>
-    <table>
+
+  <!-- Table -->
+  <div class="table-container">
+    <table class="booking-table">
       <thead>
         <tr>
           <th>Booking Code</th>
@@ -147,6 +152,8 @@
           <th>Venue Name</th>
           <th>Status</th>
           <th>Start Date</th>
+          <th>End Date</th>
+          <th>Amount Paid</th>
         </tr>
       </thead>
       <tbody>
@@ -155,14 +162,16 @@
           <td>{{ booking.customer?.fullName }}</td>
           <td>{{ booking.customer?.phoneNumber || 'N/A' }}</td>
           <td>{{ booking.venue?.venueName || 'N/A' }}</td>
-          <td [style.color]="
-            booking.status === 'CANCELLED' ? 'red' :
-            booking.status === 'COMPLETE' ? 'green' :
-            booking.status === 'PENDING'  ? 'goldenrod' : 'black'
-          ">
+          <td [ngClass]="{
+              'status-cancelled': booking.status === 'CANCELLED',
+              'status-complete': booking.status === 'COMPLETE',
+              'status-pending': booking.status === 'PENDING'
+            }">
             {{ booking.status }}
           </td>
           <td>{{ booking.startDate | date:'shortDate' }}</td>
+          <td>{{ booking.endDate | date:'shortDate' }}</td>
+          <td>{{ booking.amountPaid | number:'1.0-0' }} TZS</td>
         </tr>
       </tbody>
     </table>

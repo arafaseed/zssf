@@ -19,15 +19,25 @@ export class BookingListComponent implements OnInit {
     this.fetchBookings();
   }
 
-  fetchBookings(): void {
-    this.bookingService.getBookings().subscribe((data) => {
-      // Sort by startDate
-      this.bookings = data.sort((a, b) =>
-        new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
-      );
-      this.filteredResults = [...this.bookings]; // show all by default
+fetchBookings(): void {
+  this.bookingService.getBookings().subscribe((data) => {
+    // Sort by startDate
+    this.bookings = data.sort((a, b) =>
+      new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+    );
+
+    // Fetch venue names from venue table
+    this.bookings.forEach((booking) => {
+      this.bookingService.getVenueNameById(booking.venueId).subscribe((name) => {
+        booking.venueName = name; // Add venueName dynamically
+      });
     });
-  }
+
+    this.filteredResults = [...this.bookings]; // Show all by default
+  });
+}
+
+
 
   filterByStatus(status: string): void {
     this.currentStatus = status;
