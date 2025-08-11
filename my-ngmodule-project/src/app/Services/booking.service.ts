@@ -1,22 +1,25 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 export interface Booking {
   bookingId: number;
   bookingCode: string;
   startDate: string;
   startTime: string;
-  endDate: string;
+  endDate: string | null;
   endTime: string;
   status: 'PENDING' | 'COMPLETE' | 'CANCELLED';
   venueId: number;
+  venueName?: string; // ADD THIS
+  activityName?: string; // ADD THIS (if you have activityId)
   customer: {
     customerId: number;
     fullName: string;
   };
 }
+
 
 export interface BookedSlot {
   startDate: string;
@@ -43,6 +46,18 @@ export class BookingService {
       tap((bookings) => this.bookingsSubject.next(bookings))
     );
   }
+
+  // booking.service.ts
+getVenueNameById(venueId: number): Observable<string> {
+  return this.http.get<any>(`http://localhost:8080/api/venues/view/${venueId}`)
+    .pipe(map((venue: { name: any; }) => venue.name));
+}
+
+getActivityNameById(activityId: number): Observable<string> {
+  return this.http.get<any>(`http://localhost:8080/api/activities/${activityId}`)
+    .pipe(map((activity: { name: any; }) => activity.name));
+}
+
 
   // Return cached bookings or fetch if empty
   getBookings(): Observable<Booking[]> {
