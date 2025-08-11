@@ -77,6 +77,9 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MatMenuModule } from '@angular/material/menu';
 import { TermsAndConditionsComponent } from './terms-and-conditions/terms-and-conditions.component';
 import { FeedbackComponent } from './feedback/feedback.component';
+import { BuildingEditFormComponent } from './Form/building-edit-form/building-edit-form.component';
+import { AddBuildingComponent } from './add-building/add-building.component';
+
 
 
 // Translate Http Loader Factory with new signature
@@ -115,10 +118,13 @@ export function createTranslateLoader(http: HttpClient) {
     ActivityFormComponent,
     ActivityTableComponent,
     ActivityEditFormComponent,
+    BuildingEditFormComponent,
     PhoneSearchComponent,
     ViewBuildingComponent,
     TermsAndConditionsComponent,
     FeedbackComponent,
+    AddBuildingComponent,
+
     // DashboardSwitchComponent,
     
 

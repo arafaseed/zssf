@@ -6,198 +6,157 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   max-width: 100%;
   margin: auto;
+}
+
+/* Header Styling */
+h2 {
+  background:rgb(12, 20, 41);
+  color: white;
+  text-align: center;
+  padding: 15px;
+  font-weight: bold;
+  border-radius: 8px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+/* "Add Lease Package" Button - Aligned Left */
+.btn-add-left {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 16px;
+}
+
+.btn-add-left button {
+  background-color: #1976d2;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-add-left button:hover {
+  background-color: #1565c0;
+}
+
+/* Table Styling */
+table {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+th {
+  background: #34495e;
+  color: rgb(17, 18, 22);
+  font-weight: bold;
+  text-align: center;
+  padding: 15px;
+  font-size: 18px;
+}
+
+td {
+  text-align: center;
+  padding: 12px;
+  font-size: 16px;
+}
+
+/* Action Buttons - Aligned in One Line */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Table Row Hover Effect */
+tr:hover {
+  background: rgba(0, 123, 255, 0.1);
+  transition: 0.3s;
+}
+
+/* Edit Button */
+.edit-button {
+  background-color: #c1e2a7;
+  color: white;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background-color 0.3s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-button:hover {
+  background-color: #91d48f;
+  transform: scale(1.05);
+}
+
+.edit-button:active {
+  background-color: #30009c;
+  transform: scale(0.98);
+}
+
+mat-icon {
+  font-size: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
   }
-  
-  /* Header Styling */
+
   h2 {
-    background:rgb(12, 20, 41);
-    color: white;
-    text-align: center;
-    padding: 15px;
-    font-weight: bold;
-    border-radius: 8px;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-  }
-  
-  /* Alerts */
-  .alert {
-    text-align: center;
-    font-weight: bold;
-    font-size: 18px;
-  }
-  
-  /* "Add Venue" Button - Aligned Right */
-  .add-venue-btn {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 15px;
-  }
-  
-  /* Table Styling */
-  table {
-    width: 100%;
-  
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  th {
-    background:#34495e;
-    color: rgb(22, 17, 17);
-    font-weight: bold;
-    text-align: center;
-    padding: 15px;
-    font-size: 18px;
-  }
-  
-  td {
-    text-align: center;
-    padding: 4px;
-    font-size: 16px;
-  }
-  
-  /* Lease Packages List */
-  ul {
-    padding: 0;
-    list-style: none;
-  }
-  
-  li {
-    padding: 5px;
-    font-weight: 500;
-    color: #444;
-  }
-  
-  /* Buttons */
-  .btn {
-    font-weight: bold;
-    border-radius: 8px;
-    transition: all 0.3s ease-in-out;
-    font-size: 16px;
-    padding: 10px 15px;
-  }
-  .btn-add-left {
-    display: flex;
-    justify-content: flex-start; /* Aligns button to the left */
-    margin-bottom: 16px;
-  }
-  
-  .btn-add-left button {
-    background-color: #1976d2; /* Primary blue color */
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    
-  }
-  
-  .btn-add-left button:hover {
-    background-color: #1565c0; /* Darker blue */
-  }
-  
-  /* Edit Button */
-  .btn-warning {
-    background: linear-gradient(to right, #ffc107, #ff9800);
-    border: none;
-    color: white;
-  }
-  
-  .btn-warning:hover {
-    background: linear-gradient(to right, #ff9800, #e65100);
-    transform: scale(1.05);
-  }
-  
-  /* Delete Button */
-  .btn-danger {
-    background: linear-gradient(to right, #dc3545, #a71d2a);
-    border: none;
-  }
-  
-  .btn-danger:hover {
-    background: linear-gradient(to right, #a71d2a, #730014);
-    transform: scale(1.05);
-  }
-  
-  /* Action Buttons - Aligned in One Line */
-  .action-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-  }
-  
-  /* Table Row Hover Effect */
-  tr:hover {
-    background: rgba(0, 123, 255, 0.1);
-    transition: 0.3s;
-  }
-  
-  .edit-button {
-    background-color: #c1e2a7;
-    color: white;
-    padding: 8px;
-    border-radius: 8px;
-    transition: background-color 0.3s, transform 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .edit-button:hover {
-    background-color: #91d48f;
-    transform: scale(1.05);
-  }
-  
-  .edit-button:active {
-    background-color: #30009c;
-    transform: scale(0.98);
-  }
-  
-  mat-icon {
     font-size: 20px;
+    padding: 10px;
   }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .container {
-      padding: 10px;
-    }
-  
-  
-    h2 {
-        font-size: 20px;
-        padding: 10px;
-      }
-  
-    .btn {
-      font-size: 14px;
-      padding: 8px 12px;
-    }
-  
-    th, td {
-      font-size: 14px;
-      padding: 10px;
-    }
-  
-    .action-buttons {
-      flex-direction: column;
-      gap: 5px;
-    }
+
+  .btn {
+    font-size: 14px;
+    padding: 8px 12px;
   }
-  
-  @media (max-width: 576px) {
-    .btn {
-      font-size: 12px;
-      padding: 6px 10px;
-    }
-  
-    th, td {
-      font-size: 12px;
-      padding: 8px;
-    }
+
+  th, td {
+    font-size: 14px;
+    padding: 10px;
   }
-  
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+
+/* Hover effect for table rows */
+tr:hover {
+  background-color: rgba(0, 123, 255, 0.1);
+  transition: 0.3s;
+}
+
+/* Hover effect for table headers */
+th:hover {
+  background-color: rgba(0, 123, 255, 0.2);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover effect for table cells */
+td:hover {
+  background-color: rgba(0, 123, 255, 0.2); /* Adds a hover effect to cells */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* JavaScript-based hover effect for highlighting entire column */
+th:hover,
+th:hover ~ td {
+  background-color: rgba(0, 123, 255, 0.2);
+}
+mat-header-cell{
+  font-weight: bolder;
+  font-size: larger;
+}

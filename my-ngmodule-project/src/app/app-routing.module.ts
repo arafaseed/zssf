@@ -27,6 +27,7 @@ import { ActivityTableComponent } from './activitytable/activitytable.component'
 import { PhoneSearchComponent } from './phone-search/phone-search.component';
 import { TermsAndConditionsComponent } from './terms-and-conditions/terms-and-conditions.component';
 import { FeedbackComponent } from './feedback/feedback.component';
+import { AddBuildingComponent } from './add-building/add-building.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'venue', pathMatch: 'full' },
@@ -65,7 +66,9 @@ const routes: Routes = [
       { path: 'leasepackagetable', component: LeasePackageTableComponent },
 
       // ✅ Corrected lease package routes
-      { path: 'leasepackageform', component: LeasePackageFormComponent }, // New package
+      { path: 'leasepackageform', component: LeasePackageFormComponent },
+       { path: 'addbuiding', component: AddBuildingComponent },
+
       { path: 'leasepackageeditform/:id', component: LeasePackageEditFormComponent },
       { path: 'editVenue/:venueId', component: RegisterVenueComponent },
 
