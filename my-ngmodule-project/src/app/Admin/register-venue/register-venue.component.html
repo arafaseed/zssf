@@ -1,7 +1,8 @@
 <div class="container mt-4">
   <div *ngIf="isSubmitting" class="fullscreen-spinner">
-  <div class="circular-loader"></div>
-</div>
+    <div class="circular-loader"></div>
+  </div>
+
   <div class="form-card">
     <form [formGroup]="venueForm" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
       <div class="row">
@@ -49,21 +50,38 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <input type="file" #fileInput (change)="onFileSelected($event)" multiple accept="image/*" hidden>
-          <button mat-raised-button color="primary" type="button" (click)="fileInput.click()" class="btn-primary">
-            <mat-icon>upload</mat-icon> Upload Images
-          </button>
-          <span class="ml-2" *ngIf="selectedFiles && selectedFiles.length > 0">
-            {{ selectedFiles.length }} file(s) selected
-          </span>
+      <!-- File Upload + Preview -->
+      <div class="mb-3">
+        <input type="file" #fileInput (change)="onFileSelected($event)" multiple accept="image/*" hidden>
+        <button type="button" class="btn btn-primary" (click)="fileInput.click()">
+          <i class="fas fa-upload"></i> Upload Images
+        </button>
+        <span class="ml-2" *ngIf="selectedFiles && selectedFiles.length > 0">
+          {{ selectedFiles.length }} file(s) selected
+        </span>
+
+        <!-- Horizontal scrollable preview -->
+        <div class="mt-3 d-flex flex-row overflow-auto">
+          <div *ngFor="let preview of imagePreviews; let i = index" class="position-relative mr-2">
+            <img [src]="preview" class="img-thumbnail" 
+                 style="width: 120px; height: 120px; object-fit: cover;">
+            <button type="button" class="btn btn-sm btn-danger position-absolute" 
+                    style="top: 2px; right: 2px;"
+                    (click)="removeImage(i)">
+              ✕
+            </button>
+          </div>
         </div>
-        <div class="col-md-6 mb-3 text-right">
-          <button mat-raised-button color="accent" type="submit" [disabled]="!venueForm.valid" class="btn-primary">
-            {{ isEditing ? 'Update Venue' : 'Register Venue' }}
-          </button>
-        </div>
+      </div>
+
+      <!-- Submit + Cancel Buttons -->
+      <div class="text-right">
+        <button type="submit" class="btn btn-success" [disabled]="!venueForm.valid">
+          {{ isEditing ? 'Update Venue' : 'Register Venue' }}
+        </button>
+        <button type="button" class="btn btn-secondary ml-2" (click)="onCancel()">
+          Cancel
+        </button>
       </div>
     </form>
   </div>

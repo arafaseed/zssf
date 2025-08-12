@@ -49,7 +49,7 @@ import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-pack
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { LoginComponent } from './login/login.component';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { EditVenueComponentComponent } from './edit-venue-component/edit-venue-component.component';
+import { EditVenueComponent} from './edit-venue-component/edit-venue-component.component';
 import { BookingService } from './Services/booking.service';
 import { MultiStepFormComponent } from './multi-step-form/multi-step-form.component';
 import { BookingListComponent } from './booking-list/booking-list.component';
@@ -107,7 +107,7 @@ export function createTranslateLoader(http: HttpClient) {
     ViewVenuesComponent,
     LeasePackageFormComponent,
     LoginComponent,
-    EditVenueComponentComponent,
+    EditVenueComponent,
     MultiStepFormComponent,
     BookingListComponent,
     ConfirmDialogComponent,

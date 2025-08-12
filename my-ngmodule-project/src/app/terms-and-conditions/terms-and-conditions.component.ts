@@ -1,18 +1,19 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-terms-and-conditions',
+  standalone: false,
   templateUrl: './terms-and-conditions.component.html',
-  standalone:false,
+  styleUrls: ['./terms-and-conditions.component.css'] // This can be empty if all styles are Tailwind
 })
-export class TermsAndConditionsComponent {
-  accepted = false;
+export class TermsAndConditionsComponent implements OnInit {
 
-  constructor(private router: Router) {}
+  lastUpdated: string = '';
 
-  onAgree() {
-    // Redirect after acceptance
-    this.router.navigate(['/venue']);
-  }
+  constructor() { }
+
+  ngOnInit(): void {
+    this.lastUpdated = 'August 11, 2025';
+  }
+
 }

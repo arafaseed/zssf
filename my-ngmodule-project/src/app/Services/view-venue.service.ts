@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +12,11 @@ export class ViewVenueService {
 
   constructor(private http: HttpClient) {}
 
-  // Helper to get auth headers
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('token');
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
-  // Venues
   getAllVenues(): Observable<any> {
     return this.http.get(`${this.venueApiUrl}/view/all`, { headers: this.getAuthHeaders() });
   }
@@ -35,13 +33,20 @@ export class ViewVenueService {
     return this.http.get(`${this.venueApiUrl}/search?name=${name}`, { headers: this.getAuthHeaders() });
   }
 
-  // Lease Packages
   getLeasePackagesByVenue(venueId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.leasePackageApiUrl}/venue/${venueId}`, { headers: this.getAuthHeaders() });
   }
 
-  // Buildings
   getBuildingById(id: number): Observable<any> {
     return this.http.get(`${this.buildingApiUrl}/view/${id}`, { headers: this.getAuthHeaders() });
+  }
+
+  // New methods to add:
+  updateVenue(id: number, data: any): Observable<any> {
+    return this.http.put(`${this.venueApiUrl}/update/${id}`, data, { headers: this.getAuthHeaders() });
+  }
+
+  registerVenue(data: any): Observable<any> {
+    return this.http.post(`${this.venueApiUrl}/create`, data, { headers: this.getAuthHeaders() });
   }
 }
