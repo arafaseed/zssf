@@ -19,6 +19,7 @@ export class RegisterVenueComponent implements OnInit {
   VenueId: number | null = null;
   venues: any[] = [];
   isSubmitting = false;
+  submitted = false; // ✅ Track submit attempts
 
   constructor(
     private fb: FormBuilder,
@@ -36,7 +37,7 @@ export class RegisterVenueComponent implements OnInit {
     this.venueForm = this.fb.group({
       venueName: ['', Validators.required],
       capacity: ['', [Validators.required, Validators.min(1)]],
-      description: [''],
+      description: ['', Validators.required], // ✅ Now required
       buildingId: ['', Validators.required],
     });
   }
@@ -65,11 +66,8 @@ export class RegisterVenueComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input?.files && input.files.length > 0) {
       const newFiles = Array.from(input.files);
-
-      // Append new files to existing ones
       this.selectedFiles = [...this.selectedFiles, ...newFiles];
 
-      // Generate previews for new images
       newFiles.forEach(file => {
         const reader = new FileReader();
         reader.onload = (e: any) => {
@@ -78,7 +76,6 @@ export class RegisterVenueComponent implements OnInit {
         reader.readAsDataURL(file);
       });
 
-      // Reset the input so the same file can be re-selected
       input.value = '';
     }
   }
@@ -108,59 +105,58 @@ export class RegisterVenueComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.venueForm.valid) {
-      this.isSubmitting = true;
-      const formData = new FormData();
-      const formValue = this.venueForm.value;
+    this.submitted = true; // ✅ Force validation messages to appear
+    if (this.venueForm.invalid || this.selectedFiles.length === 0) {
+      return; // Stop here if any field is invalid or no image selected
+    }
 
-      const venueData = {
-        venueName: formValue.venueName,
-        capacity: formValue.capacity,
-        description: formValue.description,
-      };
+    this.isSubmitting = true;
+    const formData = new FormData();
+    const formValue = this.venueForm.value;
 
-      formData.append('venue', JSON.stringify(venueData));
-      formData.append('buildingId', formValue.buildingId.toString());
+    const venueData = {
+      venueName: formValue.venueName,
+      capacity: formValue.capacity,
+      description: formValue.description,
+    };
 
-      if (this.selectedFiles.length > 0) {
-        this.selectedFiles.forEach(file => {
-          formData.append('images', file);
-        });
-      }
+    formData.append('venue', JSON.stringify(venueData));
+    formData.append('buildingId', formValue.buildingId.toString());
 
-      if (this.isEditing && this.VenueId !== null) {
-        this.venueService.updateVenue(this.VenueId, formData).subscribe({
-          next: () => {
-            alert('Venue updated successfully!');
-            this.resetForm();
-            this.loadVenues();
-            this.router.navigate(['/venueView']);
-          },
-          error: (error: HttpErrorResponse) => {
-            alert('Failed to update venue: ' + error.message);
-          },
-          complete: () => {
-            this.isSubmitting = false;
-          },
-        });
-      } else {
-        this.venueService.registerVenue(formData).subscribe({
-          next: () => {
-            alert('Venue registered successfully!');
-            this.resetForm();
-            this.loadVenues();
-            this.router.navigate(['admin/venueView']);
-          },
-          error: (error: HttpErrorResponse) => {
-            alert('Failed to register venue: ' + error.message);
-          },
-          complete: () => {
-            this.isSubmitting = false;
-          },
-        });
-      }
+    this.selectedFiles.forEach(file => {
+      formData.append('images', file);
+    });
+
+    if (this.isEditing && this.VenueId !== null) {
+      this.venueService.updateVenue(this.VenueId, formData).subscribe({
+        next: () => {
+          alert('Venue updated successfully!');
+          this.resetForm();
+          this.loadVenues();
+          this.router.navigate(['/venueView']);
+        },
+        error: (error: HttpErrorResponse) => {
+          alert('Failed to update venue: ' + error.message);
+        },
+        complete: () => {
+          this.isSubmitting = false;
+        },
+      });
     } else {
-      alert('Please fill in all required fields.');
+      this.venueService.registerVenue(formData).subscribe({
+        next: () => {
+          alert('Venue registered successfully!');
+          this.resetForm();
+          this.loadVenues();
+          this.router.navigate(['admin/venueView']);
+        },
+        error: (error: HttpErrorResponse) => {
+          alert('Failed to register venue: ' + error.message);
+        },
+        complete: () => {
+          this.isSubmitting = false;
+        },
+      });
     }
   }
 
@@ -175,6 +171,7 @@ export class RegisterVenueComponent implements OnInit {
     this.imagePreviews = [];
     this.isEditing = false;
     this.VenueId = null;
+    this.submitted = false; // ✅ Reset
   }
 
   deleteVenue(venueId: number): void {
