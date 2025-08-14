@@ -45,19 +45,16 @@
       </td>
     </ng-container>
 
-    <!-- Assign Staff Column -->
     <ng-container matColumnDef="addStaff">
       <th mat-header-cell *matHeaderCellDef>Add Staff</th>
       <td mat-cell *matCellDef="let venue">
 
-        <!-- If already assigned, show name + phone -->
         <ng-container *ngIf="venue.assignedStaffId; else notAssigned">
           <span class="text-green-700 font-semibold">
             {{ venue.assignedStaffName }} ({{ venue.assignedStaffPhone }})
           </span>
         </ng-container>
 
-        <!-- If not assigned, show button and dropdown -->
         <ng-template #notAssigned>
           <ng-container *ngIf="!venue.showPanel">
             <button mat-flat-button color="accent" (click)="venue.showPanel = true; toggleStaffList(venue.venueId)">
@@ -86,7 +83,14 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let venue">
-        <button mat-icon-button color="warn" (click)="deleteVenue(venue.venueId)">🗑️</button>
+    <button mat-icon-button color="primary" (click)="openEditVenueDialog(venue.venueId)" aria-label="Edit Venue">
+  <mat-icon>edit</mat-icon>
+</button>
+
+        <!-- Delete button -->
+        <button mat-icon-button color="warn" (click)="deleteVenue(venue.venueId)" aria-label="Delete Venue">
+          <mat-icon>delete</mat-icon>
+        </button>
       </td>
     </ng-container>
 
@@ -95,7 +99,7 @@
   </table>
 
   <!-- POPUP IMAGE PREVIEW -->
-  <ng-template #previewDialog let-data="data">
+  <ng-template #previewDialog>
     <h2 mat-dialog-title>Venue Images</h2>
     <mat-dialog-content style="width:800px;">
       <div *ngIf="previewDialogData.images?.length" class="text-center">

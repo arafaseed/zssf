@@ -1,115 +1,104 @@
-/* Base Styles */
-h2.mat-dialog-title {
+/* Styling the dialog */
+.mat-dialog-title {
     font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 20px;
-    text-align: center;
+    font-weight: bold;
     color: #333;
+    text-align: center;
+    margin-bottom: 20px;
   }
   
-  form {
-    max-width: 600px;
-    margin: auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* Error messages */
+  .error {
+    color: #f44336;
+    font-size: 0.875rem;
+    margin-top: 5px;
   }
   
-  .mat-dialog-content {
-    padding: 0;
-  }
-  
-  .mb-3 {
-    margin-bottom: 15px;
-  }
-  
-  label.form-label {
-    font-size: 1rem;
-    font-weight: 500;
-    color: #555;
-  }
-  
-  input.form-control,
-  textarea.form-control,
-  select.form-select {
-    font-size: 1rem;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+  /* Form control styling */
+  .form-control {
     width: 100%;
-  }
-  
-  textarea.form-control {
-    resize: vertical;
-  }
-  
-  input[type="file"].form-control {
-    padding: 8px;
-  }
-  
-  /* Buttons */
-  button.mat-button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
     font-size: 1rem;
-    cursor: pointer;
+    transition: border-color 0.3s ease;
   }
   
-  button.mat-button[type="button"] {
-    background-color: #f44336;
-  }
-  
-  button.mat-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
-  button.mat-button:hover:not(:disabled) {
-    background-color: #0056b3;
-  }
-  
-  /* Responsive Styles */
-  @media (max-width: 767px) {
-    form {
-      padding: 15px;
-    }
-  
-    h2.mat-dialog-title {
-      font-size: 1.2rem;
-    }
-  
-    button.mat-button {
-      width: 100%;
-    }
-  }
-  
-  @media (max-width: 575px) {
-    input.form-control,
-    select.form-select,
-    textarea.form-control {
-      font-size: 0.9rem;
-      padding: 8px;
-    }
-  
-    h2.mat-dialog-title {
-      font-size: 1.1rem;
-    }
-  }
-  
-  /* Interactive Styles */
-  input.form-control:focus,
-  textarea.form-control:focus,
-  select.form-select:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-  }
-  
-  button.mat-button:focus {
+  .form-control:focus {
+    border-color: #4CAF50;
     outline: none;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+  
+  /* Add padding and spacing around the dialog */
+  .mat-dialog-content {
+    padding: 20px;
+    background-color: #fff;
+  }
+  
+  /* Label styling */
+  .form-label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  /* Button styling */
+  button[mat-button] {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    margin: 5px;
+  }
+  
+  /* Submit button */
+  button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+  }
+  
+  button[type="submit"]:disabled {
+    background-color: #e0e0e0;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #45a049;
+  }
+  
+  /* Cancel button */
+  button[type="button"] {
+    background-color: #f44336;
+    color: white;
+    border: none;
+  }
+  
+  button[type="button"]:hover {
+    background-color: #e53935;
+  }
+  
+  /* Center the action buttons */
+  .mat-dialog-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  /* Responsive design for smaller screens */
+  @media (max-width: 768px) {
+    .form-control {
+      padding: 8px;
+      font-size: 0.9rem;
+    }
+    .mat-dialog-title {
+      font-size: 1.25rem;
+    }
+    button[mat-button] {
+      font-size: 0.875rem;
+      padding: 8px 15px;
+    }
   }
   

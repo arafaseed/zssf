@@ -1,17 +1,18 @@
-<div class="container mt-4">
+<div class="container mt-4"> 
   <div *ngIf="isSubmitting" class="fullscreen-spinner">
-  <div class="circular-loader"></div>
-</div>
+    <div class="circular-loader"></div>
+  </div>
+
   <div class="form-card">
-    <form [formGroup]="venueForm" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
+    <form [formGroup]="venueForm" (ngSubmit)="onSubmit()" novalidate>
       <div class="row">
         <div class="col-md-6 mb-3">
           <h3 class="mb-4 text-center">{{ isEditing ? 'Edit Venue' : 'Register New Venue' }}</h3>
           <div class="custom-input">
             <label class="form-label">Venue Name</label>
-            <input formControlName="venueName" class="form-control" placeholder="Enter Venue Name" required>
-            <div *ngIf="venueForm.get('venueName')?.hasError('required')" class="error">
-              Venue name is required
+            <input formControlName="venueName" class="form-control" placeholder="Enter Venue Name">
+            <div *ngIf="venueForm.get('venueName')?.invalid && (venueForm.get('venueName')?.touched || submitted)" class="error">
+              Venue Name is required
             </div>
           </div>
         </div>
@@ -19,9 +20,9 @@
         <div class="col-md-6 mb-3">
           <div class="custom-input">
             <label class="form-label">Capacity</label>
-            <input type="number" formControlName="capacity" class="form-control" placeholder="Capacity" required>
-            <div *ngIf="venueForm.get('capacity')?.hasError('required')" class="error">
-              Capacity is required
+            <input type="number" formControlName="capacity" class="form-control" placeholder="Capacity">
+            <div *ngIf="venueForm.get('capacity')?.invalid && (venueForm.get('capacity')?.touched || submitted)" class="error">
+              Capacity must be at least 1
             </div>
           </div>
         </div>
@@ -32,37 +33,57 @@
           <div class="custom-input">
             <label class="form-label">Description</label>
             <textarea formControlName="description" rows="3" class="form-control" placeholder="Write description..."></textarea>
+            <div *ngIf="venueForm.get('description')?.invalid && (venueForm.get('description')?.touched || submitted)" class="error">
+              Description is required
+            </div>
           </div>
         </div>
+
         <div class="col-md-6 mb-3">
           <div class="custom-input">
             <label class="form-label">Building</label>
-            <select formControlName="buildingId" class="form-control" required>
+            <select formControlName="buildingId" class="form-control">
+              <option value="">-- Select Building --</option>
               <option *ngFor="let building of buildings" [value]="building.buildingId">
                 {{ building.buildingName }}
               </option>
             </select>
-            <div *ngIf="venueForm.get('buildingId')?.hasError('required')" class="error">
+            <div *ngIf="venueForm.get('buildingId')?.invalid && (venueForm.get('buildingId')?.touched || submitted)" class="error">
               Building selection is required
             </div>
           </div>
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <input type="file" #fileInput (change)="onFileSelected($event)" multiple accept="image/*" hidden>
-          <button mat-raised-button color="primary" type="button" (click)="fileInput.click()" class="btn-primary">
-            <mat-icon>upload</mat-icon> Upload Images
-          </button>
-          <span class="ml-2" *ngIf="selectedFiles && selectedFiles.length > 0">
-            {{ selectedFiles.length }} file(s) selected
-          </span>
+      <!-- File Upload -->
+      <div class="mb-3">
+        <input type="file" #fileInput (change)="onFileSelected($event)" multiple accept="image/*" hidden>
+        <button type="button" class="btn btn-primary" (click)="fileInput.click()">
+          <i class="fas fa-upload"></i> Upload Images
+        </button>
+        <span class="ml-2" *ngIf="selectedFiles.length > 0">
+          {{ selectedFiles.length }} file(s) selected
+        </span>
+        <div *ngIf="submitted && selectedFiles.length === 0" class="error mt-1">
+          At least one image is required
         </div>
-        <div class="col-md-6 mb-3 text-right">
-          <button mat-raised-button color="accent" type="submit" [disabled]="!venueForm.valid" class="btn-primary">
-            {{ isEditing ? 'Update Venue' : 'Register Venue' }}
-          </button>
+
+        <!-- Preview -->
+        <div class="mt-3 d-flex flex-row overflow-auto">
+          <div *ngFor="let preview of imagePreviews; let i = index" class="position-relative mr-2">
+            <img [src]="preview" class="img-thumbnail" style="width: 120px; height: 120px; object-fit: cover;">
+            <button type="button" class="btn btn-sm btn-danger position-absolute" style="top: 2px; right: 2px;" (click)="removeImage(i)">
+              ✕
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="row mt-4">
+        <div class="col-12 d-flex justify-content-start button-container">
+          <button class="btn-primary cancel-btn" type="button" (click)="onCancel()">Cancel</button>
+          <button class="btn-primary submit-btn" type="submit">Submit</button>
         </div>
       </div>
     </form>

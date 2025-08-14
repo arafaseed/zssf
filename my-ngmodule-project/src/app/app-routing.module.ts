@@ -16,7 +16,7 @@ import { LoginComponent } from './login/login.component';
 // import { StaffDashboardComponent } from './staff/staff-dashboard/staff-dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
 import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/lease-package-edit-form.component';
-import { EditVenueComponentComponent } from './edit-venue-component/edit-venue-component.component';
+import { EditVenueComponent } from './edit-venue-component/edit-venue-component.component';
 import { MultiStepFormComponent } from './multi-step-form/multi-step-form.component';
 import { BookingListComponent } from './booking-list/booking-list.component';
 import { InvoiceComponent } from './invoice/invoice.component';
@@ -70,11 +70,11 @@ const routes: Routes = [
        { path: 'addbuiding', component: AddBuildingComponent },
 
       { path: 'leasepackageeditform/:id', component: LeasePackageEditFormComponent },
-      { path: 'editVenue/:venueId', component: RegisterVenueComponent },
+      { path: 'editVenue/:venueId', component: EditVenueComponent },
 
 
       { path: 'regvenues', component: RegisterVenueComponent },
-      { path: 'regvenues/:id', component: EditVenueComponentComponent },
+      { path: 'regvenues/:id', component: RegisterVenueComponent },
       { path: 'venueView', component: ViewVenuesComponent },
       { path: 'settings', component: SettingComponent },
       { path: 'bookinglist', component: BookingListComponent },

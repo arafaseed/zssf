@@ -1,48 +1,41 @@
 <mat-card-title class="text-center">
-        <h3>Staff list</h3>
-      </mat-card-title>
+  <h3>Staff list</h3>
+</mat-card-title>
 
-<table>
-  <thead>
-    <tr>
-      <th>IDN</th>
-      <th>Name</th>
-      <th>Phone</th>
-      <th>Role</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let staff of staffList; let i = index">
-      <td><input [(ngModel)]="staff.staffIDN" name="staffIDN{{i}}"></td>
-      <td><input [(ngModel)]="staff.fullName" name="fullName{{i}}"></td>
-      <td><input [(ngModel)]="staff.phoneNumber" name="phoneNumber{{i}}"></td>
-      <td>
-        <select [(ngModel)]="staff.role" name="role{{i}}">
-          <option value="ADMIN">ADMIN</option>
-          <option value="STAFF">STAFF</option>
-        </select>
-      </td>
-      <td>
-  <!-- Update button with icon -->
-  <button mat-icon-button color="primary" (click)="updateStaff(staff)">
-    <mat-icon>edit</mat-icon>
-  </button>
-
-  <!-- Delete button with icon -->
-  <button mat-icon-button color="warn" (click)="deleteStaff(staff.staffId)" >
-    <mat-icon>delete</mat-icon>
-  </button>
-</td>
-
-<!-- <button mat-icon-button color="warn" (click)="deleteStaff(staff.staffId)">🗑️</button> -->
-
-    </tr>
-  </tbody>
-</table>
-
-
-
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>IDN</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Role</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let staff of staffList; let i = index">
+        <td><input [(ngModel)]="staff.staffIDN" name="staffIDN{{i}}"></td>
+        <td><input [(ngModel)]="staff.fullName" name="fullName{{i}}"></td>
+        <td><input [(ngModel)]="staff.phoneNumber" name="phoneNumber{{i}}"></td>
+        <td>
+          <select [(ngModel)]="staff.role" name="role{{i}}">
+            <option value="ADMIN">ADMIN</option>
+            <option value="STAFF">STAFF</option>
+          </select>
+        </td>
+        <td class="action-buttons">
+          <button mat-icon-button color="primary" (click)="updateStaff(staff)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteStaff(staff.staffId)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 <form [formGroup]="staffForm" (ngSubmit)="onSubmit()">
   <input formControlName="staffIDN" placeholder="Staff IDN" required>
