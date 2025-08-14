@@ -18,24 +18,24 @@ export class VenueHandoverService {
 
   constructor(private http: HttpClient) {}
 
-  checkIn(bookingCode: string, staffIDN: string): Observable<any> {
+  checkIn(bookingCode: string, staffIdentification: string): Observable<any> {
     const params = new HttpParams()
       .set('bookingCode', bookingCode)
-      .set('staffIDN', staffIDN);
+      .set('staffIdentification', staffIdentification);
 
     return this.http.post(`${this.apiBase}/checkin`, null, { params });
   }
 
   checkOut(payload: {
     bookingCode: string;
-    staffIDN: string;
+    staffIdentification: string;
     conditionStatus: string;
     conditionDescription: string;
   }): Observable<any> {
     return this.http.post(`${this.apiBase}/checkout`, payload);
   }
 
-  getByStaff(staffIDN: string): Observable<HandoverReport[]> {
-    return this.http.get<HandoverReport[]>(`${this.apiBase}/staff/${staffIDN}`);
+  getByStaff(staffIdentification: string): Observable<HandoverReport[]> {
+    return this.http.get<HandoverReport[]>(`${this.apiBase}/staff/${staffIdentification}`);
   }
 }

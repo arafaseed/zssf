@@ -15,7 +15,7 @@ interface Venue {
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit, OnDestroy {
-  staffIDN: string = '';
+  staffIdentification: string = '';
   venues: Venue[] = [];
   activeVenueId: number | null = null;
   errorMessage: string = '';
@@ -35,23 +35,23 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   private checkAndFetchVenues(): void {
-    const storedStaffIDN = sessionStorage.getItem('auth-username');
+    const storedStaffIdentification = sessionStorage.getItem('auth-username');
 
-    if (storedStaffIDN) {
+    if (storedStaffIdentification) {
       // Once we detect a value, stop polling
       clearInterval(this.staffCheckInterval);
 
-      this.staffIDN = storedStaffIDN;
-      this.fetchVenues(storedStaffIDN);
+      this.staffIdentification = storedStaffIdentification;
+      this.fetchVenues(storedStaffIdentification);
     }
   }
 
-  private fetchVenues(staffIDN: string): void {
+  private fetchVenues(staffIdentification: string): void {
     this.loading = true;
     this.errorMessage = '';
 
     this.http
-      .get<Venue[]>(`http://localhost:8080/api/venues/view-by-staff/${staffIDN}`)
+      .get<Venue[]>(`http://localhost:8080/api/venues/view-by-staff/${staffIdentification}`)
       .subscribe({
         next: (data) => {
           // Sort by venueId

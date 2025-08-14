@@ -21,8 +21,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private venueState: VenueStateService
   ) {}
 
-  get staffIDN(): string | null {
-    return this.auth.getStaffIDN();
+  get staffIdentification(): string | null {
+    return this.auth.getStaffIdentification();
   }
 
   get role(): string | null {

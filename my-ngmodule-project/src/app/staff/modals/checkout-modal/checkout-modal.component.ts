@@ -10,7 +10,7 @@ import { StaffBookingService } from '../../staff-booking.service';
 })
 export class CheckoutModalComponent {
   @Input() booking!: any;
-  @Input() staffIDN!: string;
+  @Input() staffIdentification!: string;
   @Output() close = new EventEmitter<void>();
   @Output() checkedOut = new EventEmitter<void>();
 
@@ -37,7 +37,7 @@ export class CheckoutModalComponent {
 
     const payload = {
       bookingCode: this.booking.bookingCode,
-      staffIDN: this.staffIDN,
+      staffIdentification: this.staffIdentification,
       conditionStatus: this.form.value.conditionStatus,
       conditionDescription: this.form.value.conditionDescription
     };

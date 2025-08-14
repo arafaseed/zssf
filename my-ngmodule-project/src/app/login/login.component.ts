@@ -24,7 +24,7 @@ export class LoginComponent {
   ) {
     // Initialize the form in the constructor
     this.form = this.fb.group({
-      staffIDN: ['', [Validators.required]],
+      staffIdentification: ['', [Validators.required]],
       password: ['', [Validators.required]]
     });
   }

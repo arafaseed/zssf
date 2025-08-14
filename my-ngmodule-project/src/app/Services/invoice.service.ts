@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 export interface StaffDTO {
   staffId: number;
-  staffIDN: string;
+  staffIdentification: string;
   fullName: string;
   phoneNumber: string;
   role: string;

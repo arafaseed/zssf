@@ -25,7 +25,7 @@ export class AuthService {
         map(res => {
           // Persist returned data in the browser session
           this.tokenStorage.saveToken(res.token);
-          this.tokenStorage.saveUsername(res.staffIDN);
+          this.tokenStorage.saveUsername(res.staffIdentification);
           this.tokenStorage.saveRole(res.role);
           return true;          // Signal success to component
         })
@@ -37,7 +37,7 @@ export class AuthService {
     return this.tokenStorage.getUsername();
   }
 
-  getStaffIDN(): string | null {
+  getStaffIdentification(): string | null {
     // Assuming you have this method in TokenStorageService
     return this.tokenStorage.getUsername();
   }

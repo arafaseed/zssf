@@ -25,7 +25,7 @@ export class CheckInListComponent implements OnInit {
   errorMessage: string | null = null;
 
   private venueId!: number;
-  private staffIDN!: string;
+  private staffIdentification!: string;
 
   constructor(private bookingService: StaffBookingService) {}
 
@@ -35,13 +35,13 @@ export class CheckInListComponent implements OnInit {
 
     if (!vid || !sidn) {
       this.errorMessage = 
-        'Venue or Staff IDN not found in session. Please log in again.';
+        'Venue or Staff Identification not found in session. Please log in again.';
       this.loading = false;
       return;
     }
 
     this.venueId = +vid;
-    this.staffIDN = sidn;
+    this.staffIdentification = sidn;
     this.loadData();
   }
 
@@ -123,7 +123,7 @@ export class CheckInListComponent implements OnInit {
       return;
     }
 
-    this.bookingService.checkIn(booking.bookingCode, this.staffIDN)
+    this.bookingService.checkIn(booking.bookingCode, this.staffIdentification)
       .subscribe({
         next: () => {
           // remove from list

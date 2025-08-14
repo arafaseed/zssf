@@ -18,7 +18,7 @@ export class StaffAddComponent implements OnInit {
     private staffService: StaffViewService
   ) {
     this.staffForm = this.fb.group({
-      staffIDN: ['', Validators.required],
+      staffIdentification: ['', Validators.required],
       fullName: ['', Validators.required],
       phoneNumber: ['', Validators.required],
       password: ['', Validators.required],
@@ -55,7 +55,7 @@ export class StaffAddComponent implements OnInit {
 
   updateStaff(staff: any): void {
     const updatedData = {
-      staffIDN: staff.staffIDN,
+      staffIdentification: staff.staffIdentification,
       fullName: staff.fullName,
       phoneNumber: staff.phoneNumber,
       password: staff.password,

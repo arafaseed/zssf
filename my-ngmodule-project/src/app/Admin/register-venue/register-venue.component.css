@@ -1,134 +1,21 @@
-/* Container styling */
-.container {
-  max-width: 700px;
-  margin: 40px auto;
-  background-color: #f8f9fa;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+/* loader (simple) */
+.loader {
+  border: 6px solid rgba(0,0,0,0.06);
+  border-top: 6px solid rgba(14,165,164,1); /* teal-ish */
+  border-radius: 9999px;
+  width: 52px;
+  height: 52px;
+  animation: spin 1s linear infinite;
 }
 
-/* Heading */
-h3 {
-  font-size: 1.8rem;
-  margin-bottom: 20px;
-  font-weight: bold;
-  color: #333;
-  text-align: center;
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
-/* Custom input field styling */
-.custom-input {
-  margin-bottom: 15px;
-}
-
-.custom-input .form-label {
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #555;
-  margin-bottom: 5px;
-  display: block;
-  text-align: left;
-}
-
-.custom-input input,
-.custom-input select,
-.custom-input textarea {
-  width: 100%;
-  padding: 12px 15px;
-  border-radius: 10px;
-  font-size: 1rem;
-  border: 1px solid #ced4da;
-  outline: none;
-}
-
-.custom-input input:focus,
-.custom-input select:focus,
-.custom-input textarea:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
-}
-
-/* Error message styling */
-.error {
-  color: #dc3545;
-  font-size: 0.9rem;
-  margin-top: 5px;
-}
-
-/* Buttons */
-.btn-primary,
-.cancel-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 120px;
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-size: 1rem;
-  transition: 0.3s;
-}
-
-.btn-primary {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-}
-
-.btn-primary:hover {
-  background-color: #388e3c;
-}
-
-.cancel-btn {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-}
-
-.cancel-btn:hover {
-  background-color: #c82333;
-}
-
-/* Button container spacing */
-.button-container {
-  display: flex;       /* Ensure flexbox so gap works */
-  gap: 30px;           /* Space between Cancel and Submit buttons */
-  flex-wrap: wrap;
-}
-
-/* Loader */
-.circular-loader {
-  border: 6px solid #e0e0e0;
-  border-top: 6px solid #007bff;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  animation: spin 1.2s linear infinite;
-}
-
-@keyframes spin { 
-  0% { transform: rotate(0deg); } 
-  100% { transform: rotate(360deg); } 
-}
-
-.fullscreen-spinner {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background-color: rgba(255,255,255,0.85);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1050;
-  backdrop-filter: blur(1px);
-}
-
-/* Responsive layout */
-@media (max-width: 768px) {
-  .col-md-6 { width: 100%; margin-bottom: 15px; }
-  .btn-primary, .cancel-btn { width: 100%; margin-bottom: 10px; }
-}
-
-.text-left {
-  text-align: left;
+/* make sure long chips wrap nicely */
+.chip {
+  max-width: 80%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

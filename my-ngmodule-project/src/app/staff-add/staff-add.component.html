@@ -6,7 +6,7 @@
   <table>
     <thead>
       <tr>
-        <th>IDN</th>
+        <th>Identification</th>
         <th>Name</th>
         <th>Phone</th>
         <th>Role</th>
@@ -15,7 +15,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let staff of staffList; let i = index">
-        <td><input [(ngModel)]="staff.staffIDN" name="staffIDN{{i}}"></td>
+        <td><input [(ngModel)]="staff.staffIdentification" name="staffIdentification{{i}}"></td>
         <td><input [(ngModel)]="staff.fullName" name="fullName{{i}}"></td>
         <td><input [(ngModel)]="staff.phoneNumber" name="phoneNumber{{i}}"></td>
         <td>
@@ -38,7 +38,7 @@
 </div>
 
 <form [formGroup]="staffForm" (ngSubmit)="onSubmit()">
-  <input formControlName="staffIDN" placeholder="Staff IDN" required>
+  <input formControlName="staffIdentification" placeholder="Staff Identification" required>
   <input formControlName="fullName" placeholder="Full Name" required>
   <input formControlName="phoneNumber" placeholder="Phone Number" required>
   <input formControlName="password" placeholder="Password" required type="password">

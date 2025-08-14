@@ -27,7 +27,7 @@ export interface BookingDTO {
 export interface VenueHandOverDTO {
   handOverId: number;
   forBooking: number;    // the bookingId that was checked in
-  staffIDN: string;
+  staffIdentification: string;
   checkInTime: string;
   checkOutTime?: string; // might be undefined/null if not yet checked out
   conditionStatus?: string;
@@ -83,8 +83,8 @@ export class StaffBookingService {
   }
 
   // Check-in a booking
-  checkIn(bookingCode: string, staffIDN: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/venue-handover/checkin`, { bookingCode, staffIDN });
+  checkIn(bookingCode: string, staffIdentification: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/venue-handover/checkin`, { bookingCode, staffIdentification });
   }
 
  
@@ -92,7 +92,7 @@ export class StaffBookingService {
   // Perform a check-out for a booking.
   checkOut(payload: {
     bookingCode: string;
-    staffIDN: string;
+    staffIdentification: string;
     conditionStatus: string;
     conditionDescription: string;
   }): Observable<any> {

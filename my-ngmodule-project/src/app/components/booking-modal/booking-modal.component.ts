@@ -46,7 +46,7 @@ export class BookingModalComponent implements OnInit {
       email: ['', [ Validators.email]],
       address: ['',[Validators.required]],
       customerType: ['INDIVIDUAL', Validators.required],
-      acceptTerms: [false, Validators.requiredTrue] // used in confirm step
+     //acceptTerms: [false, Validators.requiredTrue] // used in confirm step
     });
 
     // start availability check as before

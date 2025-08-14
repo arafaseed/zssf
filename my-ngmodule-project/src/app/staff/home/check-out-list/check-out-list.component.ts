@@ -19,7 +19,7 @@ export class CheckOutListComponent implements OnInit {
   errorMessage: string | null = null;
 
   venueId!: number;
-  staffIDN!: string;
+  staffIdentification!: string;
 
   // Modal state
   showModal = false;
@@ -32,13 +32,13 @@ export class CheckOutListComponent implements OnInit {
     const sid = sessionStorage.getItem('auth-username');
 
     if (!vid || !sid) {
-      this.errorMessage = 'Venue or Staff IDN missing. Please log in again.';
+      this.errorMessage = 'Venue or Staff Identification missing. Please log in again.';
       this.loading = false;
       return;
     }
 
     this.venueId = +vid;
-    this.staffIDN = sid;
+    this.staffIdentification = sid;
     this.loadPendingCheckOuts();
   }
 
