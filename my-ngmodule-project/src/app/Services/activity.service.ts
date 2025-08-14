@@ -1,18 +1,37 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Activity } from '../models/models';
+import { Observable, of } from 'rxjs';
+import { catchError, shareReplay } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
-})
+   providedIn: 'root'
+   })
+
 export class ActivityService {
+
+  private activityApi = 'http://localhost:8080/api/activities'; 
   
-  private activityApi = 'http://localhost:8080/api/activities';
   private venueApi = 'http://localhost:8080/api/venues';
+  private cache = new Map<number, Observable<Activity | null>>();
 
   constructor(private http: HttpClient) {}
 
-  // Add activity to a venue
+  getActivityById(id: number): Observable<Activity | null> {
+    if (this.cache.has(id)) return this.cache.get(id)!;
+    const obs = this.http.get<Activity>(`${this.activityApi}/activityBy/${id}`)
+      .pipe(
+        catchError((err) => {
+          console.warn('Activity load failed', id, err);
+          return of(null);
+        }),
+        shareReplay(1)
+      );
+    this.cache.set(id, obs);
+    return obs;
+  }
+
+    // Add activity to a venue
   addActivity(activity: any, venueId: number): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post(`${this.activityApi}/add/to-venue/${venueId}`, activity, { headers });
@@ -23,9 +42,9 @@ export class ActivityService {
     return this.http.get<any[]>(`${this.venueApi}/view/all`);
   }
   
-getActivityById(id: number): Observable<any> {
-  return this.http.get<any>(`${this.activityApi}/${id}`);
-}
+// getActivityById(id: number): Observable<any> {
+//   return this.http.get<any>(`${this.activityApi}/${id}`);
+// }
   
   getAllActivities(): Observable<any[]> {
     return this.http.get<any[]>(`${this.activityApi}`);
@@ -42,6 +61,13 @@ getActivityById(id: number): Observable<any> {
   updateActivity(id: number, activity: any): Observable<any> {
     return this.http.put(`${this.activityApi}/${id}`, activity);
   }
-
 }
+
+
+
+
+
+
+
+
 

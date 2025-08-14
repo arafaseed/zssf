@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>Confirm booking details</h2>
+    <mat-dialog-content>
+      <p><strong>Venue:</strong> {{ data.venueName }}</p>
+      <pre class="text-sm bg-slate-50 p-2 rounded">{{ data.booking | json }}</pre>
+      <p *ngIf="data.attachedFileName"><strong>File:</strong> {{ data.attachedFileName }}</p>
+
+      <mat-checkbox [(ngModel)]="accepted">I accept the <a href="/agreeterms" target="_blank">terms & conditions</a></mat-checkbox>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button (click)="close(false)">Cancel</button>
+      <button mat-flat-button color="primary" [disabled]="!accepted" (click)="close(true)">Confirm & Submit</button>
+    </mat-dialog-actions>

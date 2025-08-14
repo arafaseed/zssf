@@ -1,0 +1,21 @@
+/* Ensure dialog content scrolls vertically only and has comfortable padding */
+.dialog-content-vertical-scroll {
+  max-height: 72vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Custom Material form-field wrapper to get rounded inputs like uiverse */
+.custom-mat-input .mat-form-field-wrapper {
+  border-radius: 0.5rem; /* rounded */
+}
+
+/* Add subtle shadow to inputs (material outline keeps native look) */
+.custom-mat-input .mat-form-field-appearance-outline .mat-form-field-outline {
+  box-shadow: 0 2px 8px rgba(2,6,23,0.06);
+}
+
+/* Small responsive adjustments */
+@media (max-width: 768px) {
+  mat-dialog-content { padding-left: 1rem; padding-right: 1rem; }
+}

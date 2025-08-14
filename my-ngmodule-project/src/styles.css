@@ -30,4 +30,9 @@ html, body {
 }
 
 
+:root { --primary: #0ea5a4; --accent: #6366f1; --muted: #64748b; }
+body { font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
 
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

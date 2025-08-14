@@ -1,59 +1,71 @@
-import { Component, HostListener, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { NavigationEnd, Router } from '@angular/router';
-import { HeaderComponent } from '../header/header.component'; 
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { FooterComponent } from '../footer/footer.component';
-import { RouterModule } from '@angular/router';
-import { isPlatformBrowser } from '@angular/common';
-
+import { Component, OnInit, ViewChildren, QueryList, ElementRef, AfterViewInit } from '@angular/core';
+import { Building, Venue, Activity } from '../../models/models';
+import { BuildingService } from '../../Services/building.service';
+import { ActivityService } from '../../Services/activity.service';
+import { forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
   standalone: false,
-  // imports: [
-  //   RouterModule,
-  //   CommonModule,
-  //   MatCardModule,
-  //   MatIconModule,
-  //   MatButtonModule,
-  //   MatToolbarModule,
-  
-   
-  // ],
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  templateUrl: './home.component.html'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit, AfterViewInit {
+  buildings: Building[] = [];
+  minPrice = new Map<number, number | null>(); // venueId -> minPrice
+  loading = true;
 
- 
-  currentYear = new Date().getFullYear();
+  @ViewChildren('scrollRow') scrollRows!: QueryList<ElementRef<HTMLDivElement>>;
 
-  constructor(private router: Router, @Inject(PLATFORM_ID) private platformId: any) {
-    // Detect when navigation ends and reload if returning to home
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd && event.url === '/home') {
-        if (isPlatformBrowser(this.platformId)) {
-          // window.location.reload();  // Reload only when on the browser
-        }
+  constructor(
+    private buildingSvc: BuildingService,
+    private activitySvc: ActivityService
+  ) {}
+
+  ngOnInit() { this.load(); }
+  ngAfterViewInit() {}
+
+  load() {
+    this.loading = true;
+    this.buildingSvc.getAllBuildings().subscribe({
+      next: (b) => {
+        this.buildings = b;
+        this.computeAllMinPrices();
+        this.loading = false;
+      },
+      error: (err) => { console.error(err); this.loading = false; }
+    });
+  }
+
+  private computeAllMinPrices() {
+    for (const building of this.buildings) {
+      for (const v of building.venues) {
+        this.computeVenueMin(v);
       }
-    });
-  
+    }
   }
 
-  handleClick() {
-    this.router.navigate(['/venues']).then(() => {
-      window.location.reload();
+  private computeVenueMin(v: Venue) {
+    if (!v.activityIds || v.activityIds.length === 0) {
+      this.minPrice.set(v.venueId, null);
+      return;
+    }
+    const obs = v.activityIds.map(id => this.activitySvc.getActivityById(id));
+    forkJoin(obs).subscribe({
+      next: (acts) => {
+        const prices = acts.filter(a => !!a).map(a => (a as Activity).price);
+        if (!prices.length) { this.minPrice.set(v.venueId, null); return; }
+        const min = Math.min(...prices);
+        this.minPrice.set(v.venueId, Math.round(min));
+      },
+      error: (err) => { console.warn('price fetch error', v.venueId, err); this.minPrice.set(v.venueId, null); }
     });
   }
-  
-  navigateToContact() {
-    this.router.navigate(['/contact']).then(() => {
-      window.location.reload(); // Forces a page reload after navigation
-    });
+
+  getMinPrice(venueId: number) { return this.minPrice.get(venueId) ?? null; }
+
+  scroll(elem: HTMLDivElement, dir: 'left' | 'right') {
+    const amount = elem.clientWidth - 96; // scroll by view minus a margin
+    elem.scrollBy({ left: dir === 'left' ? -amount : amount, behavior: 'smooth' });
   }
- 
 }

@@ -4,7 +4,6 @@ import { HomeComponent } from './components/home/home.component';
 import { VenueViewComponent } from './Admin/venue-view/venue-view.component';
 import { DashboardComponent } from './Admin/dashboard/dashboard.component';
 import { LayoutComponent } from './Admin/layout/layout.component';
-import { VenueComponent } from './components/venue/venue.component';
 import { SettingComponent } from './Admin/setting/setting.component';
 import { BuildingComponent } from './Admin/building/building.component';
 import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
@@ -28,9 +27,11 @@ import { PhoneSearchComponent } from './phone-search/phone-search.component';
 import { TermsAndConditionsComponent } from './terms-and-conditions/terms-and-conditions.component';
 import { FeedbackComponent } from './feedback/feedback.component';
 import { AddBuildingComponent } from './add-building/add-building.component';
+import { VenueExplorerComponent } from './components/venue-explorer/venue-explorer.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'venue', pathMatch: 'full' },
+  { path: '', component: HomeComponent },
+  { path: 'venue/:id', component: VenueExplorerComponent },
   { path: 'venue', component: VenueViewComponent },
   { path: 'reservation', component: HomeComponent }, 
    
@@ -62,7 +63,6 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'building', component: BuildingComponent },
       { path: 'buildings', component: BuildinglistComponent },
-      { path: 'users', component: VenueComponent },
       { path: 'leasepackagetable', component: LeasePackageTableComponent },
 
       // ✅ Corrected lease package routes

@@ -1,4 +1,4 @@
-.contact-bar {
+/* .contact-bar {
   background-color: #009688;
   color: white;
   font-size: 14px;
@@ -19,11 +19,11 @@
 }
 
 .icon {
-  color: #FFEB3B; /* Yellow icons */
+  color: #FFEB3B; 
   margin-right: 6px;
-}
+} */
 
-.contact-item {
+/* .contact-item {
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -96,22 +96,21 @@
   border-radius: 4px;
   font-weight: 600;
   white-space: nowrap;
-  user-select: none;
-}
+} */
 
-.nav-link {
-  color: #555; /* Medium gray for nav text */
+/* .nav-link {
+  color: #555; 
   text-decoration: none;
   cursor: pointer;
   transition: color 0.3s ease;
 }
 
 .nav-link:hover {
-  color: #3592c9; /* Teal hover */
-}
+  color: #3592c9; 
+} */
 
 /* Responsive tweaks for smaller screens */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .header-container {
     flex-direction: column;
     align-items: center;
@@ -161,6 +160,195 @@
   .nav-link {
     font-size: 1rem;
   }
+}  */
 
-  
+/* ===== header.component.css - enhanced for sticky nav & mobile ===== */
+
+/* keep your original rules but replace/augment nav & responsive parts */
+
+/* Contact bar (unchanged visually) */
+.contact-bar {
+  background-color: #009688;
+  color: white;
+  font-size: 14px;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  min-height: 48px;
 }
+
+.contact-left,
+.contact-right {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: center;
+}
+
+.icon {
+  color: #FFEB3B; /* Yellow icons */
+  margin-right: 6px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.contact-item:hover {
+  color: #FFEB3B;
+}
+
+.contact-item a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+/* Header (unchanged look) */
+.header-container {
+  background-color: white;
+  padding: 16px 120px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 6px;
+  border-bottom: 2px solid #ccc;
+}
+
+.logo-left,
+.logo-right {
+  height: 80px;
+  width: auto;
+  flex-shrink: 0;
+}
+
+.header-text {
+  flex: 1;
+  text-align: center;
+  margin: 0 10px;
+  min-width: 0;
+}
+
+.header-text h1 {
+  font-weight: 700;
+  font-size: 1.75rem;
+  margin: 0;
+}
+
+/* DATE + NAVIGATION BAR - make sticky & mobile-friendly */
+.nav-container {
+  background-color: rgba(255, 255, 255, 0.98); /* slightly translucent keeps original white look */
+  color: black;
+  font-size: 0.875rem;
+  padding: 12px 20px;                 /* slightly tighter padding */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  position: sticky;                   /* <-- key: stays visible while scrolling */
+  top: 0;                              /* sticks to top of viewport */
+  z-index: 1000;                       /* above other content */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  font-family: 'Poppins', sans-serif;
+  min-height: 64px;
+}
+
+/* date box - make sure it is readable and mobile friendly */
+.date-box {
+  /* keep original styling but adapt for sticky bar */
+  background-color: #138C82;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-weight: 600;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 8px;
+  flex: 0 0 auto;
+}
+
+/* place date visually on the left on larger screens */
+@media (min-width: 768px) {
+  .date-box {
+    margin-left: 12px;
+    position: relative;
+    left: 0;
+    top: 0;
+    transform: none;
+  }
+}
+
+/* nav links: responsive wrapping, preserved styling */
+.nav-container nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-link {
+  color: #555;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.25s ease;
+  padding: 6px 8px;
+  border-radius: 4px;
+}
+
+.nav-link:hover {
+  color: #3592c9;
+  background: rgba(53,146,201,0.06); /* subtle hover bg without changing appearance */
+}
+
+/* Make icons and text scale down slightly on small screens */
+@media (max-width: 767px) {
+  .nav-container {
+    padding: 10px 12px;
+    gap: 10px;
+    min-height: 56px;
+  }
+
+  .date-box {
+    margin-left: 0;
+    order: -1;             /* date appears above nav on narrow screens */
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 8px;
+  }
+
+  .nav-link {
+    font-size: 14px;
+    padding: 6px;
+  }
+
+  .header-container {
+    padding: 12px 20px;
+  }
+
+  .logo-left, .logo-right {
+    height: 60px;
+  }
+
+  .header-text h1 {
+    font-size: 1.25rem;
+  }
+}
+
+/* If the host page uses a different scrolling container, sticky works only within that container.
+   Make sure no ancestor element of this component (or body/html) sets overflow: hidden or overflow: auto
+   with limited height, otherwise position: sticky may not behave as expected. */
+
+/* Optional small utility (non-invasive): ensure nav appears on top for print/bad z-index cases */
+@media print { 
+  .nav-container { position: static; }
+}
+

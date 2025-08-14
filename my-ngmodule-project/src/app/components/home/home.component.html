@@ -1,20 +1,59 @@
-
 <app-header></app-header>
-    <div id="home-page">
-        <div class="main-content">
-          <div class="content-box">
-            <h1 class="title">Zanzibar Social Security Fund</h1>
-            <h3 class="subtitle">Experience amazing and comfortable services with Zanzibar Social Security Fund (ZSSF).</h3>
-            <div class="action-buttons">
-              <button mat-raised-button color="primary" (click)="navigateToContact()">Contact Us</button>
-              <button mat-stroked-button color="primary" (click)="handleClick()">Book (Venues)</button>
-    
-    
-              <button mat-stroked-button color="primary">Book (Meeting Rooms)</button>
+<div class="min-h-screen bg-slate-50">
+
+  <div class="p-6 mx-auto md:p-10 max-w-7xl">
+    <!-- search -->
+    <div class="mb-8">
+      <mat-form-field class="w-full">
+        <input matInput placeholder="Search by city, building, venue, or location address" class="px-4  border rounded-lg h-11">
+      </mat-form-field>
+    </div>
+
+    <!-- buildings -->
+    <div *ngIf="loading" class="py-12 text-center">Loading buildings…</div>
+
+    <section *ngFor="let b of buildings" class="mb-12">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h2 class="text-2xl font-semibold text-slate-800">{{ b.buildingName }}</h2>
+          <p class="text-sm text-slate-500">{{ b.address }}</p>
+        </div>
+        <!-- desktop controls -->
+        <div class="hidden gap-2 md:flex">
+          <button mat-icon-button (click)="scroll(scrollRow.nativeElement, 'left')" *ngFor="let scrollRow of scrollRows">
+            <!-- placeholder; we set actual handlers inline per row below -->
+          </button>
+        </div>
+      </div>
+
+      <div class="relative">
+        <!-- arrow buttons for desktop (positioned over row) -->
+        <button mat-icon-button class="absolute left-0 z-10 hidden -translate-y-1/2 shadow md:flex top-1/2 bg-white/80"
+                (click)="scroll(rowRef, 'left')">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+
+        <button mat-icon-button class="absolute right-0 z-10 hidden -translate-y-1/2 shadow md:flex top-1/2 bg-white/80"
+                (click)="scroll(rowRef, 'right')">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+
+        <!-- the scroll row -->
+        <div #rowRef class="flex gap-6 px-1 py-2 overflow-x-auto snap-x snap-mandatory scroll-smooth scrollbar-hide">
+          <ng-container *ngFor="let v of b.venues">
+            <div class="flex-shrink-0 snap-start">
+              <app-venue-card [venue]="v" [minPrice]="getMinPrice(v.venueId)"></app-venue-card>
             </div>
-          </div>
+          </ng-container>
         </div>
+
+        <!-- mobile buttons -->
+        <div class="flex justify-end gap-2 mt-3 md:hidden">
+          <button mat-icon-button (click)="scroll(rowRef, 'left')"><mat-icon>chevron_left</mat-icon></button>
+          <button mat-icon-button (click)="scroll(rowRef, 'right')"><mat-icon>chevron_right</mat-icon></button>
         </div>
-      
-        <app-footer></app-footer>
-     
+      </div>
+    </section>
+  </div>
+</div>
+<app-footer></app-footer>

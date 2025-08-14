@@ -10,7 +10,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { HomeComponent } from './components/home/home.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { VenueComponent } from './components/venue/venue.component';
 import { DashboardComponent } from './Admin/dashboard/dashboard.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
@@ -66,9 +65,6 @@ import { PhoneSearchComponent } from './phone-search/phone-search.component';
 import { StaffModule } from "./staff/staff.module";
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ViewBuildingComponent } from './view-building/view-building.component';
-import { MatDialogContent } from '@angular/material/dialog';
-import { MatDialogActions } from '@angular/material/dialog';
-
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -77,6 +73,17 @@ import { TermsAndConditionsComponent } from './terms-and-conditions/terms-and-co
 import { FeedbackComponent } from './feedback/feedback.component';
 import { BuildingEditFormComponent } from './Form/building-edit-form/building-edit-form.component';
 import { AddBuildingComponent } from './add-building/add-building.component';
+
+import { VenueCardComponent } from './components/venue-card/venue-card.component';
+import { VenueExplorerComponent } from './components/venue-explorer/venue-explorer.component';
+import { LucideAngularModule } from 'lucide-angular';
+import { BookingModalComponent } from './components/booking-modal/booking-modal.component';
+import { EmployeeVerifyComponent } from './components/employee-verify/employee-verify.component';
+import { ConfirmBookingComponent } from './components/confirm-booking/confirm-booking.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRadioModule } from '@angular/material/radio';
+
+
 
 
 
@@ -91,7 +98,8 @@ export function createTranslateLoader(http: HttpClient) {
     AppComponent,
     FooterComponent,
     HomeComponent,
-    VenueComponent,
+    VenueCardComponent,
+    VenueExplorerComponent,
     DashboardComponent,
     LayoutComponent,
     UserComponent,
@@ -122,6 +130,9 @@ export function createTranslateLoader(http: HttpClient) {
     TermsAndConditionsComponent,
     FeedbackComponent,
     AddBuildingComponent,
+    BookingModalComponent,
+    EmployeeVerifyComponent,
+    ConfirmBookingComponent,
 
     // DashboardSwitchComponent,
     
@@ -131,7 +142,6 @@ export function createTranslateLoader(http: HttpClient) {
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    // Angular Material modules
     TranslateModule,
     MatButtonModule,
     MatToolbarModule,
@@ -153,14 +163,19 @@ export function createTranslateLoader(http: HttpClient) {
     MatTooltipModule,
     MatGridListModule,
     MatProgressSpinnerModule,
-
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-
     CommonModule,
     FullCalendarModule,
     StaffModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    LucideAngularModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    
+
 
  TranslateModule.forRoot({
   loader: {

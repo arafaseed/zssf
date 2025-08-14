@@ -1,0 +1,165 @@
+<app-header></app-header>
+
+<div class="bg-slate-50 min-h-screen">
+  <div class="max-w-7xl mx-auto px-4 md:px-8 py-8">
+    <div *ngIf="loading" class="text-center py-20">Loading...</div>
+
+    <div *ngIf="venue" class="grid grid-cols-1 md:grid-cols-3 gap-6" [@fadeIn]>
+      <!-- LEFT: image gallery (span 2 cols on desktop) -->
+      <div class="md:col-span-2 space-y-4">
+        <!-- Large image display -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+          <img
+            class="w-full h-96 object-cover"
+            [src]="venue.venueImages[currentImageIndex]"
+            alt="{{ venue.venueName }}"
+            loading="lazy"
+          />
+        </div>
+
+        <!-- Thumbnail list -->
+        <div class="flex gap-3 overflow-x-auto py-2">
+          <ng-container *ngFor="let img of venue.venueImages; let i = index">
+            <button
+              class="flex-shrink-0 rounded-md overflow-hidden border-2"
+              [class.border-sky-500]="i === currentImageIndex"
+              style="width: 110px; height: 70px"
+              (click)="onSelectImage(i)"
+            >
+              <img
+                [src]="img"
+                class="w-full h-full object-cover"
+                loading="lazy"
+              />
+            </button>
+          </ng-container>
+        </div>
+
+        <div class="bg-white rounded-lg p-6 shadow-sm">
+          <h3 class="text-lg font-semibold">Description</h3>
+          <ul class="list-disc list-inside mt-3 text-sm text-slate-700">
+            <li *ngFor="let d of venue.description">{{ d }}</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- RIGHT: details + booking -->
+      <aside class="space-y-4">
+        <div class="bg-white p-5 rounded-lg shadow-lg">
+          <h1 class="text-2xl font-bold">{{ venue.venueName }}</h1>
+          <p class="text-sm text-slate-500 mt-1">
+            {{ building?.buildingName }} • {{ building?.address }}
+          </p>
+
+          <div class="mt-4 grid grid-cols-2 gap-3">
+            <div class="p-3 bg-sky-50 rounded-md">
+              <div class="text-xs text-slate-500">Capacity</div>
+              <div class="text-lg font-medium">{{ venue.capacity }}</div>
+            </div>
+            <div class="p-3 bg-rose-50 rounded-md">
+              <div class="text-xs text-slate-500">Type</div>
+              <div class="text-lg font-medium">
+                {{ venue.venueType || "—" }}
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <div class="text-xs text-slate-500">From</div>
+            <div class="text-2xl font-bold">
+              {{
+                minActivityPrice
+                  ? (minActivityPrice | number : "1.0-0") + " TZS"
+                  : "Price not available"
+              }}
+            </div>
+            <div class="text-xs text-slate-400">
+              per Day (based on selected activity)
+            </div>
+          </div>
+        </div>
+
+        <!-- availability form -->
+        <div class="bg-white p-6 rounded-lg shadow">
+          <h4 class="font-semibold mb-3">Check availability</h4>
+
+          <div class="space-y-3">
+            <mat-form-field class="w-full">
+              <mat-label>Event start date</mat-label>
+              <input
+                matInput
+                [matDatepicker]="startPicker"
+                [(ngModel)]="startDate"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="startPicker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #startPicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="w-full">
+              <mat-label>Event end date</mat-label>
+              <input
+                matInput
+                [matDatepicker]="endPicker"
+                [(ngModel)]="endDate"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="endPicker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #endPicker></mat-datepicker>
+            </mat-form-field>
+
+            <div class="flex gap-3">
+              <mat-form-field class="flex-1">
+                <mat-label>Start time</mat-label>
+                <input matInput type="time" [(ngModel)]="startTime" />
+              </mat-form-field>
+
+              <mat-form-field class="flex-1">
+                <mat-label>End time</mat-label>
+                <input matInput type="time" [(ngModel)]="endTime" />
+              </mat-form-field>
+            </div>
+
+            <mat-form-field class="w-full">
+              <mat-label>Activity</mat-label>
+              <mat-select [(ngModel)]="selectedActivityId">
+                <mat-option *ngFor="let a of activities" [value]="a.activityId">
+                  {{ a.activityName }} Tzs :{{ a.price }} /=
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <div class="flex gap-2 justify-center">
+              <button
+                mat-stroked-button
+                color="primary"
+                (click)="openAvailabilityModal()"
+              >
+                Check
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- optional services -->
+        <div
+          *ngIf="optionalServices.length"
+          class="bg-white p-4 rounded-lg shadow"
+        >
+          <h4 class="font-semibold">Optional services</h4>
+          <ul class="mt-2 text-sm text-slate-700">
+            <li *ngFor="let s of optionalServices">
+              {{ s.optionalServiceName }} — {{ s.price | number : "1.0-0" }} TZS
+            </li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>
