@@ -97,7 +97,7 @@ export class ViewVenuesComponent implements OnInit {
 
  editVenue(venueId: number): void {
   // Navigate to the dedicated Edit Venue route
-  this.router.navigate(['/admin/editVenue', venueId]);
+  this.router.navigate(['/admin/editVenue']);
 }
 
 

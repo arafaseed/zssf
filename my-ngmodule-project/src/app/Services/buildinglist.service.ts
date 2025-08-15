@@ -17,9 +17,10 @@ export class BuildinglistService {
   }
 
   // Fetch a single building by ID
-  getBuildingById(buildingId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/view/${buildingId}`);
-  }
+  // Fetch a single building by ID
+getBuildingById(buildingId: number): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/view/by-buildingId/${buildingId}`);
+}
 
   // Add a new building
   addBuilding(buildingData: any): Observable<any> {
@@ -34,10 +35,9 @@ export class BuildinglistService {
   }
 
   // Delete a building by ID
-  deleteBuilding(buildingId: number): Observable<void> {
-    console.log('Deleting building with ID:', buildingId);
-    return this.http.delete<void>(`http://localhost:8080/api/buildings/delete/${buildingId}`);
-  }
-  
-  
+deleteBuilding(buildingId: number): Observable<void> {
+  console.log('Deleting building with ID:', buildingId);
+  return this.http.delete<void>(`http://localhost:8080/api/buildings/delete-building/${buildingId}`);
+}
+
 }

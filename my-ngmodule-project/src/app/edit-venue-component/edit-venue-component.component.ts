@@ -4,14 +4,15 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ViewVenueService } from '../Services/view-venue.service';
 
 @Component({
-  selector: 'app-edit-venue',
-  templateUrl: './edit-venue.component.html',
+  selector: 'app-edit-venue-component',
+  templateUrl: './edit-venue-component.component.html',
   standalone:false,
-  styleUrls: ['./edit-venue.component.css']
+  styleUrls: ['./edit-venue-component.component.css'],
 })
 export class EditVenueComponent implements OnInit {
   venueForm!: FormGroup;
   venueId: number;
+buildings: any;
 
   constructor(
     private fb: FormBuilder,

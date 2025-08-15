@@ -15,9 +15,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { LayoutComponent } from './Admin/layout/layout.component';
-import { UserComponent } from './Admin/user/user.component';
-import { SettingComponent } from './Admin/setting/setting.component';
-import { BuildingComponent } from './Admin/building/building.component';
 
 import { MatCardModule, MatCard, MatCardTitle } from '@angular/material/card';
 import { MatFormFieldModule, MatFormField, MatLabel, MatError } from '@angular/material/form-field';
@@ -59,7 +56,7 @@ import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { StaffAddComponent } from './staff-add/staff-add.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ActivityFormComponent } from './Admin/activity-form/activity-form.component';import { ActivityTableComponent } from './activitytable/activitytable.component';
+import { ActivityFormComponent } from './Admin/activity-form/activity-form.component';import { ActivityTableComponent } from './Table/activitytable/activitytable.component';
 import { ActivityEditFormComponent } from './Form/activity-edit-form/activity-edit-form.component';
 import { PhoneSearchComponent } from './phone-search/phone-search.component';
 import { StaffModule } from "./staff/staff.module";
@@ -102,10 +99,7 @@ export function createTranslateLoader(http: HttpClient) {
     VenueExplorerComponent,
     DashboardComponent,
     LayoutComponent,
-    UserComponent,
-    SettingComponent,
     VenueFormComponent,
-    BuildingComponent,
     MajengoComponent,
     RegisterVenueComponent,
     LeasePackageTableComponent,
@@ -140,6 +134,7 @@ export function createTranslateLoader(http: HttpClient) {
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     TranslateModule,

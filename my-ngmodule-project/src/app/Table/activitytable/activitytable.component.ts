@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivityService } from '../Services/activity.service';
+import { ActivityService } from '../../Services/activity.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { ActivityEditFormComponent } from '../Form/activity-edit-form/activity-edit-form.component';
+import { ActivityEditFormComponent } from '../../Form/activity-edit-form/activity-edit-form.component';
 
 @Component({
   selector: 'app-activitytable',

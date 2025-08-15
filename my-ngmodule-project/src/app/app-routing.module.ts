@@ -4,8 +4,6 @@ import { HomeComponent } from './components/home/home.component';
 import { VenueViewComponent } from './Admin/venue-view/venue-view.component';
 import { DashboardComponent } from './Admin/dashboard/dashboard.component';
 import { LayoutComponent } from './Admin/layout/layout.component';
-import { SettingComponent } from './Admin/setting/setting.component';
-import { BuildingComponent } from './Admin/building/building.component';
 import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
 
 import { LeasePackageTableComponent } from './Table/lease-package-table/lease-package-table.component';
@@ -22,7 +20,7 @@ import { BookingListComponent } from './booking-list/booking-list.component';
 import { InvoiceComponent } from './invoice/invoice.component';
 import { StaffAddComponent } from './staff-add/staff-add.component';
 import { ActivityFormComponent } from './Admin/activity-form/activity-form.component';
-import { ActivityTableComponent } from './activitytable/activitytable.component';
+import { ActivityTableComponent } from './Table/activitytable/activitytable.component';
 import { PhoneSearchComponent } from './phone-search/phone-search.component';
 import { TermsAndConditionsComponent } from './terms-and-conditions/terms-and-conditions.component';
 import { FeedbackComponent } from './feedback/feedback.component';
@@ -30,10 +28,10 @@ import { AddBuildingComponent } from './add-building/add-building.component';
 import { VenueExplorerComponent } from './components/venue-explorer/venue-explorer.component';
 
 const routes: Routes = [
+  
   { path: '', component: HomeComponent },
   { path: 'venue/:id', component: VenueExplorerComponent },
   { path: 'venue', component: VenueViewComponent },
-  { path: 'reservation', component: HomeComponent }, 
    
   { path: 'dash', component: DashboardComponent },
 
@@ -61,7 +59,6 @@ const routes: Routes = [
     data: { roles: ['ADMIN'] },
     children: [
       { path: 'dashboard', component: DashboardComponent },
-      { path: 'building', component: BuildingComponent },
       { path: 'buildings', component: BuildinglistComponent },
       { path: 'leasepackagetable', component: LeasePackageTableComponent },
 
@@ -71,12 +68,13 @@ const routes: Routes = [
 
       { path: 'leasepackageeditform/:id', component: LeasePackageEditFormComponent },
       { path: 'editVenue/:venueId', component: EditVenueComponent },
+      { path: 'editVenue', component: EditVenueComponent },
 
 
       { path: 'regvenues', component: RegisterVenueComponent },
       { path: 'regvenues/:id', component: RegisterVenueComponent },
       { path: 'venueView', component: ViewVenuesComponent },
-      { path: 'settings', component: SettingComponent },
+    
       { path: 'bookinglist', component: BookingListComponent },
       {path: 'addstaff', component: StaffAddComponent},
       { path: 'activity', component: ActivityFormComponent },

@@ -11,9 +11,13 @@
 
   <!-- Search by Date -->
   <div class="search-group">
-    <input type="date" [(ngModel)]="searchDate" />
-    <button (click)="searchByDate()">Search by Date</button>
-  </div>
+  <input 
+    type="date" 
+    [(ngModel)]="searchDate"
+  />
+  <button (click)="searchByDate()">Search by Date</button>
+</div>
+
 
   <!-- Bookings Table -->
   <div *ngIf="filteredResults.length > 0">
