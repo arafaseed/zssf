@@ -1,38 +1,17 @@
 /* ✅ Import zote lazima ziwe juu kabisa */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap');
+
 @import "tailwindcss";
 
 /* ✅ Global Styles */
 html, body {
   height: 100%;
   margin: 0;
-  font-family: 'Poppins', Roboto, "Helvetica Neue", sans-serif;
+  font-family: 'Poppins', Roboto, "Helvetica Neue", sans-serif, Arial ,'Segoe UI';
 }
 
-.my-custom-picker .mat-calendar-body-cell.past-date .mat-calendar-body-cell-content {
-  color: #464d5d;
-  background: #838c98;;
+:root { 
+  --primary: #0ea5a4; 
+  --accent: #6366f1; 
+  --muted: #64748b; 
 }
-
-.my-custom-picker .mat-calendar-body-cell.booked-date .mat-calendar-body-cell-content {
-  background-color: #f45f5f;
-  color: hsl(0, 95%, 24%);
-}
-
-.my-custom-picker .mat-calendar-body-cell.available-date .mat-calendar-body-cell-content {
-  background-color: #0BDA51;
-  color: #ffffff;
-}
-
-/* OPTIONAL: on hover, highlight available dates */
-.my-custom-picker .mat-calendar-body-cell.available-date:hover .mat-calendar-body-cell-content {
-  color: #0000ff;
-}
-
-
-:root { --primary: #0ea5a4; --accent: #6366f1; --muted: #64748b; }
-body { font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
-
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

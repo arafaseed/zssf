@@ -33,9 +33,15 @@ export interface BookedSlot {
   providedIn: 'root'
 })
 export class BookingService {
+
   private apiUrl = 'http://localhost:8080/api/bookings';
+
+   private base = 'http://localhost:8080';
+
   private bookingsSubject = new BehaviorSubject<Booking[]>([]);
+
   bookings$ = this.bookingsSubject.asObservable();
+
   checkDateAvailability: any;
 
   constructor(private http: HttpClient) {}
@@ -114,6 +120,18 @@ getActivityNameById(activityId: number): Observable<string> {
   // Get bookings filtered by customer ID
   getBookingsByCustomer(customerId: number): Observable<Booking[]> {
     return this.http.get<Booking[]>(`${this.apiUrl}/customer/${customerId}`);
+  }
+
+  // GET optional services for a venue
+  getOptionalServicesForVenue(venueId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.base}/api/optional-services/venue/${venueId}`);
+  }
+
+  // POST the booking (FormData) to backend
+  // Note: controller in your backend expects multipart/form-data with 'booking' JSON and optional 'referenceDocument'
+  placeReservation(formData: FormData): Observable<any> {
+    // Change endpoint if needed (/api/bookings/create or /api/place-reservation)
+    return this.http.post<any>(`${this.base}/api/bookings/place-reservation`, formData);
   }
 
 }

@@ -8,6 +8,7 @@ import { forkJoin, of } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { BookingModalComponent } from '../booking-modal/booking-modal.component';
 import { trigger, style, animate, transition } from '@angular/animations';
+import { AvailabilityModalComponent } from '../availability-modal/availability-modal.component';
 
 @Component({
   selector: 'app-venue-explorer',
@@ -129,27 +130,46 @@ export class VenueExplorerComponent implements OnInit {
   }
 
   openAvailabilityModal() {
-    if (!this.venue) return;
-    const start = this.combineDateTime(this.startDate, this.startTime);
-    const end = this.combineDateTime(this.endDate, this.endTime);
-    const activity = this.activities.find(
-      (a) => a.activityId === this.selectedActivityId
-    );
+  if (!this.venue) return;
+  const start = this.combineDateTime(this.startDate, this.startTime);
+  const end = this.combineDateTime(this.endDate, this.endTime);
+  const activity = this.activities.find(a => a.activityId === this.selectedActivityId);
+
+  // open availability modal
+  const ref = this.dialog.open(AvailabilityModalComponent, {
+    width: '800px',
+    maxHeight: '85vh',
+    data: {
+      venueId: this.venue.venueId,
+      venueName: this.venue.venueName,
+      start, end,
+      startTime: this.startTime,
+      endTime: this.endTime,
+      activityId: activity?.activityId,
+      activityName: activity?.activityName
+    }
+  });
+
+  ref.afterClosed().subscribe(result => {
+    if (!result) return; // cancelled
+    // result.mode === 'range' means fully available for the range
+    // result.mode === 'single' means user selected a single date item and result.item is that item
+    // open booking modal with the returned selection
+    const bookingData = {
+      ...result,
+      venueId: this.venue.venueId,
+      venueName: this.venue.venueName,
+      activityId: activity?.activityId,
+      activityName: activity?.activityName
+    };
     this.dialog.open(BookingModalComponent, {
-  width: '900px',             // larger, avoids horizontal scroll
-  maxHeight: '90vh',         // vertical scroll only if needed
-  data: {
-    venueId: this.venue.venueId,
-    venueName: this.venue.venueName,
-    start,
-    end,
-    startTime: this.startTime,
-    endTime: this.endTime,
-    activityId: activity?.activityId,
-    activityName: activity?.activityName
-  }
-});
-  }
+      width: '760px',
+      maxHeight: '85vh',
+      data: bookingData
+    });
+  });
+}
+
 
   combineDateTime(date?: Date | null, time?: string) {
     if (!date) return null;

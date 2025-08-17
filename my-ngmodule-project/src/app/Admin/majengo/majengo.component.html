@@ -2,17 +2,17 @@
   <mat-card-title class="title">🏢 Register a Building</mat-card-title>
   <form [formGroup]="majengoForm" (ngSubmit)="onSubmit()">
     <div class="form-grid">
-      <mat-form-field class="form-field" appearance="outline">
+      <mat-form-field class="form-field" >
         <mat-label>Building Name</mat-label>
         <input matInput id="buildingName" formControlName="buildingName" required />
       </mat-form-field>
 
-      <mat-form-field class="form-field" appearance="outline">
+      <mat-form-field class="form-field" >
         <mat-label>Address</mat-label>
         <input matInput id="address" formControlName="address" required />
       </mat-form-field>
 
-      <mat-form-field class="form-field full-width" appearance="outline">
+      <mat-form-field class="form-field full-width" >
         <mat-label>Venue</mat-label>
         <input matInput id="venue" formControlName="venue" required />
       </mat-form-field>
