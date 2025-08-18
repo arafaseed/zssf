@@ -1,0 +1,47 @@
+<h3 mat-dialog-title class="text-center mb-4">✏️ Edit Optional Service</h3>
+
+<form [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
+  <div mat-dialog-content>
+    
+    <div class="mb-3">
+      <label for="serviceName" class="form-label">Service Name</label>
+      <input id="serviceName" type="text" class="form-control" formControlName="serviceName" placeholder="Enter service name" required minlength="3">
+      <div class="error" *ngIf="serviceForm?.get('serviceName')?.invalid && serviceForm?.get('serviceName')?.touched">
+        Service Name is required (min 3 characters)
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <input id="description" type="text" class="form-control" formControlName="description" placeholder="Enter description" required minlength="5">
+      <div class="error" *ngIf="serviceForm?.get('description')?.invalid && serviceForm?.get('description')?.touched">
+        Description is required (min 5 characters)
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="price" class="form-label">Price</label>
+      <input id="price" type="number" class="form-control" formControlName="price" placeholder="Enter price" required min="0" step="any">
+      <div class="error" *ngIf="serviceForm?.get('price')?.invalid && serviceForm?.get('price')?.touched">
+        Valid price is required
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="venue" class="form-label">Venue</label>
+      <select id="venue" class="form-control" formControlName="venueId" required>
+        <option value="" disabled>Select Venue</option>
+        <option *ngFor="let venue of venues" [ngValue]="venue.venueId">{{venue.venueName}}</option>
+      </select>
+      <div class="error" *ngIf="serviceForm?.get('venueId')?.invalid && serviceForm?.get('venueId')?.touched">
+        Venue selection is required
+      </div>
+    </div>
+
+  </div>
+
+  <div mat-dialog-actions class="text-center">
+    <button mat-button type="submit" [disabled]="serviceForm.invalid">Update</button>
+    <button mat-button type="button" (click)="closeDialog()">Cancel</button>
+  </div>
+</form>

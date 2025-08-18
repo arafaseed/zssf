@@ -1,42 +1,42 @@
 <div class="container">
   <div class="d-flex justify-content-between mb-3">
     <div class="btn-add-left">
-      <button mat-raised-button color="primary" [routerLink]="['/admin/leasepackageform']">
-        Add Lease Package
+      <button mat-raised-button color="primary" [routerLink]="['/admin/addoptional']">
+        Add Optional Service
       </button>
     </div>
   </div>
 
-  <h2 class="text-center">Lease Packages</h2>
+  <h2 class="text-center">Optional Services</h2>
 
-  <mat-table [dataSource]="leasePackages" class="mat-elevation-z8">
+  <mat-table [dataSource]="optionalServices" class="mat-elevation-z8">
 
-    <!-- Package Name Column -->
-    <ng-container matColumnDef="packageName">
-      <mat-header-cell *matHeaderCellDef class="black-text"> Package Name </mat-header-cell>
-      <mat-cell *matCellDef="let lease"> {{lease.packageName}} </mat-cell>
+    <!-- Service Name Column -->
+    <ng-container matColumnDef="serviceName">
+      <mat-header-cell *matHeaderCellDef class="black-text"> Service Name </mat-header-cell>
+      <mat-cell *matCellDef="let service"> {{service.serviceName}} </mat-cell>
     </ng-container>
 
     <!-- Description Column -->
     <ng-container matColumnDef="description">
       <mat-header-cell *matHeaderCellDef class="black-text"> Description </mat-header-cell>
-      <mat-cell *matCellDef="let lease"> {{lease.description}} </mat-cell>
+      <mat-cell *matCellDef="let service"> {{service.description}} </mat-cell>
     </ng-container>
 
     <!-- Price Column -->
     <ng-container matColumnDef="price">
       <mat-header-cell *matHeaderCellDef class="black-text"> Price </mat-header-cell>
-      <mat-cell *matCellDef="let lease"> {{lease.price | currency:'TZS':true}} </mat-cell>
+      <mat-cell *matCellDef="let service"> {{service.price | currency:'TZS':true}} </mat-cell>
     </ng-container>
 
     <!-- Actions Column -->
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef class="black-text"> Actions </mat-header-cell>
-      <mat-cell *matCellDef="let lease">
-        <button mat-button class="edit-button" (click)="openEditModal(lease.leaseId)">
+      <mat-cell *matCellDef="let service">
+        <button mat-button class="edit-button" (click)="openEditModal(service.serviceId)">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button color="warn" (click)="deleteLeasePackage(lease.leaseId)">🗑️</button>
+        <button mat-icon-button color="warn" (click)="deleteOptionalService(service.serviceId)">🗑️</button>
       </mat-cell>
     </ng-container>
 

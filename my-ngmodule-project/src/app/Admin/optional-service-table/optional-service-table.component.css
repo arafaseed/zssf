@@ -10,7 +10,7 @@
 
 /* Header Styling */
 h2 {
-  background:rgb(12, 20, 41);
+  background: rgb(12, 20, 41);
   color: white;
   text-align: center;
   padding: 15px;
@@ -20,7 +20,7 @@ h2 {
   margin-bottom: 20px;
 }
 
-/* "Add Lease Package" Button - Aligned Left */
+/* "Add Button" - Aligned Left */
 .btn-add-left {
   display: flex;
   justify-content: flex-start;
@@ -65,7 +65,7 @@ td {
   font-size: 16px;
 }
 
-/* Action Buttons - Aligned in One Line */
+/* Action Buttons */
 .action-buttons {
   display: flex;
   justify-content: center;
@@ -146,17 +146,12 @@ th:hover {
 
 /* Hover effect for table cells */
 td:hover {
-  background-color: rgba(0, 123, 255, 0.2); /* Adds a hover effect to cells */
+  background-color: rgba(0, 123, 255, 0.2);
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-/* JavaScript-based hover effect for highlighting entire column */
-th:hover,
-th:hover ~ td {
-  background-color: rgba(0, 123, 255, 0.2);
-}
-mat-header-cell{
+mat-header-cell {
   font-weight: bolder;
   font-size: larger;
 }

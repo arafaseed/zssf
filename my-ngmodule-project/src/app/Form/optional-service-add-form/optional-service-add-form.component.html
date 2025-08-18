@@ -1,0 +1,69 @@
+<div class="container mt-4">
+  <div *ngIf="isSubmitting" class="fullscreen-spinner">
+    <div class="circular-loader"></div>
+  </div>
+
+  <div class="form-card">
+    <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
+
+      <h3 class="mb-4 text-center"> Add Optional Service</h3>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <div class="custom-input">
+            <label for="serviceName" class="form-label">Service Name</label>
+            <input id="serviceName" type="text" class="form-control" formControlName="serviceName" placeholder="Enter service name" required minlength="3">
+            <div class="error" *ngIf="serviceForm.get('serviceName')?.invalid && serviceForm.get('serviceName')?.touched">
+              Service Name is required (min 3 characters)
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <div class="custom-input">
+            <label for="price" class="form-label">Price</label>
+            <input id="price" type="number" class="form-control" formControlName="price" placeholder="Enter price" required min="0" step="any">
+            <div class="error" *ngIf="serviceForm.get('price')?.invalid && serviceForm.get('price')?.touched">
+              Valid price is required
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <div class="custom-input">
+            <label for="description" class="form-label">Description</label>
+            <input id="description" type="text" class="form-control" formControlName="description" placeholder="Enter description" required minlength="5">
+            <div class="error" *ngIf="serviceForm.get('description')?.invalid && serviceForm.get('description')?.touched">
+              Description is required (min 5 characters)
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <div class="custom-input">
+            <label for="venue" class="form-label">Venue</label>
+            <select id="venue" class="form-control" formControlName="venueId" required>
+              <option value="" disabled selected>Select Venue</option>
+              <option *ngFor="let venue of venues" [ngValue]="venue.venueId">{{venue.venueName}}</option>
+            </select>
+            <div class="error" *ngIf="serviceForm.get('venueId')?.invalid && serviceForm.get('venueId')?.touched">
+              Venue selection is required
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-md-12 mb-3 d-flex justify-content-between gap-3 flex-wrap">
+          <button class="btn-primary cancel-btn" type="button" (click)="closeDialog()">Cancel</button>
+          <button class="btn-primary" type="submit" [disabled]="serviceForm.invalid || isSubmitting">
+            Submit
+          </button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>

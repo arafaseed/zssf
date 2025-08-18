@@ -5,15 +5,12 @@ import { VenueViewComponent } from './Admin/venue-view/venue-view.component';
 import { DashboardComponent } from './Admin/dashboard/dashboard.component';
 import { LayoutComponent } from './Admin/layout/layout.component';
 import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
-
-import { LeasePackageTableComponent } from './Table/lease-package-table/lease-package-table.component';
-import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 import { BuildinglistComponent } from './Admin/buildinglist/buildinglist.component';
 import { ViewVenuesComponent } from './Admin/view-venues/view-venues.component';
 import { LoginComponent } from './login/login.component';
 // import { StaffDashboardComponent } from './staff/staff-dashboard/staff-dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
-import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/lease-package-edit-form.component';
+
 import { EditVenueComponent } from './edit-venue-component/edit-venue-component.component';
 import { MultiStepFormComponent } from './multi-step-form/multi-step-form.component';
 import { BookingListComponent } from './booking-list/booking-list.component';
@@ -26,12 +23,17 @@ import { TermsAndConditionsComponent } from './terms-and-conditions/terms-and-co
 import { FeedbackComponent } from './feedback/feedback.component';
 import { AddBuildingComponent } from './add-building/add-building.component';
 import { VenueExplorerComponent } from './components/venue-explorer/venue-explorer.component';
+import { OptionalServiceAddFormComponent } from './Form/optional-service-add-form/optional-service-add-form.component';
+import { OptionalServiceEditFormComponent } from './Form/optional-service-edit-form/optional-service-edit-form.component';
+import { OptionalServiceTableComponent } from './Admin/optional-service-table/optional-service-table.component';
+
 
 const routes: Routes = [
   
   { path: '', component: HomeComponent },
   { path: 'venue/:id', component: VenueExplorerComponent },
   { path: 'venue', component: VenueViewComponent },
+
    
   { path: 'dash', component: DashboardComponent },
 
@@ -60,13 +62,8 @@ const routes: Routes = [
     children: [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'buildings', component: BuildinglistComponent },
-      { path: 'leasepackagetable', component: LeasePackageTableComponent },
-
-      // ✅ Corrected lease package routes
-      { path: 'leasepackageform', component: LeasePackageFormComponent },
+  
        { path: 'addbuiding', component: AddBuildingComponent },
-
-      { path: 'leasepackageeditform/:id', component: LeasePackageEditFormComponent },
       { path: 'editVenue/:venueId', component: EditVenueComponent },
       { path: 'editVenue', component: EditVenueComponent },
 
@@ -79,6 +76,10 @@ const routes: Routes = [
       {path: 'addstaff', component: StaffAddComponent},
       { path: 'activity', component: ActivityFormComponent },
       { path: 'activitytable', component: ActivityTableComponent },
+
+       { path: 'addoptional', component: OptionalServiceAddFormComponent },
+      {path: 'editoptional', component: OptionalServiceEditFormComponent},
+      { path: 'tableoptional', component: OptionalServiceTableComponent },
 
 
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Default admin page

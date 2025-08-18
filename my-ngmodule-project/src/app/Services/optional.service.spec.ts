@@ -1,13 +1,17 @@
 import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-import { OptionalService } from './optional.service';
+import { OptionalServiceService } from './optional.service';
 
-describe('OptionalService', () => {
-  let service: OptionalService;
+describe('OptionalServiceService', () => {
+  let service: OptionalServiceService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(OptionalService);
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule], // needed since your service uses HttpClient
+      providers: [OptionalServiceService]
+    });
+    service = TestBed.inject(OptionalServiceService);
   });
 
   it('should be created', () => {

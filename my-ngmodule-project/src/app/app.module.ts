@@ -33,15 +33,12 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatStepperModule } from '@angular/material/stepper';
 import { RegisterVenueComponent } from './Admin/register-venue/register-venue.component';
-import { LeasePackageTableComponent } from './Table/lease-package-table/lease-package-table.component';
-import { LeasePackageEditFormComponent } from './Form/lease-package-edit-form/lease-package-edit-form.component';
 import { BuildinglistComponent } from './Admin/buildinglist/buildinglist.component';
 import { VenueViewComponent } from './Admin/venue-view/venue-view.component';
 import { ViewVenuesComponent } from './Admin/view-venues/view-venues.component';
 
 import { CommonModule, DatePipe } from '@angular/common';
 import { MajengoComponent } from './Admin/majengo/majengo.component';
-import { LeasePackageFormComponent } from './Admin/lease-package-form/lease-package-form.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { LoginComponent } from './login/login.component';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -80,6 +77,10 @@ import { ConfirmBookingComponent } from './components/confirm-booking/confirm-bo
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { AvailabilityModalComponent } from './components/availability-modal/availability-modal.component';
+import { OptionalServiceTableComponent } from './Admin/optional-service-table/optional-service-table.component';
+import { OptionalServiceEditFormComponent } from './Form/optional-service-edit-form/optional-service-edit-form.component';
+import { OptionalServiceAddFormComponent } from './Form/optional-service-add-form/optional-service-add-form.component';
+
 
 
 
@@ -103,12 +104,9 @@ export function createTranslateLoader(http: HttpClient) {
     VenueFormComponent,
     MajengoComponent,
     RegisterVenueComponent,
-    LeasePackageTableComponent,
-    LeasePackageEditFormComponent,
     BuildinglistComponent,
     VenueViewComponent,
     ViewVenuesComponent,
-    LeasePackageFormComponent,
     LoginComponent,
     EditVenueComponent,
     MultiStepFormComponent,
@@ -129,6 +127,11 @@ export function createTranslateLoader(http: HttpClient) {
     EmployeeVerifyComponent,
     ConfirmBookingComponent,
     AvailabilityModalComponent,
+    OptionalServiceTableComponent,
+    OptionalServiceEditFormComponent,
+    OptionalServiceAddFormComponent,
+    
+
 
     // DashboardSwitchComponent,
     
