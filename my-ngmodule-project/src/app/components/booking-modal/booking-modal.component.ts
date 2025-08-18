@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dial
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BookingService } from '../../Services/booking.service';
+import { EmployeeVerifyComponent } from '../employee-verify/employee-verify.component';
 import { ConfirmBookingComponent } from '../confirm-booking/confirm-booking.component';
 
 @Component({
@@ -82,18 +83,20 @@ export class BookingModalComponent implements OnInit {
   }
 
   openEmployeeVerify() {
-    // Open verify dialog (your existing EmployeeVerifyComponent)
-    const dlg = this.dialog.open('EmployeeVerifyComponent' as any, { width: '420px' });
-    dlg.afterClosed().subscribe((ok: any) => {
-      if (ok && ok.verified) {
-        this.employeeVerified = true;
-        this.discountRate = 0.25;
-      } else {
-        this.employeeVerified = false;
-        this.discountRate = 0;
-      }
-    });
-  }
+  // Open verify dialog using the component class (not a string)
+  const dlg = this.dialog.open(EmployeeVerifyComponent, { width: '420px' });
+
+  dlg.afterClosed().subscribe((ok: any) => {
+    if (ok && ok.verified) {
+      this.employeeVerified = true;
+      this.discountRate = 0.25;
+    } else {
+      this.employeeVerified = false;
+      this.discountRate = 0;
+    }
+  });
+}
+
 
   buildBookingObject() {
     // determine date/time (selectedItem override from data.mode)
@@ -135,10 +138,10 @@ export class BookingModalComponent implements OnInit {
   }
 
   submitBooking() {
-    if (this.detailsForm.invalid) {
-      this.detailsForm.markAllAsTouched();
-      return;
-    }
+    // if (this.detailsForm.invalid) {
+    //   this.detailsForm.markAllAsTouched();
+    //   return;
+    // }
 
     const booking = this.buildBookingObject();
 
@@ -147,16 +150,17 @@ export class BookingModalComponent implements OnInit {
 
     // Open Confirm dialog and pass booking + attached file + venueName + employeeVerified flag + selected optional service
     const dlgRef = this.dialog.open(ConfirmBookingComponent, {
-      width: '680px',
-      data: {
-        booking,
-        attachedFile: this.attachedFile ?? null,
-        venueName: this.data.venueName,
-        employeeVerified: this.employeeVerified,
-        selectedOptionalService
-      },
-      maxHeight: '85vh'
-    });
+  width: '680px',
+  data: {
+    booking,
+    attachedFile: this.attachedFile ?? null,
+    venueName: this.data.venueName,
+    employeeVerified: this.employeeVerified,
+    selectedOptionalService: this.optionalServices.find(s => s.serviceId === booking.venueOptionalServiceId) ?? null
+  },
+  maxHeight: '85vh'
+});
+
 
     dlgRef.afterClosed().subscribe((result: any) => {
       if (result && result.success && result.bookingId) {

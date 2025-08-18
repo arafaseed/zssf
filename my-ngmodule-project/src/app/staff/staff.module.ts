@@ -15,6 +15,7 @@ import { ReportsComponent } from './home/reports/reports.component';
 import { DashboardSwitchComponent } from './dashboard-switch/dashboard-switch.component';
 import { MatCardModule }   from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { InvoiceScannerComponent } from './invoice-scanner/invoice-scanner.component';
 // … other imports
 
 
@@ -31,6 +32,7 @@ import { MatButtonModule } from '@angular/material/button';
     CancelledListComponent,
     ReportsComponent,
     DashboardSwitchComponent,
+    InvoiceScannerComponent,
    ],
   imports: [
     CommonModule,

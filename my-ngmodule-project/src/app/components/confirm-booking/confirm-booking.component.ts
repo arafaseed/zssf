@@ -36,7 +36,7 @@ export class ConfirmBookingComponent {
       return;
     }
 
-    // If employeeVerified flag exists, apply discount here (confirm is authoritative)
+    // Apply employee discount here (confirm step has the authority)
     if (this.data.employeeVerified) {
       booking.discountRate = 0.25;
     } else {
@@ -67,6 +67,7 @@ export class ConfirmBookingComponent {
       const bookingId = resp?.bookingId ?? resp?.id ?? null;
       if (bookingId) {
         this.dialogRef.close({ success: true, bookingId });
+        // navigate to invoice page
         this.router.navigate(['/invoice', bookingId]);
       } else {
         this.errorMessage = 'Booking created but server returned no bookingId.';
