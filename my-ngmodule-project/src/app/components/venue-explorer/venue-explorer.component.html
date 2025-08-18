@@ -79,6 +79,18 @@
           </div>
         </div>
 
+          <div
+          *ngIf="optionalServices.length"
+          class="bg-white p-4 rounded-lg shadow"
+        >
+          <h4 class="font-semibold">Optional services</h4>
+          <ul class="mt-2 text-sm text-slate-700">
+            <li *ngFor="let s of optionalServices">
+              {{ s.optionalServiceName }} — {{ s.price | number : "1.0-0" }} TZS
+            </li>
+          </ul>
+        </div>
+
         <!-- availability form -->
         <div class="bg-white p-6 rounded-lg shadow">
           <h4 class="font-semibold mb-3">Check availability</h4>
@@ -146,17 +158,7 @@
         </div>
 
         <!-- optional services -->
-        <div
-          *ngIf="optionalServices.length"
-          class="bg-white p-4 rounded-lg shadow"
-        >
-          <h4 class="font-semibold">Optional services</h4>
-          <ul class="mt-2 text-sm text-slate-700">
-            <li *ngFor="let s of optionalServices">
-              {{ s.optionalServiceName }} — {{ s.price | number : "1.0-0" }} TZS
-            </li>
-          </ul>
-        </div>
+      
       </aside>
     </div>
   </div>
