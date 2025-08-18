@@ -79,6 +79,7 @@ import { EmployeeVerifyComponent } from './components/employee-verify/employee-v
 import { ConfirmBookingComponent } from './components/confirm-booking/confirm-booking.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
+import { AvailabilityModalComponent } from './components/availability-modal/availability-modal.component';
 
 
 
@@ -127,6 +128,7 @@ export function createTranslateLoader(http: HttpClient) {
     BookingModalComponent,
     EmployeeVerifyComponent,
     ConfirmBookingComponent,
+    AvailabilityModalComponent,
 
     // DashboardSwitchComponent,
     

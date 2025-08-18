@@ -1,12 +1,74 @@
 <h2 mat-dialog-title>Confirm booking details</h2>
-    <mat-dialog-content>
-      <p><strong>Venue:</strong> {{ data.venueName }}</p>
-      <pre class="text-sm bg-slate-50 p-2 rounded">{{ data.booking | json }}</pre>
-      <p *ngIf="data.attachedFileName"><strong>File:</strong> {{ data.attachedFileName }}</p>
 
-      <mat-checkbox [(ngModel)]="accepted">I accept the <a href="/agreeterms" target="_blank">terms & conditions</a></mat-checkbox>
-    </mat-dialog-content>
-    <mat-dialog-actions align="end">
-      <button mat-button (click)="close(false)">Cancel</button>
-      <button mat-flat-button color="primary" [disabled]="!accepted" (click)="close(true)">Confirm & Submit</button>
-    </mat-dialog-actions>
+<mat-dialog-content class="space-y-4">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+    <div>
+      <h4 class="font-medium">Venue</h4>
+      <div class="text-sm">{{ data.venueName }}</div>
+    </div>
+
+    <div>
+      <h4 class="font-medium">Dates & Times</h4>
+      <div class="text-sm">
+        <div><strong>From:</strong> {{ data.booking.startDate }} {{ data.booking.startTime }}</div>
+        <div><strong>To: </strong> {{ data.booking.endDate }} {{ data.booking.endTime }}</div>
+      </div>
+    </div>
+
+    <div class="md:col-span-2">
+      <h4 class="font-medium mt-2">Activity & Service</h4>
+      <div class="text-sm">
+        <div><strong>Activity ID:</strong> {{ data.booking.venueActivityId || '—' }}</div>
+        <div *ngIf="data.selectedOptionalService">
+          <strong>Optional Service:</strong>
+          {{ data.selectedOptionalService.optionalServiceName || data.selectedOptionalService.serviceName }}
+          — {{ data.selectedOptionalService.price | number:'1.0-0' }} TZS
+        </div>
+        <div *ngIf="!data.selectedOptionalService"><strong>Optional Service ID:</strong> {{ data.booking.venueOptionalServiceId || '—' }}</div>
+      </div>
+    </div>
+
+    <div class="md:col-span-2">
+      <h4 class="font-medium mt-2">Customer</h4>
+      <div class="text-sm">
+        <div><strong>Name:</strong> {{ data.booking.customer?.customerName }}</div>
+        <div><strong>Phone:</strong> {{ data.booking.customer?.phoneNumber }}</div>
+        <div><strong>Email:</strong> {{ data.booking.customer?.email }}</div>
+        <div><strong>Address:</strong> {{ data.booking.customer?.address }}</div>
+        <div><strong>Customer type:</strong> {{ data.booking.customer?.customerType }}</div>
+      </div>
+    </div>
+
+    <div class="md:col-span-2">
+      <h4 class="font-medium mt-2">Attached document</h4>
+      <div *ngIf="data.attachedFile?.name; else noFile" class="text-sm">
+        {{ data.attachedFile.name }}
+      </div>
+      <ng-template #noFile><div class="text-sm text-slate-500">No file attached</div></ng-template>
+    </div>
+
+    <div class="md:col-span-2">
+      <h4 class="font-medium mt-2">Summary</h4>
+      <div class="text-sm">
+        <div><strong>Discount rate:</strong> {{ data.booking.discountRate || 0 }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="errorMessage" class="text-sm text-rose-600">{{ errorMessage }}</div>
+
+  <mat-checkbox [(ngModel)]="accepted" class="mt-3">
+    I accept the <a href="/agreeterms" target="_blank">terms & conditions</a>
+  </mat-checkbox>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close(false)" [disabled]="submitting">Cancel</button>
+  <button mat-flat-button color="primary" (click)="confirmAndSubmit()" [disabled]="!accepted || submitting">
+    <span *ngIf="!submitting">Confirm & Submit</span>
+    <span *ngIf="submitting">
+      <mat-progress-spinner diameter="18" mode="indeterminate"></mat-progress-spinner>
+      &nbsp;Submitting...
+    </span>
+  </button>
+</mat-dialog-actions>
