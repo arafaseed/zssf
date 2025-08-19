@@ -8,29 +8,44 @@ import { ActivityEditFormComponent } from '../../Form/activity-edit-form/activit
   selector: 'app-activitytable',
   standalone: false,
   templateUrl: './activitytable.component.html',
-  styleUrl: './activitytable.component.css'
+  styleUrls: ['./activitytable.component.css']
 })
 export class ActivityTableComponent implements OnInit {
 
- activities: any[] = [];
-displayedColumns: string[] = ['activityName', 'activityDescription', 'venueId', 'actions'];
+  activities: any[] = [];
+  venues: any[] = [];
+  displayedColumns: string[] = ['activityName', 'description', 'venueName', 'actions'];
 
   constructor(
     private activityService: ActivityService,
     private router: Router,
     private dialog: MatDialog
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.loadActivities();
+    this.loadVenuesAndActivities();
   }
 
-  loadActivities() {
-    this.activityService.getAllActivities().subscribe(data => {
-      console.log('Activities loaded:', data); 
-      this.activities = data;
+  // Load venues first, then activities
+  loadVenuesAndActivities() {
+    this.activityService.getVenues().subscribe(venuesData => {
+      this.venues = venuesData;
+
+      this.activityService.getAllActivities().subscribe(activitiesData => {
+        this.activities = activitiesData.map((activity: any) => {
+          const venue = this.venues.find(v => v.venueId === activity.venueId);
+          return {
+            ...activity,
+            venueName: venue ? venue.venueName : 'Unknown',
+            description: activity.description || 'No description'
+          };
+        });
+        console.log('Activities loaded:', this.activities);
+      }, error => {
+        console.error('Error loading activities:', error);
+      });
     }, error => {
-      console.error('Error loading activities:', error);
+      console.error('Error loading venues:', error);
     });
   }
 
@@ -38,7 +53,8 @@ displayedColumns: string[] = ['activityName', 'activityDescription', 'venueId', 
     const confirmDelete = window.confirm('Are you sure you want to delete this activity?');
     if (confirmDelete) {
       this.activityService.deleteActivity(id).subscribe(() => {
-        this.loadActivities();
+        // Reload activities after deletion
+        this.loadVenuesAndActivities();
       }, (error: any) => {
         console.error('Error deleting activity:', error);
       });
@@ -53,7 +69,7 @@ displayedColumns: string[] = ['activityName', 'activityDescription', 'venueId', 
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.loadActivities();
+        this.loadVenuesAndActivities();
       }
     });
   }
