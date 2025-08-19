@@ -8,14 +8,13 @@ import { ActivityEditFormComponent } from '../../Form/activity-edit-form/activit
   selector: 'app-activitytable',
   standalone: false,
   templateUrl: './activitytable.component.html',
-  styleUrl: './activitytable.component.css'
+  styleUrls: ['./activitytable.component.css']
 })
 export class ActivityTableComponent implements OnInit {
 
   activities: any[] = [];
   venues: any[] = [];
- displayedColumns: string[] = ['activityName', 'description', 'venueName', 'actions'];
-
+  displayedColumns: string[] = ['activityName', 'description', 'venueName', 'actions'];
 
   constructor(
     private activityService: ActivityService,
@@ -24,43 +23,29 @@ export class ActivityTableComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadVenues();
-    this.loadActivities();
+    this.loadVenuesAndActivities();
   }
 
-  loadVenues() {
-  this.activityService.getVenues().subscribe(venuesData => {
-    this.venues = venuesData;
+  // Load venues first, then activities
+  loadVenuesAndActivities() {
+    this.activityService.getVenues().subscribe(venuesData => {
+      this.venues = venuesData;
 
-    // Load activities AFTER venues are available
-    this.activityService.getAllActivities().subscribe(activitiesData => {
-      this.activities = activitiesData.map((activity: any) => {
-        const venue = this.venues.find(v => v.venueId === activity.venueId);
-        return {
-          ...activity,
-          venueName: venue ? venue.venueName : 'Unknown',
-          description: activity.description ? activity.description : 'No description'
-        };
+      this.activityService.getAllActivities().subscribe(activitiesData => {
+        this.activities = activitiesData.map((activity: any) => {
+          const venue = this.venues.find(v => v.venueId === activity.venueId);
+          return {
+            ...activity,
+            venueName: venue ? venue.venueName : 'Unknown',
+            description: activity.description || 'No description'
+          };
+        });
+        console.log('Activities loaded:', this.activities);
+      }, error => {
+        console.error('Error loading activities:', error);
       });
-      console.log('Activities loaded:', this.activities);
-    });
-  });
-}
-
-  loadActivities() {
-    this.activityService.getAllActivities().subscribe(data => {
-      // Map venueId to venueName
-      this.activities = data.map((activity: any) => {
-        const venue = this.venues.find(v => v.venueId === activity.venueId);
-        return {
-          ...activity,
-          venueName: venue ? venue.venueName : 'Unknown',
-          description: activity.description || 'No description' // fallback
-        };
-      });
-      console.log('Activities loaded:', this.activities);
     }, error => {
-      console.error('Error loading activities:', error);
+      console.error('Error loading venues:', error);
     });
   }
 
@@ -68,7 +53,8 @@ export class ActivityTableComponent implements OnInit {
     const confirmDelete = window.confirm('Are you sure you want to delete this activity?');
     if (confirmDelete) {
       this.activityService.deleteActivity(id).subscribe(() => {
-        this.loadActivities();
+        // Reload activities after deletion
+        this.loadVenuesAndActivities();
       }, (error: any) => {
         console.error('Error deleting activity:', error);
       });
@@ -83,7 +69,7 @@ export class ActivityTableComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.loadActivities();
+        this.loadVenuesAndActivities();
       }
     });
   }

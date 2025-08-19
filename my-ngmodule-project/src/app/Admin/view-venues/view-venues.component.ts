@@ -19,7 +19,6 @@ export class ViewVenuesComponent implements OnInit {
     'capacity',
     'description',
     'preview',
-    'leasePackages',
     'addStaff',
     'actions'
   ];
