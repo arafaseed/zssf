@@ -2,42 +2,59 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+export interface Staff {
+  id?: number;
+  staffIdentification: string;
+  fullName: string;
+  phoneNumber: string;
+  role: string;
+  assignedVenueIds?: number[];
+}
+
+export interface Venue {
+  venueId: number;
+  venueName: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class StaffViewService {
   private apiUrl = 'http://localhost:8080/api/staff';
+  private venueApiUrl = 'http://localhost:8080/api/venues'; // endpoint for venues
 
   constructor(private http: HttpClient) {}
 
   private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token'); // Or however you store your auth token
+    const token = localStorage.getItem('token');
     return new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
   }
 
-  getAllStaff(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/all`, {
-      headers: this.getAuthHeaders()
-    });
+  // Staff APIs
+  getAllStaff(): Observable<Staff[]> {
+    return this.http.get<Staff[]>(`${this.apiUrl}`, { headers: this.getAuthHeaders() });
   }
 
-  addStaff(staffData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/add`, staffData, {
-      headers: this.getAuthHeaders()
-    });
+  getStaffById(id: number): Observable<Staff> {
+    return this.http.get<Staff>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
   }
 
-  updateStaff(staffId: number, updatedData: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/update/${staffId}`, updatedData, {
-      headers: this.getAuthHeaders()
-    });
+  createStaff(staffData: Staff): Observable<Staff> {
+    return this.http.post<Staff>(`${this.apiUrl}`, staffData, { headers: this.getAuthHeaders() });
   }
 
-  deleteStaff(staffId: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/delete/${staffId}`, {
-      headers: this.getAuthHeaders()
-    });
+  updateStaff(id: number, staffData: Staff): Observable<Staff> {
+    return this.http.put<Staff>(`${this.apiUrl}/${id}`, staffData, { headers: this.getAuthHeaders() });
+  }
+
+  deleteStaff(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
+  }
+
+  // Venue API
+  getAllVenues(): Observable<Venue[]> {
+    return this.http.get<Venue[]>(`${this.venueApiUrl}`, { headers: this.getAuthHeaders() });
   }
 }

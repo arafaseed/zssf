@@ -15,7 +15,6 @@ import { EditVenueComponent } from './edit-venue-component/edit-venue-component.
 import { MultiStepFormComponent } from './multi-step-form/multi-step-form.component';
 import { BookingListComponent } from './booking-list/booking-list.component';
 import { InvoiceComponent } from './invoice/invoice.component';
-import { StaffAddComponent } from './staff-add/staff-add.component';
 import { ActivityFormComponent } from './Admin/activity-form/activity-form.component';
 import { ActivityTableComponent } from './Table/activitytable/activitytable.component';
 import { PhoneSearchComponent } from './phone-search/phone-search.component';
@@ -26,6 +25,10 @@ import { VenueExplorerComponent } from './components/venue-explorer/venue-explor
 import { OptionalServiceAddFormComponent } from './Form/optional-service-add-form/optional-service-add-form.component';
 import { OptionalServiceEditFormComponent } from './Form/optional-service-edit-form/optional-service-edit-form.component';
 import { OptionalServiceTableComponent } from './Admin/optional-service-table/optional-service-table.component';
+import { StaffTable } from './staff-table/staff-table.component';
+import { StaffFormComponent } from './staff-form/staff-form.component';
+
+
 
 
 const routes: Routes = [
@@ -73,13 +76,15 @@ const routes: Routes = [
       { path: 'venueView', component: ViewVenuesComponent },
     
       { path: 'bookinglist', component: BookingListComponent },
-      {path: 'addstaff', component: StaffAddComponent},
       { path: 'activity', component: ActivityFormComponent },
+      { path: 'staff', component:StaffTable},
       { path: 'activitytable', component: ActivityTableComponent },
 
        { path: 'addoptional', component: OptionalServiceAddFormComponent },
       {path: 'editoptional', component: OptionalServiceEditFormComponent},
       { path: 'tableoptional', component: OptionalServiceTableComponent },
+
+       { path: 'staff/add', component: StaffFormComponent },
 
 
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Default admin page

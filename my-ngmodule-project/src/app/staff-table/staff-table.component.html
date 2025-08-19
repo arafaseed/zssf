@@ -1,0 +1,56 @@
+<div class="container">
+  <div class="d-flex justify-content-between mb-3">
+    <div class="btn-add-left">
+      <button mat-raised-button color="primary" [routerLink]="['/admin/staff/add']">
+        Add Staff
+      </button>
+    </div>
+  </div>
+
+  <h2 class="text-center">Staff List</h2>
+
+  <!-- Angular Material Table -->
+  <mat-table [dataSource]="staffList" class="mat-elevation-z8">
+
+    <!-- Identification -->
+    <ng-container matColumnDef="staffIdentification">
+      <mat-header-cell *matHeaderCellDef> Identification </mat-header-cell>
+      <mat-cell *matCellDef="let staff"> {{staff.staffIdentification}} </mat-cell>
+    </ng-container>
+
+    <!-- Name -->
+    <ng-container matColumnDef="fullName">
+      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+      <mat-cell *matCellDef="let staff"> {{staff.fullName}} </mat-cell>
+    </ng-container>
+
+    <!-- Phone -->
+    <ng-container matColumnDef="phoneNumber">
+      <mat-header-cell *matHeaderCellDef> Phone </mat-header-cell>
+      <mat-cell *matCellDef="let staff"> {{staff.phoneNumber}} </mat-cell>
+    </ng-container>
+
+    <!-- Role -->
+    <ng-container matColumnDef="role">
+      <mat-header-cell *matHeaderCellDef> Role </mat-header-cell>
+      <mat-cell *matCellDef="let staff"> {{staff.role}} </mat-cell>
+    </ng-container>
+
+    <!-- Actions -->
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+      <mat-cell *matCellDef="let staff">
+        <button mat-button class="edit-button" (click)="openAddStaffDialog(staff)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteStaff(staff.staffId)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Table Rows -->
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>

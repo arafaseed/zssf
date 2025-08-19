@@ -50,7 +50,7 @@ import { InvoiceComponent } from './invoice/invoice.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
-import { StaffAddComponent } from './staff-add/staff-add.component';
+
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivityFormComponent } from './Admin/activity-form/activity-form.component';import { ActivityTableComponent } from './Table/activitytable/activitytable.component';
@@ -80,6 +80,11 @@ import { AvailabilityModalComponent } from './components/availability-modal/avai
 import { OptionalServiceTableComponent } from './Admin/optional-service-table/optional-service-table.component';
 import { OptionalServiceEditFormComponent } from './Form/optional-service-edit-form/optional-service-edit-form.component';
 import { OptionalServiceAddFormComponent } from './Form/optional-service-add-form/optional-service-add-form.component';
+
+import { StaffTable } from './staff-table/staff-table.component';
+import { StaffDialogComponent } from './staff-dialog.component/staff-dialog.component.component';
+import { StaffFormComponent } from './staff-form/staff-form.component';
+
 
 
 
@@ -113,7 +118,7 @@ export function createTranslateLoader(http: HttpClient) {
     BookingListComponent,
     ConfirmDialogComponent,
     InvoiceComponent,
-    StaffAddComponent,
+    StaffTable,
     ActivityFormComponent,
     ActivityTableComponent,
     ActivityEditFormComponent,
@@ -132,6 +137,8 @@ export function createTranslateLoader(http: HttpClient) {
     OptionalServiceAddFormComponent,
     
 
+    StaffDialogComponent,
+            StaffFormComponent,
 
     // DashboardSwitchComponent,
     
