@@ -12,23 +12,53 @@ import { ActivityEditFormComponent } from '../../Form/activity-edit-form/activit
 })
 export class ActivityTableComponent implements OnInit {
 
- activities: any[] = [];
-displayedColumns: string[] = ['activityName', 'activityDescription', 'venueId', 'actions'];
+  activities: any[] = [];
+  venues: any[] = [];
+ displayedColumns: string[] = ['activityName', 'description', 'venueName', 'actions'];
+
 
   constructor(
     private activityService: ActivityService,
     private router: Router,
     private dialog: MatDialog
-  ) { }
+  ) {}
 
   ngOnInit(): void {
+    this.loadVenues();
     this.loadActivities();
   }
 
+  loadVenues() {
+  this.activityService.getVenues().subscribe(venuesData => {
+    this.venues = venuesData;
+
+    // Load activities AFTER venues are available
+    this.activityService.getAllActivities().subscribe(activitiesData => {
+      this.activities = activitiesData.map((activity: any) => {
+        const venue = this.venues.find(v => v.venueId === activity.venueId);
+        return {
+          ...activity,
+          venueName: venue ? venue.venueName : 'Unknown',
+          description: activity.description ? activity.description : 'No description'
+        };
+      });
+      console.log('Activities loaded:', this.activities);
+    });
+  });
+}
+
   loadActivities() {
     this.activityService.getAllActivities().subscribe(data => {
-      console.log('Activities loaded:', data); 
-      this.activities = data;
+      // Map venueId to venueName
+      this.activities = data.map((activity: any) => {
+        const venue = this.venues.find(v => v.venueId === activity.venueId);
+        return {
+          ...activity,
+          venueName: venue ? venue.venueName : 'Unknown',
+          description: activity.description || 'No description' // fallback
+        };
+      });
+      console.log('Activities loaded:', this.activities);
     }, error => {
       console.error('Error loading activities:', error);
     });
