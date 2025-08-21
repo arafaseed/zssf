@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StaffDialogComponent  } from './staff-dialog.component.component';
+import { StaffDialogComponent  } from './staff-dialog.component';
 
 describe('StaffDialogComponent', () => {
   let component: StaffDialogComponent;

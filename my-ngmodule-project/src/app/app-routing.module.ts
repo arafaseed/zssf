@@ -25,9 +25,12 @@ import { VenueExplorerComponent } from './components/venue-explorer/venue-explor
 import { OptionalServiceAddFormComponent } from './Form/optional-service-add-form/optional-service-add-form.component';
 import { OptionalServiceEditFormComponent } from './Form/optional-service-edit-form/optional-service-edit-form.component';
 import { OptionalServiceTableComponent } from './Admin/optional-service-table/optional-service-table.component';
-import { StaffTable } from './staff-table/staff-table.component';
 import { StaffFormComponent } from './staff-form/staff-form.component';
+<<<<<<< HEAD
 import { PoliciesSettingsComponent } from './Admin/policies-settings/policies-settings.component';
+=======
+import { StaffTableComponent } from './staff-table/staff-table.component';
+>>>>>>> 05b25b1eec20fb9a76b78f9a1aec1ab21039de4f
 
 
 
@@ -78,7 +81,8 @@ const routes: Routes = [
     
       { path: 'bookinglist', component: BookingListComponent },
       { path: 'activity', component: ActivityFormComponent },
-      { path: 'staff', component:StaffTable},
+      { path: 'staff', component: StaffTableComponent },
+
       { path: 'activitytable', component: ActivityTableComponent },
       { path: 'policies-settings', component: PoliciesSettingsComponent },
        { path: 'addoptional', component: OptionalServiceAddFormComponent },

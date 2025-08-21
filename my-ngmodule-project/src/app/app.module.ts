@@ -81,8 +81,8 @@ import { OptionalServiceTableComponent } from './Admin/optional-service-table/op
 import { OptionalServiceEditFormComponent } from './Form/optional-service-edit-form/optional-service-edit-form.component';
 import { OptionalServiceAddFormComponent } from './Form/optional-service-add-form/optional-service-add-form.component';
 
-import { StaffTable } from './staff-table/staff-table.component';
-import { StaffDialogComponent } from './staff-dialog.component/staff-dialog.component.component';
+import { StaffTableComponent } from './staff-table/staff-table.component';
+import { StaffDialogComponent } from './staff-dialog.component/staff-dialog.component';
 import { StaffFormComponent } from './staff-form/staff-form.component';
 import { PoliciesSettingsComponent } from './Admin/policies-settings/policies-settings.component';
 
@@ -118,7 +118,7 @@ export function createTranslateLoader(http: HttpClient) {
     BookingListComponent,
     ConfirmDialogComponent,
     InvoiceComponent,
-    StaffTable,
+    StaffTableComponent,
     ActivityFormComponent,
     ActivityTableComponent,
     ActivityEditFormComponent,
