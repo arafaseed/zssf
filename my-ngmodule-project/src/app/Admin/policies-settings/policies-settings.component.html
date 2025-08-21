@@ -1,12 +1,12 @@
 <!-- src/app/admin/pages/admin-policies.component.html -->
 <div class="p-6 max-w-5xl mx-auto space-y-6">
-  <h1 class="text-2xl font-semibold text-slate-900">Policies & Settings</h1>
-  <p class="text-sm text-slate-600">Manage booking expiry and employee discount policy. Colors inspired by ZSSF; controls use Angular Material + Tailwind.</p>
+  <h1 class="text-2xl font-semibold text-slate-900">Policies Settings</h1>
+  <p class="text-sm text-slate-600">Manage booking expiry and employee discount policy.</p>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
     <!-- Booking Expiry Card -->
-    <section class="bg-white rounded-2xl shadow-sm p-5 border">
+    <section class="bg-white rounded-2xl shadow-xl p-5">
       <div class="flex items-start justify-between gap-4">
         <div>
           <h2 class="text-lg font-medium text-slate-800 flex items-center gap-2">
@@ -33,6 +33,10 @@
           <mat-progress-spinner *ngIf="expiryLoading" diameter="20" mode="indeterminate"></mat-progress-spinner>
         </div>
 
+        <div *ngIf="showAsDays" class="text-sm text-slate-600 ml-auto">
+            Displayed as <span class="font-medium">{{ (expiryHours / 24) | number:'1.0-2' }}</span> days
+          </div>
+
         <div *ngIf="expiryError" class="mt-2 text-sm text-red-600">{{ expiryError }}</div>
       </div>
 
@@ -40,7 +44,7 @@
       <form class="mt-4 space-y-3" [formGroup]="expiryForm" (ngSubmit)="saveExpiry()">
         <div class="flex gap-3 items-end">
           <div class="flex-1">
-            <mat-form-field appearance="outline" class="w-full">
+            <mat-form-field  class="w-full">
               <mat-label>Hours</mat-label>
               <input matInput type="number" formControlName="hours" min="1" />
               <mat-hint>Enter hours (e.g. 24)</mat-hint>
@@ -48,15 +52,15 @@
           </div>
 
           <div class="flex-1">
-            <mat-form-field appearance="outline" class="w-full">
+            <mat-form-field  class="w-full">
               <mat-label>Days (optional)</mat-label>
               <input matInput type="number" formControlName="days" min="1" />
-              <mat-hint>Or set days (e.g. 2 → 48 hours)</mat-hint>
+              <mat-hint>Or set days (e.g. 2 = 48 hours)</mat-hint>
             </mat-form-field>
           </div>
         </div>
 
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-3 mt-5">
           <button mat-flat-button color="primary" type="submit" [disabled]="savingExpiry">
             <i-lucide-save class="w-4 h-4 mr-2"></i-lucide-save>
             {{ savingExpiry ? 'Saving...' : 'Save Expiry' }}
@@ -66,15 +70,13 @@
             {{ showAsDays ? 'Show as hours' : 'Show as days' }}
           </button>
 
-          <div *ngIf="showAsDays" class="text-sm text-slate-600 ml-auto">
-            Displayed as <span class="font-medium">{{ (expiryHours / 24) | number:'1.0-2' }}</span> days
-          </div>
+          
         </div>
       </form>
     </section>
 
     <!-- Discount Policy Card -->
-    <section class="bg-white rounded-2xl shadow-sm p-5 border">
+    <section class="bg-white rounded-2xl shadow-xl p-5 ">
       <div class="flex items-start justify-between gap-4">
         <div>
           <h2 class="text-lg font-medium text-slate-800 flex items-center gap-2">
@@ -114,19 +116,19 @@
 
       <form class="mt-4 space-y-3" [formGroup]="discountForm" (ngSubmit)="saveDiscountPolicy()">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <mat-form-field appearance="outline" class="w-full">
+          <mat-form-field  class="w-full">
             <mat-label>Discount Rate (decimal)</mat-label>
             <input matInput type="number" step="0.01" formControlName="discountRate" placeholder="0.25 for 25%" />
             <mat-hint>Enter as decimal (e.g. 0.25 = 25%)</mat-hint>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="w-full">
+          <mat-form-field  class="w-full">
             <mat-label>Max Uses Per Year</mat-label>
             <input matInput type="number" formControlName="maxUsesPerYear" min="0" />
           </mat-form-field>
         </div>
 
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-3 mt-5">
           <button mat-flat-button color="primary" type="submit" [disabled]="savingDiscount">
             <i-lucide-save class="w-4 h-4 mr-2"></i-lucide-save>
             {{ savingDiscount ? 'Saving...' : 'Save Discount' }}
@@ -134,9 +136,6 @@
 
           <button mat-stroked-button type="button" (click)="loadDiscountPolicy()">Reload</button>
 
-          <div class="ml-auto text-sm text-slate-500" *ngIf="discountPolicy">
-            Current rate: <span class="font-medium">{{ discountPolicy.discountRate * 100 | number:'1.0-2' }}%</span>
-          </div>
         </div>
       </form>
     </section>

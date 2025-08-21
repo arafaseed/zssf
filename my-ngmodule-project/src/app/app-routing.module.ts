@@ -26,11 +26,8 @@ import { OptionalServiceAddFormComponent } from './Form/optional-service-add-for
 import { OptionalServiceEditFormComponent } from './Form/optional-service-edit-form/optional-service-edit-form.component';
 import { OptionalServiceTableComponent } from './Admin/optional-service-table/optional-service-table.component';
 import { StaffFormComponent } from './staff-form/staff-form.component';
-<<<<<<< HEAD
 import { PoliciesSettingsComponent } from './Admin/policies-settings/policies-settings.component';
-=======
 import { StaffTableComponent } from './staff-table/staff-table.component';
->>>>>>> 05b25b1eec20fb9a76b78f9a1aec1ab21039de4f
 
 
 
