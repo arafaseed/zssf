@@ -83,13 +83,13 @@ export class BookingModalComponent implements OnInit {
   }
 
   openEmployeeVerify() {
-  // Open verify dialog using the component class (not a string)
   const dlg = this.dialog.open(EmployeeVerifyComponent, { width: '420px' });
 
-  dlg.afterClosed().subscribe((ok: any) => {
-    if (ok && ok.verified) {
+  dlg.afterClosed().subscribe((result: any) => {
+    if (result && result.verified) {
       this.employeeVerified = true;
-      this.discountRate = 0.25;
+      // Use the discount rate provided by backend
+      this.discountRate = result.discountRate ?? 0;
     } else {
       this.employeeVerified = false;
       this.discountRate = 0;

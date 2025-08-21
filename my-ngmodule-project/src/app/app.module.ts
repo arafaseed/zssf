@@ -84,7 +84,7 @@ import { OptionalServiceAddFormComponent } from './Form/optional-service-add-for
 import { StaffTableComponent } from './staff-table/staff-table.component';
 import { StaffDialogComponent } from './staff-dialog.component/staff-dialog.component';
 import { StaffFormComponent } from './staff-form/staff-form.component';
-
+import { PoliciesSettingsComponent } from './Admin/policies-settings/policies-settings.component';
 
 
 
@@ -135,10 +135,9 @@ export function createTranslateLoader(http: HttpClient) {
     OptionalServiceTableComponent,
     OptionalServiceEditFormComponent,
     OptionalServiceAddFormComponent,
-    
-
     StaffDialogComponent,
-            StaffFormComponent,
+    StaffFormComponent,
+    PoliciesSettingsComponent,
 
     // DashboardSwitchComponent,
     

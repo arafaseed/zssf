@@ -26,6 +26,7 @@ import { OptionalServiceAddFormComponent } from './Form/optional-service-add-for
 import { OptionalServiceEditFormComponent } from './Form/optional-service-edit-form/optional-service-edit-form.component';
 import { OptionalServiceTableComponent } from './Admin/optional-service-table/optional-service-table.component';
 import { StaffFormComponent } from './staff-form/staff-form.component';
+import { PoliciesSettingsComponent } from './Admin/policies-settings/policies-settings.component';
 import { StaffTableComponent } from './staff-table/staff-table.component';
 
 
@@ -80,7 +81,7 @@ const routes: Routes = [
       { path: 'staff', component: StaffTableComponent },
 
       { path: 'activitytable', component: ActivityTableComponent },
-
+      { path: 'policies-settings', component: PoliciesSettingsComponent },
        { path: 'addoptional', component: OptionalServiceAddFormComponent },
       {path: 'editoptional', component: OptionalServiceEditFormComponent},
       { path: 'tableoptional', component: OptionalServiceTableComponent },
