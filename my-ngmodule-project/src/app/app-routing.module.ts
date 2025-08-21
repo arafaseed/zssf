@@ -85,7 +85,7 @@ const routes: Routes = [
       {path: 'editoptional', component: OptionalServiceEditFormComponent},
       { path: 'tableoptional', component: OptionalServiceTableComponent },
 
-       { path: 'staff/add', component: StaffFormComponent },
+       { path: 'addstaff', component: StaffFormComponent },
 
 
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Default admin page

@@ -12,7 +12,7 @@ import { StaffViewService } from '../Services/staff-view.service';
 })
 export class StaffFormComponent implements OnInit {
   staffForm!: FormGroup;
-  roles: string[] = ['ADMIN', 'MANAGER', 'STAFF']; // Example roles
+  roles: string[] = ['ADMIN','STAFF']; // Example roles
   isSubmitting = false;
 
   constructor(

@@ -1,3 +1,120 @@
-.dialog-form { display: grid; gap: 12px; }
-.w-100 { width: 100%; }
-.actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px; }
+/* Dialog container */
+.mat-dialog-content {
+  padding: 25px 30px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Dialog title */
+.mat-dialog-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+/* Form layout */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Labels */
+.form-label {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #444;
+  margin-bottom: 5px;
+  display: block;
+}
+
+/* Inputs & select */
+.form-control,
+select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #d0d0d0;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+}
+
+.form-control:focus,
+select:focus {
+  border-color: #1976d2; /* Material blue */
+  box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.25);
+  outline: none;
+}
+
+/* Error messages */
+.error,
+mat-error {
+  color: #e53935;
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+
+/* Action buttons container */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+/* Override Angular Material buttons slightly for consistency */
+button[mat-flat-button] {
+  border-radius: 6px;
+  font-weight: 600;
+  text-transform: none;
+  padding: 8px 20px;
+}
+
+/* Submit button */
+button[type="submit"][mat-flat-button] {
+  background-color: #1976d2;
+  color: #fff;
+}
+
+button[type="submit"][mat-flat-button]:hover:not(:disabled) {
+  background-color: #1565c0;
+}
+
+button[type="submit"][mat-flat-button]:disabled {
+  background-color: #90caf9;
+  color: #fff;
+  cursor: not-allowed;
+}
+
+/* Cancel button */
+button[type="button"][mat-flat-button] {
+  background-color: #e53935;
+  color: #fff;
+}
+
+button[type="button"][mat-flat-button]:hover {
+  background-color: #c62828;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .mat-dialog-content {
+    padding: 20px;
+  }
+
+  .mat-dialog-title {
+    font-size: 1.3rem;
+  }
+
+  button[mat-flat-button] {
+    padding: 7px 16px;
+    font-size: 0.9rem;
+  }
+}

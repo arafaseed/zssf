@@ -5,12 +5,13 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-staff-dialog',
   templateUrl: './staff-dialog.component.html',
-  standalone:false,
+  standalone: false,
   styleUrls: ['./staff-dialog.component.css']
 })
 export class StaffDialogComponent {
   staffForm: FormGroup;
   isEditMode: boolean;
+  roles: string[] = ['ADMIN', 'MANAGER', 'STAFF']; // 👈 added roles
 
   constructor(
     private fb: FormBuilder,
@@ -20,22 +21,34 @@ export class StaffDialogComponent {
     this.isEditMode = !!data; // true if editing, false if adding
 
     this.staffForm = this.fb.group({
-      staffIdentification: [data?.staffIdentification || '', Validators.required],
-      fullName: [data?.fullName || '', Validators.required],
-      phoneNumber: [data?.phoneNumber || '', Validators.required],
-      password: [
-        '', 
-        this.isEditMode ? null : Validators.required // required only in add mode
+      staffIdentification: [
+        data?.staffIdentification || '',
+        [Validators.required, Validators.minLength(3)]
       ],
+      fullName: [
+        data?.fullName || '',
+        [Validators.required, Validators.minLength(3)]
+      ],
+      phoneNumber: [
+        data?.phoneNumber || '',
+        [Validators.required, Validators.pattern(/^[0-9]{10,15}$/)]
+      ],
+      password: this.isEditMode
+        ? [''] // 👈 not required in edit mode
+        : ['', [Validators.required, Validators.minLength(6)]],
       role: [data?.role || '', Validators.required]
     });
   }
 
-  onSave() {
+  onSave(): void {
     if (this.staffForm.valid) {
       this.dialogRef.close(this.staffForm.value);
     } else {
-      this.staffForm.markAllAsTouched(); // show validation errors
+      this.staffForm.markAllAsTouched(); // force show validation errors
     }
+  }
+
+  closeDialog(): void {
+    this.dialogRef.close();
   }
 }

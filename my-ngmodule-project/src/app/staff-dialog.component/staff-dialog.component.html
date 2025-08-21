@@ -1,42 +1,86 @@
-<h2 mat-dialog-title>{{ data ? 'Edit Staff' : 'Add Staff' }}</h2>
+<h3 mat-dialog-title class="text-center mb-4">
+  {{ data ? '✏️ Edit Staff' : '➕ Add Staff' }}
+</h3>
 
-<form [formGroup]="staffForm" (ngSubmit)="onSave()" class="dialog-form">
-  <mat-form-field appearance="outline" class="w-100">
-    <mat-label>Staff ID</mat-label>
-    <input matInput formControlName="staffIdentification" />
-    <mat-error *ngIf="staffForm.get('staffIdentification')?.invalid">Required</mat-error>
-  </mat-form-field>
+<form [formGroup]="staffForm" (ngSubmit)="onSave()">
+  <div mat-dialog-content>
+    <!-- Staff ID -->
+    <div class="mb-3">
+      <label for="staffIdentification" class="form-label">Staff ID</label>
+      <input
+        id="staffIdentification"
+        type="text"
+        class="form-control"
+        formControlName="staffIdentification"
+        placeholder="Enter Staff ID"
+      />
+      <div class="error" *ngIf="staffForm.get('staffIdentification')?.invalid && staffForm.get('staffIdentification')?.touched">
+        Staff ID is required (min 3 characters)
+      </div>
+    </div>
 
-  <mat-form-field appearance="outline" class="w-100">
-    <mat-label>Full Name</mat-label>
-    <input matInput formControlName="fullName" />
-    <mat-error *ngIf="staffForm.get('fullName')?.invalid">Required</mat-error>
-  </mat-form-field>
+    <!-- Full Name -->
+    <div class="mb-3">
+      <label for="fullName" class="form-label">Full Name</label>
+      <input
+        id="fullName"
+        type="text"
+        class="form-control"
+        formControlName="fullName"
+        placeholder="Enter full name"
+      />
+      <div class="error" *ngIf="staffForm.get('fullName')?.invalid && staffForm.get('fullName')?.touched">
+        Full Name is required (min 3 characters)
+      </div>
+    </div>
 
-  <mat-form-field appearance="outline" class="w-100">
-    <mat-label>Phone Number</mat-label>
-    <input matInput formControlName="phoneNumber" />
-    <mat-error *ngIf="staffForm.get('phoneNumber')?.invalid">Required</mat-error>
-  </mat-form-field>
+    <!-- Phone -->
+    <div class="mb-3">
+      <label for="phoneNumber" class="form-label">Phone Number</label>
+      <input
+        id="phoneNumber"
+        type="text"
+        class="form-control"
+        formControlName="phoneNumber"
+        placeholder="Enter phone number"
+      />
+      <div class="error" *ngIf="staffForm.get('phoneNumber')?.invalid && staffForm.get('phoneNumber')?.touched">
+        Valid phone number is required (10–15 digits)
+      </div>
+    </div>
 
-  <mat-form-field appearance="outline" class="w-100" *ngIf="!isEditMode">
-    <mat-label>Password</mat-label>
-    <input matInput type="password" formControlName="password" />
-    <mat-error *ngIf="staffForm.get('password')?.invalid">Required</mat-error>
-  </mat-form-field>
+    <!-- Password (only in add mode) -->
+    <div class="mb-3" *ngIf="!isEditMode">
+      <label for="password" class="form-label">Password</label>
+      <input
+        id="password"
+        type="password"
+        class="form-control"
+        formControlName="password"
+        placeholder="Enter password"
+      />
+      <div class="error" *ngIf="staffForm.get('password')?.invalid && staffForm.get('password')?.touched">
+        Password is required (min 6 characters)
+      </div>
+    </div>
 
-  <mat-form-field appearance="outline" class="w-100">
-    <mat-label>Role</mat-label>
-    <mat-select formControlName="role">
-      <mat-option value="ADMIN">ADMIN</mat-option>
-      <mat-option value="MANAGER">MANAGER</mat-option>
-      <mat-option value="STAFF">STAFF</mat-option>
-    </mat-select>
-    <mat-error *ngIf="staffForm.get('role')?.invalid">Required</mat-error>
-  </mat-form-field>
+    <!-- Role -->
+    <div class="mb-3">
+      <label for="role" class="form-label">Role</label>
+      <select id="role" class="form-control" formControlName="role">
+        <option value="" disabled>Select Role</option>
+        <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+      </select>
+      <div class="error" *ngIf="staffForm.get('role')?.invalid && staffForm.get('role')?.touched">
+        Role selection is required
+      </div>
+    </div>
+  </div>
 
-  <div class="actions">
-    
-    <button mat-flat-button color="primary" type="submit">Save</button>
+  <div mat-dialog-actions class="text-center actions">
+    <button type="submit" mat-flat-button color="primary" [disabled]="staffForm.invalid">
+      {{ data ? 'Update' : 'Save' }}
+    </button>
+    <button type="button" mat-flat-button color="warn" (click)="closeDialog()">Cancel</button>
   </div>
 </form>

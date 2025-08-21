@@ -21,6 +21,7 @@ export class StaffTableComponent implements OnInit {
     'role',
     'actions'
   ];
+  router: any;
 
   constructor(
     private staffService: StaffViewService,
