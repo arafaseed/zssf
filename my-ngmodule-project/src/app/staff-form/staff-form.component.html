@@ -8,11 +8,18 @@
 
       <h3 class="mb-4 text-center">Add Staff</h3>
 
+      <!-- First Row -->
       <div class="row">
         <div class="col-md-6 mb-3">
           <div class="custom-input">
             <label for="staffIdentification" class="form-label">Staff ID</label>
-            <input id="staffIdentification" type="text" class="form-control" formControlName="staffIdentification" placeholder="Enter Staff ID" required minlength="3">
+            <input 
+              id="staffIdentification" 
+              type="text" 
+              class="form-control" 
+              formControlName="staffIdentification" 
+              placeholder="Enter Staff ID" 
+              required minlength="3">
             <div class="error" *ngIf="staffForm.get('staffIdentification')?.invalid && staffForm.get('staffIdentification')?.touched">
               Staff ID is required (min 3 characters)
             </div>
@@ -22,7 +29,13 @@
         <div class="col-md-6 mb-3">
           <div class="custom-input">
             <label for="fullName" class="form-label">Full Name</label>
-            <input id="fullName" type="text" class="form-control" formControlName="fullName" placeholder="Enter full name" required minlength="3">
+            <input 
+              id="fullName" 
+              type="text" 
+              class="form-control" 
+              formControlName="fullName" 
+              placeholder="Enter full name" 
+              required minlength="3">
             <div class="error" *ngIf="staffForm.get('fullName')?.invalid && staffForm.get('fullName')?.touched">
               Full Name is required (min 3 characters)
             </div>
@@ -30,11 +43,18 @@
         </div>
       </div>
 
+      <!-- Second Row -->
       <div class="row">
         <div class="col-md-6 mb-3">
           <div class="custom-input">
             <label for="phoneNumber" class="form-label">Phone Number</label>
-            <input id="phoneNumber" type="text" class="form-control" formControlName="phoneNumber" placeholder="Enter phone number" required>
+            <input 
+              id="phoneNumber" 
+              type="text" 
+              class="form-control" 
+              formControlName="phoneNumber" 
+              placeholder="Enter phone number" 
+              required>
             <div class="error" *ngIf="staffForm.get('phoneNumber')?.invalid && staffForm.get('phoneNumber')?.touched">
               Valid phone number is required
             </div>
@@ -44,7 +64,13 @@
         <div class="col-md-6 mb-3">
           <div class="custom-input">
             <label for="password" class="form-label">Password</label>
-            <input id="password" type="password" class="form-control" formControlName="password" placeholder="Enter password" required minlength="6">
+            <input 
+              id="password" 
+              type="password" 
+              class="form-control" 
+              formControlName="password" 
+              placeholder="Enter password" 
+              required minlength="6">
             <div class="error" *ngIf="staffForm.get('password')?.invalid && staffForm.get('password')?.touched">
               Password is required (min 6 characters)
             </div>
@@ -52,13 +78,18 @@
         </div>
       </div>
 
+      <!-- Third Row -->
       <div class="row">
         <div class="col-md-6 mb-3">
           <div class="custom-input">
             <label for="role" class="form-label">Role</label>
-            <select id="role" class="form-control" formControlName="role" required>
+            <select 
+              id="role" 
+              class="form-control" 
+              formControlName="role" 
+              required>
               <option value="" disabled selected>Select Role</option>
-              <option *ngFor="let r of roles" [value]="r">{{r}}</option>
+              <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
             </select>
             <div class="error" *ngIf="staffForm.get('role')?.invalid && staffForm.get('role')?.touched">
               Role selection is required
@@ -67,6 +98,7 @@
         </div>
       </div>
 
+      <!-- Buttons -->
       <div class="row mt-4">
         <div class="col-md-12 mb-3 d-flex justify-content-between gap-3 flex-wrap">
           <button class="btn-primary cancel-btn" type="button" (click)="closeDialog()">Cancel</button>

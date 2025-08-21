@@ -1,0 +1,42 @@
+<h2 mat-dialog-title>{{ data ? 'Edit Staff' : 'Add Staff' }}</h2>
+
+<form [formGroup]="staffForm" (ngSubmit)="onSave()" class="dialog-form">
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Staff ID</mat-label>
+    <input matInput formControlName="staffIdentification" />
+    <mat-error *ngIf="staffForm.get('staffIdentification')?.invalid">Required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Full Name</mat-label>
+    <input matInput formControlName="fullName" />
+    <mat-error *ngIf="staffForm.get('fullName')?.invalid">Required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Phone Number</mat-label>
+    <input matInput formControlName="phoneNumber" />
+    <mat-error *ngIf="staffForm.get('phoneNumber')?.invalid">Required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="w-100" *ngIf="!isEditMode">
+    <mat-label>Password</mat-label>
+    <input matInput type="password" formControlName="password" />
+    <mat-error *ngIf="staffForm.get('password')?.invalid">Required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Role</mat-label>
+    <mat-select formControlName="role">
+      <mat-option value="ADMIN">ADMIN</mat-option>
+      <mat-option value="MANAGER">MANAGER</mat-option>
+      <mat-option value="STAFF">STAFF</mat-option>
+    </mat-select>
+    <mat-error *ngIf="staffForm.get('role')?.invalid">Required</mat-error>
+  </mat-form-field>
+
+  <div class="actions">
+    
+    <button mat-flat-button color="primary" type="submit">Save</button>
+  </div>
+</form>
