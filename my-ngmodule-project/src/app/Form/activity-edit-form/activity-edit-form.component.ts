@@ -7,7 +7,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-activity-edit-form',
   templateUrl: './activity-edit-form.component.html',
-  standalone:false,
+  standalone: false,
   styleUrls: ['./activity-edit-form.component.css']
 })
 export class ActivityEditFormComponent implements OnInit {
@@ -35,7 +35,8 @@ export class ActivityEditFormComponent implements OnInit {
     this.activityForm = this.fb.group({
       activityName: ['', [Validators.required, Validators.minLength(3)]],
       activityDescription: ['', [Validators.required, Validators.minLength(5)]],
-      venueId: ['', Validators.required]
+      venueId: ['', Validators.required],
+      price: ['', [Validators.required, Validators.min(1)]]
     });
   }
 
@@ -57,7 +58,8 @@ export class ActivityEditFormComponent implements OnInit {
         this.activityForm.patchValue({
           activityName: activity.activityName,
           activityDescription: activity.activityDescription,
-          venueId: activity.venueId
+          venueId: activity.venueId,
+          price: activity.price
         });
       },
       (error: HttpErrorResponse) => {
@@ -71,7 +73,8 @@ export class ActivityEditFormComponent implements OnInit {
     if (this.activityForm.valid) {
       const updatedActivity = {
         ...this.activityForm.value,
-        venueId: parseInt(this.activityForm.value.venueId, 10)
+        venueId: parseInt(this.activityForm.value.venueId, 10),
+        price: parseFloat(this.activityForm.value.price)
       };
 
       this.activityService.updateActivity(this.data.activityId, updatedActivity).subscribe(

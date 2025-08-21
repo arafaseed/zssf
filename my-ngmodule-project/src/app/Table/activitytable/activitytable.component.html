@@ -11,24 +11,30 @@
 
   <mat-table [dataSource]="activities" class="mat-elevation-z8">
 
- <ng-container matColumnDef="activityName">
-  <mat-header-cell *matHeaderCellDef> Activity Name </mat-header-cell>
-  <mat-cell *matCellDef="let activity"> {{activity.activityName}} </mat-cell>
-</ng-container>
+    <!-- Activity Name -->
+    <ng-container matColumnDef="activityName">
+      <mat-header-cell *matHeaderCellDef> Activity Name </mat-header-cell>
+      <mat-cell *matCellDef="let activity"> {{activity.activityName}} </mat-cell>
+    </ng-container>
 
-
+  <!-- Description -->
 <ng-container matColumnDef="description">
   <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
   <mat-cell *matCellDef="let activity"> {{activity.description}} </mat-cell>
 </ng-container>
+    <!-- Venue -->
+    <ng-container matColumnDef="venueName">
+      <mat-header-cell *matHeaderCellDef> Venue </mat-header-cell>
+      <mat-cell *matCellDef="let activity"> {{activity.venueName}} </mat-cell>
+    </ng-container>
 
-
-<ng-container matColumnDef="venueName">
-  <mat-header-cell *matHeaderCellDef> Venue </mat-header-cell>
-  <mat-cell *matCellDef="let activity"> {{activity.venueName}} </mat-cell>
+ <!-- Price -->
+<ng-container matColumnDef="price">
+  <mat-header-cell *matHeaderCellDef> Price </mat-header-cell>
+  <mat-cell *matCellDef="let activity">
+    {{ activity.price | currency:'TZS':'symbol-narrow':'1.0-0' }}
+  </mat-cell>
 </ng-container>
-
-
 
     <!-- Actions Column -->
     <ng-container matColumnDef="actions">

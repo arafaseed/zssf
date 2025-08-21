@@ -3,6 +3,7 @@
 <form [formGroup]="activityForm" (ngSubmit)="onSubmit()">
   <div mat-dialog-content>
     
+    <!-- Activity Name -->
     <div class="mb-3">
       <label for="activityName" class="form-label">Activity Name</label>
       <input id="activityName" type="text" class="form-control" formControlName="activityName" placeholder="Enter activity name">
@@ -11,6 +12,7 @@
       </div>
     </div>
 
+    <!-- Description -->
     <div class="mb-3">
       <label for="activityDescription" class="form-label">Description</label>
       <input id="activityDescription" type="text" class="form-control" formControlName="activityDescription" placeholder="Enter description">
@@ -19,7 +21,7 @@
       </div>
     </div>
 
-   
+    <!-- Venue -->
     <div class="mb-3">
       <label for="venue" class="form-label">Venue</label>
       <select id="venue" class="form-control" formControlName="venueId" required>
@@ -28,6 +30,15 @@
       </select>
       <div class="error" *ngIf="activityForm.get('venueId')?.invalid && activityForm.get('venueId')?.touched">
         Venue selection is required
+      </div>
+    </div>
+
+    <!-- Price -->
+    <div class="mb-3">
+      <label for="price" class="form-label">Price TZS</label>
+      <input id="price" type="number" class="form-control" formControlName="price" placeholder="Enter price">
+      <div class="error" *ngIf="activityForm.get('price')?.invalid && activityForm.get('price')?.touched">
+        Price is required and must be greater than 0
       </div>
     </div>
 

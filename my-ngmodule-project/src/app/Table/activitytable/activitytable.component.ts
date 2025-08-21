@@ -14,7 +14,7 @@ export class ActivityTableComponent implements OnInit {
 
   activities: any[] = [];
   venues: any[] = [];
-  displayedColumns: string[] = ['activityName', 'description', 'venueName', 'actions'];
+  displayedColumns: string[] = ['activityName', 'description', 'venueName', 'price', 'actions'];
 
   constructor(
     private activityService: ActivityService,
@@ -32,15 +32,18 @@ export class ActivityTableComponent implements OnInit {
       this.venues = venuesData;
 
       this.activityService.getAllActivities().subscribe(activitiesData => {
-        this.activities = activitiesData.map((activity: any) => {
-          const venue = this.venues.find(v => v.venueId === activity.venueId);
-          return {
-            ...activity,
-            venueName: venue ? venue.venueName : 'Unknown',
-            description: activity.description || 'No description'
-          };
-        });
-        console.log('Activities loaded:', this.activities);
+    this.activities = activitiesData.map((activity: any) => {
+  const venue = this.venues.find(v => v.venueId === activity.venueId);
+  return {
+    ...activity,
+    venueName: venue ? venue.venueName : 'Unknown',
+    // Keep description as-is
+    description: activity.description,
+    price: activity.price
+  };
+});
+
+  console.log('Activities loaded:', this.activities);
       }, error => {
         console.error('Error loading activities:', error);
       });
@@ -53,7 +56,6 @@ export class ActivityTableComponent implements OnInit {
     const confirmDelete = window.confirm('Are you sure you want to delete this activity?');
     if (confirmDelete) {
       this.activityService.deleteActivity(id).subscribe(() => {
-        // Reload activities after deletion
         this.loadVenuesAndActivities();
       }, (error: any) => {
         console.error('Error deleting activity:', error);

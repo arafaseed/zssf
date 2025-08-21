@@ -24,6 +24,7 @@ export class ActivityFormComponent implements OnInit {
     this.activityForm = this.fb.group({
       activityName: ['', [Validators.required, Validators.minLength(3)]],
       activityDescription: ['', [Validators.required, Validators.minLength(5)]],
+      price: ['', [Validators.required, Validators.min(1)]], 
       venueId: ['', Validators.required]
     });
   }

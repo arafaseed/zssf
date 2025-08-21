@@ -30,6 +30,20 @@
         </div>
       </div>
 
+
+      <div class="row">
+  <div class="col-md-6 mb-3">
+    <div class="custom-input">
+      <label for="price" class="form-label">Price</label>
+      <input id="price" type="number" class="form-control" formControlName="price" placeholder="Enter price" required min="1">
+      <div class="error" *ngIf="activityForm.get('price')?.invalid && activityForm.get('price')?.touched">
+        Price is required and must be greater than 0
+      </div>
+    </div>
+  </div>
+</div>
+
+
       <div class="row">
         <div class="col-md-6 mb-3">
           <div class="custom-input">
