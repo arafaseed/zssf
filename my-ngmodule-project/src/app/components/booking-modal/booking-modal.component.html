@@ -6,7 +6,7 @@
 </h2>
 
 <mat-dialog-content class="px-4 py-3 max-h-[80vh] overflow-auto">
-  <div class="text-sm text-slate-600 mb-3">
+  <div class="mb-3 text-sm text-slate-600">
     <div *ngIf="data.mode === 'range'">Booking range:
       <strong>{{ data.start | date:'shortDate' }}</strong> →
       <strong>{{ data.end | date:'shortDate' }}</strong>
@@ -18,7 +18,7 @@
   </div>
 
   <form [formGroup]="detailsForm" class="space-y-4">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+    <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
       <mat-form-field class="w-full">
         <mat-label>Optional service</mat-label>
         <mat-select formControlName="optionalServiceId">
@@ -78,12 +78,19 @@
     </div>
 
     <div class="flex items-center gap-3 mt-3">
-      <mat-checkbox (change)="openEmployeeVerify()">I am an employee of ZSSF (verify for 25% discount)</mat-checkbox>
-      <div *ngIf="employeeVerified" class="text-sm text-emerald-600 flex items-center gap-2">
-        <i-lucide-check-circle class="w-4 h-4"></i-lucide-check-circle>
-        Employee verified — discount applied ({{ discountRate * 100 }}%)
-      </div>
-    </div>
+  <mat-checkbox
+    [(ngModel)]="employeeVerified"
+    (change)="openEmployeeVerify()"
+  >
+    I am an employee of ZSSF (verify for discount)
+  </mat-checkbox>
+
+  <div *ngIf="employeeVerified" class="flex items-center gap-2 text-sm text-emerald-600">
+    <i-lucide-check-circle class="w-4 h-4"></i-lucide-check-circle>
+    Employee verified — discount applied ({{ discountRate * 100 }}%)
+  </div>
+</div>
+
   </form>
 </mat-dialog-content>
 

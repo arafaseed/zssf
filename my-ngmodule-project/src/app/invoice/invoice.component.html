@@ -34,15 +34,15 @@
           <li>Maneva ya venue yana haki ya kufuta booking ikiwa kanuni za usalama zikitolewa.</li>
         </ol>
 
-        <div class="sidebar-actions">
+        <!-- <div class="sidebar-actions">
           <button class="btn btn-primary" (click)="openScannerModal()">🔍 Scan Invoice QR</button>
-        </div>
+        </div> -->
       </div>
     </aside>
 
     <!-- RIGHT: invoice area -->
     <main class="right-panel">
-      <h2 class="mb-2 text-2xl font-semibold text-center mt-17 text-cyan-600">
+      <h2 class="mb-3 text-2xl font-semibold text-center mt-17 text-cyan-600">
         Receive your invoice below / Pokea risiti yako hapa chini
       </h2>
 
@@ -59,7 +59,7 @@
               <p class="invoice-code">Invoice Code: {{ invoiceData.invoiceCode }}</p>
             </div>
             <div class="logo-right">
-              <img src="/smz-logo.png" alt="SMZ" class="logo" />
+              <img src="/smz_logo.png" alt="SMZ" class="logo" />
             </div>
           </div>
 
@@ -151,8 +151,8 @@
         </div>
       </div>
       <div class="control-actions">
-                <button class="btn btn-primary" (click)="printInvoice()">🖨️ Print Invoice</button>
-                <button class="btn btn-primary" (click)="generatePDF()">📄 Download PDF</button>
+                <button class="btn btn-primary m-5" (click)="printInvoice()">🖨️ Print Invoice</button>
+                <button class="btn btn-primary m-5" (click)="generatePDF()">📄 Download PDF</button>
               </div>
 
       <div *ngIf="loading" class="loading">

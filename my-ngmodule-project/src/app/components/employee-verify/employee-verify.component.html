@@ -1,1 +1,47 @@
-<p>employee-verify works!</p>
+<h2 mat-dialog-title>Employee Verification</h2>
+
+<mat-dialog-content>
+  <p>Enter Username and Password to verify as employee.</p>
+
+  <!-- Username -->
+  <mat-form-field class="w-full">
+    <mat-label>Username</mat-label>
+    <input matInput [(ngModel)]="username" />
+  </mat-form-field>
+
+  <!-- Password with visibility toggle -->
+  <mat-form-field class="w-full">
+    <mat-label>Password</mat-label>
+    <input
+      matInput
+      [type]="hidePassword ? 'password' : 'text'"
+      [(ngModel)]="password"
+    />
+    <button
+      mat-icon-button
+      matSuffix
+      (click)="togglePasswordVisibility()"
+      type="button"
+      [attr.aria-label]="'Toggle password visibility'"
+    >
+      <mat-icon>{{ hidePassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <!-- Error -->
+  <div *ngIf="error" class="mt-2 text-red-600">
+    {{ error }}
+  </div>
+
+  <!-- Backend message -->
+  <div *ngIf="message && !error" class="mt-2 text-green-700">
+    {{ message }}
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Cancel</button>
+  <button mat-flat-button color="primary" (click)="verify()" [disabled]="isLoading">
+    {{ isLoading ? 'Verifying...' : 'Verify' }}
+  </button>
+</mat-dialog-actions>

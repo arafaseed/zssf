@@ -1,38 +1,66 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { EmployeeVerifyService, VerifyResponse } from '../../Services/employee-verify.service';
 
 @Component({
   selector: 'app-employee-verify',
   standalone: false,
-  template: `
-    <h2 mat-dialog-title>Employee verification (demo)</h2>
-    <mat-dialog-content>
-      <p>Enter domain and password to verify as employee (demo only).</p>
-      <mat-form-field class="w-full"><mat-label>Domain</mat-label><input matInput [(ngModel)]="domain"></mat-form-field>
-      <mat-form-field class="w-full"><mat-label>Password</mat-label><input matInput type="password" [(ngModel)]="password"></mat-form-field>
-      <div *ngIf="error" class="text-red-600">{{ error }}</div>
-    </mat-dialog-content>
-    <mat-dialog-actions align="end">
-      <button mat-button (click)="close()">Cancel</button>
-      <button mat-flat-button color="primary" (click)="verify()">Verify</button>
-    </mat-dialog-actions>
-  `
+  templateUrl: './employee-verify.component.html',
+  styleUrls: ['./employee-verify.component.css']
 })
 export class EmployeeVerifyComponent {
-  domain = '';
+  username = '';
   password = '';
   error = '';
+  message = '';
+  hidePassword = true;
+  isLoading = false;
 
-  constructor(private ref: MatDialogRef<EmployeeVerifyComponent>) {}
+  constructor(
+    private ref: MatDialogRef<EmployeeVerifyComponent>,
+    private verifyService: EmployeeVerifyService
+  ) {}
 
   verify() {
-    // Demo verification: accept domain 'zssf' and password 'password'
-    if (this.domain === 'zssf' && this.password === 'password') {
-      this.ref.close({ verified: true });
-    } else {
-      this.error = 'Invalid credentials (demo). Use domain "zssf" and password "password".';
-    }
+    this.error = '';
+    this.message = '';
+    this.isLoading = true;
+
+    this.verifyService.verifyEmployee(this.username, this.password).subscribe({
+      next: (resp: VerifyResponse) => {
+        this.isLoading = false;
+        this.message = resp.message;
+
+        if (resp.verified && resp.discountGranted > 0) {
+          // Employee verified and discount granted
+          this.ref.close({
+            verified: true,
+            discountRate: resp.discountGranted
+          });
+        } else if (resp.verified) {
+          // Verified but no discount available
+          this.ref.close({
+            verified: true,
+            discountRate: 0
+          });
+        } else {
+          // Not verified
+          this.error = resp.message;
+        }
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.error = 'Server error. Please try again later.';
+        console.error('Verification failed', err);
+      }
+    });
   }
 
-  close() { this.ref.close({ verified: false }); }
+  close() {
+    this.ref.close({ verified: false });
+  }
+
+  togglePasswordVisibility() {
+    this.hidePassword = !this.hidePassword;
+  }
 }
