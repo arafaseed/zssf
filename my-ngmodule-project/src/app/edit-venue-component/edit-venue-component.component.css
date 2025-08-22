@@ -100,5 +100,46 @@
       font-size: 0.875rem;
       padding: 8px 15px;
     }
-  }
-  
+
+    /* Horizontal scroll for images */
+.flex.overflow-x-auto {
+  scrollbar-width: thin; 
+
+
+
+}
+/* Spinner (optional) */
+.loader {
+  border: 6px solid rgba(0,0,0,0.06);
+  border-top: 6px solid rgba(14,165,164,1);
+  border-radius: 9999px;
+  width: 52px;
+  height: 52px;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Description chips */
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background-color: #f1f5f9;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+}
+.spinner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+}

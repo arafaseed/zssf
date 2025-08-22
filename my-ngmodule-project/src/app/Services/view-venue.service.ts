@@ -49,4 +49,8 @@ export class ViewVenueService {
   registerVenue(data: any): Observable<any> {
     return this.http.post(`${this.venueApiUrl}/create`, data, { headers: this.getAuthHeaders() });
   }
+   getBuildings(): Observable<any> {
+      return this.http.get('http://localhost:8080/api/buildings/view/all');
+    }
+  
 }

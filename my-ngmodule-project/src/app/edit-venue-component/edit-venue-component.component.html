@@ -1,45 +1,102 @@
 <h2 mat-dialog-title>Edit Venue</h2>
+<!-- Spinner overlay -->
+<div *ngIf="isSubmitting" class="spinner-overlay">
+  <div class="loader"></div>
+</div>
+
 
 <form [formGroup]="venueForm" (ngSubmit)="onSubmit()">
   <mat-dialog-content>
+
+    <!-- Venue Name -->
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Venue Name</mat-label>
       <input matInput formControlName="venueName" />
-      <mat-error *ngIf="venueForm.get('venueName')?.invalid && venueForm.get('venueName')?.touched">
+      <mat-error *ngIf="venueForm.get('venueName')?.invalid && (venueForm.get('venueName')?.touched || submitted)">
         Venue name is required
       </mat-error>
     </mat-form-field>
 
+    <!-- Capacity -->
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Capacity</mat-label>
       <input matInput type="number" formControlName="capacity" />
-      <mat-error *ngIf="venueForm.get('capacity')?.invalid && venueForm.get('capacity')?.touched">
+      <mat-error *ngIf="venueForm.get('capacity')?.invalid && (venueForm.get('capacity')?.touched || submitted)">
         Capacity is required and must be at least 1
       </mat-error>
     </mat-form-field>
 
+    <!-- Address -->
     <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Description</mat-label>
-      <textarea matInput formControlName="description"></textarea>
+      <mat-label>Address</mat-label>
+      <input matInput formControlName="address" />
+      <mat-error *ngIf="venueForm.get('address')?.invalid && (venueForm.get('address')?.touched || submitted)">
+        Address is required
+      </mat-error>
     </mat-form-field>
 
+    <!-- Building -->
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Building</mat-label>
       <select matNativeControl formControlName="buildingId">
         <option value="" disabled>Select building</option>
-        <!-- You must populate building options in component -->
-        <option *ngFor="let building of buildings" [value]="building.buildingId">
-          {{ building.buildingName }}
-        </option>
+        <option *ngFor="let building of buildings" [value]="building.buildingId">{{ building.buildingName }}</option>
       </select>
-      <mat-error *ngIf="venueForm.get('buildingId')?.invalid && venueForm.get('buildingId')?.touched">
+      <mat-error *ngIf="venueForm.get('buildingId')?.invalid && (venueForm.get('buildingId')?.touched || submitted)">
         Building selection is required
       </mat-error>
     </mat-form-field>
+
+    <!-- Venue Type -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Venue Type</mat-label>
+      <select matNativeControl formControlName="venueType">
+        <option value="">-- Select type --</option>
+        <option *ngFor="let type of venueTypes" [value]="type">{{ type }}</option>
+      </select>
+    </mat-form-field>
+
+    <!-- Description -->
+    <label class="block mb-2 text-sm font-medium">Descriptions</label>
+    <div class="flex gap-2 mb-2">
+      <input [(ngModel)]="descriptionInput" [ngModelOptions]="{standalone: true}" placeholder="Add description" class="flex-1 px-3 py-2 border rounded-lg" />
+      <button type="button" (click)="addDescription()" class="px-4 py-2 bg-sky-600 text-white rounded-lg">Add</button>
+    </div>
+    <div class="flex flex-wrap gap-2 mb-4">
+      <div *ngFor="let d of descriptionList; let i=index" class="chip">
+        {{d}}
+        <button type="button" (click)="removeDescription(i)" class="text-rose-600 ml-1">✕</button>
+      </div>
+    </div>
+
+    <!-- Images -->
+    <label class="block mb-2 text-sm font-medium">Images</label>
+    <div class="flex items-center gap-3 mb-2">
+      <input type="file" #fileInput (change)="onFileSelected($event)" multiple accept="image/*" class="hidden" />
+      <button type="button" (click)="fileInput.click()" class="px-3 py-2 bg-emerald-600 text-white rounded-lg">Upload Images</button>
+      <span class="text-sm">{{ selectedFiles.length + existingImages.length }} file(s) selected</span>
+    </div>
+
+    <div class="flex gap-3 overflow-x-auto">
+      <!-- New images -->
+      <div *ngFor="let preview of imagePreviews; let i=index" class="relative w-28 h-28 border rounded-lg flex-shrink-0 overflow-hidden">
+        <img [src]="preview" class="object-cover w-full h-full" />
+        <button type="button" (click)="removeImage(i)" class="absolute -top-2 -right-2 bg-rose-600 text-white w-6 h-6 rounded-full flex justify-center items-center">✕</button>
+      </div>
+      <!-- Existing images -->
+      <div *ngFor="let img of existingImages; let i=index" class="relative w-28 h-28 border rounded-lg flex-shrink-0 overflow-hidden">
+        <img [src]="img.url" class="object-cover w-full h-full" />
+        <button type="button" (click)="removeExistingImage(i)" class="absolute -top-2 -right-2 bg-rose-600 text-white w-6 h-6 rounded-full flex justify-center items-center">✕</button>
+      </div>
+    </div>
+
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">
     <button mat-button type="button" (click)="onCancel()">Cancel</button>
-    <button mat-button color="primary" type="submit" [disabled]="venueForm.invalid">Update</button>
+   <button mat-button color="primary" type="submit" [disabled]="isSubmitting">
+  Update
+</button>
+
   </mat-dialog-actions>
 </form>
