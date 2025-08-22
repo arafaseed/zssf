@@ -1,3 +1,4 @@
+// src/app/components/activity-edit-form/activity-edit-form.component.ts
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -7,13 +8,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-activity-edit-form',
   templateUrl: './activity-edit-form.component.html',
-  standalone:false,
-  styleUrls: ['./activity-edit-form.component.css']
+  styleUrls: ['./activity-edit-form.component.css'],
+  standalone: false
 })
 export class ActivityEditFormComponent implements OnInit {
   activityForm!: FormGroup;
   venues: any[] = [];
-  selectedVenueName: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -23,73 +23,72 @@ export class ActivityEditFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.initializeForm();
-    this.loadVenues();
-
-    if (this.data.activityId) {
-      this.loadActivityDetails(this.data.activityId);
-    }
-  }
-
-  initializeForm(): void {
     this.activityForm = this.fb.group({
       activityName: ['', [Validators.required, Validators.minLength(3)]],
       activityDescription: ['', [Validators.required, Validators.minLength(5)]],
+      price: [null, [Validators.required, Validators.min(0)]],
       venueId: ['', Validators.required]
     });
-  }
 
-  loadVenues(): void {
-    this.activityService.getVenues().subscribe(
-      (data: any[]) => {
-        this.venues = data;
-      },
-      (error: any) => {
-        console.error('Error loading venues:', error);
-        alert('Failed to load venues.');
-      }
-    );
-  }
+    this.loadVenues();
 
-  loadActivityDetails(activityId: number): void {
-    this.activityService.getActivityById(activityId).subscribe(
-      (activity: any) => {
-        this.activityForm.patchValue({
-          activityName: activity.activityName,
-          activityDescription: activity.activityDescription,
-          venueId: activity.venueId
-        });
-      },
-      (error: HttpErrorResponse) => {
-        console.error('Error loading activity:', error);
-        alert('Failed to load activity details.');
-      }
-    );
-  }
-
-  onSubmit(): void {
-    if (this.activityForm.valid) {
-      const updatedActivity = {
-        ...this.activityForm.value,
-        venueId: parseInt(this.activityForm.value.venueId, 10)
-      };
-
-      this.activityService.updateActivity(this.data.activityId, updatedActivity).subscribe(
-        () => {
-          alert('Activity updated successfully!');
-          this.dialogRef.close(true);
+    if (this.data?.activityId) {
+      this.activityService.getActivityById(this.data.activityId).subscribe({
+        next: (activity) => {
+          if (!activity) {
+            alert('Activity not found');
+            this.dialogRef.close(false);
+            return;
+          }
+          this.activityForm.patchValue({
+            activityName: activity.activityName,
+            activityDescription: activity.description,
+            price: activity.price,
+            venueId: activity.venueId ?? ''
+          });
         },
-        (error: HttpErrorResponse) => {
-          console.error('Error updating activity:', error);
-          alert('Failed to update activity.');
+        error: (err: HttpErrorResponse) => {
+          console.error('Error loading activity:', err);
+          alert('Failed to load activity details.');
+          this.dialogRef.close(false);
         }
-      );
-    } else {
-      alert('Please fill out the form correctly.');
+      });
     }
   }
 
+  loadVenues(): void {
+    this.activityService.getVenues().subscribe({
+      next: v => this.venues = v || [],
+      error: err => { console.error('Failed loading venues', err); this.venues = []; }
+    });
+  }
+
+  onSubmit(): void {
+    if (this.activityForm.invalid) {
+      this.activityForm.markAllAsTouched();
+      return;
+    }
+
+    const form = this.activityForm.value;
+    const payload = {
+      activityName: form.activityName,
+      description: form.activityDescription,
+      price: Number(form.price)
+    };
+
+    this.activityService.updateActivity(this.data.activityId, payload).subscribe({
+      next: () => {
+        alert('Activity updated successfully!');
+        this.dialogRef.close(true);
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Error updating activity:', err);
+        alert('Failed to update activity.');
+      }
+    });
+  }
+
   closeDialog(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(false);
   }
 }

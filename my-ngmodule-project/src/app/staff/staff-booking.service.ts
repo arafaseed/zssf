@@ -61,6 +61,10 @@ export class StaffBookingService {
   
   getCancelledBookingsByVenue(venueId: number) {
     return this.http.get<BookingDTO[]>(`${this.baseUrl}/bookings/view/cancelled-by-venue/${venueId}`);
+  }
+
+  getUncheckedBookingsByVenue(venueId: number) {
+    return this.http.get<BookingDTO[]>(`${this.baseUrl}/bookings/view/unchecked-bookings/${venueId}`);
  }
 
 

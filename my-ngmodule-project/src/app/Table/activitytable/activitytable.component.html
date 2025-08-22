@@ -1,47 +1,42 @@
-<div class="container">
-  <div class="d-flex justify-content-between mb-3">
-    <div class="btn-add-left">
-      <button mat-raised-button color="primary" [routerLink]="['/admin/activity']">
-        Add Activity
-      </button>
+<!-- src/app/components/activitytable/activitytable.component.html -->
+<div class="max-w-6xl mx-auto p-4">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-xl font-bold">Activities</h2>
+    <div>
+      <button (click)="goToAdd()" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Add Activity</button>
     </div>
   </div>
 
-  <h2 class="text-center">Activities</h2>
-
-  <mat-table [dataSource]="activities" class="mat-elevation-z8">
-
- <ng-container matColumnDef="activityName">
-  <mat-header-cell *matHeaderCellDef> Activity Name </mat-header-cell>
-  <mat-cell *matCellDef="let activity"> {{activity.activityName}} </mat-cell>
-</ng-container>
-
-
-<ng-container matColumnDef="description">
-  <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
-  <mat-cell *matCellDef="let activity"> {{activity.description}} </mat-cell>
-</ng-container>
-
-
-<ng-container matColumnDef="venueName">
-  <mat-header-cell *matHeaderCellDef> Venue </mat-header-cell>
-  <mat-cell *matCellDef="let activity"> {{activity.venueName}} </mat-cell>
-</ng-container>
-
-
-
-    <!-- Actions Column -->
-    <ng-container matColumnDef="actions">
-      <mat-header-cell *matHeaderCellDef class="black-text"> Actions </mat-header-cell>
-      <mat-cell *matCellDef="let activity">
-        <button mat-button class="edit-button" (click)="openEditModal(activity.activityId)">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button color="warn" (click)="deleteActivity(activity.activityId)">🗑️</button>
-      </mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </mat-table>
+  <div class="bg-white shadow rounded-lg overflow-x-auto">
+    <table class="min-w-full divide-y divide-slate-200">
+      <thead class="bg-slate-50">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">Activity</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">Description</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">Venue</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">Price (TZS)</th>
+          <th class="px-6 py-3 text-right text-xs font-medium text-slate-600 uppercase tracking-wider">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-slate-100">
+        <tr *ngFor="let a of activities">
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-800 font-medium">{{ a.activityName }}</td>
+          <td class="px-6 py-4 text-sm text-slate-600">{{ a.description }}</td>
+          <td class="px-6 py-4 text-sm text-slate-600">{{ a.venueName }}</td>
+          <td class="px-6 py-4 text-sm text-slate-700">{{ a.price | number:'1.0-0' }}</td>
+          <td class="px-6 py-4 text-right text-sm font-medium">
+            <button (click)="openEditModal(a.activityId)" class="inline-flex items-center px-3 py-1 rounded bg-amber-100 text-amber-800 hover:bg-amber-200 mr-2">
+              Edit
+            </button>
+            <button (click)="deleteActivity(a.activityId)" class="inline-flex items-center px-3 py-1 rounded bg-rose-100 text-rose-800 hover:bg-rose-200">
+              Delete
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="activities.length === 0">
+          <td colspan="5" class="px-6 py-8 text-center text-slate-500">No activities found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

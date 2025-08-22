@@ -1,28 +1,28 @@
 <!-- Top Navbar (unchanged) -->
-<nav class="bg-gray-800 text-white px-4 py-3 shadow-md flex items-center justify-between">
+<nav class="flex items-center justify-between px-4 py-3 text-white bg-gray-800 shadow-md">
   <button class="lg:hidden" (click)="toggleSidebar.emit()" aria-label="Toggle Sidebar">
     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M4 6h16M4 12h16M4 18h16" />
     </svg>
   </button>
-  <div class="text-lg font-semibold hidden sm:block">Staff Dashboard</div>
+  <div class="hidden text-lg font-semibold sm:block">Staff Dashboard</div>
   <div class="flex items-center space-x-2">
-    <span class="text-sm hidden sm:inline">Identification: {{ staffIdentification || 'N/A' }}</span>
-    <div class="bg-blue-500 rounded-md-full w-8 h-8 flex items-center justify-center font-bold">
+    <span class="hidden text-sm sm:inline">Identification: {{ staffIdentification || 'N/A' }}</span>
+    <div class="flex items-center justify-center w-8 h-8 font-bold bg-blue-500 rounded-md-full">
       {{ staffIdentification ? staffIdentification.charAt(0) : '?' }}
     </div>
   </div>
 </nav>
 
 <!-- Tab Navigation -->
-<div class="bg-gray-100 px-2 py-2 shadow-sm">
+<div class="px-2 py-2 bg-gray-100 shadow-sm">
   <div class="flex flex-wrap justify-around gap-2 md:gap-4">
     <button (click)="setTab('checkin')"
             [ngClass]="activeTab === 'checkin'
                        ? 'bg-blue-600 text-white'
                        : 'bg-white text-gray-700 hover:bg-blue-100'"
-            class="px-4 py-2 rounded-md text-sm md:text-base transition">
+            class="px-4 py-2 text-sm transition rounded-md md:text-base">
       Check-Ins
     </button>
 
@@ -30,7 +30,7 @@
             [ngClass]="activeTab === 'checkout'
                        ? 'bg-blue-600 text-white'
                        : 'bg-white text-gray-700 hover:bg-blue-100'"
-            class="px-4 py-2 rounded-md text-sm md:text-base transition">
+            class="px-4 py-2 text-sm transition rounded-md md:text-base">
       Check-Outs
     </button>
 
@@ -38,7 +38,7 @@
             [ngClass]="activeTab === 'cancelled'
                        ? 'bg-blue-600 text-white'
                        : 'bg-white text-gray-700 hover:bg-blue-100'"
-            class="px-4 py-2 rounded-md text-sm md:text-base transition">
+            class="px-4 py-2 text-sm transition rounded-md md:text-base">
       Cancelled
     </button>
 
@@ -46,8 +46,24 @@
             [ngClass]="activeTab === 'reports'
                        ? 'bg-blue-600 text-white'
                        : 'bg-white text-gray-700 hover:bg-blue-100'"
-            class="px-4 py-2 rounded-md text-sm md:text-base transition">
+            class="px-4 py-2 text-sm transition rounded-md md:text-base">
       Reports
+    </button>
+
+    <button (click)="setTab('unchecked')"
+            [ngClass]="activeTab === 'unchecked'
+                       ? 'bg-blue-600 text-white'
+                       : 'bg-white text-gray-700 hover:bg-blue-100'"
+            class="px-4 py-2 text-sm transition rounded-md md:text-base">
+      Not-Checked in
+    </button>
+    
+    <button (click)="setTab('invoice-scanner')"
+            [ngClass]="activeTab === 'invoice-scanner'
+                       ? 'bg-blue-600 text-white'
+                       : 'bg-white text-gray-700 hover:bg-blue-100'"
+            class="px-4 py-2 text-sm transition rounded-md md:text-base">
+      Scan Invoice
     </button>
   </div>
 </div>
@@ -60,6 +76,8 @@
     <app-cancelled-list *ngSwitchCase="'cancelled'"></app-cancelled-list>
     <app-check-out-list *ngSwitchCase="'checkout'"></app-check-out-list>
     <app-reports *ngSwitchCase="'reports'"></app-reports>
+    <app-un-checked-list *ngSwitchCase="'unchecked'"></app-un-checked-list>
+    <app-invoice-scanner *ngSwitchCase="'invoice-scanner'"></app-invoice-scanner>
     
   </ng-container>
 </div>

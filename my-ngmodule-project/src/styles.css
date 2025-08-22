@@ -15,3 +15,5 @@ html, body {
   --accent: #6366f1; 
   --muted: #64748b; 
 }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -1,63 +1,75 @@
+// src/app/Services/activity.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Activity } from '../models/models';
-import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, shareReplay } from 'rxjs/operators';
+
+export interface Activity {
+  activityId?: number;
+  activityName: string;
+  description: string;
+  price: number;
+  venueId?: number;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class ActivityService {
-
-  private activityApi = 'http://localhost:8080/api/activities'; 
-  private venueApi = 'http://localhost:8080/api/venues';
+  private base = 'http://localhost:8080/api/activities';
+  private venueBase = 'http://localhost:8080/api/venues';
   private cache = new Map<number, Observable<Activity | null>>();
 
   constructor(private http: HttpClient) {}
 
-  //  Get activity by ID
+  /** Add activity for a given venue:
+   * POST /api/activities/add/{venueId}
+   * body: { activityName, description, price }
+   */
+  addActivity(activity: Partial<Activity>, venueId: number): Observable<any> {
+    return this.http.post(`${this.base}/add/${venueId}`, activity)
+      .pipe(catchError(err => { console.error('addActivity error', err); return throwError(() => err); }));
+  }
+
+  /** GET /api/activities/all */
+  getAllActivities(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.base}/all`).pipe(
+      catchError(err => { console.error('getAllActivities error', err); return of([]); })
+    );
+  }
+
+  /** GET a single activity:
+   * GET /api/activities/activityBy/{activityId}
+   */
   getActivityById(id: number): Observable<Activity | null> {
     if (this.cache.has(id)) return this.cache.get(id)!;
-    const obs = this.http.get<Activity>(`${this.activityApi}/activityBy/${id}`)
-      .pipe(
-        catchError((err) => {
-          console.warn('Activity load failed', id, err);
-          return of(null);
-        }),
-        shareReplay(1)
-      );
+    const obs = this.http.get<Activity>(`${this.base}/activityBy/${id}`).pipe(
+      catchError(err => { console.warn('getActivityById failed', id, err); return of(null); }),
+      shareReplay(1)
+    );
     this.cache.set(id, obs);
     return obs;
   }
 
-  //  Add activity to a venue
-  addActivity(activity: any, venueId: number): Observable<any> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post(`${this.activityApi}/add/${venueId}`, activity, { headers });
+  /** PUT /api/activities/update/{activityId} with body { activityName, description, price } */
+  updateActivity(id: number, payload: Partial<Activity>): Observable<any> {
+    return this.http.put(`${this.base}/update/${id}`, payload)
+      .pipe(catchError(err => { console.error('updateActivity error', err); return throwError(() => err); }));
   }
 
-  //  Get all venues (for dropdown)
+  /** DELETE /api/activities/delete/{activityId} */
+  deleteActivity(id: number): Observable<any> {
+    return this.http.delete(`${this.base}/delete/${id}`, { responseType: 'text' }).pipe(
+      catchError(err => { console.error('deleteActivity error', err); return throwError(() => err); })
+    );
+  }
+
+  /** GET venues list for dropdowns:
+   * GET /api/venues/view/all
+   */
   getVenues(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.venueApi}/view/all`);
-  }
-
-  //  Get all activities
-  getAllActivities(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.activityApi}/all`);
-  }
-
-  //  Create activity (no venue binding here, use addActivity instead)
-  createActivity(activity: any): Observable<any> {
-    return this.http.post(`${this.activityApi}`, activity);
-  }
-
-  // Delete activity
- deleteActivity(id: number): Observable<any> {
-  return this.http.delete(`${this.activityApi}/delete/${id}`, { responseType: 'text' });
-}
-
-  //  Update activity
-  updateActivity(id: number, activity: any): Observable<any> {
-    return this.http.put(`${this.activityApi}/update/${id}`, activity);
+    return this.http.get<any[]>(`${this.venueBase}/view/all`).pipe(
+      catchError(err => { console.error('getVenues error', err); return of([]); })
+    );
   }
 }

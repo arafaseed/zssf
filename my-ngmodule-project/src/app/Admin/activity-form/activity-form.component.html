@@ -1,59 +1,58 @@
-<div class="container mt-4">
-  <div *ngIf="isSubmitting" class="fullscreen-spinner">
-    <div class="circular-loader"></div>
+<!-- src/app/components/activity-form/activity-form.component.html -->
+<div class="max-w-3xl mx-auto mt-8">
+  <div *ngIf="isSubmitting" class="fixed inset-0 z-50 bg-white/70 flex items-center justify-center">
+    <div class="animate-spin rounded-full h-12 w-12 border-4 border-green-300 border-t-transparent"></div>
   </div>
 
-  <div class="form-card">
-    <form [formGroup]="activityForm" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
+  <div class="bg-white shadow-lg rounded-lg p-6">
+    <h3 class="text-2xl font-semibold text-slate-800 text-center mb-4">Add Activity</h3>
 
-      <h3 class="mb-4 text-center">Add Activity</h3>
-
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <div class="custom-input">
-            <label for="activityName" class="form-label">Activity Name</label>
-            <input id="activityName" type="text" class="form-control" formControlName="activityName" placeholder="Enter activity name" required minlength="3">
-            <div class="error" *ngIf="activityForm.get('activityName')?.invalid && activityForm.get('activityName')?.touched">
-              Activity name is required (min 3 characters)
-            </div>
-          </div>
+    <form [formGroup]="activityForm" (ngSubmit)="onSubmit()" class="space-y-4" novalidate>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Activity Name</label>
+          <input formControlName="activityName" type="text" placeholder="Enter activity name"
+                 class="w-full rounded-md border-slate-300 focus:ring-2 focus:ring-green-200 p-2" />
+          <div *ngIf="activityForm.get('activityName')?.invalid && activityForm.get('activityName')?.touched"
+               class="text-sm text-rose-600 mt-1">Activity name is required (min 3 chars)</div>
         </div>
 
-        <div class="col-md-6 mb-3">
-          <div class="custom-input">
-            <label for="activityDescription" class="form-label">Description</label>
-            <input id="activityDescription" type="text" class="form-control" formControlName="activityDescription" placeholder="Enter description" required minlength="5">
-            <div class="error" *ngIf="activityForm.get('activityDescription')?.invalid && activityForm.get('activityDescription')?.touched">
-              Description is required (min 5 characters)
-            </div>
-          </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Price (TZS)</label>
+          <input formControlName="price" type="number" min="0" placeholder="e.g. 150000"
+                 class="w-full rounded-md border-slate-300 focus:ring-2 focus:ring-green-200 p-2" />
+          <div *ngIf="activityForm.get('price')?.invalid && activityForm.get('price')?.touched"
+               class="text-sm text-rose-600 mt-1">Price is required and must be >= 0</div>
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <div class="custom-input">
-            <label for="venueId" class="form-label">Venue</label>
-            <select id="venueId" class="form-control" formControlName="venueId" required>
-              <option value="" disabled selected>Select Venue</option>
-              <option *ngFor="let venue of venues" [value]="venue.venueId">{{ venue.venueName }}</option>
-            </select>
-            <div class="error" *ngIf="activityForm.get('venueId')?.invalid && activityForm.get('venueId')?.touched">
-              Venue is required
-            </div>
-          </div>
-        </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1">Description</label>
+        <input formControlName="activityDescription" type="text" placeholder="Enter description"
+               class="w-full rounded-md border-slate-300 focus:ring-2 focus:ring-green-200 p-2" />
+        <div *ngIf="activityForm.get('activityDescription')?.invalid && activityForm.get('activityDescription')?.touched"
+             class="text-sm text-rose-600 mt-1">Description is required (min 5 chars)</div>
       </div>
 
-      <div class="row mt-4">
-        <div class="col-md-12 mb-3 d-flex justify-content-between gap-3 flex-wrap">
-          <button class="btn-primary cancel-btn" type="button" (click)="onCancel()">Cancel</button>
-          <button class="btn-primary" type="submit" [disabled]="activityForm.invalid || isSubmitting">
-            Submit
-          </button>
-        </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1">Venue</label>
+        <select formControlName="venueId"
+                class="w-full rounded-md border-slate-300 focus:ring-2 focus:ring-green-200 p-2">
+          <option value="" disabled>Select venue</option>
+          <option *ngFor="let v of venues" [value]="v.venueId">{{ v.venueName }}</option>
+        </select>
+        <div *ngIf="activityForm.get('venueId')?.invalid && activityForm.get('venueId')?.touched"
+             class="text-sm text-rose-600 mt-1">Venue is required</div>
       </div>
 
+      <div class="flex flex-wrap gap-3 justify-end pt-2">
+        <button type="button" (click)="onCancel()"
+                class="px-4 py-2 rounded-md bg-rose-500 text-white hover:bg-rose-600">Cancel</button>
+        <button type="submit" [disabled]="activityForm.invalid || isSubmitting"
+                class="px-4 py-2 rounded-md bg-green-500 text-white hover:bg-green-600 disabled:opacity-60">
+          Submit
+        </button>
+      </div>
     </form>
   </div>
 </div>

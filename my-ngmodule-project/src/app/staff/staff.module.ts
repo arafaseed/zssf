@@ -16,6 +16,7 @@ import { DashboardSwitchComponent } from './dashboard-switch/dashboard-switch.co
 import { MatCardModule }   from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { InvoiceScannerComponent } from './invoice-scanner/invoice-scanner.component';
+import { UnCheckedListComponent } from './home/un-checked-list/un-checked-list.component';
 // … other imports
 
 
@@ -33,6 +34,7 @@ import { InvoiceScannerComponent } from './invoice-scanner/invoice-scanner.compo
     ReportsComponent,
     DashboardSwitchComponent,
     InvoiceScannerComponent,
+    UnCheckedListComponent,
    ],
   imports: [
     CommonModule,

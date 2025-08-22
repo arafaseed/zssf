@@ -1,4 +1,3 @@
-// src/app/invoice-scanner/invoice-scanner.component.ts
 import {
   Component,
   ElementRef,
