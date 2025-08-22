@@ -1,12 +1,13 @@
 /* Container styling */
 .container {
   max-width: 700px;
-  margin: 40px auto;
+  margin: 20px auto;   /* was 40px auto */
   background-color: #f8f9fa;
   padding: 30px;
   border-radius: 15px;
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
+
 
 /* Heading */
 h3 {

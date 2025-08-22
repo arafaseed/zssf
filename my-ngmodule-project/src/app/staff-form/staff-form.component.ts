@@ -42,7 +42,7 @@ export class StaffFormComponent implements OnInit {
       this.isSubmitting = true;
       this.staffService.createStaff(this.staffForm.value).subscribe(
         () => {
-          alert('Staff added successfully!');
+          alert('Staff added successfully');
           if (this.dialogRef) this.dialogRef.close(true);
           else this.router.navigate(['/admin/staff']);
         },
