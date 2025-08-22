@@ -2,7 +2,8 @@
 
   <!-- Header row with Add button -->
  <div class="d-flex justify-content-between mb-3">
-    <button mat-flat-button color="primary" (click)="openAddStaffDialog()">
+    <button mat-flat-button color="primary" [routerLink]="['/admin/addstaff']">
+      
       <mat-icon>add</mat-icon>
       Add Staff
     </button>

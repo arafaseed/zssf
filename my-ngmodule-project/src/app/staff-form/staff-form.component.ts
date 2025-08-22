@@ -12,7 +12,7 @@ import { StaffViewService } from '../Services/staff-view.service';
 })
 export class StaffFormComponent implements OnInit {
   staffForm!: FormGroup;
-  roles: string[] = ['ADMIN', 'MANAGER', 'STAFF']; // Example roles
+  roles: string[] = ['ADMIN','STAFF']; // Example roles
   isSubmitting = false;
 
   constructor(
@@ -42,7 +42,7 @@ export class StaffFormComponent implements OnInit {
       this.isSubmitting = true;
       this.staffService.createStaff(this.staffForm.value).subscribe(
         () => {
-          alert('Staff added successfully!');
+          alert('Staff added successfully');
           if (this.dialogRef) this.dialogRef.close(true);
           else this.router.navigate(['/admin/staff']);
         },
