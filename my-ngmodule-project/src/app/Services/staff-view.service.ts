@@ -40,16 +40,18 @@ export class StaffViewService {
 
   // Staff APIs
   getAllStaff(): Observable<Staff[]> {
-    return this.http.get<Staff[]>(`${this.apiUrl}`, { headers: this.getAuthHeaders() });
-  }
+  return this.http.get<Staff[]>(`${this.apiUrl}/all`, { headers: this.getAuthHeaders() });
+}
+
 
   getStaffById(id: number): Observable<Staff> {
     return this.http.get<Staff>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
   }
 
-  createStaff(staffData: Staff): Observable<Staff> {
-    return this.http.post<Staff>(`${this.apiUrl}`, staffData, { headers: this.getAuthHeaders() });
-  }
+ createStaff(staffData: Staff): Observable<Staff> {
+  return this.http.post<Staff>(`${this.apiUrl}/add`, staffData, { headers: this.getAuthHeaders() });
+}
+
 
   updateStaff(id: number, staffData: Staff): Observable<Staff> {
     return this.http.put<Staff>(`${this.apiUrl}/${id}`, staffData, { headers: this.getAuthHeaders() });

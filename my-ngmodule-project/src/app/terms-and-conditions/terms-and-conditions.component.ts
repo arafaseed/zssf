@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-terms-and-conditions',
   standalone: false,
   templateUrl: './terms-and-conditions.component.html',
-  styleUrls: ['./terms-and-conditions.component.css'] // This can be empty if all styles are Tailwind
+  styleUrls: ['./terms-and-conditions.component.css']
 })
 export class TermsAndConditionsComponent implements OnInit {
 
@@ -13,7 +13,12 @@ export class TermsAndConditionsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.lastUpdated = 'August 11, 2025';
-  }
-
+    // Format today's date
+    const today = new Date();
+    this.lastUpdated = today.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  }
 }
