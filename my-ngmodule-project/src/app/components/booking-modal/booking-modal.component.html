@@ -78,10 +78,9 @@
     </div>
 
     <div class="flex items-center gap-3 mt-3">
-  <mat-checkbox
-    [(ngModel)]="employeeVerified"
-    (change)="openEmployeeVerify()"
-  >
+  <mat-checkbox 
+    [checked]="employeeVerified" 
+    (change)="openEmployeeVerify($event)">
     I am an employee of ZSSF (verify for discount)
   </mat-checkbox>
 
@@ -90,6 +89,7 @@
     Employee verified — discount applied ({{ discountRate * 100 }}%)
   </div>
 </div>
+
 
   </form>
 </mat-dialog-content>

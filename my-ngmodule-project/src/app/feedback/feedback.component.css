@@ -1,0 +1,21 @@
+/* keep it minimal - rely on Material + Tailwind utilities if present */
+mat-form-field { width: 100%; }
+mat-radio-button { margin-right: 12px; }
+
+/* feedback.component.scss */
+.success-snackbar {
+  background-color: #ecfdf5 !important; /* light green background */
+  color: #065f46 !important;            /* dark green text */
+  font-weight: 600;
+}
+
+.error-snackbar {
+  background-color: #fef2f2 !important; /* light red */
+  color: #991b1b !important;            /* dark red */
+  font-weight: 600;
+}
+
+/* Optional: make snackbar text wrap nicely */
+.mat-simple-snackbar {
+  white-space: normal;
+}

@@ -1,0 +1,5 @@
+mat-dialog-content { padding-top: 8px; }
+mat-dialog-actions { margin-top: 12px; }
+.feedback-detail-dialog .mat-dialog-container {
+  border-radius: 12px;
+}

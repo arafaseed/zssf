@@ -3,7 +3,6 @@ import { Building, Venue, Activity } from '../../models/models';
 import { BuildingService } from '../../Services/building.service';
 import { ActivityService } from '../../Services/activity.service';
 import { forkJoin } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -12,8 +11,10 @@ import { map } from 'rxjs/operators';
 })
 export class HomeComponent implements OnInit, AfterViewInit {
   buildings: Building[] = [];
-  minPrice = new Map<number, number | null>(); // venueId -> minPrice
+  filteredBuildings: Building[] = [];
+  minPrice = new Map<number, number | null>();
   loading = true;
+  searchTerm: string = '';
 
   @ViewChildren('scrollRow') scrollRows!: QueryList<ElementRef<HTMLDivElement>>;
 
@@ -30,6 +31,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.buildingSvc.getAllBuildings().subscribe({
       next: (b) => {
         this.buildings = b;
+        this.filteredBuildings = b; // initially all
         this.computeAllMinPrices();
         this.loading = false;
       },
@@ -58,14 +60,38 @@ export class HomeComponent implements OnInit, AfterViewInit {
         const min = Math.min(...prices);
         this.minPrice.set(v.venueId, Math.round(min));
       },
-      error: (err) => { console.warn('price fetch error', v.venueId, err); this.minPrice.set(v.venueId, null); }
+      error: (err) => { 
+        console.warn('price fetch error', v.venueId, err); 
+        this.minPrice.set(v.venueId, null); 
+      }
     });
   }
 
   getMinPrice(venueId: number) { return this.minPrice.get(venueId) ?? null; }
 
   scroll(elem: HTMLDivElement, dir: 'left' | 'right') {
-    const amount = elem.clientWidth - 96; // scroll by view minus a margin
+    const amount = elem.clientWidth - 96;
     elem.scrollBy({ left: dir === 'left' ? -amount : amount, behavior: 'smooth' });
+  }
+
+  /** Filter buildings & venues dynamically */
+  filterBuildings() {
+    const term = this.searchTerm.toLowerCase().trim();
+    if (!term) {
+      this.filteredBuildings = this.buildings;
+      return;
+    }
+    this.filteredBuildings = this.buildings
+      .map(b => ({
+        ...b,
+        venues: b.venues.filter(v => 
+          v.venueName.toLowerCase().includes(term) ||
+          (v.venueType?.toLowerCase().includes(term)) ||
+          (v.capacity?.toString().includes(term)) ||
+          b.buildingName.toLowerCase().includes(term) ||
+          (b.address?.toLowerCase().includes(term))
+        )
+      }))
+      .filter(b => b.venues.length > 0 || b.buildingName.toLowerCase().includes(term) || (b.address?.toLowerCase().includes(term)));
   }
 }

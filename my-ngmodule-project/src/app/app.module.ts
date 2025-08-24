@@ -85,6 +85,8 @@ import { StaffTableComponent } from './staff-table/staff-table.component';
 import { StaffDialogComponent } from './staff-dialog.component/staff-dialog.component';
 import { StaffFormComponent } from './staff-form/staff-form.component';
 import { PoliciesSettingsComponent } from './Admin/policies-settings/policies-settings.component';
+import { AdminFeedbacksComponent } from './Admin/admin-feedbacks/admin-feedbacks.component';
+import { FeedbackDetailDialogComponent } from './Admin/feedback-detail-dialog/feedback-detail-dialog.component';
 
 
 
@@ -138,6 +140,8 @@ export function createTranslateLoader(http: HttpClient) {
     StaffDialogComponent,
     StaffFormComponent,
     PoliciesSettingsComponent,
+    AdminFeedbacksComponent,
+    FeedbackDetailDialogComponent,
 
     // DashboardSwitchComponent,
     

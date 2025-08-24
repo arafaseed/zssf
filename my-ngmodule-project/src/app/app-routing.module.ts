@@ -29,7 +29,7 @@ import { StaffFormComponent } from './staff-form/staff-form.component';
 import { PoliciesSettingsComponent } from './Admin/policies-settings/policies-settings.component';
 import { StaffTableComponent } from './staff-table/staff-table.component';
 
-
+import { AdminFeedbacksComponent } from './Admin/admin-feedbacks/admin-feedbacks.component';
 
 
 const routes: Routes = [
@@ -79,7 +79,7 @@ const routes: Routes = [
       { path: 'bookinglist', component: BookingListComponent },
       { path: 'activity', component: ActivityFormComponent },
       { path: 'staff', component: StaffTableComponent },
-
+      { path: 'feedback', component: AdminFeedbacksComponent  },
       { path: 'activitytable', component: ActivityTableComponent },
       { path: 'policies-settings', component: PoliciesSettingsComponent },
        { path: 'addoptional', component: OptionalServiceAddFormComponent },

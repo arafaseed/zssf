@@ -1,0 +1,52 @@
+/* keep the Snackbar container styled via panelClass */
+.detail-snackbar {
+  /* ensure snackbar container stretches a bit and wraps text */
+  max-width: 900px;
+  width: calc(100% - 32px);
+  box-sizing: border-box;
+  border-radius: 10px;
+  padding: 0; /* inner padding handled by .mat-simple-snackbar */
+}
+
+/* make the inner simple-snackbar allow multiline and left-aligned text */
+.detail-snackbar .mat-simple-snackbar {
+  white-space: pre-line;  /* preserve \n as line breaks */
+  text-align: left;
+  padding: 14px 18px;
+  font-size: 14px;
+  line-height: 1.4;
+  display: block;
+}
+
+/* Light mode colors (default) */
+.detail-snackbar {
+  background: #ecfdf5;    /* very light green */
+  color: #065f46;         /* dark green text */
+  box-shadow: 0 6px 18px rgba(6,95,70,0.12);
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .detail-snackbar {
+    background: linear-gradient(180deg, rgba(2,50,43,0.92), rgba(4,40,36,0.9));
+    color: #d1fae5; /* pale green */
+    box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+  }
+
+  .detail-snackbar .mat-simple-snackbar {
+    /* increase contrast in dark mode */
+    color: #d1fae5;
+  }
+}
+
+/* Ensure 'Close' action is visible in both modes */
+.detail-snackbar .mat-simple-snackbar button {
+  color: inherit;
+  font-weight: 600;
+  opacity: 0.95;
+}
+
+/* make sure long comment text wraps nicely */
+.detail-snackbar .mat-simple-snackbar {
+  word-break: break-word;
+}

@@ -1,12 +1,15 @@
 <app-header></app-header>
 
-<div class="page-container">
-  <div class="page-grid">
-    <!-- LEFT: information & rules (visible on desktop left) -->
-    <aside class="left-panel">
-      <h2 class="panel-title">Payment & Booking Guidance / Mwongozo wa Malipo na Booking</h2>
+<!-- Using Angular Material cards and responsive CSS for two-column layout -->
+<div class="material-page">
+  <div class="mat-grid">
 
-      <div class="guidance">
+    <!-- LEFT: information & rules (Material card) -->
+    <mat-card class="left-card">
+      <mat-card-header>
+        <mat-card-title>Payment & Booking Guidance / Mwongozo wa Malipo na Booking</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
         <p><strong>EN:</strong> You have 24 hours to pay your advance or the booking will expire. You may update booking dates only if needed.</p>
         <p><strong>SW:</strong> Una masaa 24 ya kulipa malipo ya awali au booking itafutwa. Unaweza kubadilisha tarehe za booking tu ikiwa ni muhimu.</p>
 
@@ -26,183 +29,154 @@
         <ol>
           <li>Malipo ya awali yafanyike ndani ya masaa 24 ili kuhakisha booking.</li>
           <li>Tarehe za booking zinaweza kubadilishwa kwa kuzingatia upatikanaji wa venue.</li>
-          <li>Kutokatisha booking ndani ya saa 48 hakurudishiwa bila makubaliano.</li>
+          <li>Kutokatisha booking within saa 48 hakurudishiwa bila makubaliano.</li>
           <li>Mteja anawajibika kwa uharibifu wowote wakati wa kipindi cha booking.</li>
           <li>Kuanzia saa fulani kidogo kinachoweza kuwekwa kulingana na sheria za venue.</li>
           <li>Huduma za ziada zinapaswa kuombwa angalau masaa 72 kabla ya tukio.</li>
           <li>Mipangilio isiyoidhinishwa inayoharibu venue hairuhusiwi.</li>
           <li>Maneva ya venue yana haki ya kufuta booking ikiwa kanuni za usalama zikitolewa.</li>
         </ol>
-
-        <!-- <div class="sidebar-actions">
-          <button class="btn btn-primary" (click)="openScannerModal()">🔍 Scan Invoice QR</button>
-        </div> -->
+      </mat-card-content>
+       <!-- staff cards -->
+      <div *ngIf="!loading" class="staff-area">
+        <h2 class="staff-title">For any inquiry, Please call..</h2>
+        <div class="staff-grid">
+          <mat-card *ngFor="let staff of staffList" class="staff-card">
+            <mat-card-title>{{ staff.fullName }}</mat-card-title>
+            <mat-card-content>
+              <p><strong>Phone:</strong> {{ staff.phoneNumber }}</p>
+              <p class="role" [class.staff-role]="staff.role === 'STAFF'">{{ staff.role }}</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
       </div>
-    </aside>
+    </mat-card>
+    
 
     <!-- RIGHT: invoice area -->
-    <main class="right-panel">
-      <h2 class="mb-3 text-2xl font-semibold text-center mt-17 text-cyan-600">
-        Receive your invoice below / Pokea risiti yako hapa chini
-      </h2>
+    <div class="right-column">
+      <mat-card class="invoice-card">
+        <mat-card-content>
+          <h2 class="invoice-heading">Receive your invoice below / Pokea risiti yako hapa chini</h2>
 
-      <div #a4wrapper class="a4-viewport">
-        <!-- THIS is the A4 invoice element (fixed to A4 size via CSS) -->
-        <div id="invoice-a4" class="invoice-container">
-          <!-- Header -->
-          <div class="invoice-header header-row">
-            <div class="logo-left">
-              <img src="/zssf-logo.png" alt="ZSSF" class="logo" />
-            </div>
-            <div class="title-block">
-              <h1>ZSSF VENUE BOOKING INVOICE</h1>
-              <p class="invoice-code">Invoice Code: {{ invoiceData.invoiceCode }}</p>
-            </div>
-            <div class="logo-right">
-              <img src="/smz_logo.png" alt="SMZ" class="logo" />
+          <div #a4wrapper class="a4-viewport">
+            <!-- A4 invoice element (keeps 210mm width) -->
+            <div id="invoice-a4" class="invoice-container">
+              <!-- Header -->
+              <div class="invoice-header header-row">
+                <div class="logo-left">
+                  <img src="/zssf-logo.png" alt="ZSSF" class="logo" />
+                </div>
+                <div class="title-block">
+                  <h1>ZSSF VENUE BOOKING INVOICE</h1>
+                  <p class="invoice-code">Invoice Code: {{ invoiceData.invoiceCode }}</p>
+                </div>
+                <div class="logo-right">
+                  <img src="/smz_logo.png" alt="SMZ" class="logo" />
+                </div>
+              </div>
+
+              <!-- Customer Information -->
+              <section class="invoice-section">
+                <h2>Customer Information / Taarifa za Mteja</h2>
+                <div class="invoice-line">
+                  <span class="label">Name / Jina:</span>
+                  <span class="value">{{ invoiceData.customerName }}</span>
+                </div>
+                <div class="invoice-line">
+                  <span class="label">Phone / Simu:</span>
+                  <span class="value">{{ invoiceData.customerPhone }}</span>
+                </div>
+                <div class="invoice-line">
+                  <span class="label">Email / Barua pepe:</span>
+                  <span class="value">{{ invoiceData.customerEmail }}</span>
+                </div>
+              </section>
+
+              <!-- Invoice Details -->
+              <section class="invoice-section">
+                <h2>Invoice Details / Maelezo ya Risiti</h2>
+                <div class="invoice-line">
+                  <span class="label">Issued Date / Imetolewa:</span>
+                  <span class="value">{{ invoiceData.issuedDate }}</span>
+                </div>
+                <div class="invoice-line">
+                  <span class="label">Due Date / Tarehe ya Malipo:</span>
+                  <span class="value">{{ invoiceData.dueDate || 'Not Specified / Haijawekwa' }}</span>
+                </div>
+                <div class="invoice-line">
+                  <span class="label">Status / Hali:</span>
+                  <span class="value">{{ invoiceData.invoicestatus || invoiceData.status }}</span>
+                </div>
+                <div class="invoice-line">
+                  <span class="label">Control Number / Namba ya Udhibiti:</span>
+                  <span class="value" id="controlNum"><u>{{ invoiceData.controlNumber || '-' }}</u></span>
+                </div>
+                <div class="invoice-line">
+                  <span class="label">Start Event Date / Tarehe ya Kuanzia:</span>
+                  <span class="value">{{ invoiceData.startDate }}</span>
+                </div>
+                <div class="invoice-line">
+                  <span class="label">End Event Date / Tarehe ya Mwisho:</span>
+                  <span class="value">{{ invoiceData.endDate }}</span>
+                </div>
+                <div class="invoice-line">
+                  <span class="label">Venue / Ukumbi:</span>
+                  <span class="value">{{ invoiceData.venueName }}</span>
+                </div>
+                <div class="invoice-line">
+                  <span class="label">Package / Mpango:</span>
+                  <span class="value">{{ invoiceData.packageName }}</span>
+                </div>
+              </section>
+
+              <!-- Description -->
+              <section class="invoice-section">
+                <h2>Description / Maelezo</h2>
+                <p class="description">{{ invoiceData.description }}</p>
+              </section>
+
+              <!-- Amount Summary -->
+              <section class="amount-summary">
+                <h2>Amount Summary / Muhtasari wa Malipo</h2>
+                <div class="amount-line">
+                  <span>Amount / Kiasi:</span>
+                  <span>{{ invoiceData.amount | number:'1.2-2' }} TZS</span>
+                </div>
+                <div class="amount-line">
+                  <span>Discount / Punguzo:</span>
+                  <span>{{ invoiceData.discountApplied | number:'1.2-2' }} TZS</span>
+                </div>
+                <div class="amount-line total">
+                  <span>Total / Jumla:</span>
+                  <span>{{ invoiceData.netAmount | number:'1.2-2' }} TZS</span>
+                </div>
+
+                <div class="qr-row">
+                  <div class="qr-block">
+                    <img *ngIf="qrDataUrl" [src]="qrDataUrl" alt="Invoice QR" />
+                    <div class="qr-caption">Scan to verify / Skani kuthibitisha</div>
+                  </div>
+                </div>
+              </section>
             </div>
           </div>
 
-          <!-- Customer Information -->
-          <section class="invoice-section">
-            <h2>Customer Information / Taarifa za Mteja</h2>
-            <div class="invoice-line">
-              <span class="label">Name / Jina:</span>
-              <span class="value">{{ invoiceData.customerName }}</span>
-            </div>
-            <div class="invoice-line">
-              <span class="label">Phone / Simu:</span>
-              <span class="value">{{ invoiceData.customerPhone }}</span>
-            </div>
-            <div class="invoice-line">
-              <span class="label">Email / Barua pepe:</span>
-              <span class="value">{{ invoiceData.customerEmail }}</span>
-            </div>
-          </section>
-
-          <!-- Invoice Details -->
-          <section class="invoice-section">
-            <h2>Invoice Details / Maelezo ya Risiti</h2>
-            <div class="invoice-line">
-              <span class="label">Issued Date / Imetolewa:</span>
-              <span class="value">{{ invoiceData.issuedDate }}</span>
-            </div>
-            <div class="invoice-line">
-              <span class="label">Due Date / Tarehe ya Malipo:</span>
-              <span class="value">{{ invoiceData.dueDate || 'Not Specified / Haijawekwa' }}</span>
-            </div>
-            <div class="invoice-line">
-              <span class="label">Status / Hali:</span>
-              <span class="value">{{ invoiceData.invoicestatus || invoiceData.status }}</span>
-            </div>
-            <div class="invoice-line">
-              <span class="label">Control Number / Namba ya Udhibiti:</span>
-              <span class="value" id="controlNum"><u>{{ invoiceData.controlNumber || '-' }}</u></span>
-            </div>
-            <div class="invoice-line">
-              <span class="label">Start Event Date / Tarehe ya Kuanzia:</span>
-              <span class="value">{{ invoiceData.startDate }}</span>
-            </div>
-            <div class="invoice-line">
-              <span class="label">End Event Date / Tarehe ya Mwisho:</span>
-              <span class="value">{{ invoiceData.endDate }}</span>
-            </div>
-            <div class="invoice-line">
-              <span class="label">Venue / Ukumbi:</span>
-              <span class="value">{{ invoiceData.venueName }}</span>
-            </div>
-            <div class="invoice-line">
-              <span class="label">Package / Mpango:</span>
-              <span class="value">{{ invoiceData.packageName }}</span>
-            </div>
-          </section>
-
-          <!-- Description -->
-          <section class="invoice-section">
-            <h2>Description / Maelezo</h2>
-            <p class="description">{{ invoiceData.description }}</p>
-          </section>
-
-          <!-- Amount Summary -->
-          <section class="amount-summary">
-            <h2>Amount Summary / Muhtasari wa Malipo</h2>
-            <div class="amount-line">
-              <span>Amount / Kiasi:</span>
-              <span>{{ invoiceData.amount | number:'1.2-2' }} TZS</span>
-            </div>
-            <div class="amount-line">
-              <span>Discount / Punguzo:</span>
-              <span>{{ invoiceData.discountApplied | number:'1.2-2' }} TZS</span>
-            </div>
-            <div class="amount-line total">
-              <span>Total / Jumla:</span>
-              <span>{{ invoiceData.netAmount | number:'1.2-2' }} TZS</span>
-            </div>
-
-            <div class="qr-row">
-              <div class="qr-block">
-                <img *ngIf="qrDataUrl" [src]="qrDataUrl" alt="Invoice QR" />
-                <div class="qr-caption">Scan to verify / Skani kuthibitisha</div>
-              </div>
-              
-            </div>
-          </section>
-
-        </div>
-      </div>
-      <div class="control-actions">
-                <button class="btn btn-primary m-5" (click)="printInvoice()">🖨️ Print Invoice</button>
-                <button class="btn btn-primary m-5" (click)="generatePDF()">📄 Download PDF</button>
-              </div>
-
-      <div *ngIf="loading" class="loading">
-        Generating Invoice PDF…
-      </div>
-
-      <!-- staff cards (unchanged) -->
-      <div *ngIf="!loading" class="max-w-3xl mx-auto my-8">
-        <h2 class="mb-4 text-2xl font-semibold text-cyan-600">For any inquiry, Please call.. </h2>
-        <div class="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          <div *ngFor="let staff of staffList"
-               class="flex flex-col p-4 mb-10 bg-white border rounded-lg shadow-xl border-cyan-200">
-            <h3 class="mb-2 text-xl font-bold text-gray-800">{{ staff.fullName }}</h3>
-            <p class="text-gray-700"><strong>Phone:</strong> {{ staff.phoneNumber }}</p>
-            <p class="mt-auto text-sm font-medium"
-               [ngClass]="{
-                 'text-blue-600': staff.role === 'STAFF'
-               }">
-              {{ staff.role }}
-            </p>
+          <div class="control-actions">
+            <button mat-flat-button color="primary" (click)="printInvoice()">🖨️ Print Invoice</button>
+            <button mat-flat-button color="primary" (click)="generatePDF()">📄 Download PDF</button>
           </div>
-        </div>
-      </div>
 
-    </main>
-  </div>
-</div>
+          <div *ngIf="loading" class="loading">
+            <mat-progress-spinner diameter="24" mode="indeterminate"></mat-progress-spinner>
+            Generating Invoice PDF…
+          </div>
 
-<!-- Scanner modal -->
-<div class="modal" *ngIf="showScannerModal">
-  <div class="modal-content">
-    <button class="modal-close" (click)="showScannerModal=false">✖</button>
-    <app-invoice-scanner (onVerified)="onScannedVerified($event)" (onInvalid)="onScannedInvalid()"></app-invoice-scanner>
-  </div>
-</div>
+        </mat-card-content>
+      </mat-card>
 
-<!-- Scanned invoice modal -->
-<div class="modal" *ngIf="showScannedModal">
-  <div class="modal-content large">
-    <button class="modal-close" (click)="closeScannedModal()">✖</button>
-    <h3>Scanned Invoice Preview / Muhtasari wa Risiti</h3>
-    <pre>{{ scannedInvoice | json }}</pre>
-    <div class="modal-actions">
-      <button class="btn btn-primary" (click)="printInvoice()">Print</button>
-      <button class="btn btn-primary" (click)="generatePDF()">Download PDF</button>
+     
     </div>
   </div>
 </div>
 
-<!-- invalid scan message -->
-<div *ngIf="invalidScanMsg" class="invalid-msg">
-  {{ invalidScanMsg }}
-</div>

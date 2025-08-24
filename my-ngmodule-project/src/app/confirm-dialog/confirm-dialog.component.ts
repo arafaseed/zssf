@@ -1,35 +1,25 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-
-export interface ConfirmDialogData {
-  fullName: string;
-  phoneNumber?: string;
-  venue: string;
-  packageName: string;
-  activityName: string;
-  price: number;
-  startDate?: Date;
-  endDate?: Date;
-  durationInDays?: number;
-}
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-confirm-dialog',
-  standalone:false,
+  selector: 'app-confirmation-dialog',
   templateUrl: './confirm-dialog.component.html',
-  styleUrls: ['./confirm-dialog.component.css']
+  styleUrls: ['./confirm-dialog.component.css'],
+  standalone: false, // Ensure this is false
 })
 export class ConfirmDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<ConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData
+    @Inject(MAT_DIALOG_DATA) public data: { title: string, message: string }
   ) {}
 
   onConfirm(): void {
     this.dialogRef.close(true);
   }
 
-  onCancel(): void {
+  onDismiss(): void {
     this.dialogRef.close(false);
   }
 }

@@ -1,20 +1,20 @@
 <div class="contact-bar bg-[#009688] text-white text-sm py-1 px-4 flex flex-wrap justify-between items-center">
-  <div class="contact-left flex flex-wrap gap-4 items-center">
-    <span class="contact-item flex items-center gap-2 text-base">
-      <i class="fas fa-phone icon text-base"></i>
+  <div class="flex flex-wrap items-center gap-4 contact-left">
+    <span class="flex items-center gap-2 text-base contact-item">
+      <i class="text-base fas fa-phone icon"></i>
       {{ 'contact.phone' | translate }}
     </span>
-    <span class="contact-item flex items-center gap-2 text-base">
-      <i class="fas fa-envelope icon text-base"></i>
+    <span class="flex items-center gap-2 text-base contact-item">
+      <i class="text-base fas fa-envelope icon"></i>
       <a href="mailto:info@zssf.or.tz" class="underline">{{ 'contact.email' | translate }}</a>
     </span>
-    <span class="contact-item flex items-center gap-2 text-base">
-      <i class="fab fa-whatsapp icon text-base"></i>
+    <span class="flex items-center gap-2 text-base contact-item">
+      <i class="text-base fab fa-whatsapp icon"></i>
       {{ 'contact.whatsapp' | translate }}
     </span>
   </div>
 
-  <div class="contact-right relative mt-2 sm:mt-0">
+  <div class="relative mt-2 contact-right sm:mt-0">
     <button
       (click)="showLangDropdown = !showLangDropdown"
       class="flex items-center gap-2 bg-white text-[#009688] border border-[#009688] px-4 py-1.5 rounded-full font-semibold hover:bg-[#009688] hover:text-white transition text-base"
@@ -29,7 +29,7 @@
 
     <div
       *ngIf="showLangDropdown"
-      class="absolute right-0 mt-2 w-36 rounded-lg shadow-md bg-white ring-1 ring-black ring-opacity-5 z-50"
+      class="absolute right-0 z-50 mt-2 bg-white rounded-lg shadow-md w-36 ring-1 ring-black ring-opacity-5"
     >
       <button
         (click)="switchLanguage('en'); showLangDropdown = false"
@@ -50,37 +50,37 @@
 
 
 <!-- HEADER -->
-<div class="header-container flex flex-wrap justify-between items-center px-4 py-4 bg-white">
-  <img src="smz_logo.png" alt="Logo Left" class="logo-left w-20 sm:w-24 h-auto" />
+<div class="flex flex-wrap items-center justify-between px-4 py-4 bg-white header-container">
+  <img src="smz_logo.png" alt="Logo Left" class="w-20 h-auto logo-left sm:w-24" />
 
-  <div class="header-text text-center flex-1 px-4">
-    <h1 class="text-xl sm:text-2xl font-bold text-gray-700">
+  <div class="flex-1 px-4 text-center header-text">
+    <h1 class="text-xl font-bold text-gray-700 sm:text-2xl">
     {{ displayedText }}
     </h1>
     <small style="text-align: center; font-size: 15px; font-weight: 500; color: #444;">
-      <span class="fa fa-key mr-1"></span>
+      <span class="mr-1 fa fa-key"></span>
       {{ 'header.slogan' | translate }}
     </small>
 
   </div>
 
-  <img src="zssf-logo.png" alt="Logo Right" class="logo-right w-20 sm:w-24 h-auto" />
+  <img src="zssf-logo.png" alt="Logo Right" class="w-20 h-auto logo-right sm:w-24" />
 </div>
 
 <!-- DATE + NAVIGATION BAR -->
 <div class="nav-container bg-white text-black text-sm px-4 py-4 flex flex-wrap justify-between items-center shadow-md min-h-[70px] font-[Poppins,sans-serif]">
   <!-- Date Box -->
   <div class="date-box text-lg text-[#138C82] font-semibold flex items-center mb-2 sm:mb-0">
-    <i class="fas fa-calendar-alt mr-2 text-xl"></i>
+    <i class="mr-2 text-xl fas fa-calendar-alt"></i>
     {{ currentDate }}
   </div>
 
   <!-- Navigation -->
-  <nav class="flex flex-wrap justify-center gap-4 sm:gap-6 font-medium text-center text-base text-gray-600">
-    <a (click)="navigateTo('/')" class="hover:text-blue-600 cursor-pointer nav-link">{{ 'nav.home' | translate }}</a>
-    <a (click)="navigateTo('/mybooking')" class="hover:text-blue-600 cursor-pointer nav-link">{{ 'nav.my_booking' | translate }}</a>
-    <a (click)="navigateTo('/login')" class="hover:text-blue-600 cursor-pointer nav-link">{{ 'nav.login' | translate }}</a>
-    <a (click)="navigateTo('/agreeterms')" class="hover:text-blue-600 cursor-pointer nav-link"> Agree Terms & Conditions </a>
-     <a (click)="navigateTo('/feedback')" class="hover:text-blue-600 cursor-pointer nav-link"> Feedback & comment </a>
+  <nav class="flex flex-wrap justify-center gap-4 text-base font-medium text-center text-gray-600 sm:gap-6">
+    <a (click)="navigateTo('/')" class="cursor-pointer hover:text-blue-600 nav-link">{{ 'nav.home' | translate }}</a>
+    <a (click)="navigateTo('/mybooking')" class="cursor-pointer hover:text-blue-600 nav-link">{{ 'nav.my_booking' | translate }}</a>
+    <a (click)="navigateTo('/login')" class="cursor-pointer hover:text-blue-600 nav-link">{{ 'nav.login' | translate }}</a>
+    <a (click)="navigateTo('/agreeterms')" class="cursor-pointer hover:text-blue-600 nav-link"> Terms & Conditions </a>
+     <a (click)="navigateTo('/feedback')" class="cursor-pointer hover:text-blue-600 nav-link"> Feedback </a>
   </nav>
 </div>

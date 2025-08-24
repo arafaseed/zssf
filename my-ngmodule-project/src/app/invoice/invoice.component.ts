@@ -1,4 +1,3 @@
-// src/app/invoice/invoice.component.ts
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild, AfterViewInit, NgZone } from '@angular/core';
 import jsPDF from 'jspdf';
 import { ActivatedRoute } from '@angular/router';
@@ -8,7 +7,7 @@ import { InvoiceService, StaffDTO } from '../Services/invoice.service';
 
 @Component({
   selector: 'app-invoice',
-  standalone: false ,
+  standalone: false,
   templateUrl: './invoice.component.html',
   styleUrls: ['./invoice.component.css'],
 })
@@ -62,8 +61,8 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
         this.invoiceData = this.normalizeInvoice(data);
         this.loading = false;
         this.fetchStaff(data.booking?.venueId ?? data.venueId ?? 0);
-        // generate QR for this invoice's invoiceCode
-        this.createQR(this.invoiceData.invoiceCode);
+        // generate QR for this invoice — now QR points to the invoice page URL
+        this.createQRForInvoicePage(this.bookingId, this.invoiceData.invoiceCode);
         // apply initial scale
         setTimeout(() => this.applyScaleToA4(), 200);
       },
@@ -111,10 +110,20 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
     return root;
   }
 
-  async createQR(invoiceCode: string) {
+  /**
+   * Create a QR that encodes the invoice page URL so scanners on other devices will
+   * open this invoice directly. We include the invoiceCode as a query param for reliability.
+   *
+   * Example generated URL:
+   *   http://localhost:4200/invoice/23?code=INVOICECODE123
+   */
+  async createQRForInvoicePage(bookingId: number, invoiceCode?: string) {
     try {
-      // encode only the invoiceCode (scanner will pull code)
-      this.qrDataUrl = await QRCode.toDataURL(invoiceCode, { margin: 1, width: 200 });
+      const origin = window.location.origin || 'http://localhost:4200';
+      const safeCode = invoiceCode ? encodeURIComponent(invoiceCode) : '';
+      const url = `${origin}/invoice/${bookingId}${safeCode ? `?code=${safeCode}` : ''}`;
+      // encode the full URL in QR so other devices can open it in browser
+      this.qrDataUrl = await QRCode.toDataURL(url, { margin: 1, width: 200 });
     } catch (err) {
       console.error('QR creation error', err);
     }
