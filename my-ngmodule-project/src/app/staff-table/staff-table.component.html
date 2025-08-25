@@ -38,6 +38,29 @@
       <td mat-cell *matCellDef="let staff">{{ staff.role }}</td>
     </ng-container>
 
+<ng-container matColumnDef="venueName">
+  <th mat-header-cell *matHeaderCellDef> Venue </th>
+  <td mat-cell *matCellDef="let staff">
+    {{ staff.venueName }}
+  </td>
+</ng-container>
+
+    
+    <ng-container matColumnDef="assignVenue">
+  <th mat-header-cell *matHeaderCellDef> Assign Venue </th>
+  <td mat-cell *matCellDef="let staff">
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Select Venue</mat-label>
+      <mat-select (selectionChange)="onAssignVenue(staff, $event.value)">
+        <mat-option *ngFor="let venue of venueList" [value]="venue.venueId">
+          {{ venue.venueName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </td>
+</ng-container>
+
+
    <!-- Actions Column -->
 <ng-container matColumnDef="actions">
   <th mat-header-cell *matHeaderCellDef> Actions </th>

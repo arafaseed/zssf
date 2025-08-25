@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { StaffViewService } from '../Services/staff-view.service';
+import { Staff, StaffViewService } from '../Services/staff-view.service';
 import { MatDialog } from '@angular/material/dialog';
 import { StaffDialogComponent } from '../staff-dialog.component/staff-dialog.component';
 
@@ -19,9 +19,13 @@ export class StaffTableComponent implements OnInit {
     'fullName',
     'phoneNumber',
     'role',
-    'actions'
+    'venueName',
+    'assignVenue',
+    'actions',
+    
   ];
   router: any;
+venueList: any;
 
   constructor(
     private staffService: StaffViewService,
@@ -30,19 +34,60 @@ export class StaffTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadStaff();
+    this.loadVenues();
   }
 
-  /** Load all staff from service */
-  loadStaff(): void {
-    this.staffService.getAllStaff().subscribe({
+  /** Load all staff from API */
+loadStaff(): void {
+  this.staffService.getAllStaff().subscribe(staffList => {
+    this.staffList = staffList;
+
+    this.staffList.forEach(staff => {
+      this.staffService.getAssignedVenues(staff.staffId).subscribe(venues => {
+        // Show all assigned venues
+        staff.assignedVenues = venues || [];
+        staff.venueName = staff.assignedVenues.length
+          ? staff.assignedVenues.map((v: { venueName: any; }) => v.venueName).join(', ')
+          : 'Not Assigned';
+      });
+    });
+  });
+}
+
+
+  /** Load all venues from API */
+  loadVenues(): void {
+    this.staffService.getAllVenues().subscribe({
       next: (data) => {
-        this.staffList = data;
+        this.venueList = data;
       },
       error: (err) => {
-        console.error('❌ Error loading staff:', err);
+        console.error("❌ Error loading venues:", err);
       }
     });
   }
+
+  /** Assign staff to a venue */
+ onAssignVenue(staff: Staff, venueId: number): void {
+  if (!venueId || !staff?.staffId) {
+    console.error("❌ Missing staffId or venueId");
+    return;
+  }
+
+  this.staffService.assignStaffToVenue(staff.staffId, venueId).subscribe({
+    next: () => {
+      alert(`✅ ${staff.fullName} assigned successfully`);
+      this.loadStaff();   // 🔥 refresh staff list automatically
+    },
+    error: (err) => {
+      console.error("❌ Error assigning staff to venue:", err);
+      alert("❌ Failed to assign staff to venue");
+    }
+  });
+}
+
+
+
 
   /** Delete staff */
   deleteStaff(staffId: number): void {
@@ -58,6 +103,9 @@ export class StaffTableComponent implements OnInit {
       });
     }
   }
+
+ 
+
 
   /** Open dialog for Add / Edit */
   openAddStaffDialog(staff?: any): void {
