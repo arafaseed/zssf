@@ -68,16 +68,28 @@ loadStaff(): void {
   }
 
   /** Assign staff to a venue */
- onAssignVenue(staff: Staff, venueId: number): void {
+/** Assign staff to a venue */
+onAssignVenue(staff: Staff, venueId: number): void {
   if (!venueId || !staff?.staffId) {
     console.error("❌ Missing staffId or venueId");
     return;
   }
 
+  // 🔍 Check kama venue tayari ipo kwenye assignedVenues
+  const alreadyAssigned = staff.assignedVenues?.some(
+    (v: any) => v.venueId === venueId
+  );
+
+  if (alreadyAssigned) {
+    alert(`⚠️ ${staff.fullName} is already assigned to this venue`);
+    return;
+  }
+
+  // Proceed with API call
   this.staffService.assignStaffToVenue(staff.staffId, venueId).subscribe({
     next: () => {
       alert(`✅ ${staff.fullName} assigned successfully`);
-      this.loadStaff();   // 🔥 refresh staff list automatically
+      this.loadStaff();   // 🔄 refresh staff list
     },
     error: (err) => {
       console.error("❌ Error assigning staff to venue:", err);
