@@ -17,6 +17,7 @@ import { MatCardModule }   from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { InvoiceScannerComponent } from './invoice-scanner/invoice-scanner.component';
 import { UnCheckedListComponent } from './home/un-checked-list/un-checked-list.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 // … other imports
 
 
@@ -43,7 +44,8 @@ import { UnCheckedListComponent } from './home/un-checked-list/un-checked-list.c
     HttpClientModule,
     RouterModule,
     MatCardModule,
-    MatButtonModule
+    MatButtonModule,
+    MatProgressSpinnerModule
 ],
   exports: [DashboardSwitchComponent]
 

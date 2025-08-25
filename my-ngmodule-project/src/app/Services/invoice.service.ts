@@ -29,7 +29,8 @@ export class InvoiceService {
   }
 
   // NEW - fetch by invoiceCode (used by scanner)
-  getInvoiceByCode(invoiceCode: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/invoices/view/by-code/${encodeURIComponent(invoiceCode)}`);
-  }
+  getInvoiceByCode(code: string) {
+  const url = `${this.baseUrl}/invoices/view/by-code/${encodeURIComponent(code)}`;
+  return this.http.get<any>(url);
+}
 }
