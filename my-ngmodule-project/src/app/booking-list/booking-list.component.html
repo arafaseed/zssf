@@ -38,17 +38,19 @@
         <tr *ngFor="let booking of filteredResults">
           <td>{{ booking.bookingCode }}</td>
           <td>{{ booking.venueName}}</td>
-          <td>{{ booking.customer.fullName }}</td>
+          <td>{{ booking.customer.customerName }}</td>
           <td>{{ booking.startDate }}</td>
           <td>{{ booking.startTime }}</td>
           <td>{{ booking.endDate }}</td>
           <td>{{ booking.endTime }}</td>
           <td [style.color]="
-            booking.status === 'CANCELLED' ? 'red' :
-            booking.status === 'COMPLETE' ? 'green' :
-            booking.status === 'PENDING' ? 'goldenrod' : 'black'
+            booking.bookingStatus === 'CANCELLED' ? 'red' :
+            booking.bookingStatus === 'EXPIRED' ? 'red' :
+            booking.bookingStatus === 'IN_PROGRESS' ? 'blue' :
+            booking.bookingStatus === 'COMPLETE' ? 'green' :
+            booking.bookingStatus === 'PENDING' ? 'goldenrod' : 'black'
           ">
-            {{ booking.status }}
+            {{ booking.bookingStatus }}
           </td>
 
         </tr>

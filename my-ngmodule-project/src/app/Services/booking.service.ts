@@ -10,13 +10,13 @@ export interface Booking {
   startTime: string;
   endDate: string | null;
   endTime: string;
-  status: 'PENDING' | 'COMPLETE' | 'CANCELLED';
+  bookingStatus: 'EXPIRED'|'IN_PROGRESS'|'PENDING' | 'COMPLETE' | 'CANCELLED';
   venueId: number;
   venueName?: string; // ADD THIS
   activityName?: string; // ADD THIS (if you have activityId)
   customer: {
     customerId: number;
-    fullName: string;
+    customerName: string;
   };
 }
 
