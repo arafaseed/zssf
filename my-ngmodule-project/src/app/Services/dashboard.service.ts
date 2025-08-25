@@ -44,7 +44,7 @@ export class DashboardService {
   constructor(private http: HttpClient) {}
 
   getAllBookings(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/bookings/all`);
+    return this.http.get<any[]>(`${this.apiUrl}/bookings/view-all`);
   }
 
   searchBookings(phone: string, date: string): Observable<any[]> {

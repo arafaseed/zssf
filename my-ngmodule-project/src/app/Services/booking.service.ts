@@ -48,7 +48,7 @@ export class BookingService {
 
   // Fetch and cache all bookings
   fetchBookings(): Observable<Booking[]> {
-    return this.http.get<Booking[]>(`${this.apiUrl}`).pipe(
+    return this.http.get<Booking[]>(`${this.apiUrl}/view-all`).pipe(
       tap((bookings) => this.bookingsSubject.next(bookings))
     );
   }

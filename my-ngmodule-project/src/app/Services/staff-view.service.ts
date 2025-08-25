@@ -34,13 +34,13 @@ export class StaffViewService {
   }
 
   addStaff(staffData: Staff): Observable<Staff> {
-  return this.http.post<Staff>(`${this.apiUrl}`, staffData, { headers: this.getAuthHeaders() });
+  return this.http.post<Staff>(`${this.apiUrl}/add`, staffData, { headers: this.getAuthHeaders() });
 }
 
 
   // Staff APIs
   getAllStaff(): Observable<Staff[]> {
-    return this.http.get<Staff[]>(`${this.apiUrl}`, { headers: this.getAuthHeaders() });
+    return this.http.get<Staff[]>(`${this.apiUrl}/all`, { headers: this.getAuthHeaders() });
   }
 
   getStaffById(id: number): Observable<Staff> {
@@ -48,7 +48,7 @@ export class StaffViewService {
   }
 
   createStaff(staffData: Staff): Observable<Staff> {
-    return this.http.post<Staff>(`${this.apiUrl}`, staffData, { headers: this.getAuthHeaders() });
+    return this.http.post<Staff>(`${this.apiUrl}/add`, staffData, { headers: this.getAuthHeaders() });
   }
 
   updateStaff(id: number, staffData: Staff): Observable<Staff> {
@@ -61,6 +61,6 @@ export class StaffViewService {
 
   // Venue API
   getAllVenues(): Observable<Venue[]> {
-    return this.http.get<Venue[]>(`${this.venueApiUrl}`, { headers: this.getAuthHeaders() });
+    return this.http.get<Venue[]>(`${this.venueApiUrl}/view/all`, { headers: this.getAuthHeaders() });
   }
 }
