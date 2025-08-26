@@ -82,20 +82,28 @@ export class BookingModalComponent implements OnInit {
     this.attachedFile = f;
   }
 
-  openEmployeeVerify() {
-  const dlg = this.dialog.open(EmployeeVerifyComponent, { width: '420px' });
+  openEmployeeVerify(event: any) {
+  // If user is trying to check the box
+  if (event.checked) {
+    const dlg = this.dialog.open(EmployeeVerifyComponent, { width: '420px' });
 
-  dlg.afterClosed().subscribe((result: any) => {
-    if (result && result.verified) {
-      this.employeeVerified = true;
-      // Use the discount rate provided by backend
-      this.discountRate = result.discountRate ?? 0;
-    } else {
-      this.employeeVerified = false;
-      this.discountRate = 0;
-    }
-  });
+    dlg.afterClosed().subscribe((result: any) => {
+      if (result && result.verified) {
+        this.employeeVerified = true;
+        this.discountRate = result.discountRate ?? 0;
+      } else {
+        // Verification failed → reset checkbox
+        this.employeeVerified = false;
+        this.discountRate = 0;
+      }
+    });
+  } else {
+    // If user manually unchecks the box
+    this.employeeVerified = false;
+    this.discountRate = 0;
+  }
 }
+
 
 
   buildBookingObject() {

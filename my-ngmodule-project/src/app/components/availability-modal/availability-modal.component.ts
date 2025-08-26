@@ -54,7 +54,7 @@ export class AvailabilityModalComponent implements OnInit {
         this.loading = false;
         this.availability = res || [];
         this.allAvailable = this.availability.length > 0 && this.availability.every(it => it.flag === 'AVAILABLE_FOR_BOOKING');
-        // NOTE: do not auto-close. We want the user to choose manually even if allAvailable.
+        
       },
       error: err => {
         this.loading = false;

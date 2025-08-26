@@ -1,68 +1,74 @@
 <app-header></app-header>
+
 <div class="flex justify-center bg-gray-100 px-4 py-6">
   <div class="w-full max-w-2xl bg-white rounded-2xl shadow-md p-6 sm:p-8 mt-6">
-    <h2 class="text-2xl sm:text-3xl font-bold text-center text-[#2A7261] mb-6">
-      Feedback & Comments
+
+    <h2 class="text-2xl sm:text-3xl font-bold text-center text-[#2A7261] mb-4">
+      Customer Feedback
     </h2>
 
-    <form (submit)="submitFeedback()" #feedbackForm="ngForm" class="space-y-5">
-      <!-- Name -->
-      <div>
-        <label for="name" class="block mb-1 font-medium text-sm sm:text-base text-gray-700">Name</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          [(ngModel)]="feedback.name"
-          required
-          class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#2A7261]"
-        />
+    <p class="text-sm text-gray-700 mb-4">
+      We value your voice. Tell us about your experience booking halls on our platform —
+      whether it’s a quick comment, a positive feedback, or a complaint. We use your
+      input to improve booking flow, availability, venue handover and support.
+    </p>
+
+    <p class="text-sm text-gray-600 mb-6 italic">
+      Tip: choose <strong>Comment</strong> for general notes, <strong>Feedback</strong> to praise or suggest improvements,
+      or <strong>Complaint</strong> for service issues (delivery, condition, scheduling).
+    </p>
+
+    <form [formGroup]="form" (ngSubmit)="submitFeedback()" class="space-y-5">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <mat-form-field  class="w-full">
+          <mat-label>Full Name </mat-label>
+          <input matInput formControlName="name" placeholder="Your name">
+          <mat-error *ngIf="form.controls['name'].hasError('required')">Your name is required</mat-error>
+
+        </mat-form-field>
+
+        <mat-form-field class="w-full">
+          <mat-label>Phone (required)</mat-label>
+          <input matInput formControlName="phone" placeholder="07xx..." required>
+          <mat-error *ngIf="form.controls['phone'].hasError('required')">Required phone number must be in 10 digits </mat-error>
+        </mat-form-field>
       </div>
 
-      <!-- Email -->
+      <mat-form-field  class="w-full">
+        <mat-label>Email (optional)</mat-label>
+        <input matInput formControlName="email" placeholder="you@example.com">
+        <mat-error *ngIf="form.controls['email'].hasError('email')">Enter a valid email</mat-error>
+      </mat-form-field>
+
       <div>
-        <label for="email" class="block mb-1 font-medium text-sm sm:text-base text-gray-700">Email</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          [(ngModel)]="feedback.email"
-          required
-          class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#2A7261]"
-        />
+        <label class="block mb-2 text-sm font-medium text-gray-700">Type</label>
+        <mat-radio-group formControlName="type" class="flex gap-4">
+          <mat-radio-button value="COMMENT">Comment</mat-radio-button>
+          <mat-radio-button value="FEEDBACK">Feedback</mat-radio-button>
+          <mat-radio-button value="COMPLAINT">Complaint</mat-radio-button>
+        </mat-radio-group>
       </div>
 
-      <!-- Comment -->
-      <div>
-        <label for="comment" class="block mb-1 font-medium text-sm sm:text-base text-gray-700">Comment</label>
-        <textarea
-          id="comment"
-          name="comment"
-          rows="4"
-          [(ngModel)]="feedback.comment"
-          required
-          class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#2A7261]"
-        ></textarea>
-      </div>
+      <mat-form-field class="w-full">
+        <mat-label>Message</mat-label>
+        <textarea matInput rows="5" formControlName="comment" placeholder="Write your message here..."></textarea>
+        <mat-error *ngIf="form.controls['comment'].hasError('required')">Message required</mat-error>
+      </mat-form-field>
 
-      <!-- Submit + Cancel Buttons -->
-      <div class="flex space-x-4">
-        <button
-          type="submit"
-          [disabled]="!feedbackForm.form.valid"
-          class="flex-1 bg-[#2A7261] text-white py-2 rounded-xl text-sm sm:text-base font-semibold hover:bg-[#256354] transition-all disabled:opacity-50"
-        >
-          Submit Feedback
+      <div class="flex gap-4">
+        <button mat-flat-button color="primary" type="submit" [disabled]="sending" class="flex-1">
+          <mat-icon class="mr-2">send</mat-icon>
+          {{ sending ? 'Sending…' : 'Submit Feedback' }}
         </button>
 
-        <button
-          type="button"
-          (click)="onCancel()"
-          class="flex-1 border border-gray-300 text-[#2A7261] py-2 rounded-xl text-sm sm:text-base font-semibold hover:bg-gray-200 transition-all"
-        >
-          Cancel
-        </button>
+        <button mat-stroked-button type="button" (click)="onCancel()" class="flex-1">Cancel</button>
+      </div>
+
+      <div *ngIf="successMessage" class="mt-3 p-3 bg-green-50 rounded text-green-800">
+        {{ successMessage }}
       </div>
     </form>
   </div>
 </div>
+
+<app-footer></app-footer>

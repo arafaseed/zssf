@@ -1,5 +1,4 @@
-// src/app/Services/invoice.service.ts
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -30,7 +29,8 @@ export class InvoiceService {
   }
 
   // NEW - fetch by invoiceCode (used by scanner)
-  getInvoiceByCode(invoiceCode: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/invoices/view/by-code/${encodeURIComponent(invoiceCode)}`);
-  }
+  getInvoiceByCode(code: string) {
+  const url = `${this.baseUrl}/invoices/view/by-code/${encodeURIComponent(code)}`;
+  return this.http.get<any>(url);
+}
 }

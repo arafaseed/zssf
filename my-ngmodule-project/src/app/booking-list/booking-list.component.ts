@@ -39,13 +39,13 @@ fetchBookings(): void {
 
 
 
-  filterByStatus(status: string): void {
-    this.currentStatus = status;
+  filterByStatus(bookingStatus: string): void {
+    this.currentStatus = bookingStatus;
     this.searchDate = ''; // reset search
-    if (status === 'ALL') {
+    if (bookingStatus === 'ALL') {
       this.filteredResults = [...this.bookings];
     } else {
-      this.filteredResults = this.bookings.filter(b => b.status === status);
+      this.filteredResults = this.bookings.filter(b => b.bookingStatus === bookingStatus);
     }
   }
 
@@ -53,11 +53,11 @@ fetchBookings(): void {
     if (!this.searchDate) {
       this.filteredResults = this.currentStatus === 'ALL'
         ? [...this.bookings]
-        : this.bookings.filter(b => b.status === this.currentStatus);
+        : this.bookings.filter(b => b.bookingStatus === this.currentStatus);
     } else {
       this.filteredResults = this.bookings.filter(b =>
         b.startDate === this.searchDate &&
-        (this.currentStatus === 'ALL' || b.status === this.currentStatus)
+        (this.currentStatus === 'ALL' || b.bookingStatus === this.currentStatus)
       );
     }
   }

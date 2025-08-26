@@ -57,18 +57,6 @@ export interface Building {
   venues: Venue[];
 }
 
-// export interface Venue {
-//   venueId: number;
-//   venueName: string;
-//   capacity: number;
-//   description: string[];
-//   venueType: string | null;
-//   address?: string | null;
-//   venueImages: string[];
-//   buildingId: number;
-//   optionalServiceIds: number[];
-//   activityIds: number[];
-// }
 
 export interface Building {
   buildingId: number;
@@ -91,3 +79,17 @@ export interface OptionalService {
   price: number;
   venueId?: number;
 }
+
+export type FeedbackType = 'COMMENT' | 'FEEDBACK' | 'COMPLAINT';
+
+export interface FeedbackDto {
+  id?: number;
+  name?: string;
+  email?: string | null;
+  phone: string;
+  comment: string;
+  type: FeedbackType;
+  archived?: boolean;
+  createdAt?: string; 
+}
+

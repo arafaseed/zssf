@@ -1,0 +1,64 @@
+<div class="p-6">
+  <div class="flex items-center justify-between mb-4">
+    <h3 class="text-xl font-semibold">Customer Submissions</h3>
+    <div class="flex items-center gap-4">
+      <mat-checkbox [(ngModel)]="showArchived" (change)="reload()">Show archived</mat-checkbox>
+      <button mat-icon-button (click)="reload()"><mat-icon>refresh</mat-icon></button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="py-8 text-center">Loading…</div>
+
+  <table mat-table [dataSource]="feedbacks" class="mat-elevation-z2 w-full" *ngIf="!loading">
+
+    <!-- Date -->
+    <ng-container matColumnDef="createdAt">
+      <th mat-header-cell *matHeaderCellDef> Date </th>
+      <td mat-cell *matCellDef="let f"> {{ f.createdAt | date:'medium' }} </td>
+    </ng-container>
+
+    <!-- Type -->
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef> Type </th>
+      <td mat-cell *matCellDef="let f"> {{ f.type }} </td>
+    </ng-container>
+
+    <!-- Name -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let f"> {{ f.name || '—' }} </td>
+    </ng-container>
+
+    <!-- Phone -->
+    <ng-container matColumnDef="phone">
+      <th mat-header-cell *matHeaderCellDef> Phone </th>
+      <td mat-cell *matCellDef="let f"> {{ f.phone }} </td>
+    </ng-container>
+
+    <!-- Excerpt -->
+    <ng-container matColumnDef="comment">
+      <th mat-header-cell *matHeaderCellDef> Message </th>
+      <td mat-cell *matCellDef="let f"> {{ f.comment | slice:0:80 }}{{ f.comment.length > 80 ? '…' : '' }} </td>
+    </ng-container>
+
+    <!-- Actions -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let f">
+        <button mat-icon-button color="primary" (click)="view(f)" title="View">
+          <mat-icon>visibility</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="toggleArchived(f)" title="Archive / Unarchive">
+          <mat-icon>{{f.archived ? 'unarchive' : 'archive'}}</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="['createdAt','type','name','phone','comment','actions']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['createdAt','type','name','phone','comment','actions'];"></tr>
+  </table>
+
+  <div *ngIf="!loading && feedbacks.length === 0" class="py-8 text-center text-gray-500">
+    No submissions found.
+  </div>
+</div>

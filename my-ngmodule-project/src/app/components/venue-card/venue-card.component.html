@@ -1,24 +1,39 @@
 <mat-card (click)="openVenue()"
-          class="transition-transform transform rounded-lg shadow-md cursor-pointer w-72 md:w-80 hover:shadow-xl hover:-translate-y-1">
+  class="transition-transform transform rounded-lg shadow-md cursor-pointer w-72 md:w-80 hover:shadow-xl hover:-translate-y-1"
+  style="font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;">
+
   <div class="w-full overflow-hidden rounded-t-lg h-44 md:h-48">
     <img [src]="imageUrl" alt="{{venue.venueName}}" class="object-cover w-full h-full">
   </div>
 
-  <mat-card-content class="p-4">
-    <h3 class="mb-1 text-lg font-semibold leading-tight truncate">{{ venue.venueName }}</h3>
-    <p class="mb-3 text-sm truncate text-slate-500">{{ venue.venueType ?? 'Venue' }}</p>
+  <mat-card-content class="p-4 mt-3">
+    <!-- Title row with icon -->
+    <h3 class="mb-1 text-lg font-semibold leading-tight truncate flex items-center gap-2 text-slate-900">
+      <mat-icon aria-hidden="true" class="text-base text-blue-600">location_city</mat-icon>
+      <span class="truncate">{{ venue.venueName }}</span>
+    </h3>
+
+    <!-- Venue type with icon -->
+    <p class="mb-3 text-sm truncate text-slate-600 flex items-center gap-2">
+      <mat-icon aria-hidden="true" class="text-sm text-blue-600">category</mat-icon>
+      <span class="truncate">{{ venue.venueType ?? 'Venue' }}</span>
+    </p>
 
     <div class="flex items-center gap-3 mb-3 text-sm text-slate-600">
       <mat-icon class="text-base text-blue-600">people</mat-icon>
-      <span>Capacity: {{ venue.capacity }}</span>
+      <span> {{ venue.capacity }} guests</span>
     </div>
 
     <div class="flex items-center justify-between">
       <div class="text-sm font-medium">
-        <span class="block text-xs text-slate-600">From</span>
-        <span *ngIf="minPrice !== null">{{ minPrice | number:'1.0-0' }} TZS</span>
-        <span *ngIf="minPrice === null" class="text-slate-400">Price not available</span>
-        <span class="block text-xs text-slate-500">/ Day</span>
+        <!-- Price line with icon -->
+        <div class="flex items-baseline gap-2">
+          <mat-icon aria-hidden="true" class="text-sm text-blue-600">paid</mat-icon>
+          <span class="block text-xs text-slate-600">From</span>
+          <span *ngIf="minPrice !== null" class="text-slate-900">{{ minPrice | number:'1.0-0' }} TZS</span>
+          <span class="block text-xs text-slate-500">/ Day</span>
+          <span *ngIf="minPrice === null" class="text-slate-400">Price not available</span>
+        </div>
       </div>
 
       <button mat-stroked-button color="primary" class="text-sm">View</button>

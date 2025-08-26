@@ -1,39 +1,40 @@
-/* page layout */
-.page-container {
+/* Material page layout */
+.material-page {
   padding: 1rem;
 }
-.page-grid {
-  display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 1.5rem;
+
+/* Using a simple flex grid to create a half/half layout that collapses */
+.mat-grid {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
 }
 
-/* collapse to single column on small screens */
-@media (max-width: 900px) {
-  .page-grid {
-    grid-template-columns: 1fr;
+/* left and right side equal width on wide screens */
+.left-card {
+  flex: 1 1 40%;
+  min-width: 300px;
+}
+
+.right-column {
+  flex: 1 1 60%;
+  min-width: 300px;
+}
+
+
+/* ensure right column content doesn't overflow */
+.invoice-card {
+   width: 100%; 
+   box-sizing: border-box; 
   }
-}
 
-/* left panel (guidance) */
-.left-panel {
-  background: #ffffff;
-  border: 1px solid #e6eef0;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-  max-height: calc(100vh - 120px);
-  overflow: auto;
+/* Collapse to single column on small screens */
+@media (max-width: 960px) {
+  .mat-grid {
+    flex-direction: column;
+  }
+  .left-card, .right-column { flex: unset; width: 100%; }
 }
-.panel-title {
-  font-weight: 700;
-  color: #0bc5ea;
-  margin-bottom: 0.5rem;
-}
-.guidance ol { margin-left: 1rem; }
-
-/* right area */
-.right-panel {}
 
 /* A4 viewport wrapper - this holds an element that is strictly A4 sized */
 .a4-viewport {
@@ -45,18 +46,18 @@
   padding: 1rem 0;
 }
 
-/* Container set to A4 physical size */
+/* Container set to A4 physical size — unchanged dimensions for print — but visually scaled */
 .invoice-container {
   width: 210mm;            /* A4 width */
   min-height: 297mm;      /* A4 height */
   margin: 0 auto;
-  padding: 20mm;          /* page margin */
+  padding: 10mm;          /* page margin */
   background: #ffffff;
   border-radius: 6px;
   box-shadow: 0 8px 24px rgba(16,24,40,0.08);
-  font-family: "Segoe UI", sans-serif;
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   color: #334155;
-  border: 2px solid #81e6d9;
+  border: 2px solid #00b5d8; /* teal accent */
   box-sizing: border-box;
   transform-origin: top center;
 }
@@ -72,26 +73,17 @@
 .header-row .logo-right {
   width: 70px;
 }
-.logo {
-  width: 100%;
-  height: auto;
-}
-.title-block {
-  text-align:center;
-  flex:1;
-}
+.logo { width: 100%; height: auto; }
+.title-block { text-align:center; flex:1; }
 .invoice-header h1 {
   font-size: 1.4rem;
   color: #00b5d8;
   letter-spacing: 0.08em;
   margin-bottom: 0.25rem;
 }
-.invoice-header .invoice-code {
-  font-size: 0.85rem;
-  color: #64748b;
-}
+.invoice-header .invoice-code { font-size: 0.85rem; color: #64748b; }
 
-/* Sections (kept from your original CSS with slight adjustments) */
+/* Sections */
 .invoice-section { margin-bottom: 0.8rem; }
 .invoice-section h2 {
   font-size: 1rem;
@@ -121,18 +113,18 @@
 /* QR */
 .qr-row {
   display:flex;
-  justify-content:space-between;
+  justify-content:flex-right;
   align-items:center;
   margin-top:1rem;
 }
 .qr-block img { width:110px; height:110px; object-fit:contain; border:1px solid #e2f9f5; border-radius:6px; padding:6px; background:#fff; }
 .qr-caption { font-size:0.8rem; color:#64748b; text-align:center; margin-top:6px; }
 
-/* buttons */
-.btn { padding:0.5rem 0.9rem; border-radius:6px; cursor:pointer; border:none; }
-.btn-primary { background:#00b5d8; color:white; font-weight:600; }
+/* controls */
+.control-actions { display:flex; gap:0.5rem; margin-top: 1rem; }
+button[mat-flat-button] { font-weight: 600; }
 
-/* Modals (simple) */
+/* modals */
 .modal {
   position: fixed;
   inset: 0;
@@ -154,5 +146,77 @@
 .modal-close { position:absolute; top:8px; right:8px; border:none; background:transparent; font-size:1.2rem; cursor:pointer; }
 
 /* small states */
-.loading { text-align:center; margin:1rem 0; color:#64748b; }
+.loading { text-align:center; margin:1rem 0; color:#64748b; display:flex; align-items:center; gap:0.5rem; justify-content:center; }
 .invalid-msg { color:#e53e3e; text-align:center; margin-top:1rem; font-weight:600; }
+
+/* headings */
+.invoice-heading { text-align:center; margin: 0.5rem 0 1.2rem 0; color:#008fa8; font-weight:700; }
+.panel-title { color:#00b5d8; font-weight:700; }
+
+/* staff role */
+.role { margin-top: 0.6rem; font-size: 0.85rem; font-weight:600; color:#475569; }
+.staff-role { color:#0284c7; font-weight:700; }
+
+/* Staff area wrapper */
+.staff-area {
+  padding: 2rem;
+  background: #fafafa; /* light Material background */
+}
+
+/* Section title */
+.staff-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #3f51b5; /* Material Indigo */
+  text-align: center;
+}
+
+/* Grid layout for staff cards */
+.staff-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Individual staff card */
+.staff-card {
+  border-radius: 12px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.staff-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.18);
+}
+
+/* Card title (name) */
+.staff-card mat-card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #212121;
+  margin-bottom: 0.5rem;
+}
+
+/* Card content */
+.staff-card mat-card-content p {
+  margin: 0.25rem 0;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* Role style */
+.role {
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+/* Special highlight for STAFF role */
+.staff-role {
+  color: #388e3c; /* Material Green */
+}

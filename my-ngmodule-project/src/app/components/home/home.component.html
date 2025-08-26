@@ -1,44 +1,57 @@
 <app-header></app-header>
-<div class="min-h-screen bg-slate-50">
+<div class="min-h-screen bg-slate-50" style="font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;">
 
   <div class="p-6 mx-auto md:p-10 max-w-7xl">
     <!-- search -->
     <div class="mb-8">
       <mat-form-field class="w-full">
-        <input matInput placeholder="Search by city, building, venue, or location address" class="px-4  border rounded-lg h-11">
+        <mat-icon matPrefix class="text-slate-500">search</mat-icon>
+        <input 
+          matInput 
+          placeholder="Search by city, building, venue, or location address"
+          [(ngModel)]="searchTerm"
+          (input)="filterBuildings()" 
+          class="px-4 border rounded-lg h-11">
       </mat-form-field>
     </div>
 
     <!-- buildings -->
-    <div *ngIf="loading" class="py-12 text-center">Loading buildings…</div>
+    <div *ngIf="loading" class="py-12 text-lg text-center text-slate-700">Loading buildings…</div>
 
-    <section *ngFor="let b of buildings" class="mb-12">
-      <div class="flex items-center justify-between mb-4">
-        <div class="bg-green-50 w-full rounded-lg shadow-md p-3">
-          <h2 class="text-2xl font-semibold text-slate-800">{{ b.buildingName }}</h2>
-          <p class="text-sm text-slate-500">{{ b.address }}</p>
+    <section *ngFor="let b of filteredBuildings" class="mb-12">
+      <div class="flex flex-col gap-3 mb-4 md:flex-row md:items-center md:justify-between">
+        <div class="w-full p-3 rounded-lg shadow-md bg-green-50">
+          <h2 class="flex items-center gap-2 text-2xl font-semibold text-slate-800">
+            <mat-icon class="text-blue-600">business</mat-icon>
+            {{ b.buildingName }}
+          </h2>
+          <p class="flex items-center gap-2 mt-1 text-sm text-slate-500">
+            <mat-icon class="text-blue-600">location_on</mat-icon>
+            {{ b.address }}
+          </p>
         </div>
         <!-- desktop controls -->
         <div class="hidden gap-2 md:flex">
           <button mat-icon-button (click)="scroll(scrollRow.nativeElement, 'left')" *ngFor="let scrollRow of scrollRows">
-            <!-- placeholder; we set actual handlers inline per row below -->
+            <!-- placeholder remains -->
           </button>
         </div>
       </div>
 
       <div class="relative">
-        <!-- arrow buttons for desktop (positioned over row) -->
-        <button mat-icon-button class="absolute left-0 z-10 hidden -translate-y-1/2 shadow md:flex top-1/2 bg-white/80"
+        <!-- arrow buttons for desktop -->
+        <button mat-icon-button 
+                class="absolute left-0 z-10 hidden -translate-y-1/2 shadow md:flex top-1/2 bg-white/80"
                 (click)="scroll(rowRef, 'left')">
           <mat-icon>chevron_left</mat-icon>
         </button>
-
-        <button mat-icon-button class="absolute right-0 z-10 hidden -translate-y-1/2 shadow md:flex top-1/2 bg-white/80"
+        <button mat-icon-button 
+                class="absolute right-0 z-10 hidden -translate-y-1/2 shadow md:flex top-1/2 bg-white/80"
                 (click)="scroll(rowRef, 'right')">
           <mat-icon>chevron_right</mat-icon>
         </button>
 
-        <!-- the scroll row -->
+        <!-- scroll row -->
         <div #rowRef class="flex gap-6 px-1 py-2 overflow-x-auto snap-x snap-mandatory scroll-smooth scrollbar-hide">
           <ng-container *ngFor="let v of b.venues">
             <div class="flex-shrink-0 snap-start">
@@ -49,8 +62,12 @@
 
         <!-- mobile buttons -->
         <div class="flex justify-end gap-2 mt-3 md:hidden">
-          <button mat-icon-button (click)="scroll(rowRef, 'left')"><mat-icon>chevron_left</mat-icon></button>
-          <button mat-icon-button (click)="scroll(rowRef, 'right')"><mat-icon>chevron_right</mat-icon></button>
+          <button mat-icon-button (click)="scroll(rowRef, 'left')">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+          <button mat-icon-button (click)="scroll(rowRef, 'right')">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
         </div>
       </div>
     </section>
