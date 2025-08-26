@@ -26,7 +26,7 @@ export class RegisterVenueComponent implements OnInit {
   descriptionInput = '';
 
   // NEW: optional venueType choices (kept optional)
-  venueTypes = ['In door', 'Out door', 'Hybrid'];
+  venueTypes = ['In door', 'Out door'];
 
   constructor(
     private fb: FormBuilder,

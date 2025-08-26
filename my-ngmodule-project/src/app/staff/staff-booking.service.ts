@@ -15,7 +15,7 @@ export interface BookingDTO {
   status: string;
   customer: {
     customerId: number;
-    fullName: string;
+    customerName: string;
     phoneNumber: string;
     address: string;
     email: string;

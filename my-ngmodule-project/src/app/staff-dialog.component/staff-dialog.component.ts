@@ -11,7 +11,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class StaffDialogComponent {
   staffForm: FormGroup;
   isEditMode: boolean;
-  roles: string[] = ['ADMIN', 'MANAGER', 'STAFF']; // 👈 added roles
+  roles: string[] = ['ADMIN', 'STAFF']; // 👈 added roles
 
   constructor(
     private fb: FormBuilder,
