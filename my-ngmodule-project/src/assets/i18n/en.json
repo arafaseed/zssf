@@ -3,7 +3,6 @@
     "phone": "+255 24 2230242 | TOLL FREE: 0800710140",
     "email": "info@zssf.or.tz",
     "whatsapp": "ZSSF WhatsApp"
-   
   },
   "header": {
     "title": "ZANZIBAR SOCIAL SECURITY FUND (ZSSF)",
@@ -13,5 +12,76 @@
     "home": "Home",
     "my_booking": "My Booking",
     "login": "Login"
+  },
+  "terms": {
+    "title": "Terms & Conditions",
+    "lastUpdated": "Last Updated",
+    "disclaimer": "Please read these Terms carefully before using our Hall Booking platform. These Terms are presented in English and Swahili for clarity — where there is any discrepancy, the English version will apply.",
+    "intro": {
+      "heading": "1. Introduction",
+      "text": "These Terms govern the use of our online Hall Booking Reservation System. By using the System you acknowledge and accept these Terms. If you do not accept them, please do not use the System."
+    },
+    "scope": {
+      "heading": "2. Scope of Service",
+      "text": "The System allows users to browse halls, check availability, make reservations and manage bookings. We provide the platform; individual halls are supplied by third-party venue providers whose local rules and availability apply."
+    },
+    "booking": {
+      "heading": "3. Booking Policy",
+      "list": [
+        "Bookings must be made through the System and provide accurate information.",
+        "Reservations become confirmed only after payment or a written payment guarantee is received.",
+        "Special requests (catering, set-up, decorations) must be declared when booking and may require additional fees.",
+        "Capacity limits set by the venue or law must be observed at all times."
+      ]
+    },
+    "payment": {
+      "heading": "4. Payment Terms",
+      "list": [
+        "Accepted payment methods include local mobile money (M-Pesa, TigoPesa, Airtel Money), bank transfer, or card payment where provided.",
+        "Any additional charges (overtime, extra equipment) are billed separately."
+      ]
+    },
+    "cancellation": {
+      "heading": "5. Cancellation & Refund",
+      "list": [
+        "Cancellations must be submitted through the System. Cancellation fees are as shown at booking time.",
+        "Refund timelines depend on the payment method and processing held by payment partners.",
+        "We may refuse refunds where the venue provider’s policy forbids it (you will be informed at booking)."
+      ]
+    },
+    "responsibilities": {
+      "heading": "6. User Responsibilities",
+      "list": [
+        "Users must follow venue rules, local laws and licensing requirements (e.g., alcohol or music permits).",
+        "Users are liable for damage to venue property during their booking and must cover repair or replacement costs.",
+        "All waste must be removed and spaces returned in a clean condition unless cleaning is included."
+      ]
+    },
+    "prohibited": {
+      "heading": "7. Prohibited Activities",
+      "list": [
+        "Illegal activities, unsafe conduct or hazardous materials are strictly forbidden.",
+        "Unlicensed sub-letting, excessive noise beyond permitted hours, or illegal activities are prohibited.",
+        "Breach of terms may lead to eviction and loss of payments; serious violations may be reported to authorities."
+      ]
+    },
+    "liability": {
+      "heading": "8. Liability",
+      "text": "The platform is an intermediary: the venue provider is responsible for venue condition and services. We are not liable for loss, damage or injury arising from events at third-party venues, except as required by law."
+    },
+    "privacy": {
+      "heading": "9. Privacy & Data Protection",
+      "text": "Personal data is processed securely for booking, communications and legal compliance. We do not sell data. Information may be disclosed where required by law."
+    },
+    "modifications": {
+      "heading": "10. Modifications",
+      "text": "We may update these Terms periodically. Updates will be published and notified. Continued use means acceptance."
+    },
+    "law": {
+      "heading": "11. Governing Law",
+      "text": "These Terms are governed by the laws of the United Republic of Tanzania. Disputes will be resolved in competent courts, including Zanzibar where applicable."
+    },
+    "contactTitle": "Contact",
+    "contactText": "For questions or disputes, reach support via the System or call the help-line on the venue page."
   }
 }

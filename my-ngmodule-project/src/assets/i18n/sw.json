@@ -1,9 +1,8 @@
 {
   "contact": {
-    "phone": "+255 24 2230242 |  PIGA BURE: 0800710140",
+    "phone": "+255 24 2230242 | PIGA BURE: 0800710140",
     "email": "info@zssf.or.tz",
     "whatsapp": "ZSSF WhatsApp"
-  
   },
   "header": {
     "title": "MFUKO WA HIFADHI YA JAMII ZANZIBAR (ZSSF)",
@@ -13,5 +12,76 @@
     "home": "Nyumbani",
     "my_booking": "Uhifadhi wangu",
     "login": "Ingia"
+  },
+  "terms": {
+    "title": "Sheria na Masharti",
+    "lastUpdated": "Imesasishwa Mwisho",
+    "disclaimer": "Tafadhali soma Masharti haya kwa makini kabla ya kutumia jukwaa letu la kuhifadhi Ukumbi. Masharti haya yanaonyeshwa kwa Kiingereza na Kiswahili kwa uwazi — pale ambapo kuna tofauti, toleo la Kiingereza ndilo litakalotumika.",
+    "intro": {
+      "heading": "1. Utangulizi",
+      "text": "Masharti haya yanaongoza matumizi ya Mfumo wetu wa kuhifadhi Ukumbi mtandaoni. Kwa kutumia Mfumo unaikubali Masharti haya. Ikiwa hauyakubali, tafadhali usitumie Mfumo."
+    },
+    "scope": {
+      "heading": "2. Uwajibu wa Huduma",
+      "text": "Mfumo unaruhusu watumiaji kuangalia ukumbi, kuona upatikanaji, kuweka nafasi na kusimamia uhifadhi. Sisi tunatoa jukwaa; ukumbi wa mtu wa tatu hutolewa na watoa huduma wenye sheria na upatikanaji wao."
+    },
+    "booking": {
+      "heading": "3. Sera za Hifadhi",
+      "list": [
+        "Uwekaji ni lazima ufanyike kupitia Mfumo na utoe taarifa sahihi.",
+        "Uhifadhi unathibitishwa tu baada ya malipo au dhamana ya malipo iliyoandikwa kupokelewa.",
+        "Maombi maalum (catering, upangaji, mapambo) lazima yatangazwe wakati wa kuhifadhi na yanaweza kusababisha ada za ziada.",
+        "Kikomo cha watu kilichowekwa na ukumbi au sheria lazima kiheshimiwe kila wakati."
+      ]
+    },
+    "payment": {
+      "heading": "4. Masharti ya Malipo",
+      "list": [
+        "Njia za malipo zinazokubaliwa ni pamoja na pesa za simu za ndani (M-Pesa, TigoPesa, Airtel Money), uhamisho wa benki, au kadi (iwapo inatolewa).",
+        "Ada za ziada (saa za ziada, vifaa vya ziada) zitalipwa kwa tofauti."
+      ]
+    },
+    "cancellation": {
+      "heading": "5. Kufuta na Marejesho",
+      "list": [
+        "Kufuta lazima kufanyike kupitia Mfumo. Ada za kufuta zitatangazwa wakati wa uhifadhi.",
+        "Muda wa marejesho hutegemea njia ya malipo na michakato ya watoa huduma wa malipo.",
+        "Tunaweza kukataa kutoa marejesho pale sera ya mtoa ukumbi haijaruhusu (utajulishwa wakati wa uhifadhi)."
+      ]
+    },
+    "responsibilities": {
+      "heading": "6. Majukumu ya Mtumiaji",
+      "list": [
+        "Watumiaji lazima wafuate kanuni za ukumbi, sheria za eneo na leseni zinazohitajika (mfano: pombe au muziki).",
+        "Watumiaji wanawajibika kwa uharibifu wa mali ya ukumbi na lazima walipie gharama za matengenezo au uingizwaji.",
+        "Taka zote lazima zitolewe na eneo lirudishwe safi isipokuwa usafi umejumuishwa."
+      ]
+    },
+    "prohibited": {
+      "heading": "7. Mambo Yasiyoruhusiwa",
+      "list": [
+        "Shughuli haramu, tabia hatarishi au matumizi ya vifaa hatarishi haviruhusiwi.",
+        "Kukodisha tena bila kibali, kelele kupita kiasi baada ya muda ulioruhusiwa, au shughuli haramu haziruhusiwi.",
+        "Uvunjaji wa masharti unaweza kusababisha kuondolewa na kupoteza malipo; ukiukaji mkubwa utaripotiwa kwa mamlaka."
+      ]
+    },
+    "liability": {
+      "heading": "8. Wajibu",
+      "text": "Jukwaa ni mpatanishi: mtoa ukumbi anawajibika kwa hali ya ukumbi na huduma zake. Sisi hatuwajibiki kwa hasara, uharibifu au majeraha yanayotokana na matukio kwenye ukumbi wa mtu wa tatu, isipokuwa pale sheria inapotulazimisha."
+    },
+    "privacy": {
+      "heading": "9. Faragha na Ulinzi wa Data",
+      "text": "Data binafsi inashughulikiwa kwa usalama kwa ajili ya uhifadhi, mawasiliano na kufuata sheria. Hatuzwi data binafsi. Taarifa zinaweza kufichuliwa pale sheria inavyotutaka."
+    },
+    "modifications": {
+      "heading": "10. Mabadiliko ya Masharti",
+      "text": "Tunaweza kusasisha Masharti haya mara kwa mara. Tutachapisha mabadiliko na kuwajulisha watumiaji. Kuendelea kutumia Mfumo kunamaanisha umekubali masharti mapya."
+    },
+    "law": {
+      "heading": "11. Sheria Inayotumika",
+      "text": "Masharti haya yanaendeshwa na sheria za Jamhuri ya Muungano wa Tanzania. Migogoro itatatuliwa katika mahakama husika, ikiwemo Zanzibar inapohitajika."
+    },
+    "contactTitle": "Wasiliana",
+    "contactText": "Kwa maswali au migogoro, wasiliana na msaada kupitia Mfumo au piga simu kwenye nambari ya msaada ya ukumbi."
   }
 }

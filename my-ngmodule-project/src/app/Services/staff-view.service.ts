@@ -3,12 +3,16 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Staff {
+  assignedVenues: any;
+  staffId: any;
+  venue: any;
   id?: number;
   staffIdentification: string;
   fullName: string;
   phoneNumber: string;
   role: string;
   assignedVenueIds?: number[];
+  venueName?: string;       
 }
 
 export interface Venue {
@@ -23,6 +27,7 @@ export class StaffViewService {
  
   private apiUrl = 'http://localhost:8080/api/staff';
   private venueApiUrl = 'http://localhost:8080/api/venues'; // endpoint for venues
+  assignStaffToVenues: any;
 
   constructor(private http: HttpClient) {}
 
@@ -67,4 +72,19 @@ export class StaffViewService {
   getAllVenues(): Observable<Venue[]> {
     return this.http.get<Venue[]>(`${this.venueApiUrl}/view/all`, { headers: this.getAuthHeaders() });
   }
+assignStaffToVenue(staffId: number, venueId: number): Observable<Staff> {
+  return this.http.post<Staff>(
+    `${this.apiUrl}/${staffId}/venues/${venueId}`,
+    {},
+    { headers: this.getAuthHeaders() }
+  );
+}
+
+
+
+getAssignedVenues(staffId: number): Observable<Venue[]> {
+  return this.http.get<Venue[]>(`${this.apiUrl}/${staffId}/venues`, { headers: this.getAuthHeaders() });
+}
+
+
 }

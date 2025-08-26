@@ -1,340 +1,43 @@
 <app-header></app-header>
 
-<div class="max-w-4xl mx-auto p-6 mt-8" 
-     style="font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;">
-
+<div class="max-w-4xl mx-auto p-6 mt-8">
   <mat-card class="shadow-lg rounded-xl">
     <mat-card-content class="p-6 md:p-8">
-      <h1 class="text-3xl font-bold text-center mb-1" style="color: #1f6f5f;">
-        Terms & Conditions / Sheria na Masharti
-      </h1>
-      <p class="text-sm text-gray-500 text-center mb-4">Last Updated: {{ lastUpdated }}</p>
 
+      <h1 class="text-3xl font-bold text-center mb-1" style="color: #1f6f5f;">
+        {{ translation?.title }}
+      </h1>
+      <p class="text-sm text-gray-500 text-center mb-4">
+        {{ translation?.lastUpdated }}: {{ lastUpdated }}
+      </p>
       <p class="text-sm text-gray-700 mb-4">
-        Please read these Terms carefully before using our Hall Booking platform. These Terms are presented in
-        <strong>English</strong> and <strong>Swahili</strong> for clarity — where there is any discrepancy, the English
-        version will apply for interpretation of the contractual clauses, however we strive for parity between both languages.
+        {{ translation?.disclaimer }}
       </p>
 
       <mat-accordion multi>
-        <!-- 1. Introduction -->
-        <mat-expansion-panel>
+        <mat-expansion-panel *ngFor="let section of sections">
           <mat-expansion-panel-header>
-            <mat-panel-title>
-              1. Introduction — Utangulizi
-            </mat-panel-title>
+            <mat-panel-title>{{ translation[section]?.heading }}</mat-panel-title>
           </mat-expansion-panel-header>
 
-          <div class="space-y-3">
-            <div>
-              <h3 class="font-semibold">English</h3>
-              <p class="text-gray-700">
-                These Terms govern the use of our online Hall Booking Reservation System. By using the System you
-                acknowledge and accept these Terms. If you do not accept them, please do not use the System.
-              </p>
-            </div>
+          <!-- If section has a list -->
+          <ul *ngIf="translation[section]?.list?.length">
+            <li *ngFor="let item of translation[section].list">{{ item }}</li>
+          </ul>
 
-            <div>
-              <h3 class="font-semibold">Kiswahili</h3>
-              <p class="text-gray-700">
-                Masharti haya yanaongoza matumizi ya Mfumo wetu wa kuhifadhi Ukumbi mtandaoni. Kwa kutumia Mfumo unaikubali
-                Masharti haya. Ikiwa hauyakubali, tafadhali usitumie Mfumo.
-              </p>
-            </div>
-          </div>
+          <!-- Otherwise display text -->
+          <p *ngIf="!translation[section]?.list?.length">
+            {{ translation[section]?.text }}
+          </p>
         </mat-expansion-panel>
-
-        <!-- 2. Scope of Service -->
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              2. Scope of Service — Uwajibu wa Huduma
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-
-          <div class="space-y-3">
-            <div>
-              <h3 class="font-semibold">English</h3>
-              <p class="text-gray-700">
-                The System allows users to browse halls, check availability, make reservations and manage bookings.
-                We provide the platform; individual halls are supplied by third-party venue providers whose local
-                rules and availability apply.
-              </p>
-            </div>
-
-            <div>
-              <h3 class="font-semibold">Kiswahili</h3>
-              <p class="text-gray-700">
-                Mfumo unaruhusu watumiaji kuangalia ukumbi, kuona upatikanaji, kuwekeza ujenzi na kusimamia uhifadhi.
-                Sisi tunatoa jukwaa; mikataba maalum ya ukumbi hutolewa na watoa huduma wa ukumbi ambao sheria zao na
-                upatikanaji vinatumika.
-              </p>
-            </div>
-          </div>
-        </mat-expansion-panel>
-
-        <!-- 3. Booking Policy -->
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              3. Booking Policy — Sera za Hifadhi
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-
-          <div class="space-y-3">
-            <div>
-              <h3 class="font-semibold">English</h3>
-              <ul class="list-disc pl-5 text-gray-700">
-                <li>Bookings must be made through the System and provide accurate information.</li>
-                <li>Reservations become confirmed only after payment or a written payment guarantee is received.</li>
-                <li>Special requests (catering, set-up, decorations) must be declared when booking and may require additional fees.</li>
-                <li>Capacity limits set by the venue or law must be observed at all times.</li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 class="font-semibold">Kiswahili</h3>
-              <ul class="list-disc pl-5 text-gray-700">
-                <li>Uwekaji ni lazima ufanyike kupitia Mfumo na utoe taarifa sahihi.</li>
-                <li>Uhifadhi unathibitishwa tu baada ya malipo au dhamana ya malipo iliyoandikwa kupokelewa.</li>
-                <li>Maombi maalum (uliarabishwaji, kupanga vikao, mapambo) yanahitaji kutangazwa wakati wa kuhifadhi na yanaweza kusababisha ada za ziada.</li>
-                <li>Hadharani za watu (capacity) zilizowekwa na ukumbi au sheria lazima ziheshimiwe.</li>
-              </ul>
-            </div>
-          </div>
-        </mat-expansion-panel>
-
-        <!-- 4. Payment Terms -->
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              4. Payment Terms — Masharti ya Malipo
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-
-          <div class="space-y-3">
-            <div>
-              <h3 class="font-semibold">English</h3>
-              <p class="text-gray-700">
-                Accepted payment methods include local mobile money (M-Pesa, TigoPesa, Airtel Money), bank transfer,
-                or card payment where provided. Any additional charges (overtime, extra equipment) are billed separately.
-              </p>
-            </div>
-
-            <div>
-              <h3 class="font-semibold">Kiswahili</h3>
-              <p class="text-gray-700">
-                Njia za malipo zinazokubaliwa ni pamoja na pesa za simu za ndani (M-Pesa, TigoPesa, Airtel Money), uhamisho wa benki,
-                au kadi (iwe inatolewa). Ada za ziada (saa za ziada, vifaa vya ziada) zitalipwa kwa tofauti.
-              </p>
-            </div>
-          </div>
-        </mat-expansion-panel>
-
-        <!-- 5. Cancellation & Refund -->
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              5. Cancellation & Refund — Kufuta na Marejesho
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-
-          <div class="space-y-3">
-            <div>
-              <h3 class="font-semibold">English</h3>
-              <ul class="list-disc pl-5 text-gray-700">
-                <li>Cancellations must be submitted through the System. Cancellation fees are as shown at booking time.</li>
-                <li>Refund timelines depend on the payment method and any processing held by payment partners.</li>
-                <li>We may refuse refunds where the venue provider’s policy forbids it (you will be informed at booking).</li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 class="font-semibold">Kiswahili</h3>
-              <ul class="list-disc pl-5 text-gray-700">
-                <li>Matokao ya kuhifadhi lazima yatupwe kupitia Mfumo. Ada za kufuta zitatangazwa wakati wa uhifadhi.</li>
-                <li>Muda wa marejesho hutegemea njia ya malipo na muundo wa watoa huduma wa malipo.</li>
-                <li>Tunaweza kukataa kutoa marejesho pale sera ya mtoa ukumbi haijaruhusu (utajulishwa wakati wa uhifadhi).</li>
-              </ul>
-            </div>
-          </div>
-        </mat-expansion-panel>
-
-        <!-- 6. User Responsibilities -->
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              6. User Responsibilities — Majukumu ya Mtumiaji
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-
-          <div class="space-y-3">
-            <div>
-              <h3 class="font-semibold">English</h3>
-              <ul class="list-disc pl-5 text-gray-700">
-                <li>Users must follow venue rules, local laws and licensing requirements (e.g., alcohol or music permits).</li>
-                <li>Users are liable for damage to venue property during their booking and must cover repair or replacement costs.</li>
-                <li>All waste must be removed and spaces returned in a clean condition unless cleaning is part of the booking package.</li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 class="font-semibold">Kiswahili</h3>
-              <ul class="list-disc pl-5 text-gray-700">
-                <li>Watumiaji lazima wafuate kanuni za ukumbi, sheria za eneo na matakwa ya leseni (mfano: leseni za pombe au muziki).</li>
-                <li>Watumiaji watakuwa na jukumu kwa uharibifu wa mali ya ukumbi na lazima walipie gharama za matengenezo au uingizwaji.</li>
-                <li>Taka zote lazima zitolewe na eneo lirudishwe safi isipokuwa ukaguzi wa kusafisha umepangwa kama sehemu ya uhifadhi.</li>
-              </ul>
-            </div>
-          </div>
-        </mat-expansion-panel>
-
-        <!-- 7. Prohibited Activities -->
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              7. Prohibited Activities — Mambo Yasiyoruhusiwa
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-
-          <div class="space-y-3">
-            <div>
-              <h3 class="font-semibold">English</h3>
-              <ul class="list-disc pl-5 text-gray-700">
-                <li>Illegal activities, unsafe conduct or use of hazardous materials are strictly forbidden.</li>
-                <li>Unlicensed sub-letting, loud disturbances beyond permitted hours, or activities that break local law are prohibited.</li>
-                <li>Any breach may lead to eviction and forfeiture of payments; serious violations will be reported to authorities.</li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 class="font-semibold">Kiswahili</h3>
-              <ul class="list-disc pl-5 text-gray-700">
-                <li>Shughuli haramu, tabia hatarishi au matumizi ya vifaa vinavyoweza kusababisha hatari haviruhusiwi.</li>
-                <li>Kukodisha tena bila kibali, kelele za kupindukia baada ya saa zilizoruhusiwa, au shughuli zinazokiuka sheria za eneo ni marufuku.</li>
-                <li>Uvunjaji wa masharti unaweza kusababisha kuondolewa na kupoteza malipo; ukiukaji mkubwa utaripotiwa kwa mamlaka.</li>
-              </ul>
-            </div>
-          </div>
-        </mat-expansion-panel>
-
-        <!-- 8. Liability -->
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              8. Liability — Wajibu
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-
-          <div class="space-y-3">
-            <div>
-              <h3 class="font-semibold">English</h3>
-              <p class="text-gray-700">
-                The platform is an intermediary: the venue provider is responsible for the physical condition and
-                on-site services. We are not liable for loss, damage or injury arising from events held at third-party venues,
-                except where liability is imposed by applicable law.
-              </p>
-            </div>
-
-            <div>
-              <h3 class="font-semibold">Kiswahili</h3>
-              <p class="text-gray-700">
-                Jukwaa ni mpatanishi: mtoa ukumbi anawajibika kwa hali ya kimwili na huduma za eneo. Sisi hatuwajibiki kwa hasara,
-                uharibifu au jeraha linalotokana na matukio yaliyofanyika kwenye ukumbi wa mtu wa tatu, isipokuwa pale sheria za eneo zinavyotuelekeza vinginevyo.
-              </p>
-            </div>
-          </div>
-        </mat-expansion-panel>
-
-        <!-- 9. Privacy and Data -->
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              9. Privacy & Data Protection — Faragha na Ulinzi wa Data
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-
-          <div class="space-y-3">
-            <div>
-              <h3 class="font-semibold">English</h3>
-              <p class="text-gray-700">
-                Personal data collected for booking will be processed securely and only used for booking management,
-                communications, and legal compliance. We do not sell personal data. We may disclose information where required by law.
-              </p>
-            </div>
-
-            <div>
-              <h3 class="font-semibold">Kiswahili</h3>
-              <p class="text-gray-700">
-                Data binafsi inayokusanywa kwa ajili ya kuhifadhi itashughulikiwa kwa usalama na itatumika tu kwa usimamizi wa uhifadhi,
-                mawasiliano na kutekeleza sheria. Hatuzwi data binafsi. Tunaweza kufichua taarifa pale sheria inavyotutaka.
-              </p>
-            </div>
-          </div>
-        </mat-expansion-panel>
-
-        <!-- 10. Modifications -->
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              10. Modifications — Mabadiliko ya Masharti
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-
-          <div class="space-y-3">
-            <div>
-              <h3 class="font-semibold">English</h3>
-              <p class="text-gray-700">
-                We may update these Terms periodically. We will publish changes on the System and notify users as required.
-                Continued use of the System after changes constitutes acceptance of the revised Terms.
-              </p>
-            </div>
-
-            <div>
-              <h3 class="font-semibold">Kiswahili</h3>
-              <p class="text-gray-700">
-                Tunaweza kusasisha Masharti haya. Tutachapisha mabadiliko katika Mfumo na kuwajulisha watumiaji pale inapohitajika.
-                Kuendelea kutumia Mfumo kunachukuliwa kuwa kukubali Masharti yaliyorekebishwa.
-              </p>
-            </div>
-          </div>
-        </mat-expansion-panel>
-
-        <!-- 11. Governing Law -->
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              11. Governing Law — Sheria Inayotumika
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-
-          <div class="space-y-3">
-            <div>
-              <h3 class="font-semibold">English</h3>
-              <p class="text-gray-700">
-                These Terms are governed by the laws of the United Republic of Tanzania where the venue is located.
-                Disputes will be resolved in the competent courts of the relevant jurisdiction (including Zanzibar where applicable).
-              </p>
-            </div>
-
-            <div>
-              <h3 class="font-semibold">Kiswahili</h3>
-              <p class="text-gray-700">
-                Masharti haya yanaendeshwa kwa sheria za Jamhuri ya Muungano wa Tanzania kwa mahali ukumbi ulipo.
-                Migogoro itatatuliwa katika mahakama za mamlaka husika (ikiwa ni pamoja na Zanzibar inapofaa).
-              </p>
-            </div>
-          </div>
-        </mat-expansion-panel>
-
       </mat-accordion>
 
       <mat-divider class="my-6"></mat-divider>
 
       <div class="text-sm text-gray-600">
-        <p class="mb-2"><strong>Contact :</strong> For questions or disputes regarding these Terms, contact our support team via the System or call the venue help-line published on the venue page.</p>
-        <p class="mb-0"><strong>Wasiliana:</strong> Kwa maswali au migogoro kuhusu Masharti haya, wasiliana na timu yetu ya msaada kupitia Mfumo au piga simu kwa nambari ya msaada iliyotolewa kwenye ukurasa wa ukumbi.</p>
+        <p><strong>{{ translation?.contactTitle }}:</strong> {{ translation?.contactText }}</p>
       </div>
+
     </mat-card-content>
   </mat-card>
 </div>
