@@ -38,7 +38,7 @@ export class ConfirmBookingComponent {
 
     // Apply employee discount here (confirm step has the authority)
     if (this.data.employeeVerified) {
-      booking.discountRate = 0.25;
+      booking.discountRate = booking.discountRate ?? 0;
     } else {
       booking.discountRate = booking.discountRate ?? 0;
     }
