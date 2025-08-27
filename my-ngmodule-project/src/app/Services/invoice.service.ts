@@ -14,7 +14,7 @@ export interface StaffDTO {
   providedIn: 'root'
 })
 export class InvoiceService {
-  private baseUrl = 'http://localhost:8080/api';
+  private baseUrl = '/api';
 
   constructor(private http: HttpClient) {}
 

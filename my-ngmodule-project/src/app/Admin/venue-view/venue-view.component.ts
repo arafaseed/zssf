@@ -61,7 +61,7 @@ export class VenueViewComponent implements OnInit, OnDestroy {
   }
 
   loadActivitiesAndVenues(): void {
-    this.http.get<any[]>('http://localhost:8080/api/activities').subscribe((activityData) => {
+    this.http.get<any[]>('/api/activities').subscribe((activityData) => {
       this.activities = activityData;
 
       this.venueService.getAllVenues().subscribe((venueData: any[]) => {
@@ -154,7 +154,7 @@ export class VenueViewComponent implements OnInit, OnDestroy {
   }
 
   loadAvailableVenuesByDate(date: string): void {
-    this.http.get<any>(`http://localhost:8080/api/bookings/list-available-venues?date=${date}`)
+    this.http.get<any>(`/api/bookings/list-available-venues?date=${date}`)
       .subscribe((response) => {
         const availableVenues = response.venues;
 

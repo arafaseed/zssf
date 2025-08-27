@@ -51,7 +51,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.errorMessage = '';
 
     this.http
-      .get<Venue[]>(`http://localhost:8080/api/venues/view-by-staff/${staffIdentification}`)
+      .get<Venue[]>(`/api/venues/view-by-staff/${staffIdentification}`)
       .subscribe({
         next: (data) => {
           // Sort by venueId

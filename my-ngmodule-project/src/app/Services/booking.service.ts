@@ -34,9 +34,9 @@ export interface BookedSlot {
 })
 export class BookingService {
 
-  private apiUrl = 'http://localhost:8080/api/bookings';
+  private apiUrl = '/api/bookings';
 
-   private base = 'http://localhost:8080';
+   private base = '';
 
   private bookingsSubject = new BehaviorSubject<Booking[]>([]);
 
@@ -56,7 +56,7 @@ export class BookingService {
   // booking.service.ts
 getVenueNameById(venueId: number): Observable<string> {
   return this.http
-    .get<any>(`http://localhost:8080/api/venues/view/${venueId}`)
+    .get<any>(`/api/venues/view/${venueId}`)
     .pipe(
       tap((venue) => console.log('API response for venueId', venueId, venue)),
       map((venue: any) => venue.venueName)
@@ -66,7 +66,7 @@ getVenueNameById(venueId: number): Observable<string> {
 
 
 getActivityNameById(activityId: number): Observable<string> {
-  return this.http.get<any>(`http://localhost:8080/api/activities/${activityId}`)
+  return this.http.get<any>(`/api/activities/${activityId}`)
     .pipe(map((activity: { name: any; }) => activity.name));
 }
 

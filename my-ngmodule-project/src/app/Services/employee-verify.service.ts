@@ -12,7 +12,7 @@ export interface VerifyResponse {
   providedIn: 'root'
 })
 export class EmployeeVerifyService {
-  private apiUrl = 'http://localhost:8080/api/auth/staff/employee/verify';
+  private apiUrl = '/api/auth/staff/employee/verify';
 
   constructor(private http: HttpClient) {}
 

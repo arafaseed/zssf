@@ -16,8 +16,8 @@ export interface Activity {
   providedIn: 'root'
 })
 export class ActivityService {
-  private base = 'http://localhost:8080/api/activities';
-  private venueBase = 'http://localhost:8080/api/venues';
+  private base = '/api/activities';
+  private venueBase = '/api/venues';
   private cache = new Map<number, Observable<Activity | null>>();
 
   constructor(private http: HttpClient) {}

@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
 
-  private readonly apiUrl = 'http://localhost:8080/api/auth/staff'; // same host → proxy.conf.json can rewrite
+  private readonly apiUrl = '/api/auth/staff'; // same host → proxy.conf.json can rewrite
 
   constructor(
     private http: HttpClient,

@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class VenuelistServiceService implements OnInit {
   venues: any[] = [];
-  private apiUrl = 'http://localhost:8080/api/venues/all';  // Adjust the URL to match your backend
+  private apiUrl = '/api/venues/all';  // Adjust the URL to match your backend
 
   constructor(private http: HttpClient) {}
 
@@ -35,6 +35,6 @@ export class VenuelistServiceService implements OnInit {
 
   // Delete a venue by ID
   deleteVenue(id: number): Observable<void> {
-    return this.http.delete<void>(`http://localhost:8080/api/venues/delete/${id}`);
+    return this.http.delete<void>(`/api/venues/delete/${id}`);
   }
 }

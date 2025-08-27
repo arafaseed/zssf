@@ -13,7 +13,7 @@ export interface Building {
   providedIn: 'root'
 })
 export class ViewBuildingService {
-  private apiUrl = 'http://localhost:8080/api/buildings/view/all';
+  private apiUrl = '/api/buildings/view/all';
 
   constructor(private http: HttpClient) {}
 

@@ -49,7 +49,7 @@ export class AvailabilityModalComponent implements OnInit {
 
     this.loading = true;
     // Use absolute backend URL (keeps your original logic)
-    this.http.post<any[]>(`http://localhost:8080/api/bookings/venue/${this.data.venueId}/availability`, payload).subscribe({
+    this.http.post<any[]>(`/api/bookings/venue/${this.data.venueId}/availability`, payload).subscribe({
       next: res => {
         this.loading = false;
         this.availability = res || [];

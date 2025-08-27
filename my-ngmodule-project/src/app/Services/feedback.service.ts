@@ -8,7 +8,7 @@ import { FeedbackDto } from '../models/models';
   providedIn: 'root'
 })
 export class FeedbackService {
-  private base = 'http://localhost:8080/api/feedback';
+  private base = '/api/feedback';
 
   constructor(private http: HttpClient) {}
 

@@ -19,7 +19,7 @@ export interface DiscountPolicy {
   providedIn: 'root'
 })
 export class PoliciesService {
-  private base = 'http://localhost:8080';
+  private base = '';
 
   constructor(private http: HttpClient) {}
 

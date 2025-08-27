@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class InvoiceServiceService {
 
-  private baseUrl = 'http://localhost:8080/api/invoices'; // Adjust if your backend runs elsewhere
+  private baseUrl = '/api/invoices'; // Adjust if your backend runs elsewhere
 
   private invoiceData: any; // For sharing invoice between components
 

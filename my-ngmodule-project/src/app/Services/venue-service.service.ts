@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class VenueService {
-  private apiUrl = 'http://localhost:8080/api/venues';
-  private venueApiUrl = 'http://localhost:8080/api/venues'; // Added venue API
+  private apiUrl = '/api/venues';
+  private venueApiUrl = '/api/venues'; // Added venue API
 
   constructor(private http: HttpClient) {}
 
@@ -18,11 +18,11 @@ export class VenueService {
   }
 
   getBuildings(): Observable<any> {
-    return this.http.get('http://localhost:8080/api/buildings/view/all');
+    return this.http.get('/api/buildings/view/all');
   }
 
   getLeasePackages(): Observable<any> {
-    return this.http.get('http://localhost:8080/api/lease-packages/all');
+    return this.http.get('/api/lease-packages/all');
   }
 
   deleteVenue(venueId: number): Observable<any> {

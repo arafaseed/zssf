@@ -62,7 +62,7 @@ export class ViewVenuesComponent implements OnInit {
         // Load lease packages for each venue
         this.venues.forEach(venue => {
           this.http
-            .get<any[]>(`http://localhost:8080/api/lease-packages/venue/${venue.venueId}`)
+            .get<any[]>(`/api/lease-packages/venue/${venue.venueId}`)
             .subscribe({
               next: packages => (venue.leasePackages = packages),
               error: () => (venue.leasePackages = [])
@@ -70,7 +70,7 @@ export class ViewVenuesComponent implements OnInit {
         });
 
         // Load staff assignments
-        this.http.get<any[]>('http://localhost:8080/api/staff/all').subscribe({
+        this.http.get<any[]>('/api/staff/all').subscribe({
           next: staffList => {
             this.venues.forEach(venue => {
               const staff = staffList.find(s => s.assignedVenueIds?.includes(venue.venueId));
@@ -107,7 +107,7 @@ export class ViewVenuesComponent implements OnInit {
     }
 
     this.selectedVenueId = venueId;
-    this.http.get<any[]>('http://localhost:8080/api/staff/all').subscribe({
+    this.http.get<any[]>('/api/staff/all').subscribe({
       next: data => {
         this.staffList = data;
       },
@@ -135,7 +135,7 @@ export class ViewVenuesComponent implements OnInit {
   assignStaff(staffId: number, venueId: number): void {
     const payload = { venueId };
     this.http
-      .post(`http://localhost:8080/api/staff/assign-venue/${staffId}`, payload)
+      .post(`/api/staff/assign-venue/${staffId}`, payload)
       .subscribe({
         next: () => {
           this.showToast('Staff assigned to venue!', 'success');

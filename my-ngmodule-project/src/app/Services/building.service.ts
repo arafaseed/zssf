@@ -7,7 +7,7 @@ import { Building } from '../models/models';
   providedIn: 'root'
 })
 export class BuildingService {
-    private apiUrl = 'http://localhost:8080/api/buildings';
+    private apiUrl = '/api/buildings';
     constructor(private http: HttpClient) {}
 
   getBuilding(buildingId: number): Observable<Building> {

@@ -10,10 +10,10 @@ export class MultiStepFormService {
   [x: string]: any;
 
 
-  private venueApiUrl = 'http://localhost:8080/api/venues/view/all';
-  private packageApiUrl = 'http://localhost:8080/api/lease-packages';
-  private activityApiUrl = 'http://localhost:8080/api/activities';
-  private bookingApiUrl = 'http://localhost:8080/api/bookings/create';
+  private venueApiUrl = '/api/venues/view/all';
+  private packageApiUrl = '/api/lease-packages';
+  private activityApiUrl = '/api/activities';
+  private bookingApiUrl = '/api/bookings/create';
 
   constructor(private http: HttpClient) {}
 
@@ -43,7 +43,7 @@ export class MultiStepFormService {
 
   // multi-step-form.service.ts
 getInvoiceByBookingId(bookingId: number): Observable<any> {
-  return this.http.get<any>(`http://localhost:8080/api/invoices/view/by-booking?bookingId=${bookingId}`);
+  return this.http.get<any>(`/api/invoices/view/by-booking?bookingId=${bookingId}`);
 }
 
 }

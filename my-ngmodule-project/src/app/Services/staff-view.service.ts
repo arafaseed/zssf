@@ -25,8 +25,8 @@ export interface Venue {
 })
 export class StaffViewService {
  
-  private apiUrl = 'http://localhost:8080/api/staff';
-  private venueApiUrl = 'http://localhost:8080/api/venues'; // endpoint for venues
+  private apiUrl = '/api/staff';
+  private venueApiUrl = '/api/venues'; // endpoint for venues
   assignStaffToVenues: any;
 
   constructor(private http: HttpClient) {}

@@ -7,8 +7,8 @@ import { catchError, shareReplay } from 'rxjs/operators';
 @Injectable({ providedIn: 'root' })
 export class OptionalServiceService {
 
-  private base = 'http://localhost:8080/api/optional-services';
-  private venueUrl = 'http://localhost:8080/api/venues';
+  private base = '/api/optional-services';
+  private venueUrl = '/api/venues';
   private cache = new Map<number, Observable<OptionalService | null>>();
 
   constructor(private http: HttpClient) {}

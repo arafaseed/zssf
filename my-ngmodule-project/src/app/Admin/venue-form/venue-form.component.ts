@@ -10,7 +10,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class VenueFormComponent {
   venueForm: FormGroup;
-  private apiUrl = 'http://localhost:8080/api/buildings';
+  private apiUrl = '/api/buildings';
 
   constructor(private http: HttpClient, private fb: FormBuilder) {
     this.venueForm = this.fb.group({

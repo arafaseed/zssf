@@ -28,7 +28,7 @@ export class PhoneSearchComponent {
     this.bookings = [];
 
     this.http
-      .get<any[]>(`http://localhost:8080/api/bookings/by-customer-phone?phone=${this.phoneNumber}`)
+      .get<any[]>(`/api/bookings/by-customer-phone?phone=${this.phoneNumber}`)
       .subscribe({
         next: (data) => {
           this.bookings = data.filter(b => b.bookingStatus.toLowerCase() !== 'cancelled');
@@ -57,7 +57,7 @@ export class PhoneSearchComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.http.put<any>(`http://localhost:8080/api/bookings/cancel/${bookingId}`, {})
+        this.http.put<any>(`/api/bookings/cancel/${bookingId}`, {})
           .subscribe({
             next: () => {
               this.snackBar.open('Booking successfully cancelled!', 'Close', { duration: 3000, panelClass: ['snackbar-success'] });

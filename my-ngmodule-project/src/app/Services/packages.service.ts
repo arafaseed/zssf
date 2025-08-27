@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class LeasePackageService {
-  private apiUrl = 'http://localhost:8080/api/lease-packages';
-  private venueApiUrl = 'http://localhost:8080/api/venues'; // Added venue API
+  private apiUrl = '/api/lease-packages';
+  private venueApiUrl = '/api/venues'; // Added venue API
 
   constructor(private http: HttpClient) { }
 

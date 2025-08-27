@@ -6,9 +6,9 @@ import { Observable } from "rxjs";
   providedIn: 'root'
 })
 export class ViewVenueService {
-  private venueApiUrl = 'http://localhost:8080/api/venues';
-  private buildingApiUrl = 'http://localhost:8080/api/buildings';
-  private leasePackageApiUrl = 'http://localhost:8080/api/lease-packages';
+  private venueApiUrl = '/api/venues';
+  private buildingApiUrl = '/api/buildings';
+  private leasePackageApiUrl = '/api/lease-packages';
 
   constructor(private http: HttpClient) {}
 
@@ -50,7 +50,7 @@ export class ViewVenueService {
     return this.http.post(`${this.venueApiUrl}/create`, data, { headers: this.getAuthHeaders() });
   }
    getBuildings(): Observable<any> {
-      return this.http.get('http://localhost:8080/api/buildings/view/all');
+      return this.http.get('/api/buildings/view/all');
     }
   
 }

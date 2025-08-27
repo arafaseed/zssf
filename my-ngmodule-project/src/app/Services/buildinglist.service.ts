@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class BuildinglistService {
 
-  private apiUrl = 'http://localhost:8080/api/buildings'; // Base API URL
+  private apiUrl = '/api/buildings'; // Base API URL
 
   constructor(private http: HttpClient) {}
 
@@ -37,7 +37,7 @@ getBuildingById(buildingId: number): Observable<any> {
   // Delete a building by ID
 deleteBuilding(buildingId: number): Observable<void> {
   console.log('Deleting building with ID:', buildingId);
-  return this.http.delete<void>(`http://localhost:8080/api/buildings/delete-building/${buildingId}`);
+  return this.http.delete<void>(`/api/buildings/delete-building/${buildingId}`);
 }
 
 }

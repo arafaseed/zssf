@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class VenueService {
 
-  private base = 'http://localhost:8080/api/venues';
+  private base = '/api/venues';
 
   constructor(private http: HttpClient) {}
   getVenue(venueId: number): Observable<Venue> {
