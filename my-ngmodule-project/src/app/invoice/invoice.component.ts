@@ -118,16 +118,31 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
    *   http://localhost:4200/invoice/23?code=INVOICECODE123
    */
   async createQRForInvoicePage(bookingId: number, invoiceCode?: string) {
-    try {
-      const origin = window.location.origin || 'http://localhost:4200';
-      const safeCode = invoiceCode ? encodeURIComponent(invoiceCode) : '';
-      const url = `${origin}/invoice/${bookingId}${safeCode ? `?code=${safeCode}` : ''}`;
-      // encode the full URL in QR so other devices can open it in browser
-      this.qrDataUrl = await QRCode.toDataURL(url, { margin: 1, width: 200 });
-    } catch (err) {
-      console.error('QR creation error', err);
-    }
+  try {
+    const safeCode = invoiceCode ? encodeURIComponent(invoiceCode) : '';
+
+    // Determine the site origin + base path so QR uses the hosted domain/path later in production
+    const origin = (typeof window !== 'undefined' && window.location)
+      ? (window.location.origin || `${window.location.protocol}//${window.location.host}`)
+      : 'http://localhost:4200';
+
+    // If app uses a <base href="/some/path/">, include it so the URL points to the correct hosted route
+    const baseHref = typeof document !== 'undefined'
+      ? (document.querySelector('base')?.getAttribute('href') ?? '/')
+      : '/';
+
+    // Build a normalized base URL (no trailing slash)
+    const baseUrl = new URL(baseHref, origin).toString().replace(/\/$/, '');
+
+    const url = `${baseUrl}/invoice/${bookingId}${safeCode ? `?code=${safeCode}` : ''}`;
+
+    // encode the full URL in QR so other devices can open it in browser
+    this.qrDataUrl = await QRCode.toDataURL(url, { margin: 1, width: 200 });
+  } catch (err) {
+    console.error('QR creation error', err);
   }
+}
+
 
   generatePDF(): void {
     const element = document.getElementById('invoice-a4');
