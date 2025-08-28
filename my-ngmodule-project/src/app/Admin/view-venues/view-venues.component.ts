@@ -56,41 +56,39 @@ export class ViewVenuesComponent implements OnInit {
   });
 }
 
-  loadVenues(): void {
-    this.venueService.getAllVenues().subscribe({
-      next: (data: any[]) => {
-        this.venues = data;
+loadVenues(): void {
+  this.venueService.getAllVenues().subscribe({
+    next: (data: any[]) => {
+      this.venues = data;
 
-        // Load lease packages for each venue
-        this.venues.forEach(venue => {
-          this.http
-            .get<any[]>(`${environment.apiUrl}/api/lease-packages/venue/${venue.venueId}`)
-            .subscribe({
-              next: packages => (venue.leasePackages = packages),
-              error: () => (venue.leasePackages = [])
-            });
-        });
+      // Load lease packages
+      this.venues.forEach(venue => {
+        this.http
+          .get<any[]>(`${environment.apiUrl}/api/lease-packages/venue/${venue.venueId}`)
+          .subscribe({
+            next: packages => (venue.leasePackages = packages),
+            error: () => (venue.leasePackages = [])
+          });
+      });
 
-        // Load staff assignments
-        this.http.get<any[]>('${environment.apiUrl}/api/staff/all').subscribe({
-          next: staffList => {
-            this.venues.forEach(venue => {
-              const staff = staffList.find(s => s.assignedVenueIds?.includes(venue.venueId));
-              if (staff) {
-                venue.assignedStaffId = staff.staffId;
-                venue.assignedStaffName = staff.fullName;
-                venue.assignedStaffPhone = staff.phoneNumber;
-              }
-            });
-          },
-          error: error => console.error('Failed to fetch staff assignments:', error)
-        });
-      },
-      error: error => {
-        this.showToast('Error fetching venues: ' + error.message, 'error');
-      }
-    });
-  }
+      // Load all staff assignments
+      this.http.get<any[]>(`${environment.apiUrl}/api/staff/all`).subscribe({
+        next: staffList => {
+          this.venues.forEach(venue => {
+            // chukua staff wote assigned kwenye venue hii
+            const assignedStaff = staffList.filter(s => s.assignedVenueIds?.includes(venue.venueId));
+            venue.assignedStaff = assignedStaff;
+          });
+        },
+        error: error => console.error('Failed to fetch staff assignments:', error)
+      });
+    },
+    error: error => {
+      this.showToast('Error fetching venues: ' + error.message, 'error');
+    }
+  });
+}
+
 
   addVenue(): void {
     this.router.navigate(['/admin/regvenues']);

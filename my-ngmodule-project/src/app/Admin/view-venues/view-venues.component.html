@@ -8,7 +8,7 @@
   <h2 class="mb-4">View Venues</h2>
 
   <div *ngIf="venues.length === 0" class="alert alert-warning">No venues available.</div>
-  <h3>Total Venues: {{ venues.length }}</h3>
+ 
 
   <table mat-table [dataSource]="venues" class="mat-elevation-z8 full-width-table">
 
@@ -37,40 +37,25 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="addStaff">
-      <th mat-header-cell *matHeaderCellDef>Add Staff</th>
-      <td mat-cell *matCellDef="let venue">
 
-        <ng-container *ngIf="venue.assignedStaffId; else notAssigned">
-          <span class="text-green-700 font-semibold">
-            {{ venue.assignedStaffName }} ({{ venue.assignedStaffPhone }})34
-          </span>
-        </ng-container>
+       <ng-container matColumnDef="addStaff">
+  <th mat-header-cell *matHeaderCellDef>Assigned Staff</th>
+  <td mat-cell *matCellDef="let venue">
+    <div *ngIf="venue.assignedStaff && venue.assignedStaff.length > 0; else noStaff">
+      <ul style="padding-left: 16px; margin: 0;">
+        <li *ngFor="let staff of venue.assignedStaff">
+          {{ staff.fullName }} ({{ staff.role }}) - {{ staff.phoneNumber }}
+        </li>
+      </ul>
+    </div>
+    <ng-template #noStaff>
+      <span class="text-muted">No staff assigned</span>
+    </ng-template>
+  </td>
+</ng-container>
 
-        <ng-template #notAssigned>
-          <ng-container *ngIf="!venue.showPanel">
-            <button mat-flat-button color="accent" (click)="venue.showPanel = true; toggleStaffList(venue.venueId)">
-              Assign Staff
-            </button>
-          </ng-container>
 
-          <ng-container *ngIf="venue.showPanel">
-            <mat-form-field appearance="fill" style="width:200px;">
-              <mat-select placeholder="Select staff"
-                          (selectionChange)="assignStaff($event.value, venue.venueId)">
-                <mat-option *ngFor="let staff of staffList" [value]="staff.staffId">
-                  {{ staff.fullName }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <button mat-icon-button color="warn" (click)="venue.showPanel = false">
-              <mat-icon>close</mat-icon>
-            </button>
-          </ng-container>
-        </ng-template>
-
-      </td>
-    </ng-container>
+    
 
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Actions</th>
