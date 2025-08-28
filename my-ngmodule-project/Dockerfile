@@ -1,47 +1,27 @@
-# importing node
-FROM node:20.13-alpine as build
-
-# setting working directory
+# Stage 1: Build Angular app
+FROM node:20-alpine AS build
 WORKDIR /app
 
-# copying package.json and package-lock.json
-COPY package*.json /app/
+# Install dependencies
+COPY package*.json ./
+RUN npm install
 
-# installing dependencies
-RUN npm install --legacy-peer-deps
-RUN npm install -g @angular/cli@19
-# Copying files from the local directory to the docker working directory
-COPY . /app
+# Copy source and build Angular app
+COPY . .
+RUN npm run build -- --configuration production --project my-ngmodule-project
 
-# default value
-ARG configuration=production
+# Stage 2: Serve with Nginx
+FROM nginx:alpine
 
-# building the app
-RUN npm run build -- --output-path=./build --configuration $configuration \
-    && rm -rf node_modules
+# Copy Angular build to Nginx
+COPY --from=build /app/dist/my-ngmodule-project/browser/ /usr/share/nginx/html/
 
-# importing nginx
-# FROM nginx:1.21.3-alpine
-FROM nginx
 
-# Copy the build artifacts to the NGINX html directory
-COPY --from=build /app/build/browser/ /usr/share/nginx/html
+# Copy custom Nginx config
+COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
-# Remove the default NGINX configuration file
-RUN rm /etc/nginx/conf.d/default.conf
-
-# Copy the NGINX configuration file
-# COPY nginx.conf /etc/nginx/conf.d
-COPY nginx/nginx.conf /etc/nginx/conf.d
-
-# NGINX default port to expose
+# Expose port 80
 EXPOSE 80
 
-# Copying the build files from the build image to the nginx image
-# COPY --from=build /app/build /usr/share/nginx/html
-
-# Copying the nginx configuration file to the nginx image
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Starting nginx server
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]

@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Building } from '../models/models';
-
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class BuildingService {
-    private apiUrl = '/api/buildings';
+    //private apiUrl = '/api/buildings';
+    private apiUrl = `${environment.apiUrl}/api/buildings`;
     constructor(private http: HttpClient) {}
 
   getBuilding(buildingId: number): Observable<Building> {
