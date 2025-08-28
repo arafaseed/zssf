@@ -77,7 +77,7 @@
       <div *ngIf="attachedFile" class="mt-1 text-sm text-slate-600">Selected: {{ attachedFile.name }}</div>
     </div>
 
-    <div class="flex items-center gap-3 mt-3">
+  <div *ngIf="detailsForm.value.customerType === 'INDIVIDUAL'" class="flex items-center gap-3 mt-3">
   <mat-checkbox 
     [checked]="employeeVerified" 
     (change)="openEmployeeVerify($event)">
