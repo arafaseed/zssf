@@ -20,11 +20,11 @@ export class VenueService {
   }
 
   getBuildings(): Observable<any> {
-    return this.http.get('${environment.apiUrl}/api/buildings/view/all');
+    return this.http.get(`${environment.apiUrl}/api/buildings/view/all`);
   }
 
   getLeasePackages(): Observable<any> {
-    return this.http.get('${environment.apiUrl}/api/lease-packages/all');
+    return this.http.get(`${environment.apiUrl}/api/lease-packages/all`);
   }
 
   deleteVenue(venueId: number): Observable<any> {

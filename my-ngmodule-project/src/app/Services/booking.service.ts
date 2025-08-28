@@ -36,7 +36,7 @@ export interface BookedSlot {
 })
 export class BookingService {
 
-  private apiUrl = '${environment.apiUrl}/api/bookings';
+  private apiUrl = `${environment.apiUrl}/api/bookings`;
 
    private base = '';
 
