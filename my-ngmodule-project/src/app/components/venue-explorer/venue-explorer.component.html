@@ -7,14 +7,19 @@
     <div *ngIf="venue" class="grid grid-cols-1 md:grid-cols-3 gap-6" [@fadeIn]>
       <!-- LEFT: image gallery (span 2 cols on desktop) -->
       <div class="md:col-span-2 space-y-4">
-        <!-- Large image display -->
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-          <img
-            class="w-full h-96 object-cover"
-            [src]="venue.venueImages[currentImageIndex]"
-            alt="{{ venue.venueName }}"
-            loading="lazy"
-          />
+        <!-- Large image display: fixed container size, black background, image fully visible (no crop) -->
+        <div class="bg-black rounded-lg shadow-lg overflow-hidden h-96 flex items-center justify-center">
+          <ng-container *ngIf="venue.venueImages && venue.venueImages.length; else noImage">
+            <img
+              class="max-w-full max-h-full object-contain"
+              [src]="venue.venueImages[currentImageIndex]"
+              alt="{{ venue.venueName }}"
+              loading="lazy"
+            />
+          </ng-container>
+          <ng-template #noImage>
+            <div class="text-white text-center px-4">No image available</div>
+          </ng-template>
         </div>
 
         <!-- Thumbnail list -->
@@ -100,28 +105,38 @@
               <mat-label>Event start date</mat-label>
               <input
                 matInput
+                [min]="minDate"
                 [matDatepicker]="startPicker"
                 [(ngModel)]="startDate"
+                (ngModelChange)="onStartDateChange($event)"
               />
               <mat-datepicker-toggle
                 matSuffix
                 [for]="startPicker"
               ></mat-datepicker-toggle>
               <mat-datepicker #startPicker></mat-datepicker>
+              <div *ngIf="startDateInvalid" class="text-sm text-red-600 mt-1">
+                Selected start date cannot be in the past.
+              </div>
             </mat-form-field>
 
             <mat-form-field class="w-full">
               <mat-label>Event end date</mat-label>
               <input
                 matInput
+                [min]="minDate"
                 [matDatepicker]="endPicker"
                 [(ngModel)]="endDate"
+                (ngModelChange)="onEndDateChange($event)"
               />
               <mat-datepicker-toggle
                 matSuffix
                 [for]="endPicker"
               ></mat-datepicker-toggle>
               <mat-datepicker #endPicker></mat-datepicker>
+              <div *ngIf="endDateInvalid" class="text-sm text-red-600 mt-1">
+                Selected end date cannot be in the past.
+              </div>
             </mat-form-field>
 
             <div class="flex gap-3">
@@ -144,6 +159,10 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
+
+            <div *ngIf="formError" class="text-sm text-red-600 text-center mb-2">
+              {{ formError }}
+            </div>
 
             <div class="flex gap-2 justify-center">
               <button
