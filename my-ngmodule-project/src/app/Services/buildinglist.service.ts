@@ -1,13 +1,15 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class BuildinglistService {
 
-  private apiUrl = '/api/buildings'; // Base API URL
+  private apiUrl = '${environment.apiUrl}/api/buildings'; // Base API URL
 
   constructor(private http: HttpClient) {}
 
@@ -37,7 +39,7 @@ getBuildingById(buildingId: number): Observable<any> {
   // Delete a building by ID
 deleteBuilding(buildingId: number): Observable<void> {
   console.log('Deleting building with ID:', buildingId);
-  return this.http.delete<void>(`/api/buildings/delete-building/${buildingId}`);
+  return this.http.delete<void>(`${environment.apiUrl}/api/buildings/delete-building/${buildingId}`);
 }
 
 }

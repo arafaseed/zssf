@@ -1,6 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders  } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+
 
 export interface VenueRevenue {
   venueId: number;
@@ -39,7 +41,7 @@ export interface BestRevenueVenue {
 })
 export class DashboardService {
 
-  private apiUrl = '/api';
+  private apiUrl = `${environment.apiUrl}/api`;
 
   constructor(private http: HttpClient) {}
 

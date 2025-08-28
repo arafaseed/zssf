@@ -2,6 +2,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+
 
 export interface ExpiryViewResp {
   expiryHours: number;
@@ -25,20 +27,20 @@ export class PoliciesService {
 
   // Booking expiry
   viewCurrentExpiry(): Observable<ExpiryViewResp> {
-    return this.http.get<ExpiryViewResp>(`${this.base}/api/booking-expiry/view-current-time`);
+    return this.http.get<ExpiryViewResp>(`${this.base}${environment.apiUrl}/api/booking-expiry/view-current-time`);
   }
 
   // update: accepts { hours } or { days } as JSON per your backend contract
   updateExpiryByHours(hours: number) {
-    return this.http.put(`${this.base}/api/booking-expiry/update-expiry-time`, { hours });
+    return this.http.put(`${this.base}${environment.apiUrl}/api/booking-expiry/update-expiry-time`, { hours });
   }
   updateExpiryByDays(days: number) {
-    return this.http.put(`${this.base}/api/booking-expiry/update-expiry-time`, { days });
+    return this.http.put(`${this.base}${environment.apiUrl}/api/booking-expiry/update-expiry-time`, { days });
   }
 
   // Discount policy
   viewCurrentDiscountPolicy(): Observable<DiscountPolicy> {
-    return this.http.get<DiscountPolicy>(`${this.base}/api/discount-policy/view/current`);
+    return this.http.get<DiscountPolicy>(`${this.base}${environment.apiUrl}/api/discount-policy/view/current`);
   }
 
   // Update discount policy. Your backend expects form data (discountRate & maxUsesPerYear).
@@ -53,11 +55,11 @@ export class PoliciesService {
     });
 
     // PUT with urlencoded body
-    return this.http.put(`${this.base}/api/discount-policy/update/current`, body.toString(), { headers, responseType: 'json' });
+    return this.http.put(`${this.base}${environment.apiUrl}/api/discount-policy/update/current`, body.toString(), { headers, responseType: 'json' });
   }
 
   // Manual refresh (POST)
   manualRefreshPolicy() {
-    return this.http.post(`${this.base}/api/discount-policy/manual-refresh/year`, {});
+    return this.http.post(`${this.base}${environment.apiUrl}/api/discount-policy/manual-refresh/year`, {});
   }
 }

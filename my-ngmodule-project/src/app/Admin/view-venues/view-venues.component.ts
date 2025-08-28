@@ -5,6 +5,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
 import  { ViewVenueService } from '../../Services/view-venue.service';
 import { EditVenueComponent } from '../../edit-venue-component/edit-venue-component.component';
+import { environment } from '../../../environments/environment';
+
 
 @Component({
   selector: 'app-view-venues',
@@ -62,7 +64,7 @@ export class ViewVenuesComponent implements OnInit {
         // Load lease packages for each venue
         this.venues.forEach(venue => {
           this.http
-            .get<any[]>(`/api/lease-packages/venue/${venue.venueId}`)
+            .get<any[]>(`${environment.apiUrl}/api/lease-packages/venue/${venue.venueId}`)
             .subscribe({
               next: packages => (venue.leasePackages = packages),
               error: () => (venue.leasePackages = [])
@@ -70,7 +72,7 @@ export class ViewVenuesComponent implements OnInit {
         });
 
         // Load staff assignments
-        this.http.get<any[]>('/api/staff/all').subscribe({
+        this.http.get<any[]>('${environment.apiUrl}/api/staff/all').subscribe({
           next: staffList => {
             this.venues.forEach(venue => {
               const staff = staffList.find(s => s.assignedVenueIds?.includes(venue.venueId));
@@ -107,7 +109,7 @@ export class ViewVenuesComponent implements OnInit {
     }
 
     this.selectedVenueId = venueId;
-    this.http.get<any[]>('/api/staff/all').subscribe({
+    this.http.get<any[]>('${environment.apiUrl}/api/staff/all').subscribe({
       next: data => {
         this.staffList = data;
       },
@@ -135,7 +137,7 @@ export class ViewVenuesComponent implements OnInit {
   assignStaff(staffId: number, venueId: number): void {
     const payload = { venueId };
     this.http
-      .post(`/api/staff/assign-venue/${staffId}`, payload)
+      .post(`${environment.apiUrl}/api/staff/assign-venue/${staffId}`, payload)
       .subscribe({
         next: () => {
           this.showToast('Staff assigned to venue!', 'success');

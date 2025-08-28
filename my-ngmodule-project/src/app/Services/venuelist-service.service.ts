@@ -1,13 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class VenuelistServiceService implements OnInit {
   venues: any[] = [];
-  private apiUrl = '/api/venues/all';  // Adjust the URL to match your backend
+  private apiUrl = `${environment.apiUrl}/api/venues/all`;  // Adjust the URL to match your backend
 
   constructor(private http: HttpClient) {}
 
@@ -35,6 +37,6 @@ export class VenuelistServiceService implements OnInit {
 
   // Delete a venue by ID
   deleteVenue(id: number): Observable<void> {
-    return this.http.delete<void>(`/api/venues/delete/${id}`);
+    return this.http.delete<void>(`${environment.apiUrl}/api/venues/delete/${id}`);
   }
 }

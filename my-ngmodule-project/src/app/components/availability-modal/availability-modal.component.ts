@@ -1,6 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+
 
 @Component({
   selector: 'app-availability-modal',
@@ -49,7 +51,7 @@ export class AvailabilityModalComponent implements OnInit {
 
     this.loading = true;
     // Use absolute backend URL (keeps your original logic)
-    this.http.post<any[]>(`/api/bookings/venue/${this.data.venueId}/availability`, payload).subscribe({
+    this.http.post<any[]>(`${environment.apiUrl}/api/bookings/venue/${this.data.venueId}/availability`, payload).subscribe({
       next: res => {
         this.loading = false;
         this.availability = res || [];

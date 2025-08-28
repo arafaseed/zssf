@@ -9,6 +9,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-venue-view',
@@ -61,7 +62,7 @@ export class VenueViewComponent implements OnInit, OnDestroy {
   }
 
   loadActivitiesAndVenues(): void {
-    this.http.get<any[]>('/api/activities').subscribe((activityData) => {
+    this.http.get<any[]>('${environment.apiUrl}/api/activities').subscribe((activityData) => {
       this.activities = activityData;
 
       this.venueService.getAllVenues().subscribe((venueData: any[]) => {
@@ -154,7 +155,7 @@ export class VenueViewComponent implements OnInit, OnDestroy {
   }
 
   loadAvailableVenuesByDate(date: string): void {
-    this.http.get<any>(`/api/bookings/list-available-venues?date=${date}`)
+    this.http.get<any>(`${environment.apiUrl}/api/bookings/list-available-venues?date=${date}`)
       .subscribe((response) => {
         const availableVenues = response.venues;
 

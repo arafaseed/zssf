@@ -4,13 +4,15 @@ import { Observable, map } from 'rxjs';
 import { JwtResponse, StaffLoginRequest } from '../models/auth';
 import { TokenStorageService } from './token-storage.service';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private readonly apiUrl = '/api/auth/staff'; // same host → proxy.conf.json can rewrite
+  private readonly apiUrl = `${environment.apiUrl}/api/auth/staff`; // same host → proxy.conf.json can rewrite
 
   constructor(
     private http: HttpClient,

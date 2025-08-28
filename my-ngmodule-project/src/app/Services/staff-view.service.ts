@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+
 
 export interface Staff {
   assignedVenues: any;
@@ -25,8 +27,8 @@ export interface Venue {
 })
 export class StaffViewService {
  
-  private apiUrl = '/api/staff';
-  private venueApiUrl = '/api/venues'; // endpoint for venues
+  private apiUrl = `${environment.apiUrl}/api/staff`;
+  private venueApiUrl = `${environment.apiUrl}/api/venues`; // endpoint for venues
   assignStaffToVenues: any;
 
   constructor(private http: HttpClient) {}

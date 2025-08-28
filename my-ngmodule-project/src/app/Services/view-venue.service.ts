@@ -1,14 +1,16 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { environment } from '../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ViewVenueService {
-  private venueApiUrl = '/api/venues';
-  private buildingApiUrl = '/api/buildings';
-  private leasePackageApiUrl = '/api/lease-packages';
+  private venueApiUrl = `${environment.apiUrl}/api/venues`;
+  private buildingApiUrl = `${environment.apiUrl}/api/buildings`;
+  private leasePackageApiUrl = `${environment.apiUrl}/api/lease-packages`;
 
   constructor(private http: HttpClient) {}
 
@@ -50,7 +52,7 @@ export class ViewVenueService {
     return this.http.post(`${this.venueApiUrl}/create`, data, { headers: this.getAuthHeaders() });
   }
    getBuildings(): Observable<any> {
-      return this.http.get('/api/buildings/view/all');
+      return this.http.get('${environment.apiUrl}/api/buildings/view/all');
     }
   
 }

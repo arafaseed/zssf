@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class LeasePackageService {
-  private apiUrl = '/api/lease-packages';
-  private venueApiUrl = '/api/venues'; // Added venue API
+  private apiUrl = `${environment.apiUrl}/api/lease-packages`;
+  private venueApiUrl = `${environment.apiUrl}/api/venues`; // Added venue API
 
   constructor(private http: HttpClient) { }
 

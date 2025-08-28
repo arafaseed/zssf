@@ -14,7 +14,7 @@ export interface HandoverReport {
   providedIn: 'root'
 })
 export class VenueHandoverService {
-  private readonly apiBase = '/api/venue-handover';
+  private readonly apiBase = '${environment.apiUrl}/api/venue-handover';
 
   constructor(private http: HttpClient) {}
 

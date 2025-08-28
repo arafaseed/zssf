@@ -1,13 +1,15 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class InvoiceServiceService {
 
-  private baseUrl = '/api/invoices'; // Adjust if your backend runs elsewhere
+  private baseUrl = `${environment.apiUrl}/api/invoices`; // Adjust if your backend runs elsewhere
 
   private invoiceData: any; // For sharing invoice between components
 

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+
 
 export interface VerifyResponse {
   verified: boolean;
@@ -12,7 +14,7 @@ export interface VerifyResponse {
   providedIn: 'root'
 })
 export class EmployeeVerifyService {
-  private apiUrl = '/api/auth/staff/employee/verify';
+  private apiUrl = `${environment.apiUrl}/api/auth/staff/employee/verify`;
 
   constructor(private http: HttpClient) {}
 

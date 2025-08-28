@@ -153,7 +153,7 @@ export class InvoiceScannerComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // call backend API: GET /api/invoices/view/by-code/{invoiceCode}
+    // call backend API: GET ${environment.apiUrl}/api/invoices/view/by-code/{invoiceCode}
     this.invoiceService.getInvoiceByCode(invoiceCode)
       .pipe(takeUntil(this.destroy$))
       .subscribe({

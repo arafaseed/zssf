@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+
 
 
 export interface Building {
@@ -13,7 +15,7 @@ export interface Building {
   providedIn: 'root'
 })
 export class ViewBuildingService {
-  private apiUrl = '/api/buildings/view/all';
+  private apiUrl = `${environment.apiUrl}/api/buildings/view/all`;
 
   constructor(private http: HttpClient) {}
 

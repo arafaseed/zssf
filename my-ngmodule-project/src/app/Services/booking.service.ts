@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
+
 
 export interface Booking {
   bookingId: number;
@@ -34,7 +36,7 @@ export interface BookedSlot {
 })
 export class BookingService {
 
-  private apiUrl = '/api/bookings';
+  private apiUrl = '${environment.apiUrl}/api/bookings';
 
    private base = '';
 
@@ -56,7 +58,7 @@ export class BookingService {
   // booking.service.ts
 getVenueNameById(venueId: number): Observable<string> {
   return this.http
-    .get<any>(`/api/venues/view/${venueId}`)
+    .get<any>(`${environment.apiUrl}/api/venues/view/${venueId}`)
     .pipe(
       tap((venue) => console.log('API response for venueId', venueId, venue)),
       map((venue: any) => venue.venueName)
@@ -66,7 +68,7 @@ getVenueNameById(venueId: number): Observable<string> {
 
 
 getActivityNameById(activityId: number): Observable<string> {
-  return this.http.get<any>(`/api/activities/${activityId}`)
+  return this.http.get<any>(`${environment.apiUrl}/api/activities/${activityId}`)
     .pipe(map((activity: { name: any; }) => activity.name));
 }
 
@@ -124,14 +126,14 @@ getActivityNameById(activityId: number): Observable<string> {
 
   // GET optional services for a venue
   getOptionalServicesForVenue(venueId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.base}/api/optional-services/venue/${venueId}`);
+    return this.http.get<any[]>(`${this.base}${environment.apiUrl}/api/optional-services/venue/${venueId}`);
   }
 
   // POST the booking (FormData) to backend
   // Note: controller in your backend expects multipart/form-data with 'booking' JSON and optional 'referenceDocument'
   placeReservation(formData: FormData): Observable<any> {
-    // Change endpoint if needed (/api/bookings/create or /api/place-reservation)
-    return this.http.post<any>(`${this.base}/api/bookings/place-reservation`, formData);
+    // Change endpoint if needed (${environment.apiUrl}/api/bookings/create or ${environment.apiUrl}/api/place-reservation)
+    return this.http.post<any>(`${this.base}${environment.apiUrl}/api/bookings/place-reservation`, formData);
   }
 
 }

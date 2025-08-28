@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { Observable } from 'rxjs/internal/Observable';
+import { environment } from '../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +12,10 @@ export class MultiStepFormService {
   [x: string]: any;
 
 
-  private venueApiUrl = '/api/venues/view/all';
-  private packageApiUrl = '/api/lease-packages';
-  private activityApiUrl = '/api/activities';
-  private bookingApiUrl = '/api/bookings/create';
+  private venueApiUrl = '${environment.apiUrl}/api/venues/view/all';
+  private packageApiUrl = '${environment.apiUrl}/api/lease-packages';
+  private activityApiUrl = '${environment.apiUrl}/api/activities';
+  private bookingApiUrl = '${environment.apiUrl}/api/bookings/create';
 
   constructor(private http: HttpClient) {}
 
@@ -43,7 +45,7 @@ export class MultiStepFormService {
 
   // multi-step-form.service.ts
 getInvoiceByBookingId(bookingId: number): Observable<any> {
-  return this.http.get<any>(`/api/invoices/view/by-booking?bookingId=${bookingId}`);
+  return this.http.get<any>(`${environment.apiUrl}/api/invoices/view/by-booking?bookingId=${bookingId}`);
 }
 
 }

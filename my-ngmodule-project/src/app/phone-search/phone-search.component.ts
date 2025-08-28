@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { environment } from '../../environments/environment';
+
 
 @Component({
   selector: 'app-phone-search',
@@ -28,7 +30,7 @@ export class PhoneSearchComponent {
     this.bookings = [];
 
     this.http
-      .get<any[]>(`/api/bookings/by-customer-phone?phone=${this.phoneNumber}`)
+      .get<any[]>(`${environment.apiUrl}/api/bookings/by-customer-phone?phone=${this.phoneNumber}`)
       .subscribe({
         next: (data) => {
           this.bookings = data.filter(b => b.bookingStatus.toLowerCase() !== 'cancelled');
@@ -57,7 +59,7 @@ export class PhoneSearchComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.http.put<any>(`/api/bookings/cancel/${bookingId}`, {})
+        this.http.put<any>(`${environment.apiUrl}/api/bookings/cancel/${bookingId}`, {})
           .subscribe({
             next: () => {
               this.snackBar.open('Booking successfully cancelled!', 'Close', { duration: 3000, panelClass: ['snackbar-success'] });

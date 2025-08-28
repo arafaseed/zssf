@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+
 
 export interface StaffDTO {
   staffId: number;
@@ -14,7 +16,7 @@ export interface StaffDTO {
   providedIn: 'root'
 })
 export class InvoiceService {
-  private baseUrl = '/api';
+  private baseUrl = `${environment.apiUrl}/api`;
 
   constructor(private http: HttpClient) {}
 

@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../Services/auth.service';
 import { VenueStateService } from '../../Services/venue-state.service';
+import { environment } from '../../../environments/environment';
+
 
 interface Venue {
   venueId: number;
@@ -51,7 +53,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.errorMessage = '';
 
     this.http
-      .get<Venue[]>(`/api/venues/view-by-staff/${staffIdentification}`)
+      .get<Venue[]>(`${environment.apiUrl}/api/venues/view-by-staff/${staffIdentification}`)
       .subscribe({
         next: (data) => {
           // Sort by venueId

@@ -3,12 +3,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { OptionalService } from '../models/models';
 import { Observable, of } from 'rxjs';
 import { catchError, shareReplay } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
+
 
 @Injectable({ providedIn: 'root' })
 export class OptionalServiceService {
 
-  private base = '/api/optional-services';
-  private venueUrl = '/api/venues';
+  private base = `${environment.apiUrl}/api/optional-services`;
+  private venueUrl = `${environment.apiUrl}/api/venues`;
   private cache = new Map<number, Observable<OptionalService | null>>();
 
   constructor(private http: HttpClient) {}
