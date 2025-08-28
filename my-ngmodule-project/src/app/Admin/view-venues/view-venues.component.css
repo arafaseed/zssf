@@ -237,3 +237,60 @@ mat-icon {
   padding-left: 0;
 }
 
+
+
+
+/* container ya dialog */
+.preview-container {
+  width: 100%;
+  max-width: 900px;     /* unaweza kuongeza hadi 1000px */
+  height: auto;
+  overflow: hidden;     /* zuia scroll */
+  padding: 0;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+/* wrapper ya image */
+.image-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* picha zikiwa consistent size */
+.preview-image {
+  width: 100%;
+  height: 500px;        /* same height kwa picha zote */
+  object-fit: cover;    /* crop vizuri bila distortion */
+  border-radius: 12px;
+}
+
+/* navigation buttons ziko juu ya picha */
+.nav-buttons {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+  padding: 0 10px;
+}
+
+.nav-buttons button {
+  width: 50px;
+  height: 50px;
+  font-size: 26px;
+}
+
+
+.dialog-header {
+  background-color: #3f51b5;  /* unaweza kubadilisha rangi unavyotaka */
+  color: white;               /* maandishi meupe */
+  padding: 12px 20px;
+
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  font-size: 20px;
+  font-weight: 600;
+}

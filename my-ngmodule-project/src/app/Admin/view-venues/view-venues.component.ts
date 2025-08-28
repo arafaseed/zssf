@@ -116,12 +116,15 @@ loadVenues(): void {
       }
     });
   }
+openPreview(images: string[]): void {
+  this.previewDialogData = { images };
+  this.currentImageIndex = 0;
+  this.dialog.open(this.previewDialog, { 
+    width: '1000px',   // ili picha ipate nafasi kubwa
+    maxHeight: '90vh' // inatosha kwenye screen bila scroll
+  });
+}
 
-  openPreview(images: string[]): void {
-    this.previewDialogData = { images };
-    this.currentImageIndex = 0;
-    this.dialog.open(this.previewDialog, { width: '600px' });
-  }
 
   previousImage(): void {
     if (this.currentImageIndex > 0) this.currentImageIndex--;

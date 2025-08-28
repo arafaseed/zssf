@@ -5,7 +5,7 @@
     </button>
   </div>
 
-  <h2 class="mb-4">View Venues</h2>
+  <h2 class="mb-4">VENUES LIST</h2>
 
   <div *ngIf="venues.length === 0" class="alert alert-warning">No venues available.</div>
  
@@ -76,18 +76,30 @@
   </table>
 
   <!-- POPUP IMAGE PREVIEW -->
-  <ng-template #previewDialog>
-    <h2 mat-dialog-title>Venue Images</h2>
-    <mat-dialog-content style="width:800px;">
-      <div *ngIf="previewDialogData.images?.length" class="text-center">
-        <img [src]="previewDialogData.images[currentImageIndex]"
-             style="width:100%;height:400px;object-fit:cover;border-radius:10px;margin-bottom:10px;">
-        <button mat-mini-fab (click)="previousImage()" style="width:48px;height:48px;font-size:28px;margin-right:10px;">‹</button>
-        <button mat-mini-fab (click)="nextImage()" style="width:48px;height:48px;font-size:28px;">›</button>
+ 
+    <ng-template #previewDialog>
+  <h2 mat-dialog-title class="dialog-header">Venue Images</h2>
+  <mat-dialog-content class="preview-container">
+    <div *ngIf="previewDialogData.images?.length" class="image-wrapper">
+      <img 
+        [src]="previewDialogData.images[currentImageIndex]" 
+        class="preview-image"
+      >
+
+      <div class="nav-buttons">
+        <button mat-mini-fab (click)="previousImage()">
+          ‹
+        </button>
+        <button mat-mini-fab (click)="nextImage()">
+          ›
+        </button>
       </div>
-    </mat-dialog-content>
-    <mat-dialog-actions align="end">
-      <button mat-raised-button color="primary" mat-dialog-close>Close</button>
-    </mat-dialog-actions>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-raised-button color="primary" mat-dialog-close>Close</button>
+  </mat-dialog-actions>
+
+
   </ng-template>
 </div>
