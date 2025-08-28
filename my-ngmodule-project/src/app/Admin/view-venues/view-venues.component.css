@@ -285,10 +285,9 @@ mat-icon {
 
 
 .dialog-header {
-  background-color: #3f51b5;  /* unaweza kubadilisha rangi unavyotaka */
-  color: white;               /* maandishi meupe */
+  background-color: #3f51b5; 
+  color: #fff !important;        
   padding: 12px 20px;
-
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   font-size: 20px;
