@@ -59,7 +59,7 @@ export class PhoneSearchComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.http.put<any>(`${environment.apiUrl}/api/bookings/cancel/${bookingId}`, {})
+        this.http.post<any>(`${environment.apiUrl}/api/bookings/cancel/${bookingId}`, {})
           .subscribe({
             next: () => {
               this.snackBar.open('Booking successfully cancelled!', 'Close', { duration: 3000, panelClass: ['snackbar-success'] });
