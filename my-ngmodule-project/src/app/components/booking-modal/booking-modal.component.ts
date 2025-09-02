@@ -14,11 +14,11 @@ import { ConfirmBookingComponent } from '../confirm-booking/confirm-booking.comp
 })
 export class BookingModalComponent implements OnInit {
   detailsForm!: FormGroup;
-  attachedFile?: File | null = null;
-  fileError?: string | null = null;
-  isSubmitting = false; // used to disable submit while confirm opens
+  attachedFile: File | null = null;
+  fileError: string | null = null;
+  isSubmitting = false;
   optionalServices: any[] = [];
-  discountRate = 0; // UI-only; Confirm will actually apply discount if verified
+  discountRate = 0;
   employeeVerified = false;
 
   constructor(
@@ -44,7 +44,6 @@ export class BookingModalComponent implements OnInit {
       acceptTerms: [false, Validators.requiredTrue]
     });
 
-    // Load optional services for this venue using service
     if (this.data?.venueId) {
       this.api.getOptionalServicesForVenue(this.data.venueId).subscribe({
         next: (arr) => {
@@ -58,56 +57,57 @@ export class BookingModalComponent implements OnInit {
     }
   }
 
-  // enforce digits-only and max length 10 client-side while user types
   onPhoneInput(e: Event) {
     const input = e.target as HTMLInputElement;
     if (!input) return;
     let v = input.value || '';
-    // keep digits only
     v = v.replace(/\D/g, '');
     if (v.length > 10) v = v.slice(0, 10);
-    // write back cleaned value
     input.value = v;
-    // update form control value so validators run
     this.detailsForm.patchValue({ phoneNumber: v });
   }
 
   onFileSelected(e: Event) {
     this.fileError = null;
     const input = e.target as HTMLInputElement;
-    if (!input.files || input.files.length === 0) { this.attachedFile = null; return; }
+    if (!input.files || input.files.length === 0) {
+      this.attachedFile = null;
+      return;
+    }
     const f = input.files[0];
-    if (f.type !== 'application/pdf') { this.fileError = 'Only PDF allowed'; this.attachedFile = null; return; }
-    if (!f.name.toLowerCase().endsWith('.pdf')) { this.fileError = 'File must be .pdf'; this.attachedFile = null; return; }
+    if (f.type !== 'application/pdf') {
+      this.fileError = 'Only PDF allowed';
+      this.attachedFile = null;
+      return;
+    }
+    if (!f.name.toLowerCase().endsWith('.pdf')) {
+      this.fileError = 'File must be .pdf';
+      this.attachedFile = null;
+      return;
+    }
     this.attachedFile = f;
   }
 
   openEmployeeVerify(event: any) {
-  // If user is trying to check the box
-  if (event.checked) {
-    const dlg = this.dialog.open(EmployeeVerifyComponent, { width: '420px' });
-
-    dlg.afterClosed().subscribe((result: any) => {
-      if (result && result.verified) {
-        this.employeeVerified = true;
-        this.discountRate = result.discountRate ?? 0;
-      } else {
-        // Verification failed → reset checkbox
-        this.employeeVerified = false;
-        this.discountRate = 0;
-      }
-    });
-  } else {
-    // If user manually unchecks the box
-    this.employeeVerified = false;
-    this.discountRate = 0;
+    if (event.checked) {
+      const dlg = this.dialog.open(EmployeeVerifyComponent, { width: '420px' });
+      dlg.afterClosed().subscribe((result: any) => {
+        if (result && result.verified) {
+          this.employeeVerified = true;
+          this.discountRate = result.discountRate ?? 0;
+        } else {
+          this.employeeVerified = false;
+          this.discountRate = 0;
+          this.detailsForm.patchValue({ acceptTerms: false });
+        }
+      });
+    } else {
+      this.employeeVerified = false;
+      this.discountRate = 0;
+    }
   }
-}
-
-
 
   buildBookingObject() {
-    // determine date/time (selectedItem override from data.mode)
     let startDateStr: string, endDateStr: string, startTimeStr: string, endTimeStr: string;
     if (this.data.mode === 'single' && this.data.item) {
       startDateStr = this.data.item.date;
@@ -117,15 +117,15 @@ export class BookingModalComponent implements OnInit {
     } else {
       const s = new Date(this.data.start);
       const e = new Date(this.data.end);
-      const pad = (n:number)=>String(n).padStart(2,'0');
-      const toYMD = (d:Date)=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+      const pad = (n: number) => String(n).padStart(2, '0');
+      const toYMD = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
       startDateStr = toYMD(s);
       endDateStr = toYMD(e);
-      startTimeStr = (this.data.startTime ?? '09:00');
-      endTimeStr = (this.data.endTime ?? '17:00');
+      startTimeStr = this.data.startTime ?? '09:00';
+      endTimeStr = this.data.endTime ?? '17:00';
     }
 
-    const booking = {
+    return {
       startDate: startDateStr,
       startTime: `${startTimeStr}:00`,
       endDate: endDateStr,
@@ -142,43 +142,41 @@ export class BookingModalComponent implements OnInit {
       },
       discountRate: this.discountRate || 0
     };
-    return booking;
   }
 
   submitBooking() {
-    // if (this.detailsForm.invalid) {
-    //   this.detailsForm.markAllAsTouched();
-    //   return;
-    // }
+    if (this.detailsForm.invalid) {
+      this.detailsForm.markAllAsTouched();
+      return;
+    }
 
     const booking = this.buildBookingObject();
+    const selectedOptionalService =
+      this.optionalServices.find((s) => s.serviceId === booking.venueOptionalServiceId) ?? null;
 
-    // find selected optional service object to display in confirm dialog (name + price)
-    const selectedOptionalService = this.optionalServices.find(s => s.serviceId === booking.venueOptionalServiceId) ?? null;
+    this.isSubmitting = true;
 
-    // Open Confirm dialog and pass booking + attached file + venueName + employeeVerified flag + selected optional service
     const dlgRef = this.dialog.open(ConfirmBookingComponent, {
-  width: '680px',
-  data: {
-    booking,
-    attachedFile: this.attachedFile ?? null,
-    venueName: this.data.venueName,
-    employeeVerified: this.employeeVerified,
-    selectedOptionalService: this.optionalServices.find(s => s.serviceId === booking.venueOptionalServiceId) ?? null
-  },
-  maxHeight: '85vh'
-});
-
+      width: '680px',
+      data: {
+        booking,
+        attachedFile: this.attachedFile ?? null,
+        venueName: this.data.venueName,
+        employeeVerified: this.employeeVerified,
+        selectedOptionalService
+      },
+      maxHeight: '85vh'
+    });
 
     dlgRef.afterClosed().subscribe((result: any) => {
+      this.isSubmitting = false;
       if (result && result.success && result.bookingId) {
-        // booking created - close this modal; Confirm already navigated to invoice
         this.ref.close({ success: true, bookingId: result.bookingId });
-      } else {
-        // not confirmed or failed — stay open
       }
     });
   }
 
-  cancel() { this.ref.close(null); }
+  cancel() {
+    this.ref.close(null);
+  }
 }
