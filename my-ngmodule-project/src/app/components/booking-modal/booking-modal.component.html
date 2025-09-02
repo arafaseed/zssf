@@ -94,14 +94,6 @@
         Employee verified — discount applied ({{ discountRate * 100 }}%)
       </div>
     </div>
-
-    <!-- Accept Terms -->
-    <mat-checkbox formControlName="acceptTerms" class="mt-3">
-      I accept the terms and conditions
-    </mat-checkbox>
-    <mat-error *ngIf="detailsForm.get('acceptTerms')?.hasError('required')">
-      You must accept the terms
-    </mat-error>
   </form>
 </mat-dialog-content>
 
