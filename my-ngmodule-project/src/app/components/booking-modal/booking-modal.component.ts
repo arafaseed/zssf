@@ -38,9 +38,9 @@ export class BookingModalComponent implements OnInit {
       optionalServiceId: [null],
       customerName: ['', Validators.required],
       phoneNumber: ['', [Validators.required, Validators.pattern(phonePattern)]],
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.email]],
       address: ['', Validators.required],
-      customerType: ['INDIVIDUAL', Validators.required],
+      customerType: ['', Validators.required],
       acceptTerms: [false, Validators.requiredTrue]
     });
 
