@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface HandoverReport {
   bookingCode: string;
@@ -14,7 +15,7 @@ export interface HandoverReport {
   providedIn: 'root'
 })
 export class VenueHandoverService {
-  private readonly apiBase = '${environment.apiUrl}/api/venue-handover';
+  private readonly apiBase = `${environment.apiUrl}/api/venue-handover`;
 
   constructor(private http: HttpClient) {}
 

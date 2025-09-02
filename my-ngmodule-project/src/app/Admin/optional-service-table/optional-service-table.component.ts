@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { OptionalServiceEditFormComponent } from '../../Form/optional-service-edit-form/optional-service-edit-form.component';
+import { OptionalServiceEditFormComponent } from '../optional-service-edit-form/optional-service-edit-form.component';
 import { OptionalServiceService } from '../../Services/optional.service';
 
 @Component({

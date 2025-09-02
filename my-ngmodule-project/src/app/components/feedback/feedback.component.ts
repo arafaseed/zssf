@@ -2,8 +2,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators, AbstractControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FeedbackService } from '../Services/feedback.service';
-import { FeedbackDto, FeedbackType } from '../models/models';
+import { FeedbackService } from '../../Services/feedback.service';
+import { FeedbackDto, FeedbackType } from '../../models/models';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 

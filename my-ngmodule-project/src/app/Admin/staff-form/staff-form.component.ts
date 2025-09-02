@@ -2,7 +2,7 @@ import { Component, OnInit, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatDialogRef } from '@angular/material/dialog';
-import { StaffViewService } from '../Services/staff-view.service';
+import { StaffViewService } from '../../Services/staff-view.service';
 
 @Component({
   selector: 'app-staff-form',

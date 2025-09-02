@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Staff, StaffViewService } from '../Services/staff-view.service';
+import { Staff, StaffViewService } from '../../Services/staff-view.service';
 import { MatDialog } from '@angular/material/dialog';
 import { StaffDialogComponent } from '../staff-dialog.component/staff-dialog.component';
 import { HttpClient } from '@angular/common/http';

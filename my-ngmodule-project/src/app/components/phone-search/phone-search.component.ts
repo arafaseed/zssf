@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 
 @Component({
