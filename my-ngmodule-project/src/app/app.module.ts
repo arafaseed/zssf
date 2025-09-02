@@ -40,33 +40,32 @@ import { ViewVenuesComponent } from './Admin/view-venues/view-venues.component';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MajengoComponent } from './Admin/majengo/majengo.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './Admin/login/login.component';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { EditVenueComponent} from './edit-venue-component/edit-venue-component.component';
+import { EditVenueComponent} from './Admin/edit-venue-component/edit-venue-component.component';
 import { BookingService } from './Services/booking.service';
-import { MultiStepFormComponent } from './multi-step-form/multi-step-form.component';
-import { BookingListComponent } from './booking-list/booking-list.component';
-import { InvoiceComponent } from './invoice/invoice.component';
-import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { BookingListComponent } from './Admin/booking-list/booking-list.component';
+import { InvoiceComponent } from './components/invoice/invoice.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ActivityFormComponent } from './Admin/activity-form/activity-form.component';import { ActivityTableComponent } from './Table/activitytable/activitytable.component';
-import { ActivityEditFormComponent } from './Form/activity-edit-form/activity-edit-form.component';
-import { PhoneSearchComponent } from './phone-search/phone-search.component';
+import { ActivityFormComponent } from './Admin/activity-form/activity-form.component';import { ActivityTableComponent } from './Admin/activitytable/activitytable.component';
+import { ActivityEditFormComponent } from './Admin/activity-edit-form/activity-edit-form.component';
+import { PhoneSearchComponent } from './components/phone-search/phone-search.component';
 import { StaffModule } from "./staff/staff.module";
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ViewBuildingComponent } from './view-building/view-building.component';
+import { ViewBuildingComponent } from './Admin/view-building/view-building.component';
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MatMenuModule } from '@angular/material/menu';
-import { TermsAndConditionsComponent } from './terms-and-conditions/terms-and-conditions.component';
-import { FeedbackComponent } from './feedback/feedback.component';
-import { BuildingEditFormComponent } from './Form/building-edit-form/building-edit-form.component';
-import { AddBuildingComponent } from './add-building/add-building.component';
+import { TermsAndConditionsComponent } from './components/terms-and-conditions/terms-and-conditions.component';
+import { FeedbackComponent } from './components/feedback/feedback.component';
+import { BuildingEditFormComponent } from './Admin/building-edit-form/building-edit-form.component';
+import { AddBuildingComponent } from './Admin/add-building/add-building.component';
 
 import { VenueCardComponent } from './components/venue-card/venue-card.component';
 import { VenueExplorerComponent } from './components/venue-explorer/venue-explorer.component';
@@ -78,12 +77,12 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { AvailabilityModalComponent } from './components/availability-modal/availability-modal.component';
 import { OptionalServiceTableComponent } from './Admin/optional-service-table/optional-service-table.component';
-import { OptionalServiceEditFormComponent } from './Form/optional-service-edit-form/optional-service-edit-form.component';
-import { OptionalServiceAddFormComponent } from './Form/optional-service-add-form/optional-service-add-form.component';
+import { OptionalServiceEditFormComponent } from './Admin/optional-service-edit-form/optional-service-edit-form.component';
+import { OptionalServiceAddFormComponent } from './Admin/optional-service-add-form/optional-service-add-form.component';
 
-import { StaffTableComponent } from './staff-table/staff-table.component';
-import { StaffDialogComponent } from './staff-dialog.component/staff-dialog.component';
-import { StaffFormComponent } from './staff-form/staff-form.component';
+import { StaffTableComponent } from './Admin/staff-table/staff-table.component';
+import { StaffDialogComponent } from './Admin/staff-dialog.component/staff-dialog.component';
+import { StaffFormComponent } from './Admin/staff-form/staff-form.component';
 import { PoliciesSettingsComponent } from './Admin/policies-settings/policies-settings.component';
 import { AdminFeedbacksComponent } from './Admin/admin-feedbacks/admin-feedbacks.component';
 import { FeedbackDetailDialogComponent } from './Admin/feedback-detail-dialog/feedback-detail-dialog.component';
@@ -117,7 +116,6 @@ export function createTranslateLoader(http: HttpClient) {
     ViewVenuesComponent,
     LoginComponent,
     EditVenueComponent,
-    MultiStepFormComponent,
     BookingListComponent,
     ConfirmDialogComponent,
     InvoiceComponent,

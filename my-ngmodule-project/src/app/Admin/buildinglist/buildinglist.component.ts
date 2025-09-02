@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BuildinglistService } from '../../Services/buildinglist.service';
-import { BuildingEditFormComponent } from '../../Form/building-edit-form/building-edit-form.component';
+import { BuildingEditFormComponent } from '../building-edit-form/building-edit-form.component';
 
 @Component({
   selector: 'app-buildinglist',
