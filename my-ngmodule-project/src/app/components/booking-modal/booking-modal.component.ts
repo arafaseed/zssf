@@ -41,7 +41,6 @@ export class BookingModalComponent implements OnInit {
       email: ['', [Validators.email]],
       address: ['', Validators.required],
       customerType: ['', Validators.required],
-      acceptTerms: [false, Validators.requiredTrue]
     });
 
     if (this.data?.venueId) {
@@ -98,7 +97,6 @@ export class BookingModalComponent implements OnInit {
         } else {
           this.employeeVerified = false;
           this.discountRate = 0;
-          this.detailsForm.patchValue({ acceptTerms: false });
         }
       });
     } else {
@@ -132,6 +130,8 @@ export class BookingModalComponent implements OnInit {
       endTime: `${endTimeStr}:00`,
       venueId: this.data.venueId,
       venueActivityId: this.data.activityId,
+      venueActivityName: this.data.activityName,
+      venueActivityPrice: this.data.price,
       venueOptionalServiceId: this.detailsForm.value.optionalServiceId ?? null,
       customer: {
         customerName: this.detailsForm.value.customerName,

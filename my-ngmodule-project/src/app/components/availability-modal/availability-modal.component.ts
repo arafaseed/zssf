@@ -85,7 +85,8 @@ export class AvailabilityModalComponent implements OnInit {
       startTime: this.data.startTime,
       endTime: this.data.endTime,
       activityId: this.data.activityId,
-      activityName: this.data.activityName
+      activityName: this.data.activityName,
+      activityPrice: this.data.price
     });
   }
 

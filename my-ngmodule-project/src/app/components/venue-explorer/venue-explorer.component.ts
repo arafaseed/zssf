@@ -37,9 +37,10 @@ export class VenueExplorerComponent implements OnInit {
 
   // availability form model
   startDate!: Date | null;
-  startTime = '09:00';
+  // startTime and endTime intentionally undefined so inputs are empty by default
+  startTime: string | undefined = undefined;
   endDate!: Date | null;
-  endTime = '17:00';
+  endTime: string | undefined = undefined;
   selectedActivityId?: number;
 
   // date validation helpers
@@ -56,6 +57,11 @@ export class VenueExplorerComponent implements OnInit {
     private optionalSvc: OptionalServiceService,
     private dialog: MatDialog
   ) {}
+
+  private toMinutes(time: string): number {
+    const [hh, mm] = time.split(':').map(s => Number(s));
+    return hh * 60 + mm;
+  }
 
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -199,6 +205,63 @@ export class VenueExplorerComponent implements OnInit {
     return a.getTime() < b.getTime();
   }
 
+    // --- new helper: parse a time string into 24-hour parts ---
+  private parseTimeString(time?: string | null): { hh: number; mm: number } | null {
+    if (!time) return null;
+    const t = time.trim();
+
+    // 1) Match 12-hour with AM/PM like "7:00 AM" or "12:30 pm"
+    const reAmpm = /^([0]?[1-9]|1[0-2]):([0-5][0-9])\s*([AaPp][Mm])$/;
+    const m1 = t.match(reAmpm);
+    if (m1) {
+      let hh = parseInt(m1[1], 10);
+      const mm = parseInt(m1[2], 10);
+      const ampm = m1[3].toLowerCase();
+      if (ampm === 'am') {
+        if (hh === 12) hh = 0; // 12:xx AM -> 00:xx
+      } else {
+        if (hh !== 12) hh += 12; // 1pm..11pm -> 13..23
+      }
+      return { hh, mm };
+    }
+
+    // 2) Match 24-hour "HH:mm" or "H:mm"
+    const re24 = /^([01]?\d|2[0-3]):([0-5]\d)(?::([0-5]\d))?$/;
+    const m2 = t.match(re24);
+    if (m2) {
+      const hh = parseInt(m2[1], 10);
+      const mm = parseInt(m2[2], 10);
+      return { hh, mm };
+    }
+
+    // Unknown format
+    return null;
+  }
+
+  // --- new helper: format time the API expects ("HH:mm") ---
+  private formatTimeForApi(time?: string | undefined | null): string | null {
+    const parts = this.parseTimeString(time ?? '');
+    if (!parts) return null;
+    const hh = String(parts.hh).padStart(2, '0');
+    const mm = String(parts.mm).padStart(2, '0');
+    return `${hh}:${mm}`;
+  }
+
+  // --- updated combineDateTime: uses robust parse ---
+  combineDateTime(date?: Date | null, time?: string | undefined) {
+    if (!date) return null;
+    // accept "7:00 AM", "07:00", "19:00", or null
+    const parts = this.parseTimeString(time ?? '00:00');
+    if (!parts) {
+      // keep the previous behaviour of returning null on invalid times
+      return null;
+    }
+    const d = new Date(date);
+    d.setHours(parts.hh, parts.mm, 0, 0);
+    return d;
+  }
+
+
   openAvailabilityModal() {
     if (!this.venue) return;
 
@@ -223,6 +286,12 @@ export class VenueExplorerComponent implements OnInit {
       return;
     }
 
+    if (!this.startTime || !this.endTime) {
+  this.formError = 'Please enter start and end times.';
+  return;
+}
+
+
     // combine with times for precise datetimes
     const start = this.combineDateTime(this.startDate, this.startTime);
     const end = this.combineDateTime(this.endDate, this.endTime);
@@ -231,7 +300,11 @@ export class VenueExplorerComponent implements OnInit {
       return;
     }
 
-    const activity = this.activities.find(a => a.activityId === this.selectedActivityId);
+        const activity = this.activities.find(a => a.activityId === this.selectedActivityId);
+
+    // format times for API (HH:mm)
+    const apiStartTime = this.formatTimeForApi(this.startTime) ?? this.startTime ?? '00:00';
+    const apiEndTime = this.formatTimeForApi(this.endTime) ?? this.endTime ?? '00:00';
 
     // open availability modal
     const ref = this.dialog.open(AvailabilityModalComponent, {
@@ -241,12 +314,14 @@ export class VenueExplorerComponent implements OnInit {
         venueId: this.venue.venueId,
         venueName: this.venue.venueName,
         start, end,
-        startTime: this.startTime,
-        endTime: this.endTime,
+        // now we pass "HH:mm" strings to the modal/backend
+        startTime: apiStartTime,
+        endTime: apiEndTime,
         activityId: activity?.activityId,
         activityName: activity?.activityName
       }
     });
+
 
     ref.afterClosed().subscribe(result => {
       if (!result) return; // cancelled
@@ -269,11 +344,11 @@ export class VenueExplorerComponent implements OnInit {
   }
 
 
-  combineDateTime(date?: Date | null, time?: string) {
-    if (!date) return null;
-    const [hh, mm] = (time || '00:00').split(':').map(Number);
-    const d = new Date(date);
-    d.setHours(hh, mm, 0, 0);
-    return d;
-  }
+  // combineDateTime(date?: Date | null, time?: string | undefined) {
+  //   if (!date) return null;
+  //   const [hh, mm] = (time ?? '00:00').split(':').map(Number);
+  //   const d = new Date(date);
+  //   d.setHours(hh, mm, 0, 0);
+  //   return d;
+  // }
 }

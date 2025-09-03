@@ -10,12 +10,8 @@
         <!-- Large image display: fixed container size, black background, image fully visible (no crop) -->
         <div class="bg-black rounded-lg shadow-lg overflow-hidden h-96 flex items-center justify-center">
           <ng-container *ngIf="venue.venueImages && venue.venueImages.length; else noImage">
-            <img
-              class="max-w-full max-h-full object-contain"
-              [src]="venue.venueImages[currentImageIndex]"
-              alt="{{ venue.venueName }}"
-              loading="lazy"
-            />
+            <img class="max-w-full max-h-full object-contain" [src]="venue.venueImages[currentImageIndex]"
+              alt="{{ venue.venueName }}" loading="lazy" />
           </ng-container>
           <ng-template #noImage>
             <div class="text-white text-center px-4">No image available</div>
@@ -25,17 +21,10 @@
         <!-- Thumbnail list -->
         <div class="flex gap-3 overflow-x-auto py-2">
           <ng-container *ngFor="let img of venue.venueImages; let i = index">
-            <button
-              class="flex-shrink-0 rounded-md overflow-hidden border-2"
-              [class.border-sky-500]="i === currentImageIndex"
-              style="width: 110px; height: 70px"
-              (click)="onSelectImage(i)"
-            >
-              <img
-                [src]="img"
-                class="w-full h-full object-cover"
-                loading="lazy"
-              />
+            <button class="flex-shrink-0 rounded-md overflow-hidden border-2"
+              [class.border-sky-500]="i === currentImageIndex" style="width: 110px; height: 70px"
+              (click)="onSelectImage(i)">
+              <img [src]="img" class="w-full h-full object-cover" loading="lazy" />
             </button>
           </ng-container>
         </div>
@@ -84,10 +73,7 @@
           </div>
         </div>
 
-          <div
-          *ngIf="optionalServices.length"
-          class="bg-white p-4 rounded-lg shadow"
-        >
+        <div *ngIf="optionalServices.length" class="bg-white p-4 rounded-lg shadow">
           <h4 class="font-semibold">Optional services</h4>
           <ul class="mt-2 text-sm text-slate-700">
             <li *ngFor="let s of optionalServices">
@@ -103,17 +89,9 @@
           <div class="space-y-3">
             <mat-form-field class="w-full">
               <mat-label>Event start date</mat-label>
-              <input
-                matInput
-                [min]="minDate"
-                [matDatepicker]="startPicker"
-                [(ngModel)]="startDate"
-                (ngModelChange)="onStartDateChange($event)"
-              />
-              <mat-datepicker-toggle
-                matSuffix
-                [for]="startPicker"
-              ></mat-datepicker-toggle>
+              <input matInput [min]="minDate" [matDatepicker]="startPicker" [(ngModel)]="startDate"
+                (ngModelChange)="onStartDateChange($event)" />
+              <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
               <mat-datepicker #startPicker></mat-datepicker>
               <div *ngIf="startDateInvalid" class="text-sm text-red-600 mt-1">
                 Selected start date cannot be in the past.
@@ -122,17 +100,9 @@
 
             <mat-form-field class="w-full">
               <mat-label>Event end date</mat-label>
-              <input
-                matInput
-                [min]="minDate"
-                [matDatepicker]="endPicker"
-                [(ngModel)]="endDate"
-                (ngModelChange)="onEndDateChange($event)"
-              />
-              <mat-datepicker-toggle
-                matSuffix
-                [for]="endPicker"
-              ></mat-datepicker-toggle>
+              <input matInput [min]="minDate" [matDatepicker]="endPicker" [(ngModel)]="endDate"
+                (ngModelChange)="onEndDateChange($event)" />
+              <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
               <mat-datepicker #endPicker></mat-datepicker>
               <div *ngIf="endDateInvalid" class="text-sm text-red-600 mt-1">
                 Selected end date cannot be in the past.
@@ -140,14 +110,32 @@
             </mat-form-field>
 
             <div class="flex gap-3">
-              <mat-form-field class="flex-1">
+              <mat-form-field class="flex-1" appearance="fill">
                 <mat-label>Start time</mat-label>
-                <input matInput type="time" [(ngModel)]="startTime" />
+
+                <input matInput placeholder="HH:mm" [ngxTimepicker]="startTimePicker" [(ngModel)]="startTime"
+                  name="startTime" readonly />
+
+                <!-- Use the ngx-material-timepicker-toggle component (not an attribute) -->
+                <ngx-material-timepicker-toggle matSuffix [for]="startTimePicker" aria-label="Open start time">
+                  <!-- optional custom icon slot; otherwise it renders a default icon -->
+                  <mat-icon ngxMaterialTimepickerToggleIcon>access_time</mat-icon>
+                </ngx-material-timepicker-toggle>
+
+                <ngx-material-timepicker #startTimePicker></ngx-material-timepicker>
               </mat-form-field>
 
-              <mat-form-field class="flex-1">
+              <mat-form-field class="flex-1" appearance="fill">
                 <mat-label>End time</mat-label>
-                <input matInput type="time" [(ngModel)]="endTime" />
+
+                <input matInput placeholder="HH:mm" [ngxTimepicker]="endTimePicker" [(ngModel)]="endTime" name="endTime"
+                  readonly />
+
+                <ngx-material-timepicker-toggle matSuffix [for]="endTimePicker" aria-label="Open end time">
+                  <mat-icon ngxMaterialTimepickerToggleIcon>access_time</mat-icon>
+                </ngx-material-timepicker-toggle>
+
+                <ngx-material-timepicker #endTimePicker></ngx-material-timepicker>
               </mat-form-field>
             </div>
 
@@ -165,11 +153,7 @@
             </div>
 
             <div class="flex gap-2 justify-center">
-              <button
-                mat-stroked-button
-                color="primary"
-                (click)="openAvailabilityModal()"
-              >
+              <button mat-stroked-button color="primary" (click)="openAvailabilityModal()">
                 Check
               </button>
             </div>
@@ -177,7 +161,7 @@
         </div>
 
         <!-- optional services -->
-      
+
       </aside>
     </div>
   </div>

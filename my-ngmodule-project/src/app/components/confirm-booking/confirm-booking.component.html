@@ -1,16 +1,16 @@
-<h2 class="text-2xl font-roboto font-bold text-green-900 m-5">
+<h2 class="m-5 text-2xl font-bold text-green-900 font-roboto">
   Confirm Booking Details
 </h2>
 
 <mat-dialog-content class="space-y-6">
   <!-- Venue -->
-  <div class="p-4 rounded-2xl bg-green-50 shadow-sm">
+  <div class="p-4 shadow-sm rounded-2xl bg-green-50">
     <h4 class="font-semibold text-green-700">Venue</h4>
-    <p class="text-base text-gray-700 mt-1">{{ data.venueName }}</p>
+    <p class="mt-1 text-base text-gray-700">{{ data.venueName }}</p>
   </div>
 
   <!-- Dates & Times -->
-  <div class="p-4 rounded-2xl bg-green-50 shadow-sm space-y-2">
+  <div class="p-4 space-y-2 shadow-sm rounded-2xl bg-green-50">
     <h4 class="font-semibold text-green-700">Dates & Times</h4>
     <p class="text-base text-gray-700"><strong>From (Date):</strong> {{ data.booking.startDate }}</p>
     <p class="text-base text-gray-700"><strong>From (Time):</strong> {{ data.booking.startTime }}</p>
@@ -19,10 +19,10 @@
   </div>
 
   <!-- Activity -->
-  <div class="p-4 rounded-2xl bg-green-50 shadow-sm space-y-1">
+  <div class="p-4 space-y-1 shadow-sm rounded-2xl bg-green-50">
     <h4 class="font-semibold text-green-700">Activity & Service</h4>
     <p class="text-base text-gray-700">
-      <strong>Activity / Purpose:</strong> {{ data.booking.venueActivityId || '—' }}
+      <strong>Activity / Purpose:</strong> {{ data.booking.venueActivityName || '—' }}— {{ data.booking.venueActivityPrice | number:'1.0-0' }}TZS
     </p>
     <ng-container *ngIf="data.selectedOptionalService; else noOptionalService">
       <p class="text-base text-gray-700">
@@ -37,7 +37,7 @@
   </div>
 
   <!-- Customer -->
-  <div class="p-4 rounded-2xl bg-green-50 shadow-sm space-y-1">
+  <div class="p-4 space-y-1 shadow-sm rounded-2xl bg-green-50">
     <h4 class="font-semibold text-green-700">Customer</h4>
     <p class="text-base text-gray-700"><strong>Name:</strong> {{ data.booking.customer?.customerName }}</p>
     <p class="text-base text-gray-700"><strong>Phone:</strong> {{ data.booking.customer?.phoneNumber }}</p>
@@ -47,18 +47,18 @@
   </div>
 
   <!-- Attached File -->
-  <div class="p-4 rounded-2xl bg-green-50 shadow-sm">
+  <div class="p-4 shadow-sm rounded-2xl bg-green-50">
     <h4 class="font-semibold text-green-700">Attached Document</h4>
     <p *ngIf="data.attachedFile?.name; else noFile" class="text-base text-gray-700">
       {{ data.attachedFile.name }}
     </p>
     <ng-template #noFile>
-      <p class="text-base text-gray-500 italic">No file attached</p>
+      <p class="text-base italic text-gray-500">No file attached</p>
     </ng-template>
   </div>
 
   <!-- Summary -->
-  <div class="p-4 rounded-2xl bg-green-50 shadow-sm">
+  <div class="p-4 shadow-sm rounded-2xl bg-green-50">
     <h4 class="font-semibold text-green-700">Summary</h4>
     <p class="text-base text-gray-700">
       <strong>Discount rate:</strong> {{ data.booking.discountRate || 0 }}
@@ -66,7 +66,7 @@
   </div>
 
   <!-- Error -->
-  <div *ngIf="errorMessage" class="text-sm font-medium text-red-600 mt-2">
+  <div *ngIf="errorMessage" class="mt-2 text-sm font-medium text-red-600">
     {{ errorMessage }}
   </div>
 
@@ -82,12 +82,12 @@
 <!-- Actions -->
 <mat-dialog-actions align="end" class="mt-6 space-x-3">
   <button mat-button (click)="close(false)" [disabled]="submitting"
-    class="rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 px-4 py-2">
+    class="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-100">
     Cancel
   </button>
   <button mat-flat-button color="primary" (click)="confirmAndSubmit()" 
     [disabled]="!accepted || submitting"
-    class="rounded-lg bg-green-500 hover:bg-green-600 text-white px-4 py-2 font-medium">
+    class="px-4 py-2 font-medium text-white bg-green-500 rounded-lg hover:bg-green-600">
     <span *ngIf="!submitting">Confirm & Submit</span>
     <span *ngIf="submitting" class="flex items-center">
       <mat-progress-spinner diameter="18" mode="indeterminate"></mat-progress-spinner>

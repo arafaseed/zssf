@@ -86,8 +86,7 @@ import { StaffFormComponent } from './Admin/staff-form/staff-form.component';
 import { PoliciesSettingsComponent } from './Admin/policies-settings/policies-settings.component';
 import { AdminFeedbacksComponent } from './Admin/admin-feedbacks/admin-feedbacks.component';
 import { FeedbackDetailDialogComponent } from './Admin/feedback-detail-dialog/feedback-detail-dialog.component';
-
-
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
 
 
@@ -183,6 +182,7 @@ export function createTranslateLoader(http: HttpClient) {
     LucideAngularModule,
     MatCheckboxModule,
     MatRadioModule,
+    NgxMaterialTimepickerModule,
     
 
 
