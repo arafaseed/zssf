@@ -318,7 +318,8 @@ export class VenueExplorerComponent implements OnInit {
         startTime: apiStartTime,
         endTime: apiEndTime,
         activityId: activity?.activityId,
-        activityName: activity?.activityName
+        activityName: activity?.activityName,
+        activityPrice:activity?.price
       }
     });
 
@@ -333,7 +334,8 @@ export class VenueExplorerComponent implements OnInit {
         venueId: this.venue.venueId,
         venueName: this.venue.venueName,
         activityId: activity?.activityId,
-        activityName: activity?.activityName
+        activityName: activity?.activityName,
+        activityPrice: activity?.price
       };
       this.dialog.open(BookingModalComponent, {
         width: '760px',

@@ -131,7 +131,7 @@ export class BookingModalComponent implements OnInit {
       venueId: this.data.venueId,
       venueActivityId: this.data.activityId,
       venueActivityName: this.data.activityName,
-      venueActivityPrice: this.data.price,
+      venueActivityPrice: this.data.activityPrice,
       venueOptionalServiceId: this.detailsForm.value.optionalServiceId ?? null,
       customer: {
         customerName: this.detailsForm.value.customerName,

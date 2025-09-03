@@ -22,7 +22,9 @@
   <div class="p-4 space-y-1 shadow-sm rounded-2xl bg-green-50">
     <h4 class="font-semibold text-green-700">Activity & Service</h4>
     <p class="text-base text-gray-700">
-      <strong>Activity / Purpose:</strong> {{ data.booking.venueActivityName || '—' }}— {{ data.booking.venueActivityPrice | number:'1.0-0' }}TZS
+      <strong>Activity / Purpose:</strong> 
+      {{ data.booking.venueActivityName || '—' }}
+      — {{ data.booking.venueActivityPrice | number:'1.0-0' }} TZS /Day
     </p>
     <ng-container *ngIf="data.selectedOptionalService; else noOptionalService">
       <p class="text-base text-gray-700">
