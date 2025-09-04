@@ -33,9 +33,15 @@ export class PhoneSearchComponent {
       .get<any[]>(`${environment.apiUrl}/api/bookings/by-customer-phone?phone=${this.phoneNumber}`)
       .subscribe({
         next: (data) => {
-          this.bookings = data.filter(b => b.bookingStatus.toLowerCase() !== 'cancelled');
+          // remove cancelled bookings
+          const filtered = data.filter(b => b.bookingStatus && b.bookingStatus.toLowerCase() !== 'cancelled');
+
+          // sort by bookingDate descending (latest first). Defensive parse: invalid/missing => very old.
+          this.bookings = this.sortByBookingDateDesc(filtered);
+
           this.noResults = this.bookings.length === 0;
           this.searching = false;
+
           if (this.noResults) {
             this.snackBar.open('No bookings found.', 'Close', { duration: 3000, panelClass: ['snackbar-info'] });
           }
@@ -47,6 +53,24 @@ export class PhoneSearchComponent {
           this.snackBar.open('Failed to fetch bookings. Please try again.', 'Close', { duration: 3000, panelClass: ['snackbar-error'] });
         },
       });
+  }
+
+  /**
+   * Sorts an array of bookings so the latest bookingDate appears first.
+   * If bookingDate is missing or invalid it will be treated as very old.
+   */
+  private sortByBookingDateDesc(bookings: any[]): any[] {
+    const safeTime = (d: any): number => {
+      if (!d && d !== 0) return -8640000000000000; // very old date fallback
+      const t = Date.parse(d);
+      return isNaN(t) ? -8640000000000000 : t;
+    };
+
+    return bookings.slice().sort((a, b) => {
+      const ta = safeTime(a?.bookingDate);
+      const tb = safeTime(b?.bookingDate);
+      return tb - ta; // descending: newer (b) first
+    });
   }
 
   cancelBooking(bookingId: number) {
@@ -63,7 +87,7 @@ export class PhoneSearchComponent {
           .subscribe({
             next: () => {
               this.snackBar.open('Booking successfully cancelled!', 'Close', { duration: 3000, panelClass: ['snackbar-success'] });
-              this.onSubmit();
+              this.onSubmit(); // re-fetch and re-sort
             },
             error: (err) => {
               console.error('Error cancelling booking:', err);

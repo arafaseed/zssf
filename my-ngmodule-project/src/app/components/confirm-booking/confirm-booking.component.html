@@ -62,8 +62,35 @@
   <!-- Summary -->
   <div class="p-4 shadow-sm rounded-2xl bg-green-50">
     <h4 class="font-semibold text-green-700">Summary</h4>
+
+    <!-- existing discount row remains -->
     <p class="text-base text-gray-700">
       <strong>Discount rate:</strong> {{ data.booking.discountRate || 0 }}
+    </p>
+
+    <!-- NEW rows: total days, total booking price, discount amount, net amount -->
+    <p class="text-base text-gray-700">
+      <strong>Total days:</strong> {{ totalDays }}
+    </p>
+
+    <p class="text-base text-gray-700">
+      <strong>Activity price (per day):</strong> {{ activityPrice | number:'1.0-0' }} TZS
+    </p>
+
+    <p class="text-base text-gray-700">
+      <strong>Optional service price (per day / flat):</strong> {{ optionalPrice | number:'1.0-0' }} TZS
+    </p>
+
+    <p class="text-base text-gray-700">
+      <strong>Total booking price:</strong> {{ totalBookingPrice | number:'1.0-0' }} TZS
+    </p>
+
+    <p class="text-base text-gray-700">
+      <strong>Discount amount:</strong> {{ discountAmount | number:'1.0-0' }} TZS
+    </p>
+
+    <p class="text-base text-gray-700">
+      <strong>Total after discount:</strong> {{ netAmount | number:'1.0-0' }} TZS
     </p>
   </div>
 
