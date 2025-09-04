@@ -13,7 +13,7 @@ export interface BookingDTO {
   venueName: string;
   packageName: string;
   price: number;
-  status: string;
+  bookingStatus: string;
   customer: {
     customerId: number;
     customerName: string;
@@ -44,7 +44,7 @@ export interface Report {
   customerFullName: string;
   customerPhone: string;
   packageName: string;
-  activityName: string;
+  venueActivityName: string;
   price: number;
   checkInTime: string | null;
   checkOutTime: string | null;
@@ -119,8 +119,8 @@ export class StaffBookingService {
   }
 
   /** Fetch one activity by its ID */
-  getActivityById(activityId: number): Observable<{ activityId: number; activityName: string; activityDescription: string }> {
-    return this.http.get<{ activityId: number; activityName: string; activityDescription: string }>(
+  getActivityById(activityId: number): Observable<{ activityId: number; venueActivityName: string; activityDescription: string }> {
+    return this.http.get<{ activityId: number; venueActivityName: string; activityDescription: string }>(
       `${this.baseUrl}/activities/${activityId}`
     );
   }

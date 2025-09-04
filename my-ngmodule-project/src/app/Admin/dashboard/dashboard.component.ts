@@ -14,7 +14,9 @@ interface VenueRevenue {
 
 interface TopVenue {
   venueName: string;
-  bookingCount: number;
+  bookingCount: number;        // total
+  completeBookings: number;    // only COMPLETE
+  incompleteBookings: number;  // everything else
   revenue: number;
 }
 
@@ -69,7 +71,7 @@ export class DashboardComponent implements OnInit {
       this.totalBookings = data.length;
       const uniquePhones = new Set(data.map(b => b.customer?.phoneNumber).filter(p=>p));
       this.totalUsers = uniquePhones.size;
-      this.totalBookedVenues = data.filter(b => b.status === 'COMPLETE').length;
+      this.totalBookedVenues = data.filter(b => b.bookingStatus === 'COMPLETE').length;
       this.attachVenueNames();
     });
   }
@@ -110,27 +112,37 @@ private getCurrentMonthKey(): string {
 }
 
 
-  private loadVenueStats() {
-    this.dashboardService.getMostBookedVenue().subscribe(v => this.mostBookedVenue = v);
-    this.dashboardService.getMostBookedCompletedVenue()
-      .subscribe(v => this.mostBookedCompletedVenue = v);
+private loadVenueStats() {
+  this.dashboardService.getMostBookedVenue().subscribe(v => this.mostBookedVenue = v);
+  this.dashboardService.getMostBookedCompletedVenue()
+    .subscribe(v => this.mostBookedCompletedVenue = v);
 
-    this.dashboardService.getBestRevenueVenue()
-      .subscribe(v => this.bestRevenueVenue = v);
+  this.dashboardService.getBestRevenueVenue()
+    .subscribe(v => this.bestRevenueVenue = v);
 
-    this.dashboardService.getTopVenuesByRevenue()
-  .subscribe((list) => {
-    this.topRevenueVenues = list
-      .sort((a, b) => b.revenue - a.revenue) // Sort descending by revenue
-      .slice(0, 3) // Take top 3
-      .map(item => ({
-        venueName:    item.venue.venueName,
-        bookingCount: item.venue.bookingIds.length,
-        revenue:      item.revenue
-      }));
-  });
+  this.dashboardService.getTopVenuesByRevenue()
+    .subscribe((list) => {
+      this.topRevenueVenues = list
+        .sort((a, b) => b.revenue - a.revenue) // Sort by revenue
+        .slice(0, 3) // Take top 3
+        .map(item => {
+          // Find all bookings for this venue from the already-fetched bookings list
+          const venueBookings = this.bookings.filter(b => b.venueId === item.venue.venueId);
 
-  }
+          const total = venueBookings.length;
+          const complete = venueBookings.filter(b => b.bookingStatus === 'COMPLETE').length;
+          const incomplete = total - complete;
+
+          return {
+            venueName: item.venue.venueName,
+            bookingCount: total,
+            completeBookings: complete,   // ✅ Will be 0 if no COMPLETE bookings
+            incompleteBookings: incomplete,
+            revenue: item.revenue
+          };
+        });
+    });
+}
 
   attachVenueNames() {
     this.dashboardService.getAllVenues().subscribe(vs => {

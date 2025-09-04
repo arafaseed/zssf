@@ -94,13 +94,16 @@
     </div>
 
     <!-- Flexible: Top-3 Venues by Revenue -->
-    <div class="card flexible-card card-wide">
+    
+<div class="card flexible-card card-wides">
       <h3>Top Venues by Revenue</h3>
       <table class="revenue-table">
         <thead>
           <tr>
             <th>Venue Name</th>
             <th>Bookings</th>
+            <th>Complete</th>
+           <th>Incomplete</th>
             <th>Revenue (TZS)</th>
           </tr>
         </thead>
@@ -108,6 +111,8 @@
           <tr *ngFor="let v of topRevenueVenues">
             <td>{{ v.venueName }}</td>
             <td class="numeric">{{ v.bookingCount }}</td>
+            <td class="numeric">{{ v.completeBookings }}</td>
+            <td class="numeric">{{ v.incompleteBookings }}</td>
             <td class="numeric">{{ v.revenue | number:'1.0-0' }}</td>
           </tr>
         </tbody>

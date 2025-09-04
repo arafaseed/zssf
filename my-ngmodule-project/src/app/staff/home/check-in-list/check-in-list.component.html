@@ -48,14 +48,14 @@
           {{ booking.packageName }} ({{ booking.price | currency:'TZS':'symbol' }})
         </p>
         <p class="text-gray-700">
-          <strong>Activity:</strong> {{ booking.activityName }}
+          <strong>Activity:</strong> {{ booking.venueActivityName }}
         </p>
         <p class="text-sm font-medium"
            [ngClass]="{
-             'text-green-600': booking.status === 'COMPLETE',
-             'text-yellow-600': booking.status === 'PENDING'
+             'text-green-600': booking.bookingStatus === 'COMPLETE',
+             'text-yellow-600': booking.bookingStatus === 'PENDING'
            }">
-          Status: {{ booking.status }}
+          bookingStatus: {{ booking.bookingStatus }}
         </p>
       </div>
       <button

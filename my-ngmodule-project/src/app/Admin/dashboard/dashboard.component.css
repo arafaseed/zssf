@@ -101,6 +101,7 @@ h2 {
 }
 .card-wide { grid-column: span 2; }
 
+.card-wides { grid-column: span 3; }
 /* Search Filters */
 .search-filters {
   background: #fff;
