@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { BuildingService } from '../Services/building.service';
-import { Building, ViewBuildingService } from '../Services/view-building.service';
+import { BuildingService } from '../../Services/building.service';
+import { Building, ViewBuildingService } from '../../Services/view-building.service';
 
 @Component({
   selector: 'app-view-building',

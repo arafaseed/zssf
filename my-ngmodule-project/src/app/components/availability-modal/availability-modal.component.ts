@@ -45,8 +45,8 @@ export class AvailabilityModalComponent implements OnInit {
     const payload = {
       startDate: this.formatDate(this.data.start),
       endDate: this.formatDate(this.data.end),
-      startTime: (this.data.startTime ?? '07:00'),
-      endTime: (this.data.endTime ?? '23:59')
+      startTime: (this.data.startTime ?? ''),
+      endTime: (this.data.endTime ?? '')
     };
 
     this.loading = true;
@@ -85,7 +85,8 @@ export class AvailabilityModalComponent implements OnInit {
       startTime: this.data.startTime,
       endTime: this.data.endTime,
       activityId: this.data.activityId,
-      activityName: this.data.activityName
+      activityName: this.data.activityName,
+      activityPrice: this.data.price
     });
   }
 

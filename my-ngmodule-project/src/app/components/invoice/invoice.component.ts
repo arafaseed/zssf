@@ -3,7 +3,7 @@ import jsPDF from 'jspdf';
 import { ActivatedRoute } from '@angular/router';
 import html2canvas from 'html2canvas';
 import QRCode from 'qrcode';
-import { InvoiceService, StaffDTO } from '../Services/invoice.service';
+import { InvoiceService, StaffDTO } from '../../Services/invoice.service';
 
 @Component({
   selector: 'app-invoice',

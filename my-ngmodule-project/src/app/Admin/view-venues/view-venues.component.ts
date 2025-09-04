@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
 import  { ViewVenueService } from '../../Services/view-venue.service';
-import { EditVenueComponent } from '../../edit-venue-component/edit-venue-component.component';
+import { EditVenueComponent } from '../edit-venue-component/edit-venue-component.component';
 import { environment } from '../../../environments/environment';
 
 

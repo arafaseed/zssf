@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router'; // To navigate after successful login
-import { StaffLoginRequest } from '../models/auth';
-import { AuthService } from '../Services/auth.service';
+import { StaffLoginRequest } from '../../models/auth';
+import { AuthService } from '../../Services/auth.service';
 
 @Component({
   selector: 'app-login',
