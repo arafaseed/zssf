@@ -84,7 +84,7 @@
     <!-- Employee Verification for Individual -->
     <div *ngIf="detailsForm.value.customerType === 'INDIVIDUAL'" class="flex items-center gap-3 mt-3">
       <mat-checkbox [checked]="employeeVerified" (change)="openEmployeeVerify($event)">
-        I am an employee of ZSSF (verify for discount)
+        I am an employee of ZSSF
       </mat-checkbox>
 
       <div *ngIf="employeeVerified" class="flex items-center gap-2 text-sm text-emerald-600">
@@ -96,9 +96,12 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end" class="px-4 pb-3">
-  <button mat-button (click)="cancel()">Cancel</button>
-  <button mat-flat-button color="primary" (click)="submitBooking()" [disabled]="detailsForm.invalid || isSubmitting">
+  <div class="flex items-center justify-between w-full gap-3">
+      <button mat-stroked-button (click)="cancel()">Cancel</button>
+      <button mat-flat-button color="primary" (click)="submitBooking()" [disabled]="detailsForm.invalid || isSubmitting">
     <i-lucide-send class="w-4 h-4 mr-2"></i-lucide-send>
     {{ isSubmitting ? 'Submitting...' : 'Submit Booking' }}
   </button>
+  </div>
+  
 </mat-dialog-actions>

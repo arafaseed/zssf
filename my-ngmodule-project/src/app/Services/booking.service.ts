@@ -4,22 +4,37 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
+export type BookingStatus = 'EXPIRED'|'IN_PROGRESS'|'PENDING' | 'COMPLETE' | 'CANCELLED';
+export type CustomerType = 'INDIVIDUAL' | 'ORGANIZATION';
+
+
+export interface Customer {
+  customerId: number;
+  customerName: string;
+  phoneNumber?: string;
+  address?: string;
+  email?: string;
+  customerType: CustomerType;
+  referenceDocument?: string[]; // links to documents (pdf)
+  bookingIds?: number[] | null;
+}
 
 export interface Booking {
   bookingId: number;
   bookingCode: string;
+  bookingDate: string;            // added
   startDate: string;
   startTime: string;
   endDate: string | null;
   endTime: string;
-  bookingStatus: 'EXPIRED'|'IN_PROGRESS'|'PENDING' | 'COMPLETE' | 'CANCELLED';
+  bookingStatus: BookingStatus;
   venueId: number;
-  venueName?: string; // ADD THIS
-  activityName?: string; // ADD THIS (if you have activityId)
-  customer: {
-    customerId: number;
-    customerName: string;
-  };
+  venueName?: string;
+  venueActivityId?: number;
+  venueActivityName?: string;    // activity field (added)
+  customer: Customer;
+  invoiceId?: number;
+  discountRate?: number | null;
 }
 
 
@@ -38,8 +53,6 @@ export class BookingService {
 
   private apiUrl = `${environment.apiUrl}/api/bookings`;
 
-   private base = '';
-
   private bookingsSubject = new BehaviorSubject<Booking[]>([]);
 
   bookings$ = this.bookingsSubject.asObservable();
@@ -53,6 +66,15 @@ export class BookingService {
     return this.http.get<Booking[]>(`${this.apiUrl}/view-all`).pipe(
       tap((bookings) => this.bookingsSubject.next(bookings))
     );
+  }
+
+  // Return cached bookings or fetch if empty
+  getBookings() {
+    if (this.bookingsSubject.getValue().length === 0) {
+      return this.fetchBookings();
+    }
+    // return an observable of the current value so subscribe works consistently
+    return this.bookings$;
   }
 
   // booking.service.ts
@@ -71,15 +93,6 @@ getActivityNameById(activityId: number): Observable<string> {
   return this.http.get<any>(`${environment.apiUrl}/api/activities/${activityId}`)
     .pipe(map((activity: { name: any; }) => activity.name));
 }
-
-
-  // Return cached bookings or fetch if empty
-  getBookings(): Observable<Booking[]> {
-    if (this.bookingsSubject.getValue().length === 0) {
-      return this.fetchBookings();
-    }
-    return this.bookings$;
-  }
 
   // Manually refresh cached bookings
   refreshBookings(): void {
@@ -126,14 +139,11 @@ getActivityNameById(activityId: number): Observable<string> {
 
   // GET optional services for a venue
   getOptionalServicesForVenue(venueId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.base}${environment.apiUrl}/api/optional-services/venue/${venueId}`);
+    return this.http.get<any[]>(`${environment.apiUrl}/api/optional-services/venue/${venueId}`);
   }
 
-  // POST the booking (FormData) to backend
-  // Note: controller in your backend expects multipart/form-data with 'booking' JSON and optional 'referenceDocument'
   placeReservation(formData: FormData): Observable<any> {
-    // Change endpoint if needed (${environment.apiUrl}/api/bookings/create or ${environment.apiUrl}/api/place-reservation)
-    return this.http.post<any>(`${this.base}${environment.apiUrl}/api/bookings/place-reservation`, formData);
+    return this.http.post<any>(`${this.apiUrl}/place-reservation`, formData);
   }
 
 }

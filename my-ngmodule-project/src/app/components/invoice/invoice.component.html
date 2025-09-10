@@ -10,8 +10,12 @@
         <mat-card-title>Payment & Booking Guidance / Mwongozo wa Malipo na Booking</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <p><strong>EN:</strong> You have 24 hours to pay your advance via controlnumber <strong> {{ invoiceData.controlNumber || '-' }} </strong> or the booking will expire. You may update booking dates only if needed.</p>
-        <p><strong>SW:</strong> Una masaa 24 ya kulipa malipo ya awali kupitia kumbu kumbu namba <strong> {{ invoiceData.controlNumber || '-' }} </strong> au booking itafutwa. Unaweza kubadilisha tarehe za booking tu ikiwa ni muhimu.</p>
+        <p><strong>EN:</strong> You have 24 hours to pay your advance via controlnumber <strong>
+            {{ invoiceData.controlNumber || '-' }} </strong> or the booking will expire. You may update booking dates
+          only if needed.</p>
+        <p><strong>SW:</strong> Una masaa 24 ya kulipa malipo ya awali kupitia kumbu kumbu namba <strong>
+            {{ invoiceData.controlNumber || '-' }} </strong> au booking itafutwa. Unaweza kubadilisha tarehe za booking
+          tu ikiwa ni muhimu.</p>
 
         <h3>Terms & Conditions (EN)</h3>
         <ol>
@@ -37,7 +41,7 @@
           <li>Maneva ya venue yana haki ya kufuta booking ikiwa kanuni za usalama zikitolewa.</li>
         </ol>
       </mat-card-content>
-       <!-- staff cards -->
+      <!-- staff cards -->
       <div *ngIf="!loading" class="staff-area">
         <h2 class="staff-title">For any inquiry, Please call..</h2>
         <div class="staff-grid">
@@ -51,7 +55,6 @@
         </div>
       </div>
     </mat-card>
-    
 
     <!-- RIGHT: invoice area -->
     <div class="right-column">
@@ -101,7 +104,7 @@
                   <span class="value">{{ invoiceData.issuedDate }}</span>
                 </div>
                 <div class="invoice-line">
-                  <span class="label">Due Date / Tarehe ya Malipo:</span>
+                  <span class="label">Due Date / Tarehe ya ukomo:</span>
                   <span class="value">{{ invoiceData.dueDate || 'Not Specified / Haijawekwa' }}</span>
                 </div>
                 <div class="invoice-line">
@@ -110,7 +113,7 @@
                 </div>
                 <div class="invoice-line">
                   <span class="label">Control Number / Namba ya Malipo:</span>
-                  <span class="value" id="controlNum"><u>{{ invoiceData.controlNumber || '-' }}</u></span>
+                  <span class="value" id="controlNum"><u><strong>{{ invoiceData.controlNumber || '-' }}</strong></u></span>
                 </div>
                 <div class="invoice-line">
                   <span class="label">Start Event Date / Tarehe ya Kuanzia:</span>
@@ -125,7 +128,7 @@
                   <span class="value">{{ invoiceData.venueName }}</span>
                 </div>
                 <div class="invoice-line">
-                  <span class="label">Package / Mpango:</span>
+                  <span class="label">Activity / Shughuli:</span>
                   <span class="value">{{ invoiceData.packageName }}</span>
                 </div>
               </section>
@@ -138,7 +141,7 @@
 
               <!-- Amount Summary -->
               <section class="amount-summary">
-                <h2>Amount Summary / Muhtasari wa Malipo</h2>
+                <h2><strong>Amount Summary / Muhtasari wa Malipo</strong></h2>
                 <div class="amount-line">
                   <span>Amount / Kiasi:</span>
                   <span>{{ invoiceData.amount | number:'1.2-2' }} TZS</span>
@@ -149,8 +152,45 @@
                 </div>
                 <div class="amount-line total">
                   <span>Total / Jumla:</span>
-                  <span>{{ invoiceData.netAmount | number:'1.2-2' }} TZS</span>
+                  <span><u>{{ invoiceData.netAmount | number:'1.2-2' }} TZS</u></span>
                 </div>
+                <!-- BEGIN: Installments block (place directly after the Total / Jumla block) -->
+                <div class="installments-section" style="margin-top:12px;">
+
+                  <!-- If still loading installments -->
+                  <div *ngIf="installmentsLoading" class="amount-line">
+                    <span class="label">Installments / Malipo yaliyofanyika:</span>
+                    <span class="value">Loading...</span>
+                  </div>
+
+                  <!-- If no installments -->
+                  <div *ngIf="!installmentsLoading && (!installments || installments.length === 0)"
+                   class="amount-line">
+                    <span class="label">Installments paid / Malipo yaliyolipwa:</span>
+                    <span class="value">None yet / Hakuna</span>
+                  </div>
+
+                  <!-- List installments -->
+                  <div *ngIf="!installmentsLoading && installments && installments.length > 0"
+                    class="installments-list">
+                    <div *ngFor="let inst of installments" class="amount-line">
+                      <span class="label">{{ inst.label }} ({{ inst.paymentDateFormatted }})</span>
+                      <span class="value">{{ inst.amountPaid | number:'1.2-2' }} TZS</span>
+                    </div>
+                    <div class="amount-line" style="border-top:1px dashed #ddd; padding-top:6px; margin-top:6px;">
+                      <span class="label">Paid so far / Yamelipwa jumla:</span>
+                      <span class="value">{{ installmentsSum | number:'1.2-2' }} TZS</span>
+                    </div>
+                  </div>
+
+                  <!-- Remaining due -->
+                  <div class="amount-line remaining" style="margin-top:10px;">
+                    <span>Remaining / Kubaki:</span>
+                    <span>{{ remainingAmount | number:'1.2-2' }} TZS</span>
+                  </div>
+
+                </div>
+                <!-- END: Installments block -->
 
                 <div class="qr-row">
                   <div class="qr-block">
@@ -175,8 +215,6 @@
         </mat-card-content>
       </mat-card>
 
-     
     </div>
   </div>
 </div>
-

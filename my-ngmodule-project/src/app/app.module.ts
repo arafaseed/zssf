@@ -87,6 +87,8 @@ import { PoliciesSettingsComponent } from './Admin/policies-settings/policies-se
 import { AdminFeedbacksComponent } from './Admin/admin-feedbacks/admin-feedbacks.component';
 import { FeedbackDetailDialogComponent } from './Admin/feedback-detail-dialog/feedback-detail-dialog.component';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { PdfViewerDialogComponent } from './Admin/pdf-viewer-dialog/pdf-viewer-dialog.component';
 
 
 
@@ -140,6 +142,7 @@ export function createTranslateLoader(http: HttpClient) {
     PoliciesSettingsComponent,
     AdminFeedbacksComponent,
     FeedbackDetailDialogComponent,
+    PdfViewerDialogComponent,
 
     // DashboardSwitchComponent,
     
@@ -183,6 +186,7 @@ export function createTranslateLoader(http: HttpClient) {
     MatCheckboxModule,
     MatRadioModule,
     NgxMaterialTimepickerModule,
+    MatButtonToggleModule,
     
 
 

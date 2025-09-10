@@ -1,0 +1,31 @@
+/* src/app/components/pdf-viewer-dialog/pdf-viewer-dialog.component.css */
+.mat-toolbar {
+  display: flex;
+  align-items: center;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.pdf-dialog-body {
+  display: flex;
+  height: calc(80vh - 64px);
+}
+
+.left {
+  width: 260px;
+  padding: 1rem;
+  border-right: 1px solid #eee;
+  overflow-y: auto;
+}
+
+.right {
+  flex: 1;
+  padding: 0.5rem;
+}
+
+.no-docs, .no-docs-placeholder {
+  padding: 1rem;
+  color: rgba(0,0,0,0.6);
+}

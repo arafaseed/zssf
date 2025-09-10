@@ -5,93 +5,165 @@
 <mat-dialog-content class="space-y-6">
   <!-- Venue -->
   <div class="p-4 shadow-sm rounded-2xl bg-green-50">
-    <h4 class="font-semibold text-green-700">Venue</h4>
-    <p class="mt-1 text-base text-gray-700">{{ data.venueName }}</p>
+    <h4 class="mb-2 font-semibold text-green-700">Venue</h4>
+    <div class="flex items-center justify-between pt-3 border-t border-gray-300">
+      <div class="text-lg text-left text-gray-600">
+        <strong>Venue</strong>
+      </div>
+      <div class="text-lg font-medium text-right text-blue-900">
+        <p class="m-0">{{ data.venueName }}</p>
+      </div>
+    </div>
   </div>
 
   <!-- Dates & Times -->
-  <div class="p-4 space-y-2 shadow-sm rounded-2xl bg-green-50">
-    <h4 class="font-semibold text-green-700">Dates & Times</h4>
-    <p class="text-base text-gray-700"><strong>From (Date):</strong> {{ data.booking.startDate }}</p>
-    <p class="text-base text-gray-700"><strong>From (Time):</strong> {{ data.booking.startTime }}</p>
-    <p class="text-base text-gray-700"><strong>To (Date):</strong> {{ data.booking.endDate }}</p>
-    <p class="text-base text-gray-700"><strong>To (Time):</strong> {{ data.booking.endTime }}</p>
+  <div class="p-4 shadow-sm rounded-2xl bg-green-50">
+    <h4 class="mb-2 font-semibold text-green-700">Dates & Times</h4>
+
+    <div class="divide-y divide-gray-300">
+      <div class="flex items-center justify-between py-4">
+        <div class="text-lg text-left text-gray-600"><strong>From (Date):</strong></div>
+        <div class="text-lg font-medium text-right text-blue-900">{{ data.booking.startDate }}</div>
+      </div>
+
+      <div class="flex items-center justify-between py-4">
+        <div class="text-lg text-left text-gray-600"><strong>From (Time):</strong></div>
+        <div class="text-lg font-medium text-right text-blue-900">{{ data.booking.startTime }}</div>
+      </div>
+
+      <div class="flex items-center justify-between py-4">
+        <div class="text-lg text-left text-gray-600"><strong>To (Date):</strong></div>
+        <div class="text-lg font-medium text-right text-blue-900">{{ data.booking.endDate }}</div>
+      </div>
+
+      <div class="flex items-center justify-between py-4">
+        <div class="text-lg text-left text-gray-600"><strong>To (Time):</strong></div>
+        <div class="text-lg font-medium text-right text-blue-900">{{ data.booking.endTime }}</div>
+      </div>
+    </div>
   </div>
 
   <!-- Activity -->
-  <div class="p-4 space-y-1 shadow-sm rounded-2xl bg-green-50">
-    <h4 class="font-semibold text-green-700">Activity & Service</h4>
-    <p class="text-base text-gray-700">
-      <strong>Activity / Purpose:</strong> 
-      {{ data.booking.venueActivityName || '—' }}
-      — {{ data.booking.venueActivityPrice | number:'1.0-0' }} TZS /Day
-    </p>
-    <ng-container *ngIf="data.selectedOptionalService; else noOptionalService">
-      <p class="text-base text-gray-700">
-        <strong>Optional Service:</strong>
-        {{ data.selectedOptionalService.optionalServiceName || data.selectedOptionalService.serviceName }}
-        — {{ data.selectedOptionalService.price | number:'1.0-0' }} TZS
-      </p>
-    </ng-container>
-    <ng-template #noOptionalService>
-      <p class="text-base text-gray-700"><strong>Optional Service ID:</strong> {{ data.booking.venueOptionalServiceId || '—' }}</p>
-    </ng-template>
+  <div class="p-4 shadow-sm rounded-2xl bg-green-50">
+    <h4 class="mb-2 font-semibold text-green-700">Activity & Service</h4>
+
+    <div class="divide-y divide-gray-300">
+      <div class="flex items-start justify-between py-4">
+        <div class="pr-4 text-lg text-left text-gray-600">
+          <strong>Activity / Purpose:</strong>
+        </div>
+        <div class="text-lg font-medium text-right text-blue-900">
+          <div>{{ data.booking.venueActivityName || '—' }}</div>
+          <div class="mt-1">{{ data.booking.venueActivityPrice | number:'1.0-0' }} <span class="text-sm text-gray-500">TZS /Day</span></div>
+        </div>
+      </div>
+
+      <ng-container *ngIf="data.selectedOptionalService; else noOptionalService">
+        <div class="flex items-center justify-between py-4">
+          <div class="text-lg text-left text-gray-600"><strong>Optional Service:</strong></div>
+          <div class="text-lg font-medium text-right text-blue-900">
+            <div>{{ data.selectedOptionalService.optionalServiceName || data.selectedOptionalService.serviceName }}</div>
+            <div class="mt-1">{{ data.selectedOptionalService.price | number:'1.0-0' }} TZS</div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #noOptionalService>
+        <div class="flex items-center justify-between py-4">
+          <div class="text-lg text-left text-gray-600"><strong>Optional Service ID:</strong></div>
+          <div class="text-lg font-medium text-right text-blue-900">{{ data.booking.venueOptionalServiceId || '—' }}</div>
+        </div>
+      </ng-template>
+    </div>
   </div>
 
   <!-- Customer -->
-  <div class="p-4 space-y-1 shadow-sm rounded-2xl bg-green-50">
-    <h4 class="font-semibold text-green-700">Customer</h4>
-    <p class="text-base text-gray-700"><strong>Name:</strong> {{ data.booking.customer?.customerName }}</p>
-    <p class="text-base text-gray-700"><strong>Phone:</strong> {{ data.booking.customer?.phoneNumber }}</p>
-    <p class="text-base text-gray-700"><strong>Email:</strong> {{ data.booking.customer?.email }}</p>
-    <p class="text-base text-gray-700"><strong>Address:</strong> {{ data.booking.customer?.address }}</p>
-    <p class="text-base text-gray-700"><strong>Customer type:</strong> {{ data.booking.customer?.customerType }}</p>
+  <div class="p-4 shadow-sm rounded-2xl bg-green-50">
+    <h4 class="mb-2 font-semibold text-green-700">Customer</h4>
+
+    <div class="divide-y divide-gray-300">
+      <div class="flex items-center justify-between py-4">
+        <div class="text-lg text-left text-gray-600"><strong>Name:</strong></div>
+        <div class="text-lg font-medium text-right text-blue-900">{{ data.booking.customer?.customerName }}</div>
+      </div>
+
+      <div class="flex items-center justify-between py-4">
+        <div class="text-lg text-left text-gray-600"><strong>Phone:</strong></div>
+        <div class="text-lg font-medium text-right text-blue-900">{{ data.booking.customer?.phoneNumber }}</div>
+      </div>
+
+      <div class="flex items-center justify-between py-4">
+        <div class="text-lg text-left text-gray-600"><strong>Email:</strong></div>
+        <div class="text-lg font-medium text-right text-blue-900">{{ data.booking.customer?.email }}</div>
+      </div>
+
+      <div class="flex items-center justify-between py-4">
+        <div class="text-lg text-left text-gray-600"><strong>Address:</strong></div>
+        <div class="text-lg font-medium text-right text-blue-900">{{ data.booking.customer?.address }}</div>
+      </div>
+
+      <div class="flex items-center justify-between py-4">
+        <div class="text-lg text-left text-gray-600"><strong>Customer type:</strong></div>
+        <div class="text-lg font-medium text-right text-blue-900">{{ data.booking.customer?.customerType }}</div>
+      </div>
+    </div>
   </div>
 
   <!-- Attached File -->
   <div class="p-4 shadow-sm rounded-2xl bg-green-50">
-    <h4 class="font-semibold text-green-700">Attached Document</h4>
-    <p *ngIf="data.attachedFile?.name; else noFile" class="text-base text-gray-700">
-      {{ data.attachedFile.name }}
-    </p>
-    <ng-template #noFile>
-      <p class="text-base italic text-gray-500">No file attached</p>
-    </ng-template>
+    <h4 class="mb-2 font-semibold text-green-700">Attached Document</h4>
+
+    <div class="flex items-center justify-between pt-3 border-t border-gray-300">
+      <div class="text-lg text-left text-gray-600"><strong>Document</strong></div>
+      <div class="text-lg font-medium text-right text-blue-900">
+        <p *ngIf="data.attachedFile?.name; else noFile" class="m-0">{{ data.attachedFile.name }}</p>
+        <ng-template #noFile>
+          <p class="m-0 italic text-gray-500">No file attached</p>
+        </ng-template>
+      </div>
+    </div>
   </div>
 
   <!-- Summary -->
   <div class="p-4 shadow-sm rounded-2xl bg-green-50">
-    <h4 class="font-semibold text-green-700">Summary</h4>
+    <h4 class="mb-2 font-semibold text-green-700">Summary</h4>
 
-    <!-- existing discount row remains -->
-    <p class="text-base text-gray-700">
-      <strong>Discount rate:</strong> {{ data.booking.discountRate || 0 }}
-    </p>
+    <div class="divide-y divide-gray-300">
+      <div class="flex items-center justify-between py-4">
+        <div class="text-lg text-left text-gray-600"><strong>Discount rate:</strong></div>
+        <div class="text-lg font-medium text-right text-blue-900">{{ data.booking.discountRate || 0 }}</div>
+      </div>
 
-    <!-- NEW rows: total days, total booking price, discount amount, net amount -->
-    <p class="text-base text-gray-700">
-      <strong>Total days:</strong> {{ totalDays }}
-    </p>
+      <div class="flex items-center justify-between py-4">
+        <div class="text-lg text-left text-gray-600"><strong>Total days:</strong></div>
+        <div class="text-lg font-medium text-right text-blue-900">{{ totalDays }}</div>
+      </div>
 
-    <p class="text-base text-gray-700">
-      <strong>Activity price (per day):</strong> {{ activityPrice | number:'1.0-0' }} TZS
-    </p>
+      <div class="flex items-center justify-between py-4">
+        <div class="text-lg text-left text-gray-600"><strong>Activity price (per day):</strong></div>
+        <div class="text-lg font-medium text-right text-blue-900">{{ activityPrice | number:'1.0-0' }} TZS</div>
+      </div>
 
-    <p class="text-base text-gray-700">
-      <strong>Optional service price (per day / flat):</strong> {{ optionalPrice | number:'1.0-0' }} TZS
-    </p>
+      <div class="flex items-center justify-between py-4">
+        <div class="text-lg text-left text-gray-600"><strong>Optional service price (per day / flat):</strong></div>
+        <div class="text-lg font-medium text-right text-blue-900">{{ optionalPrice | number:'1.0-0' }} TZS</div>
+      </div>
 
-    <p class="text-base text-gray-700">
-      <strong>Total booking price:</strong> {{ totalBookingPrice | number:'1.0-0' }} TZS
-    </p>
+      <div class="flex items-center justify-between py-4">
+        <div class="text-lg text-left text-gray-600"><strong>Total booking price:</strong></div>
+        <div class="text-lg font-medium text-right text-blue-900">{{ totalBookingPrice | number:'1.0-0' }} TZS</div>
+      </div>
 
-    <p class="text-base text-gray-700">
-      <strong>Discount amount:</strong> {{ discountAmount | number:'1.0-0' }} TZS
-    </p>
+      <div class="flex items-center justify-between py-4">
+        <div class="text-lg text-left text-gray-600"><strong>Discount amount:</strong></div>
+        <div class="text-lg font-medium text-right text-blue-900">{{ discountAmount | number:'1.0-0' }} TZS</div>
+      </div>
 
-    <p class="text-base text-gray-700">
-      <strong>Total after discount:</strong> {{ netAmount | number:'1.0-0' }} TZS
-    </p>
+      <div class="flex items-center justify-between py-4">
+        <div class="text-lg text-left text-gray-600"><strong>Total after discount:</strong></div>
+        <div class="text-lg font-medium text-right text-blue-900">{{ netAmount | number:'1.0-0' }} TZS</div>
+      </div>
+    </div>
   </div>
 
   <!-- Error -->
@@ -102,25 +174,28 @@
   <!-- Terms Checkbox -->
   <mat-checkbox [(ngModel)]="accepted" class="mt-3 text-gray-700">
     I accept the
-    <a href="/agreeterms" target="_blank" class="text-green-600 underline">
-      terms & conditions
+    <a href="/agreeterms" target="_blank" class="text-blue-600 underline">
+      <strong>terms & conditions</strong>
     </a>
   </mat-checkbox>
 </mat-dialog-content>
 
 <!-- Actions -->
 <mat-dialog-actions align="end" class="mt-6 space-x-3">
-  <button mat-button (click)="close(false)" [disabled]="submitting"
+  <div class="flex items-center justify-between w-full gap-3">
+    <button mat-stroked-button (click)="close(false)" [disabled]="submitting"
     class="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-100">
-    Cancel
+    Back
   </button>
   <button mat-flat-button color="primary" (click)="confirmAndSubmit()" 
     [disabled]="!accepted || submitting"
-    class="px-4 py-2 font-medium text-white bg-green-500 rounded-lg hover:bg-green-600">
+    class="px-4 py-2 font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600">
     <span *ngIf="!submitting">Confirm & Submit</span>
     <span *ngIf="submitting" class="flex items-center">
       <mat-progress-spinner diameter="18" mode="indeterminate"></mat-progress-spinner>
       &nbsp;Submitting...
     </span>
   </button>
+  </div>
+  
 </mat-dialog-actions>

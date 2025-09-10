@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { BookingService } from '../../Services/booking.service';
 import { EmployeeVerifyComponent } from '../employee-verify/employee-verify.component';
@@ -27,7 +28,8 @@ export class BookingModalComponent implements OnInit {
     private fb: FormBuilder,
     private dialog: MatDialog,
     private router: Router,
-    private api: BookingService
+    private api: BookingService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -169,11 +171,46 @@ export class BookingModalComponent implements OnInit {
     });
 
     dlgRef.afterClosed().subscribe((result: any) => {
-      this.isSubmitting = false;
-      if (result && result.success && result.bookingId) {
-        this.ref.close({ success: true, bookingId: result.bookingId });
-      }
+  this.isSubmitting = false;
+
+  const userFriendlyDefault = 'We could not complete the submission right now. Please try again later or contact support.';
+
+  if (result && result.success && result.bookingId) {
+    // Success: close and optionally notify success
+    this.ref.close({ success: true, bookingId: result.bookingId });
+
+    // Optional — show a success snackbar (remove if you prefer no popup on success)
+    this.snackBar.open('Booking created successfully.', 'OK', {
+      duration: 4000,
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
     });
+
+    return;
+  }
+
+  // At this point submission did not succeed.
+  // Use friendlyMessage from backend if present (but never show raw "error" text).
+  const friendlyFromBackend = result?.friendlyMessage;
+  const messageToShow = friendlyFromBackend && typeof friendlyFromBackend === 'string'
+    ? friendlyFromBackend
+    : userFriendlyDefault;
+
+  // Show friendly message to user
+  this.snackBar.open(messageToShow, 'Close', {
+    duration: 6000,
+    horizontalPosition: 'right',
+    verticalPosition: 'top',
+  });
+
+  // Still record backend details for diagnostics (console only — not user-facing)
+  if (result?.error) {
+    console.error('Submission failed (backend details):', result.error);
+  } else {
+    console.warn('Submission did not succeed; no backend error provided.', result);
+  }
+});
+
   }
 
   cancel() {

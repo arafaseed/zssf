@@ -12,6 +12,15 @@ export interface StaffDTO {
   role: string;
 }
 
+export interface PaymentDTO {
+  paymentId: number;
+  paymentDate: string;        
+  amountPaid: number;
+  paymentDescription?: string | null;
+  controlNumberId?: number;
+  zanmalipo?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -32,7 +41,14 @@ export class InvoiceService {
 
   // NEW - fetch by invoiceCode (used by scanner)
   getInvoiceByCode(code: string) {
-  const url = `${this.baseUrl}/invoices/view/by-code/${encodeURIComponent(code)}`;
-  return this.http.get<any>(url);
+    const url = `${this.baseUrl}/invoices/view/by-code/${encodeURIComponent(code)}`;
+    return this.http.get<any>(url);
+  }
+
+  getPaymentsByControlNumber(controlNumber: string) {
+  // adjust to match your service's baseUrl / http usage
+  return this.http.get<PaymentDTO[]>(`${this.baseUrl}/payments/by-control-number/${encodeURIComponent(controlNumber)}`);
 }
+
+
 }

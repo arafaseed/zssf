@@ -1,0 +1,31 @@
+<mat-toolbar>
+  <span>Reference Documents</span>
+  <span class="spacer"></span>
+  <button mat-icon-button (click)="close()"><mat-icon>close</mat-icon></button>
+</mat-toolbar>
+
+<div class="pdf-dialog-body">
+  <div class="left">
+    <p><strong>Booking:</strong> {{ data.bookingCode }} (ID: {{ data.bookingId }})</p>
+    <mat-list *ngIf="docs?.length">
+      <mat-list-item *ngFor="let d of docs; let i = index">
+        <button mat-button (click)="selectDoc(i)">{{ 'Document ' + (i + 1) }}</button>
+      </mat-list-item>
+    </mat-list>
+    <div *ngIf="!docs?.length" class="no-docs">
+      <p>No reference documents available for this booking.</p>
+    </div>
+  </div>
+
+  <div class="right">
+    <ng-container *ngIf="selectedUrl; else noDoc">
+      <iframe [src]="selectedUrl" width="100%" height="100%" frameborder="0"></iframe>
+    </ng-container>
+
+    <ng-template #noDoc>
+      <div class="no-docs-placeholder">
+        <p>Select a document to preview or close this dialog.</p>
+      </div>
+    </ng-template>
+  </div>
+</div>

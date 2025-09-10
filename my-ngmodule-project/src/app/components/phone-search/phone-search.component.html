@@ -55,7 +55,7 @@
               <p><strong>Booking date</strong> {{booking.bookingDate}}</p>
               <p><strong>Event Start date:</strong> {{ booking.startDate | date }} {{ booking.startTime }}</p>
               <p><strong>Event End date:</strong> {{ booking.endDate | date }} {{ booking.endTime }}</p>
-              <p><strong>Status:</strong> <span [ngClass]="{'status-pending': booking.bookingStatus === 'PENDING', 'status-complete': booking.bookingStatus === 'COMPLETED'}">{{ booking.bookingStatus }}</span></p>
+              <p><strong>Status:</strong> <span [ngClass]="{'status-cancelled': booking.bookingStatus === 'CANCELLED','status-expired': booking.bookingStatus === 'EXPIRED','status-pending': booking.bookingStatus === 'PENDING', 'status-in-progress': booking.bookingStatus === 'IN_PROGRESS','status-complete': booking.bookingStatus === 'COMPLETE'}">{{ booking.bookingStatus }}</span></p>
               <p><strong>Venue:</strong> {{ booking.venueName }} </p>
               <p><strong>Activity:</strong> {{ booking.venueActivityName }}</p>
               <p><strong>View invoice for more info</strong></p>

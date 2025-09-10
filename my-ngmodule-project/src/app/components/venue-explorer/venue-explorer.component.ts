@@ -44,7 +44,7 @@ export class VenueExplorerComponent implements OnInit {
   selectedActivityId?: number;
 
   // date validation helpers
-  minDate: Date = new Date(); // today (includes time) — normalized in checks
+  minDate: Date = new Date(); 
   startDateInvalid = false;
   endDateInvalid = false;
   formError = '';
@@ -112,12 +112,12 @@ export class VenueExplorerComponent implements OnInit {
               ? Math.round(Math.min(...prices))
               : null;
             // default select first activity if present
-            if (this.activities.length) {
-              const maxPriceActivity = this.activities.reduce((prev, curr) =>
-                Number(curr.price) > Number(prev.price) ? curr : prev
-              );
-              this.selectedActivityId = maxPriceActivity.activityId;
-            }
+            // if (this.activities.length) {
+            //   const maxPriceActivity = this.activities.reduce((prev, curr) =>
+            //     Number(curr.price) > Number(prev.price) ? curr : prev
+            //   );
+            //   this.selectedActivityId = maxPriceActivity.activityId;
+            // }
 
             this.loading = false;
           },
@@ -346,11 +346,4 @@ export class VenueExplorerComponent implements OnInit {
   }
 
 
-  // combineDateTime(date?: Date | null, time?: string | undefined) {
-  //   if (!date) return null;
-  //   const [hh, mm] = (time ?? '00:00').split(':').map(Number);
-  //   const d = new Date(date);
-  //   d.setHours(hh, mm, 0, 0);
-  //   return d;
-  // }
 }
