@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router'; // To navigate after successful login
+import { Router } from '@angular/router';
 import { StaffLoginRequest } from '../../models/auth';
 import { AuthService } from '../../Services/auth.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,6 @@ import { AuthService } from '../../Services/auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  // Use definite assignment assertion (!) to tell TypeScript this will be initialized
   form!: FormGroup;
   hidePassword = true;
   loading = false;
@@ -20,17 +20,18 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService
   ) {
-    // Initialize the form in the constructor
     this.form = this.fb.group({
       staffIdentification: ['', [Validators.required]],
       password: ['', [Validators.required]]
     });
   }
+
   togglePasswordVisibility(): void {
-  this.hidePassword = !this.hidePassword;
-}
+    this.hidePassword = !this.hidePassword;
+  }
 
   submit(): void {
     if (this.form.invalid) { return; }
@@ -40,8 +41,6 @@ export class LoginComponent {
     this.auth.login(this.form.value as StaffLoginRequest).subscribe({
       next: () => {
         this.loading = false;
-
-        // Redirect based on role stored in sessionStorage
         const role = this.auth.role;
         if (role === 'ADMIN') {
           this.router.navigate(['/admin']);
@@ -51,7 +50,9 @@ export class LoginComponent {
       },
       error: () => {
         this.loading = false;
-        this.errorMsg = 'Invalid credentials';
+        this.translate.get('login.errors.invalidCredentials').subscribe(msg => {
+          this.errorMsg = msg;
+        });
       }
     });
   }

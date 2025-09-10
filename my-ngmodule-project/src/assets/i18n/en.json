@@ -5,13 +5,15 @@
     "whatsapp": "ZSSF WhatsApp"
   },
   "header": {
-    "title": "ZANZIBAR SOCIAL SECURITY FUND (ZSSF)",
+    "title": "ZSSF Hall Reservation ",
     "slogan": "Key To The Future"
   },
   "nav": {
     "home": "Home",
     "my_booking": "My Booking",
-    "login": "Login"
+    "login": "Login",
+    "Feedback": "Feedback",
+    "Terms & Conditions": "Terms & Conditions"
   },
   "terms": {
     "title": "Terms & Conditions",
@@ -83,5 +85,85 @@
     },
     "contactTitle": "Contact",
     "contactText": "For questions or disputes, reach support via the System or call the help-line on the venue page."
+  },
+
+  "feedback": {
+    "title": "Customer Feedback",
+    "description": "We value your voice. Tell us about your experience booking halls on our platform — whether it’s a quick comment, a positive feedback, or a complaint. We use your input to improve booking flow, availability, venue handover and support.",
+    "tip": "Tip: choose Comment for general notes, Feedback to praise or suggest improvements, or Complaint for service issues (delivery, condition, scheduling).",
+    "name": "Full Name",
+    "phone": "Phone (required)",
+    "email": "Email (optional)",
+    "type": "Type",
+    "comment": "Comment",
+    "feedback": "Feedback",
+    "complaint": "Complaint",
+    "message": "Message",
+    "placeholderName": "Your name",
+    "placeholderPhone": "07xx...",
+    "placeholderEmail": "you@example.com",
+    "placeholderMessage": "Write your message here...",
+    "submit": "Submit Feedback",
+    "cancel": "Cancel",
+    "sending": "Sending…",
+    "errors": {
+      "nameRequired": "Your name is required",
+      "phoneRequired": "Required phone number must be in 10 digits",
+      "emailInvalid": "Enter a valid email",
+      "messageRequired": "Message required"
+    },
+    "success": "Thank you — your message has been received. We review all submissions promptly.",
+    "error": "An error occurred while sending your feedback. Please try again later."
+  },
+
+  "login": {
+    "title": "Login",
+    "staffId": "Staff ID",
+    "password": "Password",
+    "placeholder": {
+      "staffId": "Enter your Staff ID",
+      "password": "Enter your password"
+    },
+    "loginButton": "Login",
+    "loggingIn": "Logging in...",
+    "errors": {
+      "staffIdRequired": "Staff ID is required",
+      "passwordRequired": "Password is required",
+      "invalidCredentials": "Invalid credentials"
+    },
+
+  "phoneSearch": {
+    "title": "Search Bookings",
+    "subtitle": "by Phone Number",
+    "phoneLabel": "Phone Number",
+    "phonePlaceholder": "Enter 10-digit phone number",
+    "searchButton": "Search",
+    "resultsTitle": "Search Results",
+    "bookingCode": "Booking Code",
+    "customer": "Customer",
+    "bookingDate": "Booking Date",
+    "eventStart": "Event Start Date",
+    "eventEnd": "Event End Date",
+    "status": "Status",
+    "venue": "Venue",
+    "activity": "Activity",
+    "viewInvoiceInfo": "View invoice for more info",
+    "viewInvoice": "View Invoice",
+    "updateReservation": "Update Reservation",
+    "cancelBooking": "Cancel Booking",
+    "noResults": "No bookings found for phone number",
+    "noBookings": "No bookings found.",
+    "fetchError": "Failed to fetch bookings. Please try again.",
+    "confirmCancelTitle": "Confirm Cancellation",
+    "confirmCancelMsg": "Are you sure you want to cancel this booking?",
+    "cancelSuccess": "Booking successfully cancelled!",
+    "cancelError": "Failed to cancel booking. Please try again.",
+    "errors": {
+      "required": "Phone number is required.",
+      "pattern": "Please enter exactly 10 digits."
+    }
   }
 }
+}
+
+
