@@ -4,13 +4,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { environment } from '../../../environments/environment';
-
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-phone-search',
   templateUrl: './phone-search.component.html',
-  styleUrls: ['./phone-search.component.css'],
   standalone: false,
+  styleUrls: ['./phone-search.component.css'],
 })
 export class PhoneSearchComponent {
   phoneNumber: string = '';
@@ -22,9 +22,19 @@ export class PhoneSearchComponent {
     private http: HttpClient,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
+    private translate: TranslateService
   ) {}
 
   onSubmit() {
+    if (!this.phoneNumber) {
+      this.snackBar.open(
+        this.translate.instant('phoneSearch.errors.required'),
+        this.translate.instant('Close'),
+        { duration: 3000 }
+      );
+      return;
+    }
+
     this.searching = true;
     this.noResults = false;
     this.bookings = [];
@@ -33,51 +43,47 @@ export class PhoneSearchComponent {
       .get<any[]>(`${environment.apiUrl}/api/bookings/by-customer-phone?phone=${this.phoneNumber}`)
       .subscribe({
         next: (data) => {
-          // remove cancelled bookings
           const filtered = data.filter(b => b.bookingStatus && b.bookingStatus.toLowerCase() !== 'cancelled');
-
-          // sort by bookingDate descending (latest first). Defensive parse: invalid/missing => very old.
           this.bookings = this.sortByBookingDateDesc(filtered);
 
           this.noResults = this.bookings.length === 0;
           this.searching = false;
 
           if (this.noResults) {
-            this.snackBar.open('No bookings found.', 'Close', { duration: 3000, panelClass: ['snackbar-info'] });
+            this.snackBar.open(
+              this.translate.instant('phoneSearch.noResults'),
+              this.translate.instant('Close'),
+              { duration: 3000 }
+            );
           }
         },
         error: (err) => {
           console.error('Error fetching bookings:', err);
           this.noResults = true;
           this.searching = false;
-          this.snackBar.open('Failed to fetch bookings. Please try again.', 'Close', { duration: 3000, panelClass: ['snackbar-error'] });
+          this.snackBar.open(
+            this.translate.instant('phoneSearch.fetchError'),
+            this.translate.instant('Close'),
+            { duration: 3000 }
+          );
         },
       });
   }
 
-  /**
-   * Sorts an array of bookings so the latest bookingDate appears first.
-   * If bookingDate is missing or invalid it will be treated as very old.
-   */
   private sortByBookingDateDesc(bookings: any[]): any[] {
     const safeTime = (d: any): number => {
-      if (!d && d !== 0) return -8640000000000000; // very old date fallback
+      if (!d && d !== 0) return -8640000000000000;
       const t = Date.parse(d);
       return isNaN(t) ? -8640000000000000 : t;
     };
-
-    return bookings.slice().sort((a, b) => {
-      const ta = safeTime(a?.bookingDate);
-      const tb = safeTime(b?.bookingDate);
-      return tb - ta; // descending: newer (b) first
-    });
+    return bookings.slice().sort((a, b) => safeTime(b?.bookingDate) - safeTime(a?.bookingDate));
   }
 
   cancelBooking(bookingId: number) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
-        title: 'Confirm Cancellation',
-        message: 'Are you sure you want to cancel this booking?',
+        title: this.translate.instant('phoneSearch.confirmCancelTitle'),
+        message: this.translate.instant('phoneSearch.confirmCancelMsg'),
       },
     });
 
@@ -86,12 +92,20 @@ export class PhoneSearchComponent {
         this.http.post<any>(`${environment.apiUrl}/api/bookings/cancel/${bookingId}`, {})
           .subscribe({
             next: () => {
-              this.snackBar.open('Booking successfully cancelled!', 'Close', { duration: 3000, panelClass: ['snackbar-success'] });
-              this.onSubmit(); // re-fetch and re-sort
+              this.snackBar.open(
+                this.translate.instant('phoneSearch.cancelSuccess'),
+                this.translate.instant('Close'),
+                { duration: 3000 }
+              );
+              this.onSubmit();
             },
             error: (err) => {
               console.error('Error cancelling booking:', err);
-              this.snackBar.open('Failed to cancel booking. Please try again.', 'Close', { duration: 3000, panelClass: ['snackbar-error'] });
+              this.snackBar.open(
+                this.translate.instant('phoneSearch.cancelError'),
+                this.translate.instant('Close'),
+                { duration: 3000 }
+              );
             },
           });
       }

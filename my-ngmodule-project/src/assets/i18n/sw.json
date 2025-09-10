@@ -5,13 +5,15 @@
     "whatsapp": "ZSSF WhatsApp"
   },
   "header": {
-    "title": "MFUKO WA HIFADHI YA JAMII ZANZIBAR (ZSSF)",
+    "title": "Uhifadhi wa Ukumbi ZSSF",
     "slogan": "Ufunguo wa Maisha ya Baadaye"
   },
   "nav": {
     "home": "Nyumbani",
     "my_booking": "Uhifadhi wangu",
-    "login": "Ingia"
+    "login": "Ingia",
+    "Feedback": "Maoni",
+    "Terms & Conditions": "Masharti na Vigezo"
   },
   "terms": {
     "title": "Sheria na Masharti",
@@ -83,5 +85,87 @@
     },
     "contactTitle": "Wasiliana",
     "contactText": "Kwa maswali au migogoro, wasiliana na msaada kupitia Mfumo au piga simu kwenye nambari ya msaada ya ukumbi."
+  },
+
+
+  "feedback": {
+    "title": "Maoni ya Wateja",
+    "description": "Tunathamini maoni yako. Tuambie uzoefu wako wa kuhifadhi ukumbi kupitia mfumo wetu — iwe ni maoni mafupi, pongezi, au malalamiko. Tunatumia mchango wako kuboresha mtiririko wa kuhifadhi, upatikanaji, makabidhiano ya ukumbi na msaada.",
+    "tip": "Kidokezo: chagua Maoni kwa ujumla, Maoni Chanya kwa pongezi au mapendekezo ya kuboresha, au Malalamiko kwa matatizo ya huduma (utoaji, hali, ratiba).",
+    "name": "Jina Kamili",
+    "phone": "Simu (lazima)",
+    "email": "Barua pepe (hiari)",
+    "type": "Aina",
+    "comment": "Maoni",
+    "feedback": "Maoni Chanya",
+    "complaint": "Malalamiko",
+    "message": "Ujumbe",
+    "placeholderName": "Jina lako",
+    "placeholderPhone": "07xx...",
+    "placeholderEmail": "wewe@example.com",
+    "placeholderMessage": "Andika ujumbe wako hapa...",
+    "submit": "Tuma Maoni",
+    "cancel": "Ghairi",
+    "sending": "Inatuma…",
+    "errors": {
+      "nameRequired": "Jina lako linahitajika",
+      "phoneRequired": "Namba ya simu lazima iwe na tarakimu 10",
+      "emailInvalid": "Ingiza barua pepe sahihi",
+      "messageRequired": "Ujumbe unahitajika"
+    },
+    "success": "Asante — ujumbe wako umepokelewa. Tunapitia maoni yote mara moja.",
+    "error": "Hitilafu imetokea wakati wa kutuma maoni yako. Tafadhali jaribu tena baadaye."
+  },
+
+
+  "login": {
+    "title": "Ingia",
+    "staffId": "Kitambulisho cha Mfanyakazi",
+    "password": "Nenosiri",
+    "placeholder": {
+      "staffId": "Weka Kitambulisho chako cha Mfanyakazi",
+      "password": "Weka nenosiri lako"
+    },
+    "loginButton": "Ingia",
+    "loggingIn": "Ingia...",
+    "errors": {
+      "staffIdRequired": "Kitambulisho cha Mfanyakazi kinahitajika",
+      "passwordRequired": "Nenosiri linahitajika",
+      "invalidCredentials": "Kitambulisho au nenosiri si sahihi"
+    },
+  
+  "phoneSearch": {
+    "title": "Tafuta Uhifadhi",
+    "subtitle": "kwa Nambari ya Simu",
+    "phoneLabel": "Nambari ya Simu",
+    "phonePlaceholder": "Weka nambari ya simu yenye tarakimu 10",
+    "searchButton": "Tafuta",
+    "resultsTitle": "Matokeo ya Utafutaji",
+    "bookingCode": "Nambari ya Uhifadhi",
+    "customer": "Mteja",
+    "bookingDate": "Tarehe ya Uhifadhi",
+    "eventStart": "Tarehe ya Kuanzia Tukio",
+    "eventEnd": "Tarehe ya Mwisho wa Tukio",
+    "status": "Hali",
+    "venue": "Eneo",
+    "activity": "Shughuli",
+    "viewInvoiceInfo": "Tazama ankara kwa maelezo zaidi",
+    "viewInvoice": "Tazama Ankara",
+    "updateReservation": "Sasisha Uhifadhi",
+    "cancelBooking": "Ghairi Uhifadhi",
+    "noResults": "Hakuna uhifadhi uliopatikana kwa nambari ya simu",
+    "noBookings": "Hakuna uhifadhi uliopatikana.",
+    "fetchError": "Imeshindikana kupata uhifadhi. Tafadhali jaribu tena.",
+    "confirmCancelTitle": "Thibitisha Ghairi",
+    "confirmCancelMsg": "Una hakika unataka ghairi uhifadhi huu?",
+    "cancelSuccess": "Uhifadhi umeghairiwa kwa mafanikio!",
+    "cancelError": "Imeshindikana ghairi uhifadhi. Tafadhali jaribu tena.",
+    "errors": {
+      "required": "Nambari ya simu inahitajika.",
+      "pattern": "Tafadhali ingiza tarakimu 10 kamili."
+    }
   }
 }
+}
+
+
