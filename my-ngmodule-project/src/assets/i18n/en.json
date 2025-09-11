@@ -130,8 +130,8 @@
       "staffIdRequired": "Staff ID is required",
       "passwordRequired": "Password is required",
       "invalidCredentials": "Invalid credentials"
-    },
-
+    }
+  },
   "phoneSearch": {
     "title": "Search Bookings",
     "subtitle": "by Phone Number",
@@ -164,6 +164,4 @@
     }
   }
 }
-}
-
 

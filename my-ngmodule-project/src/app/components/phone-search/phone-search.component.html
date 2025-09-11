@@ -3,13 +3,13 @@
   <main class="content-container">
     <mat-card class="search-card">
       <mat-card-header>
-        <mat-card-title class="card-title">Search Bookings</mat-card-title>
-        <mat-card-subtitle class="card-subtitle">by Phone Number</mat-card-subtitle>
+        <mat-card-title class="card-title">{{ 'phoneSearch.title' | translate }}</mat-card-title>
+        <mat-card-subtitle class="card-subtitle">{{ 'phoneSearch.subtitle' | translate }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         <form (ngSubmit)="onSubmit()" #searchForm="ngForm" class="search-form">
           <mat-form-field class="full-width-input">
-            <mat-label>Phone Number</mat-label>
+            <mat-label>{{ 'phoneSearch.phoneLabel' | translate }}</mat-label>
             <input
               matInput
               type="tel"
@@ -21,13 +21,15 @@
               maxlength="10"
               #phoneInput="ngModel"
               (keypress)="validateNumberInput($event)"
+              [placeholder]="'phoneSearch.phonePlaceholder' | translate"
             />
             <mat-icon matSuffix>phone</mat-icon>
+
             <mat-error *ngIf="phoneInput.errors?.['required']">
-              Phone number is required.
+              {{ 'phoneSearch.errors.required' | translate }}
             </mat-error>
             <mat-error *ngIf="phoneInput.errors?.['pattern']">
-              Please enter exactly 10 digits.
+              {{ 'phoneSearch.errors.pattern' | translate }}
             </mat-error>
           </mat-form-field>
 
@@ -39,28 +41,36 @@
             class="search-button"
           >
             <mat-spinner *ngIf="searching" [diameter]="20" class="spinner"></mat-spinner>
-            <span *ngIf="!searching">Search</span>
+            <span *ngIf="!searching">{{ 'phoneSearch.searchButton' | translate }}</span>
           </button>
         </form>
       </mat-card-content>
     </mat-card>
+
     <div *ngIf="bookings.length > 0" class="results-container">
-      <h4 class="results-title">Search Results</h4>
+      <h4 class="results-title">{{ 'phoneSearch.resultsTitle' | translate }}</h4>
       <div *ngFor="let booking of bookings" class="booking-card-wrapper">
         <mat-card class="booking-card">
           <mat-card-content>
             <div class="booking-details-grid">
-              <p><strong>Booking Code:</strong> {{ booking.bookingCode }}</p>
-              <p><strong>Customer</strong> {{booking.customer.customerName}}</p>
-              <p><strong>Booking date</strong> {{booking.bookingDate}}</p>
-              <p><strong>Event Start date:</strong> {{ booking.startDate | date }} {{ booking.startTime }}</p>
-              <p><strong>Event End date:</strong> {{ booking.endDate | date }} {{ booking.endTime }}</p>
-              <p><strong>Status:</strong> <span [ngClass]="{'status-pending': booking.bookingStatus === 'PENDING', 'status-complete': booking.bookingStatus === 'COMPLETED'}">{{ booking.bookingStatus }}</span></p>
-              <p><strong>Venue:</strong> {{ booking.venueName }} </p>
-              <p><strong>Activity:</strong> {{ booking.venueActivityName }}</p>
-              <p><strong>View invoice for more info</strong></p>
+              <p><strong>{{ 'phoneSearch.bookingCode' | translate }}:</strong> {{ booking.bookingCode }}</p>
+              <p><strong>{{ 'phoneSearch.customer' | translate }}:</strong> {{booking.customer.customerName}}</p>
+              <p><strong>{{ 'phoneSearch.bookingDate' | translate }}:</strong> {{booking.bookingDate}}</p>
+              <p><strong>{{ 'phoneSearch.startDate' | translate }}:</strong> {{ booking.startDate | date }} {{ booking.startTime }}</p>
+              <p><strong>{{ 'phoneSearch.endDate' | translate }}:</strong> {{ booking.endDate | date }} {{ booking.endTime }}</p>
+              <p><strong>{{ 'phoneSearch.status' | translate }}:</strong>
+                <span [ngClass]="{
+                  'status-pending': booking.bookingStatus === 'PENDING',
+                  'status-complete': booking.bookingStatus === 'COMPLETED'
+                }">{{ booking.bookingStatus }}</span>
+              </p>
+              <p><strong>{{ 'phoneSearch.venue' | translate }}:</strong> {{ booking.venueName }}</p>
+              <p><strong>{{ 'phoneSearch.activity' | translate }}:</strong> {{ booking.venueActivityName }}</p>
+              <p><strong>{{ 'phoneSearch.moreInfo' | translate }}</strong></p>
             </div>
+
             <mat-divider class="my-4"></mat-divider>
+
             <div class="booking-actions">
               <a
                 *ngIf="booking.invoiceId"
@@ -70,7 +80,7 @@
                 color="primary"
                 class="action-button"
               >
-                View Invoice
+                {{ 'phoneSearch.viewInvoice' | translate }}
               </a>
 
               <a
@@ -81,7 +91,7 @@
                 color="primary"
                 class="action-button"
               >
-                Update Reservation
+                {{ 'phoneSearch.updateReservation' | translate }}
               </a>
 
               <button
@@ -91,18 +101,19 @@
                 class="action-button"
                 (click)="cancelBooking(booking.bookingId)"
               >
-                Cancel Booking
+                {{ 'phoneSearch.cancelBooking' | translate }}
               </button>
             </div>
           </mat-card-content>
         </mat-card>
       </div>
     </div>
+
     <mat-card *ngIf="noResults" class="no-results-card">
       <mat-card-content>
         <p class="no-results-text">
           <mat-icon color="warn">info</mat-icon>
-          No bookings found for phone number <strong>{{ phoneNumber }}</strong>.
+          {{ 'phoneSearch.noResults' | translate }} <strong>{{ phoneNumber }}</strong>.
         </p>
       </mat-card-content>
     </mat-card>

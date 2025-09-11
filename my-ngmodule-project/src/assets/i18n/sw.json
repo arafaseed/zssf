@@ -132,8 +132,8 @@
       "staffIdRequired": "Kitambulisho cha Mfanyakazi kinahitajika",
       "passwordRequired": "Nenosiri linahitajika",
       "invalidCredentials": "Kitambulisho au nenosiri si sahihi"
-    },
-  
+    }
+  },
   "phoneSearch": {
     "title": "Tafuta Uhifadhi",
     "subtitle": "kwa Nambari ya Simu",
@@ -166,6 +166,4 @@
     }
   }
 }
-}
-
 
