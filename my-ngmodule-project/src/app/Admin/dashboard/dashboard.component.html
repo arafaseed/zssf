@@ -50,7 +50,9 @@
         <p>Capacity: {{ bestRevenueVenue.venue.capacity }}</p>
         <p class="card-value">{{ bestRevenueVenue.revenue | number:'1.0-0' }} TZS</p>
       </ng-container>
-      <ng-template #none><p class="text-gray-500">–</p></ng-template>
+      <ng-template #none>
+        <p class="text-gray-500">–</p>
+      </ng-template>
     </div>
     <br>
 
@@ -58,36 +60,21 @@
     <div class="card flexible-card card-wide">
       <h3>Available Venues</h3>
       <div class="flex items-center gap-2 mt-2">
-        <input
-          type="date"
-          [(ngModel)]="availabilityDate"
-          class="border px-2 py-1 rounded"
-        />
-        <button
-          (click)="loadAvailableVenues()"
-          [disabled]="!availabilityDate"
-          class="btn-primary"
-        >Check</button>
-        <button
-          *ngIf="availableVenues.length || availableVenueCount || availableError"
-          (click)="resetAvailableVenues()"
-          class="btn-secondary"
-        >Reset</button>
+        <input type="date" [(ngModel)]="availabilityDate" class="border px-2 py-1 rounded" />
+        <button (click)="loadAvailableVenues()" [disabled]="!availabilityDate" class="btn-primary">Check</button>
+        <button *ngIf="availableVenues.length || availableVenueCount || availableError" (click)="resetAvailableVenues()"
+          class="btn-secondary">Reset</button>
       </div>
       <p *ngIf="availableError" class="text-red-600 mt-2">{{ availableError }}</p>
       <p *ngIf="availableVenueCount !== null && !availableError" class="mt-2 font-semibold">
         Count: {{ availableVenueCount }}
       </p>
       <ul class="available-list mt-2 space-y-2">
-        <li
-          *ngFor="let v of availableVenues"
-          class="border rounded p-2 flex justify-between"
-        >
+        <li *ngFor="let v of availableVenues" class="border rounded p-2 flex justify-between">
           <span>{{ v.venueName }}</span>
           <span>Capacity: {{ v.capacity }}</span>
         </li>
-        <li *ngIf="!availableVenues.length && availabilityDate && !availableError"
-            class="italic text-gray-500">
+        <li *ngIf="!availableVenues.length && availabilityDate && !availableError" class="italic text-gray-500">
           None Available
         </li>
       </ul>
@@ -117,65 +104,129 @@
 
   <!-- Search Filters (outside grid!) -->
 
-
   <!-- Recent Bookings Table (also outside grid!) -->
-  <div class="recent-activity" aria-live="polite" aria-relevant="all">
+  <div class="recent-activity mt-6" aria-live="polite" aria-relevant="all">
 
-  <!-- Search Filters (same style as booking list) -->
-  <div class="search-filters" aria-label="Search Bookings">
-    <input
-      type="text"
-      placeholder="Search by Phone"
-      [(ngModel)]="searchPhone"
-      aria-label="Search by Phone Number"
-    />
-    <input
-      type="date"
-      [(ngModel)]="searchDate"
-      aria-label="Search by Start Date"
-    />
-    <div class="search-buttons">
-      <button mat-raised-button color="primary" (click)="searchBookings()">Search</button>
-      <button mat-raised-button color="warn" (click)="clearSearch()">Reset</button>
+    <!-- Filters (compact) -->
+    <div class="search-filters flex flex-wrap items-center gap-3 bg-white rounded-lg shadow-md p-4"
+      aria-label="Search Bookings">
+      <input type="text" placeholder="Search by Phone" [(ngModel)]="searchPhone" aria-label="Search by Phone Number"
+        class="px-3 py-2 rounded-lg border border-slate-300 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-sky-400" />
+
+      <input type="date" [(ngModel)]="searchDate" aria-label="Search by Start Date"
+        class="px-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-400" />
+
+      <div class="flex items-center gap-2 ml-auto">
+        <button mat-raised-button color="primary" (click)="searchBookings()" class="px-4 py-2 rounded-md">
+          Search
+        </button>
+        <button mat-stroked-button color="warn" (click)="clearSearch()" class="px-4 py-2 rounded-md">
+          Reset
+        </button>
+
+        <button mat-button (click)="goToBookingList()" class="ml-2 text-sm text-slate-600 hover:text-slate-800"
+          aria-label="View all bookings">
+          View all
+        </button>
+      </div>
     </div>
-  </div>
-  <h2>Recent Bookings</h2>
 
-  <!-- Table -->
-  <div class="table-container">
-    <table class="booking-table">
-      <thead>
-        <tr>
-          <th>Booking Code</th>
-          <th>Customer Name</th>
-          <th>Phone Number</th>
-          <th>Venue Name</th>
-          <th>Status</th>
-          <th>Start Date</th>
-          <th>End Date</th>
-          <th>Amount Paid</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let booking of filteredBookings.slice(-5).reverse()" tabindex="0">
-          <td>{{ booking.bookingCode }}</td>
-          <td>{{ booking.customer?.customerName }}</td>
-          <td>{{ booking.customer?.phoneNumber || 'N/A' }}</td>
-          <td>{{ booking.venue?.venueName || 'N/A' }}</td>
-            <td [style.color]="
-            booking.bookingStatus === 'CANCELLED' ? 'red' :
-            booking.bookingStatus === 'EXPIRED' ? 'red' :
-            booking.bookingStatus === 'IN_PROGRESS' ? 'blue' :
-            booking.bookingStatus === 'COMPLETE' ? 'green' :
-            booking.bookingStatus === 'PENDING' ? 'goldenrod' : 'black'
-          ">
-            {{ booking.bookingStatus }}
+    <h2 class="text-xl font-semibold mt-4 mb-2 text-slate-800">
+      Recent Bookings
+    </h2>
+
+    <!-- Minimal Mat Table preview (last 5 bookings) -->
+    <mat-card class="overflow-auto shadow-sm">
+      <table mat-table [dataSource]="recentBookings" class="min-w-full table-auto divide-y divide-slate-200">
+
+        <!-- Booking Code -->
+        <ng-container matColumnDef="bookingCode">
+          <th mat-header-cell *matHeaderCellDef class="px-4 py-3 text-left text-sm font-medium text-slate-700">Code</th>
+          <td mat-cell *matCellDef="let b" class="px-4 py-3 text-sm">{{ b.bookingCode }}</td>
+        </ng-container>
+
+        <!-- Booking Date (when the booking was placed) -->
+        <ng-container matColumnDef="bookingDate">
+          <th mat-header-cell *matHeaderCellDef class="px-4 py-3 text-left text-sm font-medium text-slate-700">Booked On
+          </th>
+          <td mat-cell *matCellDef="let b" class="px-4 py-3 text-sm">
+            {{ b.bookingDate || b.bookingDate | date:'shortDate' }}</td>
+        </ng-container>
+
+        <!-- Activity (venueActivityName) -->
+        <ng-container matColumnDef="activity">
+          <th mat-header-cell *matHeaderCellDef class="px-4 py-3 text-left text-sm font-medium text-slate-700">Activity
+          </th>
+          <td mat-cell *matCellDef="let b" class="px-4 py-3 text-sm">{{ b.venueActivityName || '-' }}</td>
+        </ng-container>
+
+        <!-- Venue -->
+        <ng-container matColumnDef="venueName">
+          <th mat-header-cell *matHeaderCellDef class="px-4 py-3 text-left text-sm font-medium text-slate-700">Venue
+          </th>
+          <td mat-cell *matCellDef="let b" class="px-4 py-3 text-sm">{{ b.venueName || b.venue?.venueName || 'N/A' }}
           </td>
-          <td>{{ booking.startDate | date:'shortDate' }}</td>
-          <td>{{ booking.endDate | date:'shortDate' }}</td>
-          <td>{{ booking.amountPaid | number:'1.0-0' }} TZS</td>
+        </ng-container>
+
+        <!-- Customer Name -->
+        <ng-container matColumnDef="customerName">
+          <th mat-header-cell *matHeaderCellDef class="px-4 py-3 text-left text-sm font-medium text-slate-700">Customer
+          </th>
+          <td mat-cell *matCellDef="let b" class="px-4 py-3 text-sm">{{ b.customer?.customerName }}</td>
+        </ng-container>
+
+        <!-- Customer Type -->
+        <ng-container matColumnDef="customerType">
+          <th mat-header-cell *matHeaderCellDef class="px-4 py-3 text-left text-sm font-medium text-slate-700">Type</th>
+          <td mat-cell *matCellDef="let b" class="px-4 py-3 text-sm">{{ b.customer?.customerType || '-' }}</td>
+        </ng-container>
+
+        <!-- Start Date -->
+        <ng-container matColumnDef="startDate">
+          <th mat-header-cell *matHeaderCellDef class="px-4 py-3 text-left text-sm font-medium text-slate-700">Start
+          </th>
+          <td mat-cell *matCellDef="let b" class="px-4 py-3 text-sm">{{ b.startDate | date:'shortDate' }}</td>
+        </ng-container>
+
+        <!-- End Date -->
+        <ng-container matColumnDef="endDate">
+          <th mat-header-cell *matHeaderCellDef class="px-4 py-3 text-left text-sm font-medium text-slate-700">End</th>
+          <td mat-cell *matCellDef="let b" class="px-4 py-3 text-sm">{{ b.endDate | date:'shortDate' }}</td>
+        </ng-container>
+
+        <!-- Status (colored) -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef class="px-4 py-3 text-left text-sm font-medium text-slate-700">Status
+          </th>
+          <td mat-cell *matCellDef="let b" class="px-4 py-3 text-sm">
+            <span [ngStyle]="{ color: getStatusColor(b.bookingStatus) }" class="font-medium">
+              {{ b.bookingStatus }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Reference / View Docs -->
+        <ng-container matColumnDef="reference">
+          <th mat-header-cell *matHeaderCellDef class="px-4 py-3 text-left text-sm font-medium text-slate-700">Docs</th>
+          <td mat-cell *matCellDef="let b" class="px-4 py-3 text-sm">
+            <button mat-stroked-button color="primary" (click)="openReferenceDocs(b)"
+              [disabled]="!(b.customer?.referenceDocument?.length)"
+              [attr.aria-label]="'View reference document for booking ' + b.bookingCode" class="text-xs">
+              View Docs
+            </button>
+          </td>
+        </ng-container>
+
+        <!-- header and rows -->
+        <tr mat-header-row
+          *matHeaderRowDef="['bookingCode','bookingDate','activity','venueName','customerName','customerType','startDate','endDate','status','reference']">
         </tr>
-      </tbody>
-    </table>
+        <tr mat-row
+          *matRowDef="let row; columns: ['bookingCode','bookingDate','activity','venueName','customerName','customerType','startDate','endDate','status','reference'];"
+          tabindex="0" class="hover:bg-slate-50"></tr>
+      </table>
+    </mat-card>
+
   </div>
+
 </div>

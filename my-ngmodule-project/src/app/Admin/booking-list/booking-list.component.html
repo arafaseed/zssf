@@ -1,17 +1,19 @@
 <mat-card class="booking-card">
-  <mat-toolbar color="primary">
-    <span>Bookings</span>
+  <mat-toolbar color="primary" class="flex items-center">
+    <span class="text-lg font-semibold">Bookings</span>
     <span class="spacer"></span>
   </mat-toolbar>
 
-  <div class="controls">
+  <div class="controls flex flex-wrap gap-3 p-4 items-center">
     <!-- Status toggles -->
-    <mat-button-toggle-group [value]="currentStatus" (change)="setStatus($event.value)" >
-      <mat-button-toggle *ngFor="let s of statusOptions" [value]="s">{{ s }}</mat-button-toggle>
+    <mat-button-toggle-group [value]="currentStatus" (change)="setStatus($event.value)" class="inline-flex">
+      <mat-button-toggle *ngFor="let s of statusOptions" [value]="s" class="px-2 py-1">
+        {{ s }}
+      </mat-button-toggle>
     </mat-button-toggle-group>
 
     <!-- Customer type select -->
-    <mat-form-field  class="filter-field">
+    <mat-form-field class="filter-field min-w-[180px]">
       <mat-label>Customer Type</mat-label>
       <mat-select [value]="currentCustomerType" (selectionChange)="setCustomerType($event.value)">
         <mat-option *ngFor="let t of customerTypeOptions" [value]="t">{{ t }}</mat-option>
@@ -19,7 +21,7 @@
     </mat-form-field>
 
     <!-- Date search -->
-    <mat-form-field  class="filter-field">
+    <mat-form-field class="filter-field min-w-[180px]">
       <mat-label>Start Date</mat-label>
       <input matInput type="date" [value]="searchDate" (change)="onDateChange($event)">
       <button mat-icon-button matSuffix *ngIf="searchDate" aria-label="Clear" (click)="clearDate()">
@@ -29,73 +31,74 @@
   </div>
 
   <div class="table-wrapper" *ngIf="!loading">
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z2">
+    <!-- mat-table uses Tailwind utilities for spacing; header color is forced by component CSS override below -->
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z2 w-full table-auto">
 
       <!-- Booking Code -->
       <ng-container matColumnDef="bookingCode">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Booking Code</th>
-        <td mat-cell *matCellDef="let row">{{ row.bookingCode }}</td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="px-4 py-3 text-left text-sm">Booking Code</th>
+        <td mat-cell *matCellDef="let row" class="px-4 py-3 text-sm">{{ row.bookingCode }}</td>
       </ng-container>
 
       <!-- Booking Date -->
       <ng-container matColumnDef="bookingDate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Booking Date</th>
-        <td mat-cell *matCellDef="let row">{{ formatDate(row.bookingDate) }}</td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="px-4 py-3 text-left text-sm">Booking Date</th>
+        <td mat-cell *matCellDef="let row" class="px-4 py-3 text-sm">{{ formatDate(row.bookingDate) }}</td>
       </ng-container>
 
       <!-- Activity -->
       <ng-container matColumnDef="activity">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Activity</th>
-        <td mat-cell *matCellDef="let row">{{ row.venueActivityName || '-' }}</td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="px-4 py-3 text-left text-sm">Activity</th>
+        <td mat-cell *matCellDef="let row" class="px-4 py-3 text-sm">{{ row.venueActivityName || '-' }}</td>
       </ng-container>
 
       <!-- Venue -->
       <ng-container matColumnDef="venue">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Venue</th>
-        <td mat-cell *matCellDef="let row">{{ row.venueName || '-' }}</td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="px-4 py-3 text-left text-sm">Venue</th>
+        <td mat-cell *matCellDef="let row" class="px-4 py-3 text-sm">{{ row.venueName || '-' }}</td>
       </ng-container>
 
       <!-- Customer -->
       <ng-container matColumnDef="customer">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Customer</th>
-        <td mat-cell *matCellDef="let row">{{ row.customer?.customerName }}</td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="px-4 py-3 text-left text-sm">Customer</th>
+        <td mat-cell *matCellDef="let row" class="px-4 py-3 text-sm">{{ row.customer?.customerName }}</td>
       </ng-container>
 
       <!-- Customer Type -->
       <ng-container matColumnDef="customerType">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Customer Type</th>
-        <td mat-cell *matCellDef="let row">{{ row.customer?.customerType }}</td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="px-4 py-3 text-left text-sm">Customer Type</th>
+        <td mat-cell *matCellDef="let row" class="px-4 py-3 text-sm">{{ row.customer?.customerType }}</td>
       </ng-container>
 
       <!-- Start Date -->
       <ng-container matColumnDef="startDate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Start Date</th>
-        <td mat-cell *matCellDef="let row">{{ formatDate(row.startDate) }}</td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="px-4 py-3 text-left text-sm">Start Date</th>
+        <td mat-cell *matCellDef="let row" class="px-4 py-3 text-sm">{{ formatDate(row.startDate) }}</td>
       </ng-container>
 
       <!-- Start Time -->
       <ng-container matColumnDef="startTime">
-        <th mat-header-cell *matHeaderCellDef>Start Time</th>
-        <td mat-cell *matCellDef="let row">{{ row.startTime }}</td>
+        <th mat-header-cell *matHeaderCellDef class="px-4 py-3 text-left text-sm">Start Time</th>
+        <td mat-cell *matCellDef="let row" class="px-4 py-3 text-sm">{{ row.startTime }}</td>
       </ng-container>
 
       <!-- End Date -->
       <ng-container matColumnDef="endDate">
-        <th mat-header-cell *matHeaderCellDef>End Date</th>
-        <td mat-cell *matCellDef="let row">{{ formatDate(row.endDate) }}</td>
+        <th mat-header-cell *matHeaderCellDef class="px-4 py-3 text-left text-sm">End Date</th>
+        <td mat-cell *matCellDef="let row" class="px-4 py-3 text-sm">{{ formatDate(row.endDate) }}</td>
       </ng-container>
 
       <!-- End Time -->
       <ng-container matColumnDef="endTime">
-        <th mat-header-cell *matHeaderCellDef>End Time</th>
-        <td mat-cell *matCellDef="let row">{{ row.endTime }}</td>
+        <th mat-header-cell *matHeaderCellDef class="px-4 py-3 text-left text-sm">End Time</th>
+        <td mat-cell *matCellDef="let row" class="px-4 py-3 text-sm">{{ row.endTime }}</td>
       </ng-container>
 
       <!-- Status -->
       <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-        <td mat-cell *matCellDef="let row">
-          <span [ngStyle]="{ color: getStatusColor(row.bookingStatus) }">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="px-4 py-3 text-left text-sm">Status</th>
+        <td mat-cell *matCellDef="let row" class="px-4 py-3 text-sm">
+          <span [ngStyle]="{ color: getStatusColor(row.bookingStatus) }" class="font-medium">
             {{ row.bookingStatus }}
           </span>
         </td>
@@ -103,26 +106,28 @@
 
       <!-- Reference document button -->
       <ng-container matColumnDef="reference">
-        <th mat-header-cell *matHeaderCellDef>Reference</th>
-        <td mat-cell *matCellDef="let row">
+        <th mat-header-cell *matHeaderCellDef class="px-4 py-3 text-left text-sm">Reference</th>
+        <td mat-cell *matCellDef="let row" class="px-4 py-3 text-sm">
           <button mat-raised-button color="primary" (click)="openReferenceDocs(row)" [disabled]="!(row.customer?.referenceDocument?.length)">
             View Docs
           </button>
         </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <!-- header and rows -->
+      <!-- Add Tailwind classes to header row too (applies to <tr>) and keep material directive -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns" class="bg-[#0c1429] text-white"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="hover:bg-slate-50"></tr>
     </table>
 
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="mt-3"></mat-paginator>
   </div>
 
-  <div *ngIf="loading" class="loading-wrap">
+  <div *ngIf="loading" class="loading-wrap flex justify-center py-6">
     <mat-spinner diameter="40"></mat-spinner>
   </div>
 
-  <div *ngIf="!loading && dataSource.data.length === 0" class="no-results">
-    <p>No bookings found.</p>
+  <div *ngIf="!loading && dataSource.data.length === 0" class="no-results text-center py-4">
+    <p class="font-semibold">No bookings found.</p>
   </div>
 </mat-card>
