@@ -1,10 +1,15 @@
+// src/app/components/dashboard/dashboard.component.ts
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+
 import {
   DashboardService,
   BestRevenueVenue,
   RawVenueRevenue
- } from '../../Services/dashboard.service';
+} from '../../Services/dashboard.service';
+
+import { PdfViewerDialogComponent } from '../pdf-viewer-dialog/pdf-viewer-dialog.component';
 
 interface VenueRevenue {
   venueId: number;
@@ -53,7 +58,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private dashboardService: DashboardService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -75,40 +81,38 @@ export class DashboardComponent implements OnInit {
   }
 
   private loadRevenueData() {
-  this.dashboardService.getTotalRevenue().subscribe(r => this.totalRevenue = r);
+    this.dashboardService.getTotalRevenue().subscribe(r => this.totalRevenue = r);
 
-  this.dashboardService.getMonthlyRevenue()
-  .subscribe((obj: { [key: string]: number }) => {
-    const currentMonthKey = this.getCurrentMonthKey();
+    this.dashboardService.getMonthlyRevenue()
+      .subscribe((obj: { [key: string]: number }) => {
+        const currentMonthKey = this.getCurrentMonthKey();
 
-    if (obj.hasOwnProperty(currentMonthKey)) {
-      this.monthlyLabel = currentMonthKey;
-      this.monthlyRevenue = obj[currentMonthKey];
-    } else {
-      const entries = Object.entries(obj);
-      if (entries.length) {
-        [this.monthlyLabel, this.monthlyRevenue] = entries[0];
-      } else {
-        this.monthlyLabel = currentMonthKey;
-        this.monthlyRevenue = 0;
-      }
-    }
-  });
+        if (obj.hasOwnProperty(currentMonthKey)) {
+          this.monthlyLabel = currentMonthKey;
+          this.monthlyRevenue = obj[currentMonthKey];
+        } else {
+          const entries = Object.entries(obj);
+          if (entries.length) {
+            [this.monthlyLabel, this.monthlyRevenue] = entries[0];
+          } else {
+            this.monthlyLabel = currentMonthKey;
+            this.monthlyRevenue = 0;
+          }
+        }
+      });
+  }
 
-}
-
-private getCurrentMonthKey(): string {
-  const now = new Date();
-  const monthNames = [
-    'JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY',
-    'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER',
-    'NOVEMBER', 'DECEMBER'
-  ];
-  const month = monthNames[now.getMonth()];
-  const year = now.getFullYear();
-  return `${month} ${year}`;
-}
-
+  private getCurrentMonthKey(): string {
+    const now = new Date();
+    const monthNames = [
+      'JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY',
+      'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER',
+      'NOVEMBER', 'DECEMBER'
+    ];
+    const month = monthNames[now.getMonth()];
+    const year = now.getFullYear();
+    return `${month} ${year}`;
+  }
 
   private loadVenueStats() {
     this.dashboardService.getMostBookedVenue().subscribe(v => this.mostBookedVenue = v);
@@ -119,17 +123,16 @@ private getCurrentMonthKey(): string {
       .subscribe(v => this.bestRevenueVenue = v);
 
     this.dashboardService.getTopVenuesByRevenue()
-  .subscribe((list) => {
-    this.topRevenueVenues = list
-      .sort((a, b) => b.revenue - a.revenue) // Sort descending by revenue
-      .slice(0, 3) // Take top 3
-      .map(item => ({
-        venueName:    item.venue.venueName,
-        bookingCount: item.venue.bookingIds.length,
-        revenue:      item.revenue
-      }));
-  });
-
+      .subscribe((list) => {
+        this.topRevenueVenues = list
+          .sort((a, b) => b.revenue - a.revenue)
+          .slice(0, 3)
+          .map(item => ({
+            venueName:    item.venue.venueName,
+            bookingCount: item.venue.bookingIds.length,
+            revenue:      item.revenue
+          }));
+      });
   }
 
   attachVenueNames() {
@@ -145,7 +148,6 @@ private getCurrentMonthKey(): string {
   loadAvailableVenues() {
     if (!this.availabilityDate) return;
 
-    // parse date & zero-out time
     const sel = new Date(this.availabilityDate);
     const today = new Date();
     today.setHours(0,0,0,0);
@@ -166,12 +168,11 @@ private getCurrentMonthKey(): string {
       });
   }
 
- resetAvailableVenues() {
+  resetAvailableVenues() {
     this.availabilityDate = '';
     this.availableVenueCount = 0;
     this.availableVenues = [];
   }
-
 
   searchBookings() {
     this.filteredBookings = this.bookings.filter(b => {
@@ -189,5 +190,36 @@ private getCurrentMonthKey(): string {
 
   goToBookingList() {
     this.router.navigate(['/admin/bookinglist']);
+  }
+
+  /* ---------- new helper + dialog integration for dashboard preview ---------- */
+
+  // Returns the last 5 bookings in reversed order (latest first)
+  get recentBookings() {
+    if (!this.filteredBookings) return [];
+    const take = 5;
+    return [...this.filteredBookings].slice(-take).reverse();
+  }
+
+  getStatusColor(status: string) {
+    switch (status) {
+      case 'CANCELLED':
+      case 'EXPIRED': return 'red';
+      case 'IN_PROGRESS': return 'green';
+      case 'COMPLETE': return 'blue';
+      case 'PENDING': return 'goldenrod';
+      default: return 'black';
+    }
+  }
+
+  // Open the Pdf viewer dialog (re-uses PdfViewerDialogComponent)
+  openReferenceDocs(booking: any) {
+    const docs = booking?.customer?.referenceDocument ?? [];
+    this.dialog.open(PdfViewerDialogComponent, {
+      width: '80vw',
+      maxWidth: '1200px',
+      height: '80vh',
+      data: { bookingId: booking.bookingId, docs, bookingCode: booking.bookingCode }
+    });
   }
 }
