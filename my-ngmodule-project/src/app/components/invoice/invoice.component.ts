@@ -17,7 +17,46 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
   staffList: StaffDTO[] = [];
   loading = true;
 
+  constructor(
+    private route: ActivatedRoute,
+    private invoiceService: InvoiceService,
+    private zone: NgZone
+  ) {}
+
   qrDataUrl?: string;
+
+  // --- new fields for installments ---
+installments: Array<{
+  paymentId: number;
+  paymentDate: string;
+  paymentDateFormatted: string;
+  amountPaid: number;
+  paymentDescription?: string | null;
+  label: string; // e.g., "1st installment"
+}> = [];
+
+installmentsSum = 0;
+remainingAmount = 0;
+installmentsLoading = false;
+
+// helper to create ordinal label (1 -> "1st", 2 -> "2nd", 3 -> "3rd", 4 -> "4th" ...)
+private ordinal(n: number): string {
+  const s = ["th","st","nd","rd"],
+        v = n % 100;
+  return n + (s[(v-20)%10] || s[v] || s[0]);
+}
+
+// format date to a human readable string (you can tune locale/format as needed)
+private formatDateString(iso: string | undefined | null): string {
+  if (!iso) return '';
+  try {
+    const d = new Date(iso);
+    // use locale formatting — adjust locale if you want different format
+    return d.toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' });
+  } catch (e) {
+    return iso;
+  }
+}
 
   // scanning/modal
   showScannerModal = false;
@@ -29,11 +68,7 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
 
   resizeObserver?: ResizeObserver;
 
-  constructor(
-    private route: ActivatedRoute,
-    private invoiceService: InvoiceService,
-    private zone: NgZone
-  ) {}
+  
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -60,6 +95,7 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
         // If your backend wraps data differently adjust accordingly
         this.invoiceData = this.normalizeInvoice(data);
         this.loading = false;
+        this.fetchInstallments(this.invoiceData.controlNumber);
         this.fetchStaff(data.booking?.venueId ?? data.venueId ?? 0);
         // generate QR for this invoice — now QR points to the invoice page URL
         this.createQRForInvoicePage(this.bookingId, this.invoiceData.invoiceCode);
@@ -110,13 +146,56 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
     return root;
   }
 
-  /**
-   * Create a QR that encodes the invoice page URL so scanners on other devices will
-   * open this invoice directly. We include the invoiceCode as a query param for reliability.
-   *
-   * Example generated URL:
-   *   http://localhost:4200/invoice/23?code=INVOICECODE123
-   */
+
+
+  private fetchInstallments(controlNumber?: string): void {
+  if (!controlNumber) {
+    // no control number available — no installments to fetch
+    this.installments = [];
+    this.installmentsSum = 0;
+    this.remainingAmount = (this.invoiceData?.netAmount ?? this.invoiceData?.amount ?? 0);
+    return;
+  }
+
+  this.installmentsLoading = true;
+  this.invoiceService.getPaymentsByControlNumber(controlNumber).subscribe({
+    next: (payments) => {
+      // normalize + label
+      this.installments = payments.map((p, idx) => ({
+        paymentId: p.paymentId,
+        paymentDate: p.paymentDate,
+        paymentDateFormatted: this.formatDateString(p.paymentDate),
+        amountPaid: p.amountPaid ?? 0,
+        paymentDescription: p.paymentDescription,
+        label: `${this.ordinal(idx + 1)} installment`
+      }));
+
+      this.installmentsSum = this.installments.reduce((s, it) => s + (it.amountPaid || 0), 0);
+
+      // Determine base invoice amount to deduct from — prefer netAmount, fallback to amount
+      const invoiceTotal = this.invoiceData?.netAmount ?? this.invoiceData?.amount ?? 0;
+      const remaining = invoiceTotal - this.installmentsSum;
+
+      // don't show negative remaining here — if overpaid set remaining to 0 (you may change this behaviour)
+      this.remainingAmount = remaining > 0 ? +remaining : 0;
+
+      this.installmentsLoading = false;
+    },
+    error: (err) => {
+      console.error('Error fetching installments:', err);
+      // safe fallback
+      this.installments = [];
+      this.installmentsSum = 0;
+      this.remainingAmount = (this.invoiceData?.netAmount ?? this.invoiceData?.amount ?? 0);
+      this.installmentsLoading = false;
+    }
+  });
+}
+
+
+
+
+  
   async createQRForInvoicePage(bookingId: number, invoiceCode?: string) {
   try {
     const safeCode = invoiceCode ? encodeURIComponent(invoiceCode) : '';
@@ -142,6 +221,8 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
     console.error('QR creation error', err);
   }
 }
+
+
 
 
   generatePDF(): void {

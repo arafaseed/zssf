@@ -1,64 +1,128 @@
-<div class="container">
-  <h3>All Bookings</h3>
+<mat-card class="booking-card">
+  <mat-toolbar color="primary">
+    <span>Bookings</span>
+    <span class="spacer"></span>
+  </mat-toolbar>
 
-  <!-- Button Filters -->
-  <div class="button-group">
-    <button (click)="filterByStatus('ALL')">Show All</button>
-    <button (click)="filterByStatus('PENDING')">Show Pending</button>
-    <button (click)="filterByStatus('COMPLETE')">Show Completed</button>
-    <button (click)="filterByStatus('CANCELLED')">Show Cancelled</button>
+  <div class="controls">
+    <!-- Status toggles -->
+    <mat-button-toggle-group [value]="currentStatus" (change)="setStatus($event.value)" >
+      <mat-button-toggle *ngFor="let s of statusOptions" [value]="s">{{ s }}</mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <!-- Customer type select -->
+    <mat-form-field  class="filter-field">
+      <mat-label>Customer Type</mat-label>
+      <mat-select [value]="currentCustomerType" (selectionChange)="setCustomerType($event.value)">
+        <mat-option *ngFor="let t of customerTypeOptions" [value]="t">{{ t }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Date search -->
+    <mat-form-field  class="filter-field">
+      <mat-label>Start Date</mat-label>
+      <input matInput type="date" [value]="searchDate" (change)="onDateChange($event)">
+      <button mat-icon-button matSuffix *ngIf="searchDate" aria-label="Clear" (click)="clearDate()">
+        <mat-icon>clear</mat-icon>
+      </button>
+    </mat-form-field>
   </div>
 
-  <!-- Search by Date -->
-  <div class="search-group">
-  <input 
-    type="date" 
-    [(ngModel)]="searchDate"
-  />
-  <button (click)="searchByDate()">Search by Date</button>
-</div>
+  <div class="table-wrapper" *ngIf="!loading">
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z2">
 
+      <!-- Booking Code -->
+      <ng-container matColumnDef="bookingCode">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Booking Code</th>
+        <td mat-cell *matCellDef="let row">{{ row.bookingCode }}</td>
+      </ng-container>
 
-  <!-- Bookings Table -->
-  <div *ngIf="filteredResults.length > 0">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Booking Code</th>
-          <th>Venue</th>
-          <th>Customer</th>
-          <th>Start Date</th>
-          <th>Start Time</th>
-          <th>End Date</th>
-          <th>End Time</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let booking of filteredResults">
-          <td>{{ booking.bookingCode }}</td>
-          <td>{{ booking.venueName}}</td>
-          <td>{{ booking.customer.customerName }}</td>
-          <td>{{ booking.startDate }}</td>
-          <td>{{ booking.startTime }}</td>
-          <td>{{ booking.endDate }}</td>
-          <td>{{ booking.endTime }}</td>
-          <td [style.color]="
-            booking.bookingStatus === 'CANCELLED' ? 'red' :
-            booking.bookingStatus === 'EXPIRED' ? 'red' :
-            booking.bookingStatus === 'IN_PROGRESS' ? 'blue' :
-            booking.bookingStatus === 'COMPLETE' ? 'green' :
-            booking.bookingStatus === 'PENDING' ? 'goldenrod' : 'black'
-          ">
-            {{ booking.bookingStatus }}
-          </td>
+      <!-- Booking Date -->
+      <ng-container matColumnDef="bookingDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Booking Date</th>
+        <td mat-cell *matCellDef="let row">{{ formatDate(row.bookingDate) }}</td>
+      </ng-container>
 
-        </tr>
-      </tbody>
+      <!-- Activity -->
+      <ng-container matColumnDef="activity">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Activity</th>
+        <td mat-cell *matCellDef="let row">{{ row.venueActivityName || '-' }}</td>
+      </ng-container>
+
+      <!-- Venue -->
+      <ng-container matColumnDef="venue">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Venue</th>
+        <td mat-cell *matCellDef="let row">{{ row.venueName || '-' }}</td>
+      </ng-container>
+
+      <!-- Customer -->
+      <ng-container matColumnDef="customer">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Customer</th>
+        <td mat-cell *matCellDef="let row">{{ row.customer?.customerName }}</td>
+      </ng-container>
+
+      <!-- Customer Type -->
+      <ng-container matColumnDef="customerType">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Customer Type</th>
+        <td mat-cell *matCellDef="let row">{{ row.customer?.customerType }}</td>
+      </ng-container>
+
+      <!-- Start Date -->
+      <ng-container matColumnDef="startDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Start Date</th>
+        <td mat-cell *matCellDef="let row">{{ formatDate(row.startDate) }}</td>
+      </ng-container>
+
+      <!-- Start Time -->
+      <ng-container matColumnDef="startTime">
+        <th mat-header-cell *matHeaderCellDef>Start Time</th>
+        <td mat-cell *matCellDef="let row">{{ row.startTime }}</td>
+      </ng-container>
+
+      <!-- End Date -->
+      <ng-container matColumnDef="endDate">
+        <th mat-header-cell *matHeaderCellDef>End Date</th>
+        <td mat-cell *matCellDef="let row">{{ formatDate(row.endDate) }}</td>
+      </ng-container>
+
+      <!-- End Time -->
+      <ng-container matColumnDef="endTime">
+        <th mat-header-cell *matHeaderCellDef>End Time</th>
+        <td mat-cell *matCellDef="let row">{{ row.endTime }}</td>
+      </ng-container>
+
+      <!-- Status -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+        <td mat-cell *matCellDef="let row">
+          <span [ngStyle]="{ color: getStatusColor(row.bookingStatus) }">
+            {{ row.bookingStatus }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Reference document button -->
+      <ng-container matColumnDef="reference">
+        <th mat-header-cell *matHeaderCellDef>Reference</th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-raised-button color="primary" (click)="openReferenceDocs(row)" [disabled]="!(row.customer?.referenceDocument?.length)">
+            View Docs
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
   </div>
 
-  <div *ngIf="filteredResults.length === 0">
-    <p style="text-align: center; font-weight: bold;">No bookings found.</p>
+  <div *ngIf="loading" class="loading-wrap">
+    <mat-spinner diameter="40"></mat-spinner>
   </div>
-</div>
+
+  <div *ngIf="!loading && dataSource.data.length === 0" class="no-results">
+    <p>No bookings found.</p>
+  </div>
+</mat-card>

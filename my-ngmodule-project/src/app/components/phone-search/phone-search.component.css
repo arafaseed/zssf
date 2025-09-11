@@ -111,13 +111,28 @@
   color: #1a4d2e;
 }
 
+.status-expired {
+  color: #FF0000; 
+  font-weight: bold;
+}
+
+.status-cancelled {
+  color: #FF0000; 
+  font-weight: bold;
+}
+
 .status-pending {
-  color: #e67e22; /* Orange for pending */
+  color: #FFA500; 
+  font-weight: bold;
+}
+
+.status-in-progress {
+  color: #008000;
   font-weight: bold;
 }
 
 .status-complete {
-  color: #27ae60; /* Green for complete */
+  color: #0000FF ; 
   font-weight: bold;
 }
 

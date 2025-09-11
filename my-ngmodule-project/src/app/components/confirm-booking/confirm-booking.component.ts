@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BookingService } from '../../Services/booking.service';
 import { firstValueFrom } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
 @Component({
@@ -27,7 +28,8 @@ export class ConfirmBookingComponent implements OnInit {
     public dialogRef: MatDialogRef<ConfirmBookingComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private api: BookingService,
-    private router: Router
+    private router: Router,
+     private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -140,20 +142,49 @@ export class ConfirmBookingComponent implements OnInit {
     this.submitting = true;
 
     try {
-      const resp: any = await firstValueFrom(this.api.placeReservation(fd));
-      const bookingId = resp?.bookingId ?? resp?.id ?? null;
-      if (bookingId) {
-        this.dialogRef.close({ success: true, bookingId });
-        // navigate to invoice page
-        this.router.navigate(['/invoice', bookingId]);
-      } else {
-        this.errorMessage = 'Booking created but server returned no bookingId.';
-        this.submitting = false;
-      }
-    } catch (err: any) {
-      console.error('Place reservation failed', err);
-      this.errorMessage = err?.message ?? 'Booking failed';
-      this.submitting = false;
-    }
+  const resp: any = await firstValueFrom(this.api.placeReservation(fd));
+  const bookingId = resp?.bookingId ?? resp?.id ?? null;
+
+  if (bookingId) {
+    // Success: close dialog, notify user (friendly), then navigate
+    this.dialogRef.close({ success: true, bookingId });
+    this.snackBar.open('Booking created successfully.', 'OK', {
+      duration: 4000,
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+    });
+    this.router.navigate(['/invoice', bookingId]);
+    return;
+  }
+
+  // No bookingId returned — show friendly message (prefer backend friendlyMessage if provided)
+  const friendlyWhenMissingId = resp?.friendlyMessage
+    ?? 'Booking created but we did not receive a booking reference. Please check your bookings or contact support.';
+  this.snackBar.open(friendlyWhenMissingId, 'Close', {
+    duration: 6000,
+    horizontalPosition: 'right',
+    verticalPosition: 'top',
+  });
+  this.errorMessage = friendlyWhenMissingId;
+  this.submitting = false;
+
+} catch (err: any) {
+  // Developer-only details
+  console.error('Place reservation failed (details):', err);
+
+  // Friendly message for the user — prefer backend `friendlyMessage` but NEVER display raw error
+  const friendlyOnError = err?.friendlyMessage
+    ?? 'We could not complete your booking right now. Please try again later or contact support.';
+
+  this.snackBar.open(friendlyOnError, 'Close', {
+    duration: 6000,
+    horizontalPosition: 'right',
+    verticalPosition: 'top',
+  });
+
+  this.errorMessage = friendlyOnError;
+  this.submitting = false;
+}
+
   }
 }
