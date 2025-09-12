@@ -1,143 +1,135 @@
-<!-- HEADER ---------------------------------------------------------------->
-<header 
-  class="fixed inset-x-0 top-0 z-40 h-14 text-white flex items-center px-4 shadow-md" 
-  style="background: linear-gradient( rgb(12, 20, 41) 100%);"
+<!-- src/app/Admin/layout/layout.component.html -->
+
+<!-- TOP HEADER (separated from sidenav functionality) -->
+<mat-toolbar
+  color="primary"
+  class="fixed inset-x-0 top-0 z-50 h-14 px-3 lg:px-6 text-white flex items-center"
+  style="background: linear-gradient(0deg,#0c1429 0%, #0c1429 100%);"
 >
-  <!-- sidebar toggle (mobile only) -->
+
+   <!-- Desktop collapse/expand control -->
   <button
-    class="lg:hidden mr-3 p-2"
-    style="min-width: 40px; min-height: 40px; display: flex; align-items: center; justify-content: center;"
-    (click)="toggleSidebar()"
-    aria-label="Toggle sidebar"
+    mat-icon-button
+    class="hidden lg:inline-flex mr-3"
+    (click)="toggleSidebarDesktop()"
+    [attr.aria-label]="isSidebarExpanded ? 'Collapse sidebar' : 'Expand sidebar'"
   >
-    <svg
-      class="w-8 h-8"
-      fill="none"
-      stroke="white"
-      stroke-width="3"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      viewBox="0 0 24 24"
-    >
-      <path d="M4 6h16M4 12h16M4 18h16"></path>
-    </svg>
+    <mat-icon>{{ isSidebarExpanded ? 'chevron_left' : 'chevron_right' }}</mat-icon>
+  </button>
+  
+  <!-- Mobile sidebar toggle (hamburger) -->
+  <button
+    mat-icon-button
+    class="lg:hidden mr-2"
+    (click)="toggleSidebarMobile()"
+    [attr.aria-label]="'Toggle sidebar (mobile)'"
+  >
+    <mat-icon>menu</mat-icon>
   </button>
 
-  <!-- app title -->
-  <span class="text-base sm:text-2xl font-semibold flex-1">ZSSF VENUE RESERVATION SYSTEM</span>
+  
 
-  <!-- admin chip -->
-  <div class="flex items-center space-x-2">
-    <span class="hidden sm:inline text-sm">{{ adminId || 'Admin' }}</span>
-    <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center font-bold uppercase">
-      {{ adminId ? adminId.charAt(0) : '?' }}
+  <!-- Title / Could be converted to navbar later -->
+  <div class="flex items-center gap-3 grow">
+    <h1 class="text-sm sm:text-lg font-semibold leading-none">ZSSF HALL RESERVATION</h1>
+    <h2 class="hidden sm:inline font-bold  text-slate-300">Admin Panel</h2>
+  </div>
+
+  <!-- Right-side user & quick actions -->
+  <div class="flex items-center gap-2">
+    <div class="flex items-center gap-2 pl-2">
+      <div class="hidden sm:flex flex-col text-right mr-2">
+        <span class="text-xs text-slate-200">{{ adminId || 'Admin' }}</span>
+        <span class="text-[10px] text-slate-400">{{ role || '' }}</span>
+      </div>
+      <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center font-bold uppercase text-sm">
+        {{ adminId ? adminId.charAt(0) : '?' }}
+      </div>
     </div>
   </div>
-</header>
+</mat-toolbar>
 
-
-
-<!-- WRAPPER (sidebar + content) ------------------------------------------>
+<!-- WRAPPER (sidebar + content) -->
 <div class="flex pt-14 h-screen overflow-hidden">
 
   <!-- SIDEBAR -->
   <aside
-  class="fixed top-[1cm] bottom-0 left-0 z-30 w-64 bg-slate-900 text-white transform transition-transform duration-300 ease-in-out
-         lg:translate-x-0"
-  [class.-translate-x-full]="!isSidebarOpen"
->
-
-    <nav class="mt-4 flex flex-col space-y-2 px-2">
-<nav class="mt-4 flex flex-col space-y-3 px-2 text-sm font-medium"> <!-- just increased spacing and added font-medium -->
-
-  <a routerLink="/admin/dashboard"
-     routerLinkActive="!bg-slate-800 bg-indigo-600"
-     class="nav-link mt-6 px-3 py-2 rounded-md hover:bg-indigo-500 transition-colors duration-200">
-    Dashboard
-  </a>
-
-   <a routerLink="/admin/tableoptional"
-     routerLinkActive="!bg-slate-800 bg-indigo-600"
-     class="nav-link px-3 py-2 rounded-md hover:bg-indigo-500 transition-colors duration-200">
-    Optional Service
-  </a>
-
-  <a routerLink="/admin/buildings"
-     routerLinkActive="!bg-slate-800 bg-indigo-600"
-     class="nav-link px-3 py-2 rounded-md hover:bg-indigo-500 transition-colors duration-200">
-    Buildings
-  </a>
-
-  <a routerLink="/admin/venueView"
-     routerLinkActive="!bg-slate-800 bg-indigo-600"
-     class="nav-link px-3 py-2 rounded-md hover:bg-indigo-500 transition-colors duration-200">
-    Venues
-  </a>
-
-  <a routerLink="/admin/bookinglist"
-     routerLinkActive="!bg-slate-800 bg-indigo-600"
-     class="nav-link px-3 py-2 rounded-md hover:bg-indigo-500 transition-colors duration-200">
-    Bookings
-  </a>
-
-  <a routerLink="/admin/staff"
-     routerLinkActive="!bg-slate-800 bg-indigo-600"
-     class="nav-link px-3 py-2 rounded-md hover:bg-indigo-500 transition-colors duration-200">
-    Staff
-  </a>
-
-  <a routerLink="/admin/activitytable"
-     routerLinkActive="!bg-slate-800 bg-indigo-600"
-     class="nav-link px-3 py-2 rounded-md hover:bg-indigo-500 transition-colors duration-200">
-    Activity
-  </a>
-
-  <a routerLink="/admin/feedback"
-     routerLinkActive="!bg-slate-800 bg-indigo-600"
-     class="nav-link px-3 py-2 rounded-md hover:bg-indigo-500 transition-colors duration-200">
-    Customer Feedback
-  </a>
-
-  <a routerLink="/admin/policies-settings"
-     routerLinkActive="!bg-slate-800 bg-indigo-600"
-     class="nav-link px-3 py-2 rounded-md hover:bg-indigo-500 transition-colors duration-200">
-    Policies Settings
-  </a>
-
-</nav>
-
-      <!--DASHBOARD SWITCHER-->
-      <div class="absolute bottom-4 left-0 right-0 p-2 mb-8 border-t border-slate-700">
-        <app-dashboard-switch></app-dashboard-switch>
+    class="z-40 fixed left-0 top-14 bottom-0 bg-slate-900 text-white border-r border-slate-800 transition-all duration-300 ease-in-out"
+    [ngClass]="{
+      'w-64': isSidebarExpanded && !isMobile,
+      'w-16': !isSidebarExpanded && !isMobile,
+      'translate-x-0': isMobile && isSidebarOpen,
+      '-translate-x-full': isMobile && !isSidebarOpen
+    }"
+    style="will-change: transform, width;"
+  >
+    <div class="flex flex-col h-full">
+      <!-- Logo / small header inside sidebar -->
+      <div class="flex items-center gap-3 px-4 py-3 border-b border-slate-800">
+        <div class="w-8 h-8 rounded bg-indigo-600 flex items-center justify-center font-bold">Z</div>
+        <div *ngIf="isSidebarExpanded" class="ml-1">
+          <div class="text-sm font-semibold">ZSSF</div>
+          <div class="text-xs text-slate-400">Venue Reservations</div>
+        </div>
       </div>
 
-      <!-- LOGOUT button (sticky at bottom) -->
-        <div class="absolute bottom-0 left-0 right-0 p-2 border-t border-slate-700">
-      <button
-        (click)="logout()"
-        class="w-full flex items-center justify-center rounded-md bg-red-600 hover:bg-red-700 text-white px-3 py-2 text-sm transition-colors duration-200"
-      >
-        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2"
-             stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-          <path d="M17 16l4-4m0 0l-4-4m4 4H7"></path>
-          <path d="M13 12H3"></path>
-        </svg>
-        Logout
-      </button>
+      <!-- Navigation list -->
+      <nav class="flex-1 overflow-auto py-3 px-2">
+        <a
+          *ngFor="let item of navItems"
+          [routerLink]="item.link"
+          routerLinkActive="bg-indigo-600"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-link flex items-center gap-3 px-3 py-2 rounded-md hover:bg-indigo-500 transition-colors duration-150"
+          [attr.title]="!isSidebarExpanded ? item.label : null"
+        >
+          <mat-icon class="text-lg">{{ item.icon }}</mat-icon>
+          <span *ngIf="isSidebarExpanded" class="truncate">{{ item.label }}</span>
+        </a>
+      </nav>
+
+      <!-- bottom area: dashboard switcher and logout -->
+      <div class="px-3 pb-4">
+        <div class="mb-3">
+          <div *ngIf="isSidebarExpanded">
+            <app-dashboard-switch></app-dashboard-switch>
+          </div>
+          <div *ngIf="!isSidebarExpanded" class="flex justify-center">
+            <app-dashboard-switch></app-dashboard-switch>
+          </div>
+        </div>
+
+        <div>
+          <button
+            (click)="logout()"
+            class="w-full flex items-center justify-center gap-2 rounded-md bg-red-600 hover:bg-red-700 text-white px-3 py-2 transition-colors"
+            [attr.aria-label]="'Logout'"
+          >
+            <mat-icon>logout</mat-icon>
+            <span *ngIf="isSidebarExpanded">Logout</span>
+          </button>
+        </div>
+      </div>
     </div>
-    </nav>
   </aside>
 
-  <!-- CLICK-OFF overlay (mobile) -->
-  <div *ngIf="isSidebarOpen"
-       class="fixed inset-0 z-20 bg-black/50 lg:hidden"
-       (click)="toggleSidebar()">
-  </div>
+  <!-- Mobile overlay (when sidebar open) -->
+  <div
+    *ngIf="isMobile && isSidebarOpen"
+    class="fixed inset-0 z-30 bg-black/50 lg:hidden"
+    (click)="toggleSidebarMobile()"
+    aria-hidden="true"
+  ></div>
 
-  <!-- MAIN CONTENT -->
-  <main class="flex-1 overflow-y-auto bg-slate-100 p-4 lg:ml-64">
-    <router-outlet></router-outlet>
+  <!-- MAIN CONTENT (auto-resizes with sidebar width) -->
+  <main
+    class="flex-1 overflow-y-auto transition-all duration-300"
+    [ngStyle]="{
+      'margin-left': (isMobile ? '0px' : (isSidebarExpanded ? '16rem' : '4rem'))
+    }"
+  >
+    <div class="min-h-full p-4 bg-slate-100 dark:bg-slate-200">
+      <router-outlet></router-outlet>
+    </div>
   </main>
 </div>
-
-

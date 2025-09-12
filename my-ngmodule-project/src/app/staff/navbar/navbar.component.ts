@@ -1,9 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+// src/app/shared/navbar/navbar.component.ts
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../Services/auth.service';
 import { VenueStateService } from '../../Services/venue-state.service';
 import { environment } from '../../../environments/environment';
-
 
 interface Venue {
   venueId: number;
@@ -17,6 +17,10 @@ interface Venue {
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit, OnDestroy {
+  @Input() isExpanded: boolean = true;               // passed by parent (desktop)
+  @Input() isMobile: boolean = false;                // tells component it's in mobile mode
+  @Output() expandToggle = new EventEmitter<boolean>();
+
   staffIdentification: string = '';
   venues: Venue[] = [];
   activeVenueId: number | null = null;
@@ -25,6 +29,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   private staffCheckInterval: any;
 
+  // nav items (icons from Material icons set)
+  navItems = [
+    { label: 'Check-Ins', link: '/staff/checkin', icon: 'login' },
+    { label: 'Check-Outs', link: '/staff/checkout', icon: 'logout' },
+    { label: 'Cancelled', link: '/staff/cancelled', icon: 'block' },
+    { label: 'Reports', link: '/staff/reports', icon: 'bar_chart' },
+    { label: 'Not Checked-in', link: '/staff/unchecked', icon: 'pending_actions' },
+    { label: 'Scan Invoice', link: '/staff/invoice-scanner', icon: 'qr_code_scanner' }
+  ];
+
   constructor(
     private http: HttpClient,
     private auth: AuthService,
@@ -32,17 +46,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // Start polling until "auth-username" is present in sessionStorage
-    this.staffCheckInterval = setInterval(() => this.checkAndFetchVenues(), 1000);
+    // Poll until auth-username exists in sessionStorage
+    this.staffCheckInterval = setInterval(() => this.checkAndFetchVenues(), 800);
   }
 
   private checkAndFetchVenues(): void {
     const storedStaffIdentification = sessionStorage.getItem('auth-username');
-
     if (storedStaffIdentification) {
-      // Once we detect a value, stop polling
       clearInterval(this.staffCheckInterval);
-
       this.staffIdentification = storedStaffIdentification;
       this.fetchVenues(storedStaffIdentification);
     }
@@ -56,10 +67,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       .get<Venue[]>(`${environment.apiUrl}/api/venues/view-by-staff/${staffIdentification}`)
       .subscribe({
         next: (data) => {
-          // Sort by venueId
-          this.venues = data.sort((a, b) => a.venueId - b.venueId);
-
-          // Save the full list into sessionStorage
+          this.venues = data.sort((a,b) => a.venueId - b.venueId);
           try {
             sessionStorage.setItem('venues', JSON.stringify(this.venues));
           } catch (e) {
@@ -99,13 +107,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
     return this.activeVenueId === venue.venueId;
   }
 
+  onExpandToggle() {
+    this.isExpanded = !this.isExpanded;
+    this.expandToggle.emit(this.isExpanded);
+  }
+
   logout(): void {
-    // Clear sessionStorage keys (optional)
     sessionStorage.removeItem('auth-username');
     sessionStorage.removeItem('venues');
     sessionStorage.removeItem('activeVenueId');
     sessionStorage.removeItem('activeVenueName');
-
     this.auth.logout();
   }
 

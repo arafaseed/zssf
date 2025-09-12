@@ -1,28 +1,39 @@
+<!-- src/app/staff/staff-dashboard/staff-dashboard.component.html -->
 <div class="flex h-screen overflow-hidden">
   <!-- Sidebar -->
   <div
-    class="fixed inset-y-0 left-0 z-30 w-64 transform bg-gray-800 text-white transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0"
-    [ngClass]="{ '-translate-x-full': !isSidebarOpen }"
+    class="fixed inset-y-0 left-0 z-30 bg-slate-900 text-white transition-transform duration-300 ease-in-out"
+    [ngClass]="{
+      'w-64': isSidebarExpanded && !isMobile,
+      'w-16': !isSidebarExpanded && !isMobile,
+      '-translate-x-full': isMobile && !isSidebarOpen,
+      'translate-x-0': isMobile && isSidebarOpen
+    }"
   >
-    <app-navbar></app-navbar>
+    <app-navbar
+      [isExpanded]="isSidebarExpanded"
+      [isMobile]="isMobile"
+      (expandToggle)="onNavbarExpandChanged($event)"
+    ></app-navbar>
   </div>
 
-  <!-- Overlay for mobile when sidebar is open -->
+  <!-- Overlay for mobile -->
   <div
-    class="fixed inset-0 z-20 bg-black bg-opacity-50 transition-opacity lg:hidden"
-    *ngIf="isSidebarOpen"
+    *ngIf="isMobile && isSidebarOpen"
+    class="fixed inset-0 z-20 bg-black/50 lg:hidden"
     (click)="toggleSidebar()"
+    aria-hidden="true"
   ></div>
 
-  <!-- Main Content Area -->
-  <div class="flex-1 flex flex-col overflow-y-auto">
+  <!-- Main content -->
+  <div class="flex-1 flex flex-col overflow-y-auto transition-all duration-300"
+       [ngStyle]="{ 'margin-left': (isMobile ? '0px' : (isSidebarExpanded ? '16rem' : '4rem')) }">
     <!-- Topbar -->
     <app-home (toggleSidebar)="toggleSidebar()"></app-home>
 
-    <!-- Page Content -->
-    <main class="flex-1 bg-gray-100 p-4 overflow-auto">
+    <!-- Page content -->
+    <main class="flex-1 bg-slate-100 p-4 overflow-auto">
       <router-outlet></router-outlet>
     </main>
   </div>
 </div>
-

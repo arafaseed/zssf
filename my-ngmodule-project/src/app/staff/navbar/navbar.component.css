@@ -1,0 +1,24 @@
+/* src/app/shared/navbar/navbar.component.css */
+
+/* Use Tailwind utilities in template; component CSS only contains smaller overrides */
+
+/* ensure the sidebar scroll area is comfortable */
+:host {
+  display: block;
+  height: 100%;
+}
+
+/* subtle scrollbar styling */
+:host ::-webkit-scrollbar {
+  width: 8px;
+}
+:host ::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.06);
+  border-radius: 8px;
+}
+
+/* focus outline for keyboard users */
+button:focus {
+  outline: 2px solid rgba(99,102,241,0.6);
+  outline-offset: 2px;
+}

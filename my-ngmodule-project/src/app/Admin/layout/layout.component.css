@@ -1,4 +1,59 @@
-/* reusable link style powered by Tailwind’s @apply */
+/* src/app/Admin/layout/layout.component.css */
+
+/* Reuse your nav-link apply */
 .nav-link {
-  @apply block rounded-md px-3 py-2 text-sm hover:bg-slate-700 transition;
+  @apply block rounded-md px-3 py-2 text-sm transition;
+}
+
+/* Ensure the header and sidebar backgrounds appear dark & solid */
+mat-toolbar {
+  background: #0c1429 !important;
+  color: #fff !important;
+  box-shadow: 0 6px 18px rgba(2,6,23,0.6);
+}
+
+/* Sidebar base style */
+aside {
+  background: linear-gradient(180deg, #0b1220 0%, #0c1429 100%);
+}
+
+/* Make mat-icon centered when collapsed */
+:host ::ng-deep aside.w-16 .mat-icon {
+  display: block;
+  margin: 0 auto;
+}
+
+/* Header title spacing */
+mat-toolbar .mat-toolbar-row, mat-toolbar .mat-toolbar-single-row {
+  align-items: center;
+}
+
+/* Subtle hover on nav items */
+.nav-link:hover {
+  background-color: rgba(79, 70, 229, 0.18); /* indigo tint */
+}
+
+/* Focus outline for accessibility */
+a.nav-link:focus, button:focus {
+  outline: 2px solid rgba(99,102,241,0.6);
+  outline-offset: 2px;
+}
+
+/* mobile overlay z-order */
+.fixed.inset-0.z-30 {
+  z-index: 45;
+}
+
+/* small responsive rule: when small screen, ensure main has no left margin */
+@media (max-width: 1024px) {
+  main { margin-left: 0 !important; }
+}
+
+/* ensure pager / scrollbars in sidebar are subtle */
+aside ::-webkit-scrollbar {
+  width: 8px;
+}
+aside ::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.06);
+  border-radius: 8px;
 }

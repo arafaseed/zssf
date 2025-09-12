@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   @Output() toggleSidebar = new EventEmitter<void>();
+  
 
   activeTab: string = 'checkin';
 
@@ -59,5 +60,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.venueSubscription) {
       this.venueSubscription.unsubscribe();
     }
+  }
+
+  emitToggle() {
+    this.toggleSidebar.emit();
   }
 }

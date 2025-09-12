@@ -1,0 +1,16 @@
+/* src/app/staff/staff-dashboard/staff-dashboard.component.css */
+
+/* ensure main content transitions smoothly */
+:host {
+  display: block;
+  height: 100%;
+}
+
+main {
+  min-height: calc(100vh - 56px);
+}
+
+/* small responsive fix */
+@media (max-width: 1024px) {
+  main { margin-left: 0 !important; }
+}
