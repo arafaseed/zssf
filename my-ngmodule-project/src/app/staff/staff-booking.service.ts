@@ -27,10 +27,10 @@ export interface BookingDTO {
 }
 export interface VenueHandOverDTO {
   handOverId: number;
-  forBooking: number;    // the bookingId that was checked in
+  forBooking: number;    
   staffIdentification: string;
   checkInTime: string;
-  checkOutTime?: string; // might be undefined/null if not yet checked out
+  checkOutTime?: string; 
   conditionStatus?: string;
   conditionDescription?: string;
   // ...other fields if any…

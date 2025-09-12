@@ -24,6 +24,7 @@ import { FormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatListModule }    from '@angular/material/list';
+import { MatTableModule } from '@angular/material/table';
 
 
 
@@ -57,7 +58,8 @@ import { MatListModule }    from '@angular/material/list';
     MatListModule,
     MatTooltipModule,
     MatToolbarModule ,
-    FormsModule 
+    FormsModule ,
+    MatTableModule,
 ],
   exports: [DashboardSwitchComponent]
 
