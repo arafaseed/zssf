@@ -10,20 +10,26 @@ export interface BookingDTO {
   bookingDate: string;
   startDate: string;
   endDate: string | null;
-  venueName: string;
-  packageName: string;
-  price: number;
-  status: string;
+  startTime:string;
+  endTime:string;
+  bookingStatus: string;
+  venueName:string;
+  venueActivityId: number;
+  venueActivityName: string;
+  venueActivityPrice:number;
+  venueOptionalServiceName: string;
+  venueOptionalServiceId: number;
+  venueOptionServicePrice: number;
+  discountRate:number;
   customer: {
     customerId: number;
     customerName: string;
     phoneNumber: string;
     address: string;
     email: string;
-  };
-  venuePackageId: number;
-  venueActivityId: number;
-  // …etc…
+    customerType:string;
+    referenceDocumen:string;
+  };  
 }
 export interface VenueHandOverDTO {
   handOverId: number;
@@ -112,15 +118,35 @@ export class StaffBookingService {
   }
 
   /** Fetch one lease package by its ID */
-  getLeaseById(leaseId: number): Observable<{ leaseId: number; packageName: string; price: number }> {
-    return this.http.get<{ leaseId: number; packageName: string; price: number }>(
-      `${this.baseUrl}/lease-packages/leaseBy/${leaseId}`
+  getOptionalServiceById(serviceId: number): Observable<{ 
+    serviceId: number; 
+    serviceName: string; 
+    price: number 
+    description: string 
+  }> {
+    return this.http.get<{ 
+      serviceId: number; 
+      serviceName: string; 
+      price: number 
+      description: string 
+    }>(
+      `${this.baseUrl}/optional-services/serviceBy/${serviceId}`
     );
   }
 
   /** Fetch one activity by its ID */
-  getActivityById(activityId: number): Observable<{ activityId: number; activityName: string; activityDescription: string }> {
-    return this.http.get<{ activityId: number; activityName: string; activityDescription: string }>(
+  getActivityById(activityId: number): Observable<{ 
+    activityId: number; 
+    activityName: string; 
+    price: number 
+    description: string 
+  }> {
+    return this.http.get<{ 
+      activityId: number; 
+      activityName: string; 
+      price: number 
+      description: string 
+    }>(
       `${this.baseUrl}/activities/${activityId}`
     );
   }

@@ -39,7 +39,12 @@
         <mat-card-subtitle class="text-sm text-gray-500 ">
           <span class="mr-2"><strong>Booking Code:</strong></span>
           <span class="font-medium text-blue-900">{{ booking.bookingCode }}</span>
+
+          <p class="mt-2 text-sm italic text-gray-700 ">
+          <strong class="mr-2">Booked on:</strong> {{ booking.bookingDate | date:'mediumDate' }}
+         </p>
         </mat-card-subtitle>
+         
       </mat-card-header>
 
       <!-- card content -->
@@ -47,13 +52,12 @@
         <p class="mb-1">
           <mat-icon class="align-middle mr-2 text-gray-500" aria-hidden="true">person</mat-icon>
           <strong>Customer:</strong>
-          {{ booking.customer.customerName }} / {{ booking.customer.phoneNumber }}
+          {{ booking.customer.customerName }} 
         </p>
-
         <p class="mb-1">
-          <mat-icon class="align-middle mr-2 text-gray-500" aria-hidden="true">calendar_today</mat-icon>
-          <strong>Booking Date:</strong>
-          {{ booking.bookingDate | date:'mediumDate' }}
+          <mat-icon class="align-middle mr-2 text-gray-500" aria-hidden="true">phone</mat-icon>
+          <strong>Mobile:</strong>
+          {{ booking.customer.phoneNumber }}
         </p>
 
         <p class="mb-1">
@@ -73,28 +77,34 @@
 
         <p class="mb-1">
           <mat-icon class="align-middle mr-2 text-gray-500" aria-hidden="true">inventory_2</mat-icon>
-          <strong>Package:</strong>
-          {{ booking.packageName }} ({{ booking.price | currency:'TZS':'symbol' }})
+          <strong>Activity:</strong>
+          {{ booking.venueActivityName }} ({{ booking.venueActivityPrice | currency:'TZS':'symbol' }})
         </p>
 
         <p class="mb-1">
           <mat-icon class="align-middle mr-2 text-gray-500" aria-hidden="true">directions_run</mat-icon>
-          <strong>Activity:</strong> {{ booking.activityName }}
+          <strong>Optional service:</strong>{{ booking.venueOptionalServiceName }} ({{ booking.venueOptionServicePrice | currency:'TZS':'symbol' }})
         </p>
 
         <p class="text-sm font-medium mt-2"
            [ngClass]="{
-             'text-green-600': booking.status === 'COMPLETE',
-             'text-yellow-600': booking.status === 'PENDING'
+            'text-red-600': booking.bookingStatus  === 'EXPIRED',
+            'text-blue-600': booking.bookingStatus  === 'IN_PROGRESS',
+             'text-green-600': booking.bookingStatus  === 'COMPLETE',
+             'text-yellow-600': booking.bookingStatus  === 'PENDING',
+             'text-purple-600': booking.bookingStatus  === 'CANCELLED'
            }">
           <mat-icon class="align-middle mr-1" aria-hidden="true"
                     [ngClass]="{
-                      'text-green-600': booking.status === 'COMPLETE',
-                      'text-yellow-600': booking.status === 'PENDING'
+                      'text-red-600': booking.bookingStatus  === 'EXPIRED',
+            'text-blue-600': booking.bookingStatus  === 'IN_PROGRESS',
+             'text-green-600': booking.bookingStatus  === 'COMPLETE',
+             'text-yellow-600': booking.bookingStatus  === 'PENDING',
+             'text-purple-600': booking.bookingStatus  === 'CANCELLED'
                     }">
             lens
           </mat-icon>
-          Status: {{ booking.status }}
+          Status: {{ booking.bookingStatus }}
         </p>
       </mat-card-content>
 

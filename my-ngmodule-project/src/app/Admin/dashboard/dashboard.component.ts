@@ -1,5 +1,5 @@
 // src/app/components/dashboard/dashboard.component.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -9,7 +9,7 @@ import {
   RawVenueRevenue
 } from '../../Services/dashboard.service';
 
-import { PdfViewerDialogComponent } from '../pdf-viewer-dialog/pdf-viewer-dialog.component';
+import { PdfViewerOverlayComponent } from '../pdf-viewer-overlay/pdf-viewer-overlay.component';
 
 interface VenueRevenue {
   venueId: number;
@@ -55,6 +55,24 @@ export class DashboardComponent implements OnInit {
 
   searchPhone = '';
   searchDate = '';
+
+  /* ----------------- OVERLAY CONTROL PROPS (NEW) ----------------- */
+
+  /** flag controlling visibility of the overlay component */
+  showPdfOverlay = false;
+
+  /** docs passed to overlay */
+  selectedDocs: string[] = [];
+
+  /** selected booking info passed to overlay */
+  selectedBookingId?: number;
+  selectedBookingCode?: string;
+  pdfAuthToken?: string;
+
+  /** ViewChild reference to call overlay cleanup before hiding */
+  @ViewChild('pdfOverlay') pdfOverlay?: PdfViewerOverlayComponent;
+
+  /* --------------------------------------------------------------- */
 
   constructor(
     private dashboardService: DashboardService,
@@ -212,14 +230,47 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  // Open the Pdf viewer dialog (re-uses PdfViewerDialogComponent)
+  /**
+   * Previously opened the Pdf viewer as a MatDialog.
+   * Now we set selected docs and show the overlay component in the DOM.
+   * This ONLY changes how the viewer is shown — logic for extracting docs is unchanged.
+   */
   openReferenceDocs(booking: any) {
     const docs = booking?.customer?.referenceDocument ?? [];
-    this.dialog.open(PdfViewerDialogComponent, {
-      width: '80vw',
-      maxWidth: '1200px',
-      height: '80vh',
-      data: { bookingId: booking.bookingId, docs, bookingCode: booking.bookingCode }
-    });
+
+    // set selected context
+    this.selectedDocs = docs;
+    this.selectedBookingId = booking?.bookingId ?? null;
+    this.selectedBookingCode = booking?.bookingCode ?? null;
+
+    // optional: set auth token if your app needs to pass it to overlay (JWT etc.)
+    // this.pdfAuthToken = this.authService.getToken();
+
+    // show overlay
+    this.showPdfOverlay = true;
+
+    // If you used to open MatDialog, that code is intentionally removed.
   }
+
+  /**
+   * Close the overlay — call overlay cleanup then hide it.
+   * We call the overlay's `close()` method (which clears blob resources)
+   * and then set the flag to false so the parent removes it from DOM.
+   */
+  closePdfPreview() {
+  try {
+    this.pdfOverlay?.close();
+  } catch (e) {
+    console.warn('Overlay cleanup failed or overlay not mounted yet', e);
+  }
+
+  this.showPdfOverlay = false;
+
+  this.selectedDocs = [];
+  this.selectedBookingId = undefined;
+  this.selectedBookingCode = undefined;
+}
+
+
+
 }

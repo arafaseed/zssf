@@ -1,0 +1,95 @@
+<!-- only render overlay while isOpen is true -->
+<div *ngIf="isOpen" class="fixed inset-0 z-50 flex items-center justify-center font-poppins">
+  <!-- dark translucent backdrop -->
+  <div class="absolute inset-0  backdrop-blur-sm"></div>
+
+  <!-- viewer container — centered and full-width; adapts to screen -->
+  <div
+    class="relative z-10 w-[95%] max-w-[1400px] h-[90vh] bg-white rounded-lg shadow-2xl overflow-hidden flex flex-col"
+    role="dialog"
+    aria-modal="true"
+  >
+    <!-- toolbar -->
+    <mat-toolbar color="primary" class="flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <!-- Close: calls close(), hides overlay and emits closed -->
+        <button mat-icon-button (click)="close()" aria-label="Close preview">
+          <mat-icon>close</mat-icon>
+        </button>
+        <div>
+          <div class="text-sm opacity-80">Reference Documents</div>
+          <div class="text-base font-medium">
+            {{ bookingCode ? (bookingCode + ' (ID: ' + bookingId + ')') : ('Booking ID: ' + bookingId) }}
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button mat-stroked-button (click)="downloadCurrent()" [disabled]="!pdfBlobUrl" class="!text-white">
+          <mat-icon>download</mat-icon>
+          <span class="ml-2">Download</span>
+        </button>
+
+        <button mat-stroked-button (click)="printCurrent()" [disabled]="!pdfBlobUrl" class="!text-white">
+          <mat-icon>print</mat-icon>
+          <span class="ml-2">Print</span>
+        </button>
+      </div>
+    </mat-toolbar>
+
+    <div class="flex h-full">
+      <!-- left sidebar: doc list -->
+      <aside class="w-64 border-r border-gray-100 p-4 overflow-auto bg-gray-50">
+        <div class="mb-3 text-sm text-gray-600">Documents</div>
+        <mat-nav-list>
+          <mat-list-item *ngFor="let d of docs; let i = index">
+            <button
+              mat-button
+              (click)="selectDoc(i)"
+              [class.font-semibold]="i === selectedIndex"
+              class="w-full text-left"
+            >
+              Document {{ i + 1 }}
+            </button>
+          </mat-list-item>
+        </mat-nav-list>
+
+        <div *ngIf="!docs?.length" class="text-sm text-gray-500 mt-4">
+          No reference documents available for this booking.
+        </div>
+
+        <div *ngIf="loading" class="mt-4 text-sm text-gray-500">Loading document…</div>
+        <div *ngIf="error" class="mt-4 text-sm text-red-600">{{ error }}</div>
+      </aside>
+
+      <!-- main viewer -->
+      <main class="flex-1 relative">
+        <ng-container *ngIf="pdfBlobUrl; else emptyState">
+          <!-- ngx-extended-pdf-viewer accepts blob: URL strings and renders inline -->
+          <ngx-extended-pdf-viewer
+            [src]="pdfBlobUrl"
+            useBrowserLocale="true"
+            [showSidebarButton]="true"
+            [showFindButton]="true"
+            [showPagingButtons]="true"
+            [showPresentationModeButton]="true"
+            [showPrintButton]="true"
+            [showDownloadButton]="true"
+            [showOpenFileButton]="false"
+            height="100%"
+            class="h-full"
+          ></ngx-extended-pdf-viewer>
+        </ng-container>
+
+        <ng-template #emptyState>
+          <div class="h-full flex items-center justify-center text-gray-500">
+            <div class="text-center">
+              <p class="mb-2">Select a document to preview</p>
+              <p class="text-xs">You may download or print once it loads.</p>
+            </div>
+          </div>
+        </ng-template>
+      </main>
+    </div>
+  </div>
+</div>

@@ -111,6 +111,18 @@
           <button mat-raised-button color="primary" (click)="openReferenceDocs(row)" [disabled]="!(row.customer?.referenceDocument?.length)">
             View Docs
           </button>
+
+          <app-pdf-viewer-overlay
+  *ngIf="showPdfOverlay"
+  #pdfOverlay
+  [bookingId]="selectedBookingId"
+  [bookingCode]="selectedBookingCode"
+  [docs]="selectedDocs"
+  [authToken]="pdfAuthToken"
+  (closed)="closePdfPreview()"
+  (click)="$event.stopPropagation()">
+</app-pdf-viewer-overlay>
+
         </td>
       </ng-container>
 

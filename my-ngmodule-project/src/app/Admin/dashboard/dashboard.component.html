@@ -214,6 +214,19 @@
               [attr.aria-label]="'View reference document for booking ' + b.bookingCode" class="text-xs">
               View Docs
             </button>
+
+            <app-pdf-viewer-overlay
+  *ngIf="showPdfOverlay"
+  #pdfOverlay
+  [bookingId]="selectedBookingId"
+  [bookingCode]="selectedBookingCode"
+  [docs]="selectedDocs"
+  [authToken]="pdfAuthToken"
+  (closed)="closePdfPreview()"
+  (click)="$event.stopPropagation()">
+</app-pdf-viewer-overlay>
+
+            
           </td>
         </ng-container>
 
