@@ -37,12 +37,12 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     //Outgoing request
-    console.log('Outgoing request:', req.method, req.url, req.body);
+    // console.log('Outgoing request:', req.method, req.url, req.body);
 
     // No token case: still allow request
-    console.info('No auth token found. Sending request without Authorization header.');
+    // console.info('No auth token found. Sending request without Authorization header.');
     return next.handle(req).pipe(
-      tap(event => console.log('Response:', event))
+      // tap(event => console.log('Response:', event))
     );
   }
 }

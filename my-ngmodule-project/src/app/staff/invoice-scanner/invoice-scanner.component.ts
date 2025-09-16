@@ -41,8 +41,16 @@ export class InvoiceScannerComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {}
 
+  /** Public scanner starter (preserves original logic) */
   async startScanner(): Promise<void> {
     if (this.scanning) return;
+
+    // Modern browsers require secure context (https) for getUserMedia except for localhost.
+    const isLocalhost = ['localhost', '127.0.0.1', '::1'].includes(location.hostname);
+    if (!window.isSecureContext && !isLocalhost) {
+      this.message = 'Camera access requires a secure connection (HTTPS). Serve the app over HTTPS or use localhost.';
+      return;
+    }
 
     if (!navigator?.mediaDevices?.getUserMedia) {
       this.message = 'Camera API not supported in this browser.';
@@ -51,39 +59,64 @@ export class InvoiceScannerComponent implements OnInit, OnDestroy {
 
     this.message = '';
     try {
-      // prompt for permission first (quick probe)
+      // Prompt for permission first (quick probe)
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      // stop the probe tracks immediately
       stream.getTracks().forEach(t => t.stop());
 
-      // dynamic import
+      // dynamic import of html5-qrcode if not loaded
       if (!this.Html5QrcodeClass) {
         const module = await import('html5-qrcode');
         this.Html5QrcodeClass = module?.Html5Qrcode ?? module?.default ?? module;
       }
 
-      // get camera list (best effort)
+      // Prepare camera list: prefer Html5Qrcode.getCameras(), but fall back to enumerateDevices
       let cameras: Array<{ id: string; label?: string }> = [];
       try {
-        cameras = await this.Html5QrcodeClass.getCameras();
+        if (typeof this.Html5QrcodeClass?.getCameras === 'function') {
+          // Html5Qrcode.getCameras() returns camera info if available
+          cameras = await this.Html5QrcodeClass.getCameras();
+        }
       } catch {
-        // ignore; we'll use facingMode fallback
+        // ignore and try enumerateDevices below
       }
 
+      if (!cameras || cameras.length === 0) {
+        try {
+          // enumerateDevices gives deviceIds for video inputs
+          const devices = await navigator.mediaDevices.enumerateDevices();
+          const videoDevices = devices.filter(d => d.kind === 'videoinput');
+          cameras = videoDevices.map(d => ({ id: d.deviceId, label: (d as any).label }));
+        } catch {
+          // if this fails, we'll fallback to facingMode constraints
+        }
+      }
+
+      // Choose camera id preferring back/environment labels
       let cameraId: string | undefined;
       if (cameras && cameras.length) {
         cameraId = cameras.find(c => /back|rear|environment/i.test(c.label || ''))?.id || cameras[0].id;
       }
 
-      const elementId = this.scannerElem.nativeElement.id || 'qr-scanner';
-      this.html5Qrcode = new this.Html5QrcodeClass(elementId);
+      // Create Html5Qrcode instance using the actual element (avoid id binding issues)
+      const elementOrId = this.scannerElem?.nativeElement ?? undefined;
+      // If html5-qrcode expects id string some versions accept HTMLElement as well; we pass element first.
+      this.html5Qrcode = new this.Html5QrcodeClass(elementOrId);
 
       const config = {
         fps: 10,
-        qrbox: { width: 280, height: 280 } as any
+        qrbox: { width: 280, height: 280 } as any,
+        // nice to allow verbose rendering options if library supports them (kept minimal)
       };
 
+      // Camera selection strategy:
+      // 1) try cameraId (deviceId) if available
+      // 2) else try facingMode: environment
+      // 3) else fallback to permissive true (let browser choose)
+      const cameraArgs = cameraId ?? ({ facingMode: 'environment' } as any);
+
       await this.html5Qrcode.start(
-        cameraId ?? ({ facingMode: 'environment' } as any),
+        cameraArgs,
         config,
         (decodedText: string) => {
           // run in Angular zone to update UI
@@ -99,15 +132,26 @@ export class InvoiceScannerComponent implements OnInit, OnDestroy {
           });
         },
         (errorMessage: string) => {
-          // ignore per-frame decode errors; optionally console.debug
+          // per-frame decode errors are normal; keep silent to avoid spam
+          // (optionally you can log in dev only)
         }
       );
 
       this.scanning = true;
       this.message = '';
     } catch (err: any) {
+      // provide friendly error messages for common problems
       console.error('startScanner error', err);
-      this.message = 'Failed to start camera: ' + (err?.message ?? String(err));
+      const msg = (err?.name ?? '').toString().toLowerCase();
+      if (msg.includes('notallowed') || msg.includes('permissiondenied')) {
+        this.message = 'Camera permission was denied. Allow camera access in browser settings and try again.';
+      } else if (msg.includes('notfound') || msg.includes('nocameras')) {
+        this.message = 'No camera was found on this device.';
+      } else if (msg.includes('notsecure') || msg.includes('insecurecontext')) {
+        this.message = 'Camera access blocked because the app is not served over HTTPS. Use HTTPS or localhost.';
+      } else {
+        this.message = 'Failed to start camera: ' + (err?.message ?? String(err));
+      }
       this.scanning = false;
     }
   }
@@ -118,12 +162,16 @@ export class InvoiceScannerComponent implements OnInit, OnDestroy {
       return;
     }
     try {
+      // stop() may throw if already stopped — guard with try/catch
       await this.html5Qrcode.stop();
+      // clear UI elements rendered by html5-qrcode
       await this.html5Qrcode.clear();
     } catch (err) {
+      // ignore non-fatal stop errors
       console.warn('stopScanner error', err);
+    } finally {
+      this.scanning = false;
     }
-    this.scanning = false;
   }
 
   private extractInvoiceCode(raw: string): string | null {
@@ -211,26 +259,25 @@ export class InvoiceScannerComponent implements OnInit, OnDestroy {
   }
 
   public openFoundInvoice(): void {
-  if (!this.foundInvoice) return;
+    if (!this.foundInvoice) return;
 
-  // emit the invoice object to parent
-  this.onVerified.emit(this.foundInvoice);
+    // emit the invoice object to parent
+    this.onVerified.emit(this.foundInvoice);
 
-  // try to resolve booking id from common locations
-  const b = this.foundInvoice?.booking?.bookingId
-         ?? this.foundInvoice.bookingId
-         ?? this.foundInvoice?.booking?.id;
+    // try to resolve booking id from common locations
+    const b = this.foundInvoice?.booking?.bookingId
+           ?? this.foundInvoice.bookingId
+           ?? this.foundInvoice?.booking?.id;
 
-  if (b && !isNaN(+b)) {
-    try {
-      this.router.navigate(['/invoice', b], { queryParams: { code: this.foundInvoice.invoiceCode } });
-    } catch (navErr) {
-      console.warn('Navigation failed', navErr);
-      // navigation error shouldn't crash the UI
+    if (b && !isNaN(+b)) {
+      try {
+        this.router.navigate(['/invoice', b], { queryParams: { code: this.foundInvoice.invoiceCode } });
+      } catch (navErr) {
+        console.warn('Navigation failed', navErr);
+        // navigation error shouldn't crash the UI
+      }
     }
   }
-}
-
 
   private finishInvalid(userMsg: string) {
     this.message = userMsg;

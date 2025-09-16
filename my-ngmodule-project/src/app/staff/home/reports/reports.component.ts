@@ -27,8 +27,7 @@ export class ReportsComponent implements OnInit, OnDestroy {
     'checkInTime',
     'checkOutTime',
     'conditionStatus',
-    'conditionDescription',
-    'referenceDocument'
+    'conditionDescription'
   ];
 
   private venueId!: number;

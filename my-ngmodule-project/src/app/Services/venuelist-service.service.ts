@@ -26,7 +26,7 @@ export class VenuelistServiceService implements OnInit {
   loadVenues() {
     this.getVenues().subscribe(
       (data) => {
-        console.log('Venues loaded:', data);  // Check if all venues are returned
+        // console.log('Venues loaded:', data);  // Check if all venues are returned
         this.venues = data;
       },
       (error) => {

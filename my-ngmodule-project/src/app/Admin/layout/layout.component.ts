@@ -21,14 +21,14 @@ export class LayoutComponent {
   // Navigation items (icons from Material Icons)
   navItems = [
     { label: 'Dashboard', link: '/admin/dashboard', icon: 'dashboard' },
-    { label: 'Optional Service', link: '/admin/tableoptional', icon: 'miscellaneous_services' },
+    { label: 'Optional Service', link: '/admin/tableoptional', icon: 'spellcheck' },
     { label: 'Buildings', link: '/admin/buildings', icon: 'apartment' },
     { label: 'Venues', link: '/admin/venueView', icon: 'location_city' },
     { label: 'Bookings', link: '/admin/bookinglist', icon: 'event_note' },
     { label: 'Staff', link: '/admin/staff', icon: 'people' },
     { label: 'Activity', link: '/admin/activitytable', icon: 'event' },
     { label: 'Customer Feedback', link: '/admin/feedback', icon: 'feedback' },
-    { label: 'Policy Settings', link: '/admin/policies-settings', icon: 'policy' },
+    { label: 'Policy Settings', link: '/admin/policies-settings', icon: 'settings' },
   ];
 
   constructor(private auth: AuthService) {

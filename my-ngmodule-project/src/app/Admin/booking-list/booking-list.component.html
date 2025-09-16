@@ -1,9 +1,8 @@
-<mat-card class="booking-card">
-  <mat-toolbar color="primary" class="flex items-center">
-    <span class="text-lg font-semibold">Bookings</span>
+ 
+    <span class="text-lg font-semibold m-5">Bookings</span>
     <span class="spacer"></span>
-  </mat-toolbar>
 
+  <mat-card class="booking-card m-5 ">
   <div class="controls flex flex-wrap gap-3 p-4 items-center">
     <!-- Status toggles -->
     <mat-button-toggle-group [value]="currentStatus" (change)="setStatus($event.value)" class="inline-flex">
@@ -14,7 +13,7 @@
 
     <!-- Customer type select -->
     <mat-form-field class="filter-field min-w-[180px]">
-      <mat-label>Customer Type</mat-label>
+      <mat-label>Filter by Customer Type</mat-label>
       <mat-select [value]="currentCustomerType" (selectionChange)="setCustomerType($event.value)">
         <mat-option *ngFor="let t of customerTypeOptions" [value]="t">{{ t }}</mat-option>
       </mat-select>
@@ -22,13 +21,15 @@
 
     <!-- Date search -->
     <mat-form-field class="filter-field min-w-[180px]">
-      <mat-label>Start Date</mat-label>
+      <mat-label>Look for booking with Start Date</mat-label>
       <input matInput type="date" [value]="searchDate" (change)="onDateChange($event)">
       <button mat-icon-button matSuffix *ngIf="searchDate" aria-label="Clear" (click)="clearDate()">
         <mat-icon>clear</mat-icon>
       </button>
     </mat-form-field>
   </div>
+  </mat-card>
+
 
   <div class="table-wrapper" *ngIf="!loading">
     <!-- mat-table uses Tailwind utilities for spacing; header color is forced by component CSS override below -->
@@ -142,4 +143,3 @@
   <div *ngIf="!loading && dataSource.data.length === 0" class="no-results text-center py-4">
     <p class="font-semibold">No bookings found.</p>
   </div>
-</mat-card>

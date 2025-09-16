@@ -1,4 +1,3 @@
-// src/app/components/dashboard/dashboard.component.ts
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -22,6 +21,12 @@ interface TopVenue {
   bookingCount: number;
   revenue: number;
 }
+
+interface BookingStat {
+  status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETE' | 'CANCELLED' | 'EXPIRED' | string;
+  count: number;
+}
+
 
 @Component({
   selector: 'app-dashboard',
@@ -74,6 +79,18 @@ export class DashboardComponent implements OnInit {
 
   /* --------------------------------------------------------------- */
 
+    // New: booking stats for year/month
+  statsYear: number = new Date().getFullYear();     // default to current year
+  statsMonth: string = (() => {
+    const d = new Date();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    return `${d.getFullYear()}-${mm}`;
+  })(); // format "YYYY-MM"
+
+  yearlyStats: BookingStat[] = [];
+  monthlyStats: BookingStat[] = [];
+
+
   constructor(
     private dashboardService: DashboardService,
     private router: Router,
@@ -84,6 +101,9 @@ export class DashboardComponent implements OnInit {
     this.loadDashboardData();
     this.loadRevenueData();
     this.loadVenueStats();
+    this.loadBookingStatsYear(this.statsYear);
+    const [yStr, mStr] = this.statsMonth.split('-');
+    this.loadBookingStatsMonth(Number(yStr), Number(mStr));
   }
 
   private loadDashboardData() {
@@ -191,6 +211,73 @@ export class DashboardComponent implements OnInit {
     this.availableVenueCount = 0;
     this.availableVenues = [];
   }
+
+    /**
+   * Return a small width percentage for the tiny bar in the cards.
+   * Scale to a reasonable maximum (so tiny bars are visible).
+   */
+  statBarWidth(count: number): string {
+    const max = Math.max(1, ...this.yearlyStats.map(s => s.count), ...this.monthlyStats.map(s => s.count), 10);
+    const pct = Math.round(Math.min(100, (count / max) * 100));
+    return `${pct}%`;
+  }
+
+  /**
+   * Load yearly booking stats for the given year.
+   */
+  loadBookingStatsYear(year?: number) {
+    const y = year ?? this.statsYear ?? new Date().getFullYear();
+    this.statsYear = y;
+    // Use your DashboardService; we will add method getYearlyBookingStats in service
+    this.dashboardService.getYearlyBookingStats(y).subscribe({
+      next: (data: BookingStat[]) => {
+        // ensure we have canonical statuses in predictable order (optional)
+        this.yearlyStats = this.normalizeStatsArray(data);
+      },
+      error: (err) => {
+        console.error('Failed to load yearly stats', err);
+        this.yearlyStats = [];
+      }
+    });
+  }
+
+  /**
+   * Load monthly booking stats from statsMonth input which is "YYYY-MM".
+   * Will parse and call the service method.
+   */
+  loadBookingStatsMonthFromInput() {
+    if (!this.statsMonth) return;
+    const [yStr, mStr] = (this.statsMonth || '').split('-');
+    const year = Number(yStr);
+    const month = Number(mStr);
+    if (!year || !month) return;
+    this.loadBookingStatsMonth(year, month);
+  }
+
+  loadBookingStatsMonth(year: number, month: number) {
+    // call service method we'll add below
+    this.dashboardService.getMonthlyBookingStats(year, month).subscribe({
+      next: (data: BookingStat[]) => {
+        this.monthlyStats = this.normalizeStatsArray(data);
+      },
+      error: (err) => {
+        console.error('Failed to load monthly stats', err);
+        this.monthlyStats = [];
+      }
+    });
+  }
+
+  /**
+   * Normalize returned array so it always includes statuses in a stable order
+   * (PENDING, IN_PROGRESS, COMPLETE, CANCELLED, EXPIRED). If some missing, add 0.
+   */
+  private normalizeStatsArray(data: BookingStat[]): BookingStat[] {
+    const wanted = ['PENDING','IN_PROGRESS','COMPLETE','CANCELLED','EXPIRED'];
+    const map = new Map<string, number>();
+    (data || []).forEach(x => map.set(x.status, x.count ?? 0));
+    return wanted.map(s => ({ status: s, count: map.get(s) ?? 0 }));
+  }
+
 
   searchBookings() {
     this.filteredBookings = this.bookings.filter(b => {

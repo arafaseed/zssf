@@ -126,7 +126,7 @@ currentLang = 'en'; // default
 setAnimatedTitle(): void {
    if (this.isAnimating) return;
   this.translate.get('header.title').subscribe(res => {
-    console.log('Translated title:', res); // check the output here
+    // console.log('Translated title:', res); // check the output here
     this.fullTitle = res;
     this.displayedText = '';
     this.isAnimating = true;

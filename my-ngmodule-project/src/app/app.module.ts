@@ -88,7 +88,7 @@ import { AdminFeedbacksComponent } from './Admin/admin-feedbacks/admin-feedbacks
 import { FeedbackDetailDialogComponent } from './Admin/feedback-detail-dialog/feedback-detail-dialog.component';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { PdfViewerOverlayComponent } from './Admin/pdf-viewer-overlay/pdf-viewer-overlay.component';
 
 
@@ -188,7 +188,7 @@ export function createTranslateLoader(http: HttpClient) {
     MatRadioModule,
     NgxMaterialTimepickerModule,
     MatButtonToggleModule,
-    NgxExtendedPdfViewerModule,
+    PdfViewerModule,
     
 
 

@@ -52,7 +52,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   setTimeout(() => {
     this.activeTab = currentTab;
     sessionStorage.setItem('activeTab', currentTab);
-    console.log(`Refreshed active tab: ${currentTab}`);
+    // console.log(`Refreshed active tab: ${currentTab}`);
   }, 50); 
   }
 

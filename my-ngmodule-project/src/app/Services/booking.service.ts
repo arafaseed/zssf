@@ -82,7 +82,7 @@ getVenueNameById(venueId: number): Observable<string> {
   return this.http
     .get<any>(`${environment.apiUrl}/api/venues/view/${venueId}`)
     .pipe(
-      tap((venue) => console.log('API response for venueId', venueId, venue)),
+      // tap((venue) => console.log('API response for venueId', venueId, venue)),
       map((venue: any) => venue.venueName)
  // <- Check if property is really 'name'
     );

@@ -38,7 +38,7 @@ getBuildingById(buildingId: number): Observable<any> {
 
   // Delete a building by ID
 deleteBuilding(buildingId: number): Observable<void> {
-  console.log('Deleting building with ID:', buildingId);
+  // console.log('Deleting building with ID:', buildingId);
   return this.http.delete<void>(`${environment.apiUrl}/api/buildings/delete-building/${buildingId}`);
 }
 
