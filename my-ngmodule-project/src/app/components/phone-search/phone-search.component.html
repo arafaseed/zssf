@@ -73,7 +73,7 @@
                 View Invoice
               </a>
 
-              <a
+              <!-- <a
                 *ngIf="booking.invoiceId"
                 [href]="'/invoice/' + booking.invoiceId"
                 target="_blank"
@@ -82,7 +82,7 @@
                 class="action-button"
               >
                 Update Reservation
-              </a>
+              </a> -->
 
               <button
                 *ngIf="booking.bookingStatus.toLowerCase() !== 'completed' && booking.bookingStatus.toLowerCase() !== 'cancelled'"
