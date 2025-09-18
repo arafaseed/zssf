@@ -18,7 +18,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { InvoiceScannerComponent } from './invoice-scanner/invoice-scanner.component';
 import { UnCheckedListComponent } from './home/un-checked-list/un-checked-list.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
 // … other imports
+import { FormsModule } from '@angular/forms';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatListModule }    from '@angular/material/list';
+import { MatTableModule } from '@angular/material/table';
+
+
 
 
 
@@ -45,7 +53,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     RouterModule,
     MatCardModule,
     MatButtonModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatIconModule,
+    MatListModule,
+    MatTooltipModule,
+    MatToolbarModule ,
+    FormsModule ,
+    MatTableModule,
 ],
   exports: [DashboardSwitchComponent]
 

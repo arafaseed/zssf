@@ -1,5 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { StaffBookingService, Report } from '../../staff-booking.service';
+import { Subscription } from 'rxjs';
+
+
+interface DisplayReport extends Report {
+  referenceDocument?: string[]; // optional, used in the UI only
+}
 
 @Component({
   selector: 'app-reports',
@@ -8,11 +14,24 @@ import { StaffBookingService, Report } from '../../staff-booking.service';
   styles: []
 })
 export class ReportsComponent implements OnInit, OnDestroy {
-  reports: Report[] = [];
+  reports: DisplayReport[] = [];
   loading = true;
   errorMessage: string | null = null;
 
+  displayedColumns: string[] = [
+    'forBookingId',
+    'customerFullName',
+    'customerPhone',
+    'venueName',
+    'price',
+    'checkInTime',
+    'checkOutTime',
+    'conditionStatus',
+    'conditionDescription'
+  ];
+
   private venueId!: number;
+  private sub?: Subscription;
 
   constructor(private bookingService: StaffBookingService) {}
 
@@ -27,7 +46,9 @@ export class ReportsComponent implements OnInit, OnDestroy {
     this.loadReports();
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
+  }
 
   private loadReports(): void {
     const vid = sessionStorage.getItem('activeVenueId');
@@ -37,9 +58,34 @@ export class ReportsComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.errorMessage = null;
 
-    this.bookingService.getReportsByVenue(this.venueId).subscribe({
-      next: data => {
-        const filtered = this.filterReportsWithCheckOutTime(data);
+    this.sub = this.bookingService.getReportsByVenue(this.venueId).subscribe({
+      next: (data: any[]) => {
+        // Map the incoming objects into DisplayReport[].
+        // We only map fields present in the existing Report interface + referenceDocument.
+        const mapped: DisplayReport[] = (data || []).map((r: any) => {
+          const forBooking = r.forBooking ?? null;
+          const customer = forBooking?.customer ?? {};
+          return {
+            handOverId: r.handOverId,
+            forBookingId: r.forBookingId ?? forBooking?.bookingId ?? null,
+            venueId: r.forVenueId ?? forBooking?.venueId ?? null,
+            venueName: r.forVenueName ?? forBooking?.venueName ?? '',
+            customerFullName: (customer?.customerName ?? r.customerFullName ?? '') as string,
+            customerPhone: (customer?.phoneNumber ?? r.customerPhone ?? '') as string,
+            // packageName removed as requested — keep empty string so it still matches Report shape
+            packageName: '' as any,
+            activityName: forBooking?.venueActivityName ?? '',
+            price: (forBooking?.venueActivityPrice ?? r.price ?? 0) as number,
+            checkInTime: r.checkInTime ?? null,
+            checkOutTime: r.checkOutTime ?? null,
+            conditionStatus: r.conditionStatus ?? null,
+            conditionDescription: r.conditionDescription ?? null,
+            referenceDocument: Array.isArray(customer?.referenceDocument) ? customer.referenceDocument : []
+          };
+        });
+
+        // filter if you still want to only show those with a non-empty checkOutTime:
+        const filtered = this.filterReportsWithCheckOutTime(mapped);
         this.reports = filtered;
         this.loading = false;
       },
@@ -54,11 +100,11 @@ export class ReportsComponent implements OnInit, OnDestroy {
   /**
    * Filters out reports that have a missing, null, or empty checkOutTime.
    */
-  private filterReportsWithCheckOutTime(reports: Report[]): Report[] {
+  private filterReportsWithCheckOutTime(reports: DisplayReport[]): DisplayReport[] {
     return reports.filter(r =>
       r.checkOutTime !== null &&
       r.checkOutTime !== undefined &&
-      r.checkOutTime.trim() !== ''
+      (typeof r.checkOutTime !== 'string' || r.checkOutTime.trim() !== '')
     );
   }
 }

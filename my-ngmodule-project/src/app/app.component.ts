@@ -14,7 +14,7 @@ export class AppComponent {
 
 
   constructor(router: Router) {
-      console.log(router.config);
+      // console.log(router.config);
   }
 ngOnInit() {
     // Simulate loading delay (e.g., wait for services)

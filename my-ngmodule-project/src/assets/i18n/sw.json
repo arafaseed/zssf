@@ -10,15 +10,15 @@
   },
   "nav": {
     "home": "Nyumbani",
-    "my_booking": "Uhifadhi wangu",
+    "my_reservation": "Booking zangu",
     "login": "Ingia",
     "Feedback": "Maoni",
     "Terms & Conditions": "Masharti na Vigezo"
   },
   "terms": {
     "title": "Sheria na Masharti",
-    "lastUpdated": "Imesasishwa Mwisho",
-    "disclaimer": "Tafadhali soma Masharti haya kwa makini kabla ya kutumia jukwaa letu la kuhifadhi Ukumbi. Masharti haya yanaonyeshwa kwa Kiingereza na Kiswahili kwa uwazi — pale ambapo kuna tofauti, toleo la Kiingereza ndilo litakalotumika.",
+    "lastUpdated": "Marekebisho ya Mwisho",
+    "disclaimer": "Tafadhali soma Masharti haya kwa makini kabla ya kutumia mfumo wetu wa Kuhifadhi kumbi za ZSSF.",
     "intro": {
       "heading": "1. Utangulizi",
       "text": "Masharti haya yanaongoza matumizi ya Mfumo wetu wa kuhifadhi Ukumbi mtandaoni. Kwa kutumia Mfumo unaikubali Masharti haya. Ikiwa hauyakubali, tafadhali usitumie Mfumo."
@@ -90,14 +90,13 @@
 
   "feedback": {
     "title": "Maoni ya Wateja",
-    "description": "Tunathamini maoni yako. Tuambie uzoefu wako wa kuhifadhi ukumbi kupitia mfumo wetu — iwe ni maoni mafupi, pongezi, au malalamiko. Tunatumia mchango wako kuboresha mtiririko wa kuhifadhi, upatikanaji, makabidhiano ya ukumbi na msaada.",
-    "tip": "Kidokezo: chagua Maoni kwa ujumla, Maoni Chanya kwa pongezi au mapendekezo ya kuboresha, au Malalamiko kwa matatizo ya huduma (utoaji, hali, ratiba).",
+    "description": "Tunathamini maoni yako. Shre nasi uzoefu wako wa kubook kumbi kupitia mfumo wetu — iwe ni Pongezi au Malalamiko (mfano: utoaji wa maholi , hali ya holi, au ratiba). Maoni yako yatatusaidia kuboresha huduma zetu.",
     "name": "Jina Kamili",
     "phone": "Simu (lazima)",
     "email": "Barua pepe (hiari)",
+    "tips": "Chagua  Pongezi au Malalamiko kwa matatizo ya huduma.",
     "type": "Aina",
-    "comment": "Maoni",
-    "feedback": "Maoni Chanya",
+    "feedback": "Maoni ",
     "complaint": "Malalamiko",
     "message": "Ujumbe",
     "placeholderName": "Jina lako",
@@ -121,17 +120,17 @@
   "login": {
     "title": "Ingia",
     "staffId": "Kitambulisho cha Mfanyakazi",
-    "password": "Nenosiri",
+    "password": "Neno la siri",
     "placeholder": {
       "staffId": "Weka Kitambulisho chako cha Mfanyakazi",
-      "password": "Weka nenosiri lako"
+      "password": "Weka neno lako la siri "
     },
     "loginButton": "Ingia",
     "loggingIn": "Ingia...",
     "errors": {
       "staffIdRequired": "Kitambulisho cha Mfanyakazi kinahitajika",
-      "passwordRequired": "Nenosiri linahitajika",
-      "invalidCredentials": "Kitambulisho au nenosiri si sahihi"
+      "passwordRequired": "Neno la siri linahitajika",
+      "invalidCredentials": "Kitambulisho au neno la siri si sahihi"
     }
   },
   "phoneSearch": {

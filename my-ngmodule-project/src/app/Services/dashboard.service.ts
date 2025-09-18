@@ -36,6 +36,11 @@ export interface BestRevenueVenue {
   revenue: number;
 }
 
+interface BookingStat {
+  status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETE' | 'CANCELLED' | 'EXPIRED' | string;
+  count: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -92,6 +97,17 @@ getAllVenues(): Observable<any[]> {
     return this.http.get<RawVenueRevenue[]>(
       `${this.apiUrl}/analytics/venues/revenue/all`
     );
+  }
+
+  getYearlyBookingStats(year: number): Observable<BookingStat[]> {
+    const url = `${this.apiUrl}/analytics/booking-stats/yearly?year=${encodeURIComponent(String(year))}`;
+    return this.http.get<BookingStat[]>(url);
+  }
+
+  getMonthlyBookingStats(year: number, month: number): Observable<BookingStat[]> {
+    // month expected as 1..12
+    const url = `${this.apiUrl}/analytics/booking-stats/monthly?year=${encodeURIComponent(String(year))}&month=${encodeURIComponent(String(month))}`;
+    return this.http.get<BookingStat[]>(url);
   }
 
 

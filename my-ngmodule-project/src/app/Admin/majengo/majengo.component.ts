@@ -23,10 +23,10 @@ export class MajengoComponent {
   // Submit handler
   onSubmit() {
     if (this.majengoForm.valid) {
-      console.log('Submitting Data:', this.majengoForm.value);
+      // console.log('Submitting Data:', this.majengoForm.value);
       this.buildingService.addBuilding(this.majengoForm.value).subscribe(
         (response: any) => {
-          console.log('Building added successfully:', response);
+          // console.log('Building added successfully:', response);
         },
         (error: any) => {
           console.error('There was an error!', error);

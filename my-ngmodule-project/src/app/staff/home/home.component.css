@@ -1,0 +1,19 @@
+/* src/app/shared/home/home.component.css */
+
+/* toolbar bg is set via Tailwind classes and inline style; include small overrides */
+mat-toolbar {
+  background: #0c1429 !important;
+  color: #fff !important;
+  box-shadow: 0 6px 14px rgba(2,6,23,0.6);
+}
+
+/* tab area */
+.px-2.py-2 {
+  background: #ffffff;
+}
+
+/* small focus outlines */
+button:focus {
+  outline: 2px solid rgba(99,102,241,0.6);
+  outline-offset: 2px;
+}

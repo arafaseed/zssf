@@ -8,9 +8,10 @@ import {
 } from '../../staff-booking.service';
 
 interface EnrichedBooking extends BookingDTO {
-  packageName: string;
-  price: number;
+  serviceName: string;
+  optionalServicePrice: number;
   activityName: string;
+  activityPrice: number;
 }
 
 @Component({
@@ -58,7 +59,7 @@ export class CheckInListComponent implements OnInit {
             // 2) exclude CANCELLED
             return completedBookings
               .filter(b => 
-                !checkedIn.has(b.bookingId) && b.status !== 'CANCELLED'
+                !checkedIn.has(b.bookingId) && b.bookingStatus !== 'CANCELLED'
               )
               .sort((a, b) => 
                 new Date(b.bookingDate).getTime() 
@@ -75,18 +76,20 @@ export class CheckInListComponent implements OnInit {
         const enriched$ = pending.map(b =>
           forkJoin({
             base: of(b),
-            lease: this.bookingService.getLeaseById(b.venuePackageId).pipe(
-              catchError(() => of({ packageName: 'N/A', price: 0 }))
+            optservice: this.bookingService.getOptionalServiceById(b.venueOptionalServiceId).pipe(
+              catchError(() => of({ serviceName: 'N/A', price: 0 }))
             ),
-            activity: this.bookingService.getActivityById(b.venueActivityId).pipe(
-              catchError(() => of({ activityName: 'N/A' }))
+            activity: this.bookingService.getActivityById(b.venueActivityId).
+            pipe(
+              catchError(() => of({ activityName: 'N/A',price: 0 }))
             )
           }).pipe(
-            map(({ base, lease, activity }) => ({
+            map(({ base, optservice, activity }) => ({
               ...base,
-              packageName: lease.packageName,
-              price: lease.price,
-              activityName: activity.activityName
+              serviceName: optservice.serviceName,
+              optionalServicePrice: optservice.price,
+              activityName: activity.activityName,
+              activityPrice: activity.price
             }))
           )
         );
@@ -110,12 +113,12 @@ export class CheckInListComponent implements OnInit {
    * and its startDate matches today. 
    */
   isCheckInEnabled(b: EnrichedBooking): boolean {
-    return b.status !== 'PENDING';
+    return b.bookingStatus !== 'PENDING';
   }
 
   onCheckIn(booking: EnrichedBooking): void {
     if (!this.isCheckInEnabled(booking)) {
-      if (booking.status === 'PENDING') {
+      if (booking.bookingStatus === 'PENDING') {
         alert('This booking is still pending confirmation.');
       } else {
         alert('You can only check in on the booking start date.');

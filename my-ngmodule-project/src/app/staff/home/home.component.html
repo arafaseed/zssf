@@ -1,83 +1,71 @@
-<!-- Top Navbar (unchanged) -->
-<nav class="flex items-center justify-between px-4 py-3 text-white bg-gray-800 shadow-md">
-  <button class="lg:hidden" (click)="toggleSidebar.emit()" aria-label="Toggle Sidebar">
-    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M4 6h16M4 12h16M4 18h16" />
-    </svg>
+<!-- src/app/shared/home/home.component.html -->
+<mat-toolbar color="primary" class="bg-[#0c1429] text-white shadow-md px-4">
+  <!-- Left: mobile hamburger to toggle sidebar overlay -->
+  <button mat-icon-button class="lg:hidden mr-2" (click)="emitToggle()" [attr.aria-label]="'Toggle sidebar'">
+    <mat-icon>menu</mat-icon>
   </button>
-  <div class="hidden text-lg font-semibold sm:block">Staff Dashboard</div>
-  <div class="flex items-center space-x-2">
-    <span class="hidden text-sm sm:inline">Identification: {{ staffIdentification || 'N/A' }}</span>
-    <div class="flex items-center justify-center w-8 h-8 font-bold bg-blue-500 rounded-md-full">
+
+  <!-- Title / brand -->
+  <div class="flex items-center gap-3 grow">
+    <div class="text-sm sm:text-lg font-semibold">Staff Panel</div>
+    <div class="hidden sm:block text-xs text-slate-300">Manage check-ins, reports and scanning</div>
+  </div>
+
+  <!-- Right: user info + quick icons -->
+  <div class="flex items-center gap-2">
+    <div class="hidden sm:flex flex-col text-right mr-2">
+      <span class="text-xs text-slate-200">{{ staffIdentification || 'N/A' }}</span>
+      <span class="text-[10px] text-slate-400">{{ role || '' }}</span>
+    </div>
+    <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center font-bold uppercase text-sm">
       {{ staffIdentification ? staffIdentification.charAt(0) : '?' }}
     </div>
   </div>
-</nav>
+</mat-toolbar>
 
-<!-- Tab Navigation -->
-<div class="px-2 py-2 bg-gray-100 shadow-sm">
+<!-- Tab Navigation (below toolbar) -->
+<div class="px-2 py-2 bg-white shadow-sm">
   <div class="flex flex-wrap justify-around gap-2 md:gap-4">
-    <button (click)="setTab('checkin')"
-            [ngClass]="activeTab === 'checkin'
-                       ? 'bg-blue-600 text-white'
-                       : 'bg-white text-gray-700 hover:bg-blue-100'"
-            class="px-4 py-2 text-sm transition rounded-md md:text-base">
+    <button (click)="setTab('checkin')" class="px-4 py-2 text-sm transition rounded-md md:text-base"
+            [ngClass]="activeTab === 'checkin' ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700 hover:bg-indigo-50'">
       Check-Ins
     </button>
 
-    <button (click)="setTab('checkout')"
-            [ngClass]="activeTab === 'checkout'
-                       ? 'bg-blue-600 text-white'
-                       : 'bg-white text-gray-700 hover:bg-blue-100'"
-            class="px-4 py-2 text-sm transition rounded-md md:text-base">
+    <button (click)="setTab('checkout')" class="px-4 py-2 text-sm transition rounded-md md:text-base"
+            [ngClass]="activeTab === 'checkout' ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700 hover:bg-indigo-50'">
       Check-Outs
     </button>
 
-    <button (click)="setTab('cancelled')"
-            [ngClass]="activeTab === 'cancelled'
-                       ? 'bg-blue-600 text-white'
-                       : 'bg-white text-gray-700 hover:bg-blue-100'"
-            class="px-4 py-2 text-sm transition rounded-md md:text-base">
+    <button (click)="setTab('cancelled')" class="px-4 py-2 text-sm transition rounded-md md:text-base"
+            [ngClass]="activeTab === 'cancelled' ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700 hover:bg-indigo-50'">
       Cancelled
     </button>
 
-    <button (click)="setTab('reports')"
-            [ngClass]="activeTab === 'reports'
-                       ? 'bg-blue-600 text-white'
-                       : 'bg-white text-gray-700 hover:bg-blue-100'"
-            class="px-4 py-2 text-sm transition rounded-md md:text-base">
+    <button (click)="setTab('reports')" class="px-4 py-2 text-sm transition rounded-md md:text-base"
+            [ngClass]="activeTab === 'reports' ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700 hover:bg-indigo-50'">
       Reports
     </button>
 
-    <button (click)="setTab('unchecked')"
-            [ngClass]="activeTab === 'unchecked'
-                       ? 'bg-blue-600 text-white'
-                       : 'bg-white text-gray-700 hover:bg-blue-100'"
-            class="px-4 py-2 text-sm transition rounded-md md:text-base">
+    <button (click)="setTab('unchecked')" class="px-4 py-2 text-sm transition rounded-md md:text-base"
+            [ngClass]="activeTab === 'unchecked' ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700 hover:bg-indigo-50'">
       Not-Checked in
     </button>
-    
-    <button (click)="setTab('invoice-scanner')"
-            [ngClass]="activeTab === 'invoice-scanner'
-                       ? 'bg-blue-600 text-white'
-                       : 'bg-white text-gray-700 hover:bg-blue-100'"
-            class="px-4 py-2 text-sm transition rounded-md md:text-base">
+
+    <button (click)="setTab('invoice-scanner')" class="px-4 py-2 text-sm transition rounded-md md:text-base"
+            [ngClass]="activeTab === 'invoice-scanner' ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700 hover:bg-indigo-50'">
       Scan Invoice
     </button>
   </div>
 </div>
 
-<!-- Dynamic Component Rendering -->
+<!-- Dynamic content below (kept from original) -->
 <div class="p-4 bg-white">
   <ng-container [ngSwitch]="activeTab">
-    <!-- Only when activeTab === 'checkin' do we render CheckInListComponent -->
     <app-check-in-list *ngSwitchCase="'checkin'"></app-check-in-list>
     <app-cancelled-list *ngSwitchCase="'cancelled'"></app-cancelled-list>
     <app-check-out-list *ngSwitchCase="'checkout'"></app-check-out-list>
     <app-reports *ngSwitchCase="'reports'"></app-reports>
     <app-un-checked-list *ngSwitchCase="'unchecked'"></app-un-checked-list>
     <app-invoice-scanner *ngSwitchCase="'invoice-scanner'"></app-invoice-scanner>
-    
   </ng-container>
 </div>

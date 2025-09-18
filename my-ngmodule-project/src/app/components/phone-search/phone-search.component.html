@@ -92,7 +92,7 @@
                 {{ 'phoneSearch.viewInvoice' | translate }}
               </a>
 
-              <a
+              <!-- <a
                 *ngIf="booking.invoiceId"
                 [href]="'/invoice/' + booking.invoiceId"
                 target="_blank"
@@ -100,8 +100,13 @@
                 color="primary"
                 class="action-button"
               >
+<<<<<<< HEAD
                 {{ 'phoneSearch.updateReservation' | translate }}
               </a>
+=======
+                Update Reservation
+              </a> -->
+>>>>>>> ab056b9989bebea4add70ca9e41c246f2008a7ba
 
               <button
                 *ngIf="booking.bookingStatus.toLowerCase() !== 'completed' && booking.bookingStatus.toLowerCase() !== 'cancelled'"

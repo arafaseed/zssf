@@ -1,25 +1,13 @@
-<div class="p-4">
+<!-- unchecked-bookings.component.html -->
+<div class="p-4 font-poppins">
   <!-- Loading Spinner -->
   <div *ngIf="loading" class="py-8 text-center">
-    <svg
-      class="w-8 h-8 mx-auto text-blue-600 animate-spin"
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24">
-      <circle
-        class="opacity-25"
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        stroke-width="4">
-      </circle>
-      <path
-        class="opacity-75"
-        fill="currentColor"
-        d="M4 12a8 8 0 018-8v8H4z">
-      </path>
-    </svg>
+    <mat-progress-spinner
+      diameter="48"
+      mode="indeterminate"
+      class="mx-auto"
+      aria-label="Loading unchecked bookings spinner">
+    </mat-progress-spinner>
     <p class="mt-2 text-gray-500">Loading unchecked bookings…</p>
   </div>
 
@@ -31,37 +19,83 @@
   <!-- Cards Grid -->
   <div *ngIf="!loading && !errorMessage" class="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
     <!-- One card per unchecked booking -->
-    <div
+    <mat-card
       *ngFor="let booking of bookings"
-      class="flex flex-col justify-between p-6 bg-white border-2 border-red-300 shadow-2xl rounded-md-lg"
+      class="flex flex-col justify-between p-4 bg-white border-2 border-red-300 shadow-2xl rounded-lg"
     >
-      <div>
-        <h3 class="mb-2 text-2xl font-semibold text-gray-800">{{ booking.venueName }}</h3>
-        <p class="text-gray-700"><strong>Booking Code:</strong> {{ booking.bookingCode }}</p>
-        <p><strong>Customer:</strong> {{ booking.customer.customerName }} / {{ booking.customer.phoneNumber }}</p>
-        <p><strong>Start:</strong>    {{ booking.startDate | date:'medium' }}</p>
-        <p><strong>End:</strong>      {{ booking.endDate | date:'medium' }}</p>
-        <p class="text-gray-700"><strong>Package:</strong> {{ booking.packageName }} ({{ booking.price | currency:'TZS':'symbol' }})</p>
-        <!-- <p class="text-gray-700"><strong>Activity:</strong> {{ booking.activityName }}</p> -->
-        <p class="mt-2 text-sm italic text-gray-600">
-          <strong>Booking Date:</strong> {{ booking.bookingDate | date:'mediumDate' }}
+      <mat-card-header class="pb-2 rounded-xl bg-purple-200">
+        <div mat-card-avatar class="flex items-center justify-center rounded-md bg-purple-400 w-12 h-12">
+          <mat-icon class="text-red-700" aria-hidden="true">report_problem</mat-icon>
+        </div>
+
+        <mat-card-title class="text-2xl font-semibold text-gray-800">
+          {{ booking.venueName }}
+        </mat-card-title>
+
+        <mat-card-subtitle class="text-sm text-gray-500">
+          <span class="mr-2"><strong>Booking Code:</strong></span>
+          <span class="font-medium text-blue-900">{{ booking.bookingCode }}</span>
+
+          <p class="mt-2 text-sm italic text-gray-700 ">
+          <strong class="mr-2">Booked on:</strong> {{ booking.bookingDate | date:'mediumDate' }}
+         </p>
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content class="mt-2 text-gray-700">
+        <p class="mb-1">
+          <mat-icon class="align-middle mr-2 text-gray-500" aria-hidden="true">person</mat-icon>
+          <strong>Customer:</strong> {{ booking.customer.customerName }} 
         </p>
-        <p class="text-sm italic text-gray-600">
-          <strong>Start:</strong> {{ booking.startDate | date:'mediumDate' }}
+
+        <p class="mb-1">
+          <mat-icon class="align-middle mr-2 text-gray-500" aria-hidden="true">phone</mat-icon>
+          <strong>Mobile:</strong>
+          {{ booking.customer.phoneNumber }}
         </p>
-        <p class="mb-2 text-sm italic text-gray-600">
-          <strong>End:</strong>
-          <span *ngIf="booking.endDate; else noEnd">{{ booking.endDate | date:'mediumDate' }}</span>
-          <ng-template #noEnd>–</ng-template>
+
+        <p class="mb-1">
+          <mat-icon class="align-middle mr-2 text-gray-500" aria-hidden="true">play_circle</mat-icon>
+          <strong>Start:</strong> {{ booking.startDate | date:'medium' }}
         </p>
-        <p class="text-sm font-medium" [ngClass]="{
-            'text-green-600': booking.status === 'COMPLETE',
-            'text-red-600': booking.status === 'CANCELLED',
-            'text-yellow-600': booking.status === 'PENDING'
-          }">
-          Status: {{ booking.status }}
+
+        <p class="mb-1">
+          <mat-icon class="align-middle mr-2 text-gray-500" aria-hidden="true">stop_circle</mat-icon>
+          <strong>End:</strong> {{ booking.endDate | date:'medium' }}
         </p>
-      </div>
+
+        <p class="mb-1">
+          <mat-icon class="align-middle mr-2 text-gray-500" aria-hidden="true">inventory_2</mat-icon>
+          <strong>Activity:</strong>
+          {{ booking.venueActivityName }} ({{ booking.venueActivityPrice | currency:'TZS':'symbol' }})
+        </p>
+
+        <p class="text-gray-700">
+          <mat-icon class="align-middle mr-2 text-gray-500" aria-hidden="true">directions_run</mat-icon>
+          <strong>Optional service:</strong> {{ booking.venueOptionalServiceName }} ({{ booking.venueOptionServicePrice | currency:'TZS':'symbol' }})
+        </p>
+
+        <p class="text-sm font-medium"
+           [ngClass]="{
+             'text-red-600': booking.bookingStatus  === 'EXPIRED',
+            'text-blue-600': booking.bookingStatus  === 'IN_PROGRESS',
+             'text-green-600': booking.bookingStatus  === 'COMPLETE',
+             'text-yellow-600': booking.bookingStatus  === 'PENDING',
+             'text-purple-600': booking.bookingStatus  === 'CANCELLED'
+           }">
+          <mat-icon class="align-middle mr-1"
+                    [ngClass]="{
+                      'text-red-600': booking.bookingStatus  === 'EXPIRED',
+            'text-blue-600': booking.bookingStatus  === 'IN_PROGRESS',
+             'text-green-600': booking.bookingStatus  === 'COMPLETE',
+             'text-yellow-600': booking.bookingStatus  === 'PENDING',
+             'text-purple-600': booking.bookingStatus  === 'CANCELLED'
+                    }"
+                    aria-hidden="true">lens</mat-icon>
+          Status: {{ booking.bookingStatus }}
+        </p>
+      </mat-card-content>
+    </mat-card>
 
     <!-- No unchecked bookings -->
     <div *ngIf="!bookings.length" class="py-8 text-center text-gray-500 col-span-full">

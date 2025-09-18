@@ -28,7 +28,7 @@ export class OptionalServiceTableComponent implements OnInit {
 
   loadOptionalServices() {
     this.optionalServiceService.getAllOptionalServices().subscribe(data => {
-      console.log('Optional services loaded:', data);
+      // console.log('Optional services loaded:', data);
       this.optionalServices = data;
     });
   }
@@ -38,7 +38,7 @@ export class OptionalServiceTableComponent implements OnInit {
 
     if (confirmDelete) {
       this.optionalServiceService.deleteOptionalService(id).subscribe(response => {
-        console.log('Deleted optional service:', response);
+        // console.log('Deleted optional service:', response);
         this.loadOptionalServices();
       }, error => {
         console.error('Error deleting optional service:', error);

@@ -1,7 +1,13 @@
-<div class="p-4">
+<!-- bookings-list.component.html -->
+<div class="p-4 font-poppins"> <!-- font-poppins added, see styles below -->
   <!-- Loading Spinner -->
   <div *ngIf="loading" class="text-center py-8">
-    <!-- …same spinner SVG… -->
+    <mat-progress-spinner
+      diameter="60"
+      mode="indeterminate"
+      class="mx-auto"
+      aria-label="Loading bookings spinner">
+    </mat-progress-spinner>
     <p class="mt-2 text-gray-500">Loading bookings…</p>
   </div>
 
@@ -11,67 +17,115 @@
   </div>
 
   <!-- Cards Grid -->
-  <div *ngIf="!loading && !errorMessage" 
-       class="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-    <div
+  <div *ngIf="!loading && !errorMessage"
+       class="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ">
+    <mat-card
       *ngFor="let booking of bookings"
-      class="bg-white rounded-lg shadow-lg p-6 flex flex-col justify-between border-2 border-cyan-300"
+      class="bg-white rounded-lg shadow-xl p-4 flex flex-col justify-between border-2 border-cyan-300"
       [ngClass]="{
         'opacity-50 bg-gray-100': !isCheckInEnabled(booking)
       }"
     >
-      <div>
-        <h3 class="text-2xl font-semibold text-gray-800 mb-2">
+      <!-- card header -->
+      <mat-card-header class="pb-2 rounded-2xl bg-cyan-200">
+        <div mat-card-avatar class="flex items-center justify-center rounded-md bg-cyan-400 w-12 h-12">
+          <mat-icon class="text-cyan-700">event_available</mat-icon>
+        </div>
+
+        <mat-card-title class="text-xl font-semibold text-gray-800">
           {{ booking.venueName }}
-        </h3>
-        <p class="text-gray-700">
-          <strong>Booking Code:</strong> {{ booking.bookingCode }}
+        </mat-card-title>
+
+        <mat-card-subtitle class="text-sm text-gray-500 ">
+          <span class="mr-2"><strong>Booking Code:</strong></span>
+          <span class="font-medium text-blue-900">{{ booking.bookingCode }}</span>
+
+          <p class="mt-2 text-sm italic text-gray-700 ">
+          <strong class="mr-2">Booked on:</strong> {{ booking.bookingDate | date:'mediumDate' }}
+         </p>
+        </mat-card-subtitle>
+         
+      </mat-card-header>
+
+      <!-- card content -->
+      <mat-card-content class="mt-2 text-gray-700">
+        <p class="mb-1">
+          <mat-icon class="align-middle mr-2 text-gray-500" aria-hidden="true">person</mat-icon>
+          <strong>Customer:</strong>
+          {{ booking.customer.customerName }} 
         </p>
-        <p>
-          <strong>Customer:</strong> 
-          {{ booking.customer.customerName }} / {{ booking.customer.phoneNumber }}
+        <p class="mb-1">
+          <mat-icon class="align-middle mr-2 text-gray-500" aria-hidden="true">phone</mat-icon>
+          <strong>Mobile:</strong>
+          {{ booking.customer.phoneNumber }}
         </p>
-        <p><strong>Booking Date:</strong> 
-          {{ booking.bookingDate | date:'mediumDate' }}
-        </p>
-        <p><strong>Start:</strong> 
+
+        <p class="mb-1">
+          <mat-icon class="align-middle mr-2 text-gray-500" aria-hidden="true">play_circle</mat-icon>
+          <strong>Start:</strong>
           {{ booking.startDate | date:'medium' }}
         </p>
-        <p><strong>End:</strong> 
+
+        <p class="mb-1">
+          <mat-icon class="align-middle mr-2 text-gray-500" aria-hidden="true">stop_circle</mat-icon>
+          <strong>End:</strong>
           <span *ngIf="booking.endDate; else noEnd">
             {{ booking.endDate | date:'medium' }}
           </span>
           <ng-template #noEnd>–</ng-template>
         </p>
-        <p class="text-gray-700">
-          <strong>Package:</strong> 
-          {{ booking.packageName }} ({{ booking.price | currency:'TZS':'symbol' }})
+
+        <p class="mb-1">
+          <mat-icon class="align-middle mr-2 text-gray-500" aria-hidden="true">inventory_2</mat-icon>
+          <strong>Activity:</strong>
+          {{ booking.venueActivityName }} ({{ booking.venueActivityPrice | currency:'TZS':'symbol' }})
         </p>
-        <p class="text-gray-700">
-          <strong>Activity:</strong> {{ booking.activityName }}
+
+        <p class="mb-1">
+          <mat-icon class="align-middle mr-2 text-gray-500" aria-hidden="true">directions_run</mat-icon>
+          <strong>Optional service:</strong>{{ booking.venueOptionalServiceName }} ({{ booking.venueOptionServicePrice | currency:'TZS':'symbol' }})
         </p>
-        <p class="text-sm font-medium"
+
+        <p class="text-sm font-medium mt-2"
            [ngClass]="{
-             'text-green-600': booking.status === 'COMPLETE',
-             'text-yellow-600': booking.status === 'PENDING'
+            'text-red-600': booking.bookingStatus  === 'EXPIRED',
+            'text-blue-600': booking.bookingStatus  === 'IN_PROGRESS',
+             'text-green-600': booking.bookingStatus  === 'COMPLETE',
+             'text-yellow-600': booking.bookingStatus  === 'PENDING',
+             'text-purple-600': booking.bookingStatus  === 'CANCELLED'
            }">
-          Status: {{ booking.status }}
+          <mat-icon class="align-middle mr-1" aria-hidden="true"
+                    [ngClass]="{
+                      'text-red-600': booking.bookingStatus  === 'EXPIRED',
+            'text-blue-600': booking.bookingStatus  === 'IN_PROGRESS',
+             'text-green-600': booking.bookingStatus  === 'COMPLETE',
+             'text-yellow-600': booking.bookingStatus  === 'PENDING',
+             'text-purple-600': booking.bookingStatus  === 'CANCELLED'
+                    }">
+            lens
+          </mat-icon>
+          Status: {{ booking.bookingStatus }}
         </p>
-      </div>
-      <button
-        (click)="onCheckIn(booking)"
-        [disabled]="!isCheckInEnabled(booking)"
-        class="mt-4 
-               text-white font-semibold py-2 rounded-lg transition
-               bg-green-600 hover:bg-green-700 
-               disabled:bg-gray-400 disabled:cursor-not-allowed"
-      >
-        Check In
-      </button>
-    </div>
+      </mat-card-content>
+
+      <!-- actions -->
+      <mat-card-actions class="mt-4">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="onCheckIn(booking)"
+          [disabled]="!isCheckInEnabled(booking)"
+          class="w-full text-white font-semibold py-2 rounded-lg transition
+                 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        >
+          <mat-icon class="text-white">login</mat-icon>
+          <span>Check In</span>
+        </button>
+      </mat-card-actions>
+    </mat-card>
 
     <!-- No remaining bookings -->
-    <div *ngIf="!bookings.length" 
+    <div *ngIf="!bookings.length"
          class="col-span-full text-center py-8 text-gray-500">
       No bookings pending check-in.
     </div>

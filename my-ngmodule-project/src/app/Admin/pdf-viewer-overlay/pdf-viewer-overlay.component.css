@@ -1,0 +1,7 @@
+@media (max-width: 720px) {
+  aside { display: none; }
+}
+
+mat-toolbar { background: linear-gradient(90deg, #0f172a, #0b3a5b); color: #fff; }
+
+pdf-viewer, object, ngx-extended-pdf-viewer, ngx-extended-pdf-viewer .ngx-extended-pdf-viewer { height: 100%; width: 100%; }
