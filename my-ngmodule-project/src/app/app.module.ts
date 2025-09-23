@@ -90,6 +90,8 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { PdfViewerOverlayComponent } from './Admin/pdf-viewer-overlay/pdf-viewer-overlay.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+
 
 
 
@@ -189,6 +191,7 @@ export function createTranslateLoader(http: HttpClient) {
     NgxMaterialTimepickerModule,
     MatButtonToggleModule,
     PdfViewerModule,
+    MatExpansionModule,
     
 
 

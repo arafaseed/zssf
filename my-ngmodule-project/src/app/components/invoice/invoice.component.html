@@ -1,220 +1,210 @@
 <app-header></app-header>
 
-<!-- Using Angular Material cards and responsive CSS for two-column layout -->
-<div class="material-page">
-  <div class="mat-grid">
+<!-- Top heading (full width) -->
+<div class="page-wrap">
+  <h1 class="invoice-heading">{{ 'INVOICE.HEADING' | translate }}</h1>
+  <p class="invoice-sub" ><em>{{ 'INVOICE.CONGRATS_SUB' | translate:{name: invoiceData?.customerName || ''} }}</em></p>
 
-    <!-- LEFT: information & rules (Material card) -->
-    <mat-card class="left-card">
-      <mat-card-header>
-        <mat-card-title>Payment & Booking Guidance / Mwongozo wa Malipo na Booking</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <p><strong>EN:</strong> You have 24 hours to pay your advance via controlnumber <strong>
-            {{ invoiceData.controlNumber || '-' }} </strong> or the booking will expire. You may update booking dates
-          only if needed.</p>
-        <p><strong>SW:</strong> Una masaa 24 ya kulipa malipo ya awali kupitia kumbu kumbu namba <strong>
-            {{ invoiceData.controlNumber || '-' }} </strong> au booking itafutwa. Unaweza kubadilisha tarehe za booking
-          tu ikiwa ni muhimu.</p>
+  <!-- Expansion panels row (information + feedback) -->
+   <div class="panels-row rounded-xl m-5 p-5 bg-emerald-100" multi>
+  <mat-accordion >
+    <!-- Information & Rules panel (translatable HTML content) -->
+    <mat-expansion-panel  class="info-panel " (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)" >
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon aria-hidden="false" aria-label="info">info</mat-icon>
+          &nbsp; {{ 'GUIDANCE.TITLE' | translate }}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
 
-        <h3>Terms & Conditions (EN)</h3>
-        <ol>
-          <li>Advance payment must be made within 24 hours to secure the booking.</li>
-          <li>Booking dates can be changed subject to venue availability.</li>
-          <li>All cancellations within 48 hours are non-refundable unless otherwise agreed.</li>
-          <li>Client is responsible for any damages during the booked period.</li>
-          <li>Noise curfew must be respected as per venue regulations.</li>
-          <li>Extra services (catering, chairs, etc.) must be requested at least 72 hours before event.</li>
-          <li>Unauthorized decorations that damage the venue are prohibited.</li>
-          <li>Venue management reserves the right to cancel if safety regulations are breached.</li>
-        </ol>
+      <!-- Content is expected to come from translations (HTML allowed). Fallback to raw content if translations are missing. -->
+      <div class="panel-content" [innerHTML]="'GUIDANCE.HTML' | translate"></div>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <mat-accordion>
+    <!-- Clickable feedback panel: no body; clicking header navigates -->
+    <mat-expansion-panel class="feedback-panel" hideToggle (click)="goToFeedback()" [disabled]="false" role="button" aria-label="Leave feedback">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon>feedback</mat-icon>
+          &nbsp; {{ 'FEEDBACK.TITLE' | translate }}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+    </mat-expansion-panel>
+  </mat-accordion>
+  </div>
 
-        <h3>Sheria & Masharti (SW)</h3>
-        <ol>
-          <li>Malipo ya awali yafanyike ndani ya masaa 24 ili kuhakisha booking.</li>
-          <li>Tarehe za booking zinaweza kubadilishwa kwa kuzingatia upatikanaji wa venue.</li>
-          <li>Kutokatisha booking within saa 48 hakurudishiwa bila makubaliano.</li>
-          <li>Mteja anawajibika kwa uharibifu wowote wakati wa kipindi cha booking.</li>
-          <li>Kuanzia saa fulani kidogo kinachoweza kuwekwa kulingana na sheria za venue.</li>
-          <li>Huduma za ziada zinapaswa kuombwa angalau masaa 72 kabla ya tukio.</li>
-          <li>Mipangilio isiyoidhinishwa inayoharibu venue hairuhusiwi.</li>
-          <li>Maneva ya venue yana haki ya kufuta booking ikiwa kanuni za usalama zikitolewa.</li>
-        </ol>
-      </mat-card-content>
-      <!-- staff cards -->
-      <div *ngIf="!loading" class="staff-area">
-        <h2 class="staff-title">For any inquiry, Please call..</h2>
-        <div class="staff-grid">
-          <mat-card *ngFor="let staff of staffList" class="staff-card">
-            <mat-card-title>{{ staff.fullName }}</mat-card-title>
-            <mat-card-content>
-              <p><strong>Phone:</strong> {{ staff.phoneNumber }}</p>
-              <p class="role" [class.staff-role]="staff.role === 'STAFF'">{{ staff.role }}</p>
-            </mat-card-content>
-          </mat-card>
-        </div>
-      </div>
-    </mat-card>
+  <!-- Invoice card / A4 viewport (always looks like a paper sheet) -->
+  <mat-card class="invoice-card" id="invoice-a4">
+    <mat-card-content>
+      <div #a4wrapper class="a4-viewport" >
+        <div  class="invoice-container" role="document" aria-label="Invoice document">
+          <!-- Header -->
+          <div class="invoice-header header-row">
+            <div class="zssf-logo">
+              <img src="/zssf-logo.png" alt="ZSSF" class="logo" />
+            </div>
+            <div class="title-block">
+              <h1 class="paper-title">ZANZIBAR SOCIAL SECURITY FUND (ZSSF)</h1>
+              <p class="invoice-sub-title">HALLS RESERVATION INVOICE</p>
+            </div>
+            <!-- <div class="logo-right">
+              <img src="/smz_logo.png" alt="SMZ" class="logo" />
+            </div> -->
+            <div class="qr-code">
+              <div class="qr-block">
+                <img *ngIf="qrDataUrl" [src]="qrDataUrl" alt="Invoice QR" />
+                <p class="invoice-code">{{ invoiceData.invoiceCode }}</p>
 
-    <!-- RIGHT: invoice area -->
-    <div class="right-column">
-      <mat-card class="invoice-card">
-        <mat-card-content>
-          <h2 class="invoice-heading">Receive your invoice below / Pokea risiti yako hapa chini</h2>
-
-          <div #a4wrapper class="a4-viewport">
-            <!-- A4 invoice element (keeps 210mm width) -->
-            <div id="invoice-a4" class="invoice-container">
-              <!-- Header -->
-              <div class="invoice-header header-row">
-                <div class="logo-left">
-                  <img src="/zssf-logo.png" alt="ZSSF" class="logo" />
-                </div>
-                <div class="title-block">
-                  <h1>ZSSF VENUE BOOKING INVOICE</h1>
-                  <p class="invoice-code">Invoice Code: {{ invoiceData.invoiceCode }}</p>
-                </div>
-                <div class="logo-right">
-                  <img src="/smz_logo.png" alt="SMZ" class="logo" />
-                </div>
               </div>
-
-              <!-- Customer Information -->
-              <section class="invoice-section">
-                <h2>Customer Information / Taarifa za Mteja</h2>
-                <div class="invoice-line">
-                  <span class="label">Name / Jina:</span>
-                  <span class="value">{{ invoiceData.customerName }}</span>
-                </div>
-                <div class="invoice-line">
-                  <span class="label">Phone / Simu:</span>
-                  <span class="value">{{ invoiceData.customerPhone }}</span>
-                </div>
-                <div class="invoice-line">
-                  <span class="label">Email / Barua pepe:</span>
-                  <span class="value">{{ invoiceData.customerEmail }}</span>
-                </div>
-              </section>
-
-              <!-- Invoice Details -->
-              <section class="invoice-section">
-                <h2>Invoice Details / Maelezo ya Risiti</h2>
-                <div class="invoice-line">
-                  <span class="label">Issued Date / Imetolewa:</span>
-                  <span class="value">{{ invoiceData.issuedDate }}</span>
-                </div>
-                <div class="invoice-line">
-                  <span class="label">Due Date / Tarehe ya ukomo:</span>
-                  <span class="value">{{ invoiceData.dueDate || 'Not Specified / Haijawekwa' }}</span>
-                </div>
-                <div class="invoice-line">
-                  <span class="label">Status / Hali:</span>
-                  <span class="value">{{ invoiceData.invoicestatus || invoiceData.status }}</span>
-                </div>
-                <div class="invoice-line">
-                  <span class="label">Control Number / Namba ya Malipo:</span>
-                  <span class="value" id="controlNum"><u><strong>{{ invoiceData.controlNumber || '-' }}</strong></u></span>
-                </div>
-                <div class="invoice-line">
-                  <span class="label">Start Event Date / Tarehe ya Kuanzia:</span>
-                  <span class="value">{{ invoiceData.startDate }}</span>
-                </div>
-                <div class="invoice-line">
-                  <span class="label">End Event Date / Tarehe ya Mwisho:</span>
-                  <span class="value">{{ invoiceData.endDate }}</span>
-                </div>
-                <div class="invoice-line">
-                  <span class="label">Venue / Ukumbi:</span>
-                  <span class="value">{{ invoiceData.venueName }}</span>
-                </div>
-                <div class="invoice-line">
-                  <span class="label">Activity / Shughuli:</span>
-                  <span class="value">{{ invoiceData.packageName }}</span>
-                </div>
-              </section>
-
-              <!-- Description -->
-              <section class="invoice-section">
-                <h2>Description / Maelezo</h2>
-                <p class="description">{{ invoiceData.description }}</p>
-              </section>
-
-              <!-- Amount Summary -->
-              <section class="amount-summary">
-                <h2><strong>Amount Summary / Muhtasari wa Malipo</strong></h2>
-                <div class="amount-line">
-                  <span>Amount / Kiasi:</span>
-                  <span>{{ invoiceData.amount | number:'1.2-2' }} TZS</span>
-                </div>
-                <div class="amount-line">
-                  <span>Discount / Punguzo:</span>
-                  <span>{{ invoiceData.discountApplied | number:'1.2-2' }} TZS</span>
-                </div>
-                <div class="amount-line total">
-                  <span>Total / Jumla:</span>
-                  <span><u>{{ invoiceData.netAmount | number:'1.2-2' }} TZS</u></span>
-                </div>
-                <!-- BEGIN: Installments block (place directly after the Total / Jumla block) -->
-                <div class="installments-section" style="margin-top:12px;">
-
-                  <!-- If still loading installments -->
-                  <div *ngIf="installmentsLoading" class="amount-line">
-                    <span class="label">Installments / Malipo yaliyofanyika:</span>
-                    <span class="value">Loading...</span>
-                  </div>
-
-                  <!-- If no installments -->
-                  <div *ngIf="!installmentsLoading && (!installments || installments.length === 0)"
-                   class="amount-line">
-                    <span class="label">Installments paid / Malipo yaliyolipwa:</span>
-                    <span class="value">None yet / Hakuna</span>
-                  </div>
-
-                  <!-- List installments -->
-                  <div *ngIf="!installmentsLoading && installments && installments.length > 0"
-                    class="installments-list">
-                    <div *ngFor="let inst of installments" class="amount-line">
-                      <span class="label">{{ inst.label }} ({{ inst.paymentDateFormatted }})</span>
-                      <span class="value">{{ inst.amountPaid | number:'1.2-2' }} TZS</span>
-                    </div>
-                    <div class="amount-line" style="border-top:1px dashed #ddd; padding-top:6px; margin-top:6px;">
-                      <span class="label">Paid so far / Yamelipwa jumla:</span>
-                      <span class="value">{{ installmentsSum | number:'1.2-2' }} TZS</span>
-                    </div>
-                  </div>
-
-                  <!-- Remaining due -->
-                  <div class="amount-line remaining" style="margin-top:10px;">
-                    <span>Remaining / Kubaki:</span>
-                    <span>{{ remainingAmount | number:'1.2-2' }} TZS</span>
-                  </div>
-
-                </div>
-                <!-- END: Installments block -->
-
-                <div class="qr-row">
-                  <div class="qr-block">
-                    <img *ngIf="qrDataUrl" [src]="qrDataUrl" alt="Invoice QR" />
-                    <div class="qr-caption">Scan to verify / Skani kuthibitisha</div>
-                  </div>
-                </div>
-              </section>
             </div>
           </div>
 
-          <div class="control-actions">
-            <button mat-flat-button color="primary" (click)="printInvoice()">🖨️ Print Invoice</button>
-            <button mat-flat-button color="primary" (click)="generatePDF()">📄 Download PDF</button>
-          </div>
+          <!-- Customer Information -->
+          <section class="invoice-section">
+            <h2>{{ 'A4.CUSTOMER_INFO_TITLE' | translate }}</h2>
+            <div class="invoice-line">
+              <span class="label">{{ 'A4.NAME_LABEL' | translate }}</span>
+              <span class="value">{{ invoiceData.customerName || '-' }}</span>
+            </div>
+            <div class="invoice-line">
+              <span class="label">{{ 'A4.PHONE_LABEL' | translate }}</span>
+              <span class="value">{{ invoiceData.customerPhone || '-' }}</span>
+            </div>
+            <div class="invoice-line">
+              <span class="label">{{ 'A4.EMAIL_LABEL' | translate }}</span>
+              <span class="value">{{ invoiceData.customerEmail || '-' }}</span>
+            </div>
+          </section>
 
-          <div *ngIf="loading" class="loading">
-            <mat-progress-spinner diameter="24" mode="indeterminate"></mat-progress-spinner>
-            Generating Invoice PDF…
-          </div>
+          <!-- Invoice Details -->
+          <section class="invoice-section">
+            <h2>{{ 'A4.INVOICE_DETAILS_TITLE' | translate }}</h2>
+            <div class="invoice-line">
+              <span class="label">{{ 'A4.ISSUED_DATE' | translate }}</span>
+              <span class="value">{{ invoiceData.issuedDate | date:'dd-MM-yyyy' }}</span>
+            </div>
+            <div class="invoice-line">
+              <span class="label">{{ 'A4.DUE_DATE' | translate }}</span>
+              <span class="value">{{ invoiceData.dueDate ? (invoiceData.dueDate | date:'dd-MM-yyyy') : ('A4.NOT_SPECIFIED' | translate) }}</span>
+            </div>
+            <div class="invoice-line">
+              <span class="label">{{ 'A4.STATUS' | translate }}</span>
+              <span class="value">{{ invoiceData.invoicestatus || invoiceData.status || '-' }}</span>
+            </div>
+            <div class="invoice-line">
+              <span class="label">{{ 'A4.CONTROL_NUMBER' | translate }}</span>
+              <span class="value" id="controlNum"><u><strong>{{ invoiceData.controlNumber || '-' }}</strong></u></span>
+            </div>
+            <div class="invoice-line">
+              <span class="label">{{ 'A4.START_DATE' | translate }}</span>
+              <span class="value">{{ invoiceData.startDate | date:'dd-MM-yyyy' }}</span>
+            </div>
+            <div class="invoice-line">
+              <span class="label">{{ 'A4.END_DATE' | translate }}</span>
+              <span class="value">{{ invoiceData.endDate | date:'dd-MM-yyyy' }}</span>
+            </div>
+            <div class="invoice-line">
+              <span class="label">{{ 'A4.VENUE' | translate }}</span>
+              <span class="value">{{ invoiceData.venueName || '-' }}</span>
+            </div>
+            <div class="invoice-line">
+              <span class="label">{{ 'A4.ACTIVITY' | translate }}</span>
+              <span class="value">{{ invoiceData.packageName || '-' }}</span>
+            </div>
+          </section>
 
+          <!-- Description -->
+          <section class="invoice-section">
+            <h2>{{ 'A4.DESCRIPTION' | translate }}</h2>
+            <p class="description">{{ invoiceData.description }}</p>
+          </section>
+
+          <!-- Amount Summary -->
+          <section class="amount-summary">
+            <h2><strong>{{ 'A4.AMOUNT_SUMMARY' | translate }}</strong></h2>
+            <div class="amount-line">
+              <span>{{ 'A4.AMOUNT' | translate }}</span>
+              <span>{{ invoiceData.amount | number:'1.2-2' }} TZS</span>
+            </div>
+            <div class="amount-line">
+              <span>{{ 'A4.DISCOUNT' | translate }}</span>
+              <span>{{ invoiceData.discountApplied | number:'1.2-2' }} TZS</span>
+            </div>
+            <div class="amount-line total">
+              <span>{{ 'A4.TOTAL' | translate }}</span>
+              <span><u>{{ invoiceData.netAmount | number:'1.2-2' }} TZS</u></span>
+            </div>
+
+            <!-- Installments -->
+            <div class="installments-section" style="margin-top:12px;">
+              <div *ngIf="installmentsLoading" class="amount-line">
+                <span class="label">{{ 'A4.INSTALLMENTS_LOADING' | translate }}</span>
+                <span class="value">...</span>
+              </div>
+
+              <div *ngIf="!installmentsLoading && (!installments || installments.length === 0)" class="amount-line">
+                <span class="label">{{ 'A4.INSTALLMENTS_NONE' | translate }}</span>
+                <span class="value">{{ 'A4.NONE_YET' | translate }}</span>
+              </div>
+
+              <div *ngIf="!installmentsLoading && installments && installments.length > 0" class="installments-list">
+                <div *ngFor="let inst of installments" class="amount-line">
+                  <span class="label">{{ inst.label }} ({{ inst.paymentDateFormatted }})</span>
+                  <span class="value">{{ inst.amountPaid | number:'1.2-2' }} TZS</span>
+                </div>
+                <div class="amount-line" style="border-top:1px solid #009688; padding-top:6px; margin-top:6px;">
+                  <span class="label">{{ 'A4.PAID_SO_FAR' | translate }}</span>
+                  <span class="value">{{ installmentsSum | number:'1.2-2' }} TZS</span>
+                </div>
+              </div>
+
+              <div class="amount-line remaining" style="margin-top:10px;">
+                <span>{{ 'A4.REMAINING' | translate }}</span>
+                <span>{{ remainingAmount | number:'1.2-2' }} TZS</span>
+              </div>
+            </div>
+
+            
+          </section>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <div>
+    <!-- Control actions -->
+      <div class="control-actions">
+        <button mat-stroked-button color="primary" (click)="printInvoice()">
+          <mat-icon>print</mat-icon>&nbsp; {{ 'ACTIONS.PRINT' | translate }}
+        </button>
+        <button mat-flat-button color="primary" (click)="generatePDF()">
+          <mat-icon>download</mat-icon>&nbsp; {{ 'ACTIONS.DOWNLOAD' | translate }}
+        </button>
+      </div>
+
+      <!-- Loading state -->
+      <div *ngIf="loading" class="loading">
+        <mat-progress-spinner diameter="24" mode="indeterminate"></mat-progress-spinner>
+        <span>{{ 'ACTIONS.GENERATING' | translate }}</span>
+      </div>
+  </div>
+
+  <!-- Staff area (below invoice) -->
+  <div *ngIf="!loading" class="staff-area">
+    <h2 class="staff-title">{{ 'STAFF.TITLE' | translate }}</h2>
+    <div class="staff-grid">
+      <mat-card *ngFor="let staff of staffList" class="staff-card" (click)="callStaff(staff.phoneNumber)">
+        <mat-card-header>
+          <div mat-card-avatar class="staff-avatar">
+            <mat-icon>person</mat-icon>
+          </div>
+          <mat-card-title>{{ staff.fullName }}</mat-card-title>
+          <mat-card-subtitle>{{ staff.role }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p><strong>{{ 'STAFF.PHONE' | translate }}:</strong> {{ staff.phoneNumber }}</p>
         </mat-card-content>
       </mat-card>
-
     </div>
   </div>
 </div>

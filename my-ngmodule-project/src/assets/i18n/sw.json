@@ -165,6 +165,63 @@
       "pattern": "Tafadhali ingiza tarakimu 10 kamili."
     }
   }
+},
+
+"INVOICE": {
+"HEADING": "Invoice",
+"CONGRATS_SUB": "Hongera {{name}}, umefanikiwa kukodi ukumbi!,tafadhali pokea Ankara ya malipo"
+},
+
+"GUIDANCE": {
+"TITLE": "Soma Mwongozo wa Malipo na Ankara",
+"HTML": "<p><strong>SW:</strong> Una masaa 24 ya kulipa malipo ya awali ambayo ni sawa na 25% ya Jumla ya malipo kupitia namba ya malipo <strong>[CONTROL_NUMBER]</strong> la-sihivyo booking itafutwa. Unaweza kubadilisha tarehe za booking tu ikiwa ni muhimu.</p>\n.\n <p>Ili kulipa bili hii, tumia kumbukumbu  namba ya malipo uliyopewa <strong>[CONTROL_NUMBER]</strong> kwa njia rasmi za malipo. Njia kuu ni kupitia benki au huduma za kifedha za  simu zamkononi(M-Pesa, Tigo Pesa/Mix, Airtel Money, Halopesa)</p>\n.\n <p><strong>Jinsi ya kufanya malipo!</strong></p>\n<p><strong>1.Kupitia Benki:</strong> Tembelea tawi lolote au wakala wa benki iliyounganishwa na mfumo wa serikali (mfano NMB, CRDB,PBZ, TPB, NBC). Waambie mtoa huduma kuwa unalipa malipo ya serikali na toa kumbukumbu namba ya malipo kwa ajili ya malipo.</p>\n.\n <p>Lipia pesa taslimu au tumia uhamisho wa kielektroniki. (Kwa ATM au benki mtandao: chagua “Lipa Bili” au “Malipo ya Serikali” na ingiza kumbukumbu namba ya malipo.) Hifadhi risiti au uthibitisho wa malipo.</p>\n.\n<p><strong>2.Kupitia Huduma za Simu:</strong> Tumia USSD ya huduma yako na fuata maelekezo ya kulipa bili za serikali:</p>\n<p><strong>M-Pesa:</strong> Piga <strong>*150*00#</strong>, chagua Lipa Bili, kisha Malipo ya Serikali, kisha ingiza kumbukumbu namba ya malipo (PCN) na kisha kiasi na PIN yako.</p>\n<p><strong>Tigo Pesa (Mix):</strong> Piga <strong>*150*01#</strong>, chagua Lipa Bili (hatua 4), kisha Malipo ya Serikali (hatua 5), na ingiza kumbukumbu namba ya malipo.</p>\n<p><strong>Airtel Money:</strong> Piga <strong>*150*60#</strong>, kisha Lipa Bili →Malipo ya Serikali, kisha ingiza kumbukumbu namba ya malipo.</p>\n<p><strong>Halopesa (Halotel):</strong> Piga <strong>*150*88#</strong>, kisha Lipa Bili → Malipo ya Serikali, kisha ingiza kumbukumbu namba ya malipo</p>\n.\n<p>Baada ya kuweka namba ya udhibiti na kiasi, ingiza PIN yako kuthibitisha. Utapokea ujumbe mfupi (SMS) unaothibitisha malipo yako.</p>\n.\n<p>Hakikisha umeingiza namba ya udhibiti na kiasi sahihi. Mfumo wa malipo wa serikali utatambua malipo yako kiotomatiki kwa kutumia namba hiyo. Hifadhi risiti au uthibitisho wa malipo kama kumbukumbu zako.</p>"
+},
+
+
+"FEEDBACK": {
+"TITLE": "Bonyeza hapa kutoa maoni"
+},
+
+
+"A4": {
+"CUSTOMER_INFO_TITLE": "Taarifa za Mteja / Customer Information",
+"NAME_LABEL": "Jina / Name:",
+"PHONE_LABEL": "Simu / Phone:",
+"EMAIL_LABEL": "Barua pepe / Email:",
+"INVOICE_DETAILS_TITLE": "Maelezo ya Risiti / Invoice Details",
+"ISSUED_DATE": "Imetolewa / Issued Date:",
+"DUE_DATE": "Tarehe ya ukomo / Due Date:",
+"NOT_SPECIFIED": "Haijawekwa / Not Specified",
+"STATUS": "Hali / Status:",
+"CONTROL_NUMBER": "Namba ya Malipo / Control Number:",
+"START_DATE": "Tarehe ya Kuanzia / Start Event Date:",
+"END_DATE": "Tarehe ya Mwisho / End Event Date:",
+"VENUE": "Ukumbi / Venue:",
+"ACTIVITY": "Shughuli / Activity:",
+"DESCRIPTION": "Maelezo / Description",
+"AMOUNT_SUMMARY": "Muhtasari wa Malipo / Amount Summary",
+"AMOUNT": "Kiasi / Amount:",
+"DISCOUNT": "Punguzo / Discount:",
+"TOTAL": "Jumla / Total:",
+"INSTALLMENTS_LOADING": "Malipo yaliyofanyika / Installments:",
+"INSTALLMENTS_NONE": "Malipo yaliyolipwa / Installments paid:",
+"NONE_YET": "Hakuna / None yet",
+"PAID_SO_FAR": "Yamelipwa jumla / Paid so far:",
+"REMAINING": "Kubaki / Remaining:"
+},
+
+
+"ACTIONS": {
+"PRINT": "Chapisha Ankara",
+"DOWNLOAD": "Pakua PDF",
+"SCAN": "Skani QR ya Ankara",
+"GENERATING": "Inatengeneza PDF ya Ankara…"
+},
+
+
+"STAFF": {
+"TITLE": "Kwa kuongeza tafadhali piga simu..",
+"PHONE": "Simu"
 }
 }
 

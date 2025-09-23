@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, AbstractControl, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FeedbackService } from '../../Services/feedback.service';
 import { FeedbackDto, FeedbackType } from '../../models/models';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -12,7 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './feedback.component.html',
   styleUrls: ['./feedback.component.css']
 })
-export class FeedbackComponent {
+export class FeedbackComponent implements OnInit {
   sending = false;
   successMessage = '';
 
@@ -24,6 +24,7 @@ export class FeedbackComponent {
   constructor(
     private fb: FormBuilder,
     private router: Router,
+    private route: ActivatedRoute,
     private svc: FeedbackService,
     private snackBar: MatSnackBar,
     private translate: TranslateService
@@ -35,6 +36,23 @@ export class FeedbackComponent {
       type: ['FEEDBACK', Validators.required],
       comment: ['', [Validators.required, Validators.minLength(6)]]
     });
+  }
+
+  ngOnInit(): void {
+    // Read possible autofill values from query params (set by invoice page)
+    const qp = this.route.snapshot.queryParamMap;
+    const name = (qp.get('name') || '').trim();
+    const email = (qp.get('email') || '').trim();
+    const phone = (qp.get('phone') || '').trim();
+
+    // Only patch values we actually have (keeps default type)
+    const patch: Partial<{ name: string; email: string; phone: string; type: string }> = {};
+    if (name) patch.name = name;
+    if (email) patch.email = email;
+    if (phone) patch.phone = phone;
+
+    // Patch form with the values (will not touch other controls)
+    this.form.patchValue(patch);
   }
 
   // Strongly typed accessors

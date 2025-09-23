@@ -163,6 +163,64 @@
       "pattern": "Please enter exactly 10 digits."
     }
   }
+},
+
+"INVOICE": {
+"HEADING": "Invoice",
+"CONGRATS_SUB": "Congratulations {{name}}, your booking was successful, receive your invoice below!"
+},
+
+
+"GUIDANCE": {
+"TITLE": "Read payment Guidance and invoice",
+"HTML": "<p> You have 24 hours to pay your advance 25% of the total via control number <strong>[CONTROL_NUMBER]</strong>, if not so the booking will expire. You may update booking dates only if needed.</p>\n.\n <p>To pay this bill, use the provided Payment Control Number <strong>[CONTROL_NUMBER]</strong> at any authorized channel. Options include bank deposit/transfer or mobile money (M-Pesa, Tigo Pesa/Mix, Airtel Money, Halopesa)</p>\n.\n <p><strong>How to Pay!</strong></p>\n<p><strong>1.Bank Deposit or Transfer:</strong> Go to any branch or agent of a GePG-integrated bank (e.g. NMB, CRDB, TPB, NBC).Inform the teller you are making a government payment and give them the Payment Control Number found in your invoice as the reference number.Pay in cash or by electronic transfer.</p>\n.\n<p>(For online/mobile banking or ATM: select “Bill Pay” or “Government Payments” and enter the Payment Control Number.) Keep the deposit slip or transaction confirmation as proof.</p>\n.\n <p><strong>2.Mobile Money Payment:</strong></p>\n <p><strong>M-Pesa (Vodacom):</strong>Dial <strong>*150*00#</strong>, select Lipa Bili (Pay Bills), then Government Payments, and enter the PCN when prompted.</p>\n <p><strong>Tigo Pesa (Mix by Yass):</strong> Dial <strong>*150*01#</strong>, select Lipa Bili (usually option 4) then Government Payment (option 5), and enter the PCN.</p>\n <p><strong>Airtel Money:</strong> Dial <strong>*150*60#</strong>, choose Lipa Bili → Government Payments, then input the PCN.</p>\n <p><strong>Halopesa (Halotel):</strong> Dial <strong>*150*88#</strong>, choose Lipa Bili → Government Payments, then input the PCN</p>\n.\n<p>After entering the PCN and the amount, confirm with your mobile money PIN. You will receive an SMS receipt confirming the payment.</p>\n.\n<p>Always double-check that the PCN and amount are correct. The GePG system will automatically apply your payment using the PCN.Keep any receipt or confirmation as proof of payment.</p>"
+},
+
+
+"FEEDBACK": {
+"TITLE": "Click here to Leave feedback"
+},
+
+
+"A4": {
+"CUSTOMER_INFO_TITLE": "Customer Information / Taarifa za Mteja",
+"NAME_LABEL": "Name / Jina:",
+"PHONE_LABEL": "Phone / Simu:",
+"EMAIL_LABEL": "Email / Barua pepe:",
+"INVOICE_DETAILS_TITLE": "Invoice Details / Maelezo ya Risiti",
+"ISSUED_DATE": "Issued Date / Imetolewa:",
+"DUE_DATE": "Due Date / Tarehe ya ukomo:",
+"NOT_SPECIFIED": "Not Specified / Haijawekwa",
+"STATUS": "Status / Hali:",
+"CONTROL_NUMBER": "Control Number / Namba ya Malipo:",
+"START_DATE": "Start Event Date / Tarehe ya Kuanzia:",
+"END_DATE": "End Event Date / Tarehe ya Mwisho:",
+"VENUE": "Venue / Ukumbi:",
+"ACTIVITY": "Activity / Shughuli:",
+"DESCRIPTION": "Description / Maelezo",
+"AMOUNT_SUMMARY": "Amount Summary / Muhtasari wa Malipo",
+"AMOUNT": "Amount / Kiasi:",
+"DISCOUNT": "Discount / Punguzo:",
+"TOTAL": "Total / Jumla:",
+"INSTALLMENTS_LOADING": "Installments / Malipo yaliyofanyika:",
+"INSTALLMENTS_NONE": "Installments paid / Malipo yaliyolipwa:",
+"NONE_YET": "None yet / Hakuna",
+"PAID_SO_FAR": "Paid so far / Yamelipwa jumla:",
+"REMAINING": "Remaining / Kubaki:"
+},
+
+
+"ACTIONS": {
+"PRINT": "Print Invoice",
+"DOWNLOAD": "Download PDF",
+"SCAN": "Scan Invoice QR",
+"GENERATING": "Generating Invoice PDF…"
+},
+
+
+"STAFF": {
+"TITLE": "For any inquiry, Please call..",
+"PHONE": "Phone"
 }
 }
 

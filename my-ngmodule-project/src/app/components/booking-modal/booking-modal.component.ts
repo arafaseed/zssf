@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { BookingService } from '../../Services/booking.service';
 import { EmployeeVerifyComponent } from '../employee-verify/employee-verify.component';
 import { ConfirmBookingComponent } from '../confirm-booking/confirm-booking.component';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-booking-modal',
@@ -21,6 +22,7 @@ export class BookingModalComponent implements OnInit {
   optionalServices: any[] = [];
   discountRate = 0;
   employeeVerified = false;
+  verifying = false;
 
   constructor(
     public ref: MatDialogRef<BookingModalComponent>,
@@ -89,23 +91,61 @@ export class BookingModalComponent implements OnInit {
     this.attachedFile = f;
   }
 
-  openEmployeeVerify(event: any) {
-    if (event.checked) {
-      const dlg = this.dialog.open(EmployeeVerifyComponent, { width: '420px' });
-      dlg.afterClosed().subscribe((result: any) => {
-        if (result && result.verified) {
-          this.employeeVerified = true;
-          this.discountRate = result.discountRate ?? 0;
-        } else {
-          this.employeeVerified = false;
-          this.discountRate = 0;
-        }
-      });
-    } else {
+  // openEmployeeVerify(event: any) {
+  //   if (event.checked) {
+  //     const dlg = this.dialog.open(EmployeeVerifyComponent, { width: '420px' });
+  //     dlg.afterClosed().subscribe((result: any) => {
+  //       if (result && result.verified) {
+  //         this.employeeVerified = true;
+  //         this.discountRate = result.discountRate ?? 0;
+  //       } else {
+  //         this.employeeVerified = false;
+  //         this.discountRate = 0;
+  //       }
+  //     });
+  //   } else {
+  //     this.employeeVerified = false;
+  //     this.discountRate = 0;
+  //   }
+  // }
+
+  openEmployeeVerify(event: MatCheckboxChange): void {
+  if (event.checked) {
+    // Immediately un-check the checkbox visually so it doesn't "stick" while verifying.
+    try {
+      // MatCheckboxChange.source is the MatCheckbox instance
+      event.source.checked = false;
+    } catch {
+      // ignore if not available
+    }
+
+    this.verifying = true;
+
+    const dlg = this.dialog.open(EmployeeVerifyComponent, { width: '420px' });
+    dlg.afterClosed().subscribe((result: any) => {
+      this.verifying = false;
+
+      if (result && result.verified) {
+        // only set to true when dialog explicitly returns verified
+        this.employeeVerified = true;
+        this.discountRate = result.discountRate ?? 0;
+      } else {
+        // dialog cancelled or not verified -> ensure unchecked state and zero discount
+        this.employeeVerified = false;
+        this.discountRate = 0;
+      }
+    }, () => {
+      // on error: ensure fields reset
+      this.verifying = false;
       this.employeeVerified = false;
       this.discountRate = 0;
-    }
+    });
+  } else {
+    // user manually unchecked -> clear verification & discount
+    this.employeeVerified = false;
+    this.discountRate = 0;
   }
+}
 
   buildBookingObject() {
     let startDateStr: string, endDateStr: string, startTimeStr: string, endTimeStr: string;
