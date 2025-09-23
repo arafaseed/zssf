@@ -29,6 +29,7 @@ import { PoliciesSettingsComponent } from './Admin/policies-settings/policies-se
 import { StaffTableComponent } from './Admin/staff-table/staff-table.component';
 
 import { AdminFeedbacksComponent } from './Admin/admin-feedbacks/admin-feedbacks.component';
+import { ReportsComponent } from './staff/home/reports/reports.component';
 
 
 const routes: Routes = [
@@ -82,7 +83,7 @@ const routes: Routes = [
        { path: 'addoptional', component: OptionalServiceAddFormComponent },
       {path: 'editoptional', component: OptionalServiceEditFormComponent},
       { path: 'tableoptional', component: OptionalServiceTableComponent },
-
+      { path: 'report', component: ReportsComponent},
        { path: 'addstaff', component: StaffFormComponent },
 
 
