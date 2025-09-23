@@ -197,31 +197,19 @@ export class PdfViewerOverlayComponent implements OnInit, OnDestroy {
     if (!this.pdfBlobUrl) URL.revokeObjectURL(url);
   }
 
-  async printCurrent() {
-    if (!this.currentBlob) return;
-    const url = this.pdfBlobUrl ?? URL.createObjectURL(this.currentBlob);
-    const iframe = document.createElement('iframe');
-    iframe.style.position = 'fixed';
-    iframe.style.right = '0';
-    iframe.style.bottom = '0';
-    iframe.style.width = '0px';
-    iframe.style.height = '0px';
-    iframe.style.border = '0';
-    iframe.style.visibility = 'hidden';
-    iframe.src = url;
-    document.body.appendChild(iframe);
+ async printCurrent() {
+  if (!this.currentBlob) return;
 
-    const cleanup = () => {
-      try { document.body.removeChild(iframe); } catch {}
-      if (!this.pdfBlobUrl) URL.revokeObjectURL(url);
-    };
-
-    iframe.onload = () => {
-      try { iframe.contentWindow?.focus(); iframe.contentWindow?.print(); }
-      catch (e) { console.warn('[pdf-viewer] print failed', e); }
-      finally { setTimeout(cleanup, 600); }
-    };
+  const url = this.pdfBlobUrl ?? URL.createObjectURL(this.currentBlob);
+  const win = window.open(url, "_blank");
+  if (win) {
+    win.addEventListener("load", () => {
+      win.focus();
+      win.print();
+    });
   }
+}
+
 
   private deriveFilenameFromCurrent(): string | null {
     const url = this.docs?.[this.selectedIndex] ?? '';

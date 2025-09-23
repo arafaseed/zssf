@@ -11,9 +11,7 @@
       {{ 'feedback.description' | translate }}
     </p>
 
-    <p class="text-sm text-gray-600 mb-6 italic">
-      {{ 'feedback.tip' | translate }}
-    </p>
+    
 
     <form [formGroup]="form" (ngSubmit)="submitFeedback()" class="space-y-5">
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -44,8 +42,12 @@
 
       <div>
         <label class="block mb-2 text-sm font-medium text-gray-700">{{ 'feedback.type' | translate }}</label>
+        <p class="text-sm text-gray-600 mb-6 italic">
+      {{ 'feedback.tip' | translate }}
+    </p>
+       
         <mat-radio-group formControlName="type" class="flex gap-4">
-          <mat-radio-button value="COMMENT">{{ 'feedback.comment' | translate }}</mat-radio-button>
+           
           <mat-radio-button value="FEEDBACK">{{ 'feedback.feedback' | translate }}</mat-radio-button>
           <mat-radio-button value="COMPLAINT">{{ 'feedback.complaint' | translate }}</mat-radio-button>
         </mat-radio-group>

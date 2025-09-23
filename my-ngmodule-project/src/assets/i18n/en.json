@@ -5,12 +5,12 @@
     "whatsapp": "ZSSF WhatsApp"
   },
   "header": {
-    "title": "ZSSF Hall Reservation ",
+    "title": "ZSSF HALL RESERVATION ",
     "slogan": "Key To The Future"
   },
   "nav": {
     "home": "Home",
-    "my_booking": "My Booking",
+    "my_reservation": "My Reservation",
     "login": "Login",
     "Feedback": "Feedback",
     "Terms & Conditions": "Terms & Conditions"
@@ -18,7 +18,7 @@
   "terms": {
     "title": "Terms & Conditions",
     "lastUpdated": "Last Updated",
-    "disclaimer": "Please read these Terms carefully before using our Hall Booking platform. These Terms are presented in English and Swahili for clarity — where there is any discrepancy, the English version will apply.",
+    "disclaimer": "Please read these Terms carefully before using our ZSSF HALL RESERVATION. ",
     "intro": {
       "heading": "1. Introduction",
       "text": "These Terms govern the use of our online Hall Booking Reservation System. By using the System you acknowledge and accept these Terms. If you do not accept them, please do not use the System."
@@ -89,13 +89,12 @@
 
   "feedback": {
     "title": "Customer Feedback",
-    "description": "We value your voice. Tell us about your experience booking halls on our platform — whether it’s a quick comment, a positive feedback, or a complaint. We use your input to improve booking flow, availability, venue handover and support.",
-    "tip": "Tip: choose Comment for general notes, Feedback to praise or suggest improvements, or Complaint for service issues (delivery, condition, scheduling).",
+    "description": "We value your opinion. Share your experience of booking halls on our platform — whether as Feedback or a Complaint (e.g. delivery, condition, or scheduling). Your input helps us improve our services.",
     "name": "Full Name",
     "phone": "Phone (required)",
     "email": "Email (optional)",
     "type": "Type",
-    "comment": "Comment",
+    "tip": "Tip: Choose Feedback or Complaint for service issues.",
     "feedback": "Feedback",
     "complaint": "Complaint",
     "message": "Message",
@@ -130,8 +129,8 @@
       "staffIdRequired": "Staff ID is required",
       "passwordRequired": "Password is required",
       "invalidCredentials": "Invalid credentials"
-    },
-
+    }
+  },
   "phoneSearch": {
     "title": "Search Bookings",
     "subtitle": "by Phone Number",
@@ -222,6 +221,4 @@
 "TITLE": "For any inquiry, Please call..",
 "PHONE": "Phone"
 }
-}
-
 
