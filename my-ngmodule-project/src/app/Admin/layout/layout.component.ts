@@ -27,6 +27,7 @@ export class LayoutComponent {
     { label: 'Bookings', link: '/admin/bookinglist', icon: 'event_note' },
     { label: 'Staff', link: '/admin/staff', icon: 'people' },
     { label: 'Activity', link: '/admin/activitytable', icon: 'event' },
+    { label: 'Report', link: '/admin/report', icon: 'report' },
     { label: 'Customer Feedback', link: '/admin/feedback', icon: 'feedback' },
     { label: 'Policy Settings', link: '/admin/policies-settings', icon: 'settings' },
   ];
