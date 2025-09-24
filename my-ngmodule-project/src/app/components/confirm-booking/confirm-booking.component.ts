@@ -96,12 +96,13 @@ export class ConfirmBookingComponent implements OnInit {
     this.totalBookingPrice = (this.activityPrice + this.optionalPrice) * this.totalDays;
 
     const discountRate = Number(booking.discountRate ?? 0) || 0;
-    this.discountAmount = (this.totalBookingPrice * discountRate) / 100;
+    const safeRate = Number(booking.discountRate);
+    this.discountAmount = this.totalBookingPrice * safeRate;
     this.netAmount = this.totalBookingPrice - this.discountAmount;
 
     // make sure numeric fields are non-negative
     if (this.totalBookingPrice < 0) this.totalBookingPrice = 0;
-    if (this.discountAmount < 0) this.discountAmount = 0;
+    // if (this.discountAmount < 0) this.discountAmount = 0;
     if (this.netAmount < 0) this.netAmount = 0;
   }
 
