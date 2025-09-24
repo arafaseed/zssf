@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild, AfterViewInit, NgZone,ChangeDetectionStrategy,signal } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, AfterViewInit, NgZone, ChangeDetectionStrategy, ChangeDetectorRef, signal } from '@angular/core';
 import jsPDF from 'jspdf';
 import { ActivatedRoute, Router } from '@angular/router';
 import html2canvas from 'html2canvas';
@@ -42,7 +42,8 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
     private route: ActivatedRoute,
     private invoiceService: InvoiceService,
     private zone: NgZone,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   // --- helpers ---
@@ -72,14 +73,20 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
     this.route.params.subscribe(params => {
       this.bookingId = +params['bookingId'];
       this.fetchInvoice();
-      this.fetchInstallments();
     });
   }
 
   ngAfterViewInit(): void {
+    // Observe resize to keep A4 scaled. Run the observer callback inside Angular zone
+    // so any DOM-driven updates also trigger Angular zone work.
     this.resizeObserver = new ResizeObserver(() => {
-      this.applyScaleToA4();
-      // this.fetchInstallments();
+      // run inside Angular zone and mark for check
+      this.zone.run(() => {
+        this.applyScaleToA4();
+        // NOTE: we deliberately do NOT re-fetch installments on every resize to avoid redundant network calls.
+        // If you *do* need to re-fetch on certain sizes, call fetchInstallments(...) here with a guard.
+        this.cdr.markForCheck();
+      });
     });
     this.resizeObserver.observe(document.body);
   }
@@ -89,18 +96,36 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   fetchInvoice(): void {
+    this.loading = true;
     this.invoiceService.getInvoiceByBookingId(this.bookingId).subscribe({
       next: (data) => {
         this.invoiceData = this.normalizeInvoice(data);
+        // mark loading false and trigger view update
         this.loading = false;
+
+        // Immediately fetch installments (controlNumber may be undefined)
         this.fetchInstallments(this.invoiceData.controlNumber);
+
+        // fetch staff (keeps loading toggles internal)
         this.fetchStaff(data.booking?.venueId ?? data.venueId ?? 0);
+
+        // create QR (async)
         this.createQRForInvoicePage(this.bookingId, this.invoiceData.invoiceCode);
-        setTimeout(() => this.applyScaleToA4(), 200);
+
+        // small delay then scale so layout stabilizes
+        setTimeout(() => {
+          this.applyScaleToA4();
+          // ensure view updates after any DOM changes
+          this.cdr.markForCheck();
+        }, 200);
+
+        // ensure template updates now
+        this.cdr.markForCheck();
       },
       error: (err) => {
         console.error('Error fetching invoice:', err);
         this.loading = false;
+        this.cdr.markForCheck();
       }
     });
   }
@@ -125,15 +150,20 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private fetchStaff(venueId: number): void {
-    if (!venueId) return;
+    if (!venueId) {
+      this.cdr.markForCheck();
+      return;
+    }
     this.invoiceService.getStaffByAssignedVenue(venueId).subscribe({
       next: staff => {
         this.staffList = staff.filter(s => s.fullName !== 'Default Admin');
         this.loading = false;
+        this.cdr.markForCheck();
       },
       error: err => {
         console.error('Error fetching staff:', err);
         this.loading = false;
+        this.cdr.markForCheck();
       }
     });
   }
@@ -143,10 +173,14 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
       this.installments = [];
       this.installmentsSum = 0;
       this.remainingAmount = (this.invoiceData?.netAmount ?? this.invoiceData?.amount ?? 0);
+      // Ensure change detection notices the reset
+      this.cdr.markForCheck();
       return;
     }
 
     this.installmentsLoading = true;
+    this.cdr.markForCheck(); // show loading state if template shows it
+
     this.invoiceService.getPaymentsByControlNumber(controlNumber).subscribe({
       next: (payments) => {
         this.installments = payments.map((p: any, idx: number) => ({
@@ -163,6 +197,9 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
         const remaining = invoiceTotal - this.installmentsSum;
         this.remainingAmount = remaining > 0 ? +remaining : 0;
         this.installmentsLoading = false;
+
+        // Tell Angular OnPush: check this component and children
+        this.cdr.markForCheck();
       },
       error: (err) => {
         console.error('Error fetching installments:', err);
@@ -170,6 +207,7 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
         this.installmentsSum = 0;
         this.remainingAmount = (this.invoiceData?.netAmount ?? this.invoiceData?.amount ?? 0);
         this.installmentsLoading = false;
+        this.cdr.markForCheck();
       }
     });
   }
@@ -186,80 +224,80 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
       const baseUrl = new URL(baseHref, origin).toString().replace(/\/$/, '');
       const url = `${baseUrl}/invoice/${bookingId}${safeCode ? `?code=${safeCode}` : ''}`;
       this.qrDataUrl = await QRCode.toDataURL(url, { margin: 1, width: 200 });
+      this.cdr.markForCheck();
     } catch (err) {
       console.error('QR creation error', err);
     }
   }
 
-
   async generatePDF(): Promise<void> {
-  const invoiceEl = document.getElementById('invoice-a4');
-  if (!invoiceEl) return;
+    const invoiceEl = document.getElementById('invoice-a4');
+    if (!invoiceEl) return;
 
-  // Create pdf instance to get A4 dims in mm
-  const pdf = new (jsPDF as any)('p', 'mm', 'a4');
-  const pageW = pdf.internal.pageSize.getWidth();   // width in mm (210)
-  const pageH = pdf.internal.pageSize.getHeight();  // height in mm (297)
-  const marginMm = 10; // margin in mm (same as your print example)
-  const contentW = pageW - marginMm * 2;
-  const contentH = pageH - marginMm * 2;
+    // Create pdf instance to get A4 dims in mm
+    const pdf = new (jsPDF as any)('p', 'mm', 'a4');
+    const pageW = pdf.internal.pageSize.getWidth();   // width in mm (210)
+    const pageH = pdf.internal.pageSize.getHeight();  // height in mm (297)
+    const marginMm = 10; // margin in mm (same as your print example)
+    const contentW = pageW - marginMm * 2;
+    const contentH = pageH - marginMm * 2;
 
-  // Create an off-screen container with A4 width so html2canvas renders at that size
-  const tempContainer = document.createElement('div');
-  tempContainer.style.width = '210mm';           // force A4 width
-  tempContainer.style.boxSizing = 'border-box';
-  tempContainer.style.padding = `${marginMm}mm`; // match PDF margins
-  tempContainer.style.background = '#ffffff';
-  // keep it off-screen and not visible
-  tempContainer.style.position = 'fixed';
-  tempContainer.style.left = '-10000px';
-  tempContainer.style.top = '0';
-  // copy the invoice markup
-  tempContainer.innerHTML = invoiceEl.outerHTML;
+    // Create an off-screen container with A4 width so html2canvas renders at that size
+    const tempContainer = document.createElement('div');
+    tempContainer.style.width = '210mm';           // force A4 width
+    tempContainer.style.boxSizing = 'border-box';
+    tempContainer.style.padding = `${marginMm}mm`; // match PDF margins
+    tempContainer.style.background = '#ffffff';
+    // keep it off-screen and not visible
+    tempContainer.style.position = 'fixed';
+    tempContainer.style.left = '-10000px';
+    tempContainer.style.top = '0';
+    // copy the invoice markup
+    tempContainer.innerHTML = invoiceEl.outerHTML;
 
-  document.body.appendChild(tempContainer);
+    document.body.appendChild(tempContainer);
 
-  // allow the browser a moment to render (ensures fonts and images have layout)
-  await new Promise((r) => setTimeout(r, 50));
+    // allow the browser a moment to render (ensures fonts and images have layout)
+    await new Promise((r) => setTimeout(r, 50));
 
-  try {
-    const canvas = await html2canvas(tempContainer, {
-      scale: 2,        // increase quality
-      useCORS: true,
-      allowTaint: false,
-      backgroundColor: '#ffffff'
-    });
+    try {
+      const canvas = await html2canvas(tempContainer, {
+        scale: 2,        // increase quality
+        useCORS: true,
+        allowTaint: false,
+        backgroundColor: '#ffffff'
+      });
 
-    const imgData = canvas.toDataURL('image/png');
+      const imgData = canvas.toDataURL('image/png');
 
-    // Use canvas pixel dimensions to keep aspect ratio, but fit into the PDF content box
-    const canvasW = canvas.width;
-    const canvasH = canvas.height;
-    const imgRatio = canvasW / canvasH;
+      // Use canvas pixel dimensions to keep aspect ratio, but fit into the PDF content box
+      const canvasW = canvas.width;
+      const canvasH = canvas.height;
+      const imgRatio = canvasW / canvasH;
 
-    // compute final image size in mm to fit inside contentW x contentH
-    let finalW = contentW;
-    let finalH = finalW / imgRatio;
+      // compute final image size in mm to fit inside contentW x contentH
+      let finalW = contentW;
+      let finalH = finalW / imgRatio;
 
-    if (finalH > contentH) {
-      finalH = contentH;
-      finalW = finalH * imgRatio;
+      if (finalH > contentH) {
+        finalH = contentH;
+        finalW = finalH * imgRatio;
+      }
+
+      // center the image on the page
+      const x = (pageW - finalW) / 2;
+      const y = (pageH - finalH) / 2;
+
+      pdf.addImage(imgData, 'PNG', x, y, finalW, finalH);
+      const filename = `${(this as any).invoiceData?.invoiceCode || 'invoice'}.pdf`;
+      pdf.save(filename);
+    } catch (err) {
+      console.error('PDF generation failed', err);
+    } finally {
+      // cleanup
+      tempContainer.remove();
     }
-
-    // center the image on the page
-    const x = (pageW - finalW) / 2;
-    const y = (pageH - finalH) / 2;
-
-    pdf.addImage(imgData, 'PNG', x, y, finalW, finalH);
-    const filename = `${(this as any).invoiceData?.invoiceCode || 'invoice'}.pdf`;
-    pdf.save(filename);
-  } catch (err) {
-    console.error('PDF generation failed', err);
-  } finally {
-    // cleanup
-    tempContainer.remove();
   }
-}
 
   printInvoice(): void {
     const invoiceEl = document.getElementById('invoice-a4');
@@ -296,7 +334,6 @@ export class InvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
       popup.close();
     };
   }
-
 
   // When staff card clicked - dial or copy to clipboard
   callStaff(phone?: string) {

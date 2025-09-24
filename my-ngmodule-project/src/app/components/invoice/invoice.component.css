@@ -42,10 +42,11 @@
 /* Invoice card */
 .invoice-card {
   width: 100%;
-  height: 100%;
+  height: auto;
   box-sizing: border-box;
   margin-bottom: auto;
   padding: auto;
+  display:flex;
 }
 
 /* A4 viewport wrapper - center and mimic a real paper on a table */
@@ -56,6 +57,7 @@
   align-items:flex-start;
   overflow:auto;
   border-radius: 8px;
+  min-height: 270mm;
 
 }
 
@@ -81,7 +83,10 @@
 
 /* Reduce base font a bit for narrow viewports so it fits within scaled A4 */
 @media (max-width: 420px) {
-  .invoice-container { font-size: 12px; }
+  .invoice-container { 
+    font-size: 12px; 
+    min-height: 257mm;
+  }
 }
 
 /* Header */
@@ -91,13 +96,21 @@
   justify-content:space-between;
   margin-bottom: 1rem;
 }
-.zssf-logo,
- .qr-code {
+.zssf-logo{
   width: 120px;
   display: flex;
   align-items: center;
   margin: auto;
 }
+
+.qr-code {
+  width: 120px;
+  display: flex;
+  align-items: center;
+  margin: auto;
+  padding-top:12px;
+}
+
 .logo { width: 100%; height: auto; }
 .title-block { 
   text-align:center; 

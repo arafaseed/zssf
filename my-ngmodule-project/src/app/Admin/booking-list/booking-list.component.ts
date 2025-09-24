@@ -152,10 +152,10 @@ export class BookingListComponent implements OnInit, AfterViewInit {
 
   getStatusColor(status: string) {
     switch (status) {
-      case 'CANCELLED':
+      case 'CANCELLED': return 'red';
       case 'EXPIRED': return 'red';
-      case 'IN_PROGRESS': return 'green';
-      case 'COMPLETE': return 'blue';
+      case 'IN_PROGRESS': return 'blue';
+      case 'COMPLETE': return 'green';
       case 'PENDING': return 'goldenrod';
       default: return 'black';
     }

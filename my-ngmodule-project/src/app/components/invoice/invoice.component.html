@@ -18,7 +18,7 @@
       </mat-expansion-panel-header>
 
       <!-- Content is expected to come from translations (HTML allowed). Fallback to raw content if translations are missing. -->
-      <div class="panel-content" [innerHTML]="'GUIDANCE.HTML' | translate"></div>
+      <div class="panel-content" [innerHTML]="'GUIDANCE.HTML' | translate:{pcn: invoiceData?.controlNumber || ''}"></div>
     </mat-expansion-panel>
   </mat-accordion>
   <mat-accordion>
@@ -35,7 +35,8 @@
   </div>
 
   <!-- Invoice card / A4 viewport (always looks like a paper sheet) -->
-  <mat-card class="invoice-card" id="invoice-a4">
+  <mat-card class="invoice-card" >
+    <div id="invoice-a4">
     <mat-card-content>
       <div #a4wrapper class="a4-viewport" >
         <div  class="invoice-container" role="document" aria-label="Invoice document">
@@ -170,6 +171,7 @@
         </div>
       </div>
     </mat-card-content>
+    </div>
   </mat-card>
   <div>
     <!-- Control actions -->

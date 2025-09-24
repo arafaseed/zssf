@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 import { FeedbackDto } from '../models/models';
 import { environment } from '../../environments/environment';
 
@@ -11,6 +11,7 @@ import { environment } from '../../environments/environment';
 })
 export class FeedbackService {
   private base = `${environment.apiUrl}/api/feedback`;
+  private baseUrl = `${environment.apiUrl}/api/customers`;
 
   constructor(private http: HttpClient) {}
 
@@ -33,5 +34,18 @@ export class FeedbackService {
 
   deleteFeedback(id: number): Observable<void> {
     return this.http.delete<void>(`${this.base}/delete/${id}`);
+  }
+
+   checkCustomerExists(phone: string): Observable<boolean> {
+    if (!phone) {
+      return of(false);
+    }
+    const params = new HttpParams().set('phone', phone);
+    return this.http
+      .get<boolean>(`${this.baseUrl}/exists`, { params })
+      .pipe(
+        // if backend fails, treat as 'not exists' and let component show error
+        catchError(() => of(false))
+      );
   }
 }

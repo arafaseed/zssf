@@ -1,0 +1,133 @@
+<!-- reports.component.html -->
+<div class="p-4 font-poppins">
+  <!-- Venue selector horizontal bar -->
+  <div class="mb-4">
+    <h3 class="text-sm font-medium text-slate-700 mb-2">Select Venue</h3>
+
+    <!-- Loading / error for venues -->
+    <div *ngIf="venuesLoading" class="flex items-center gap-3 text-sm text-gray-500 mb-2">
+      <mat-progress-spinner diameter="20" mode="indeterminate" class="inline-block" aria-hidden="true"></mat-progress-spinner>
+      <span>Loading venues…</span>
+    </div>
+    <div *ngIf="venuesError" class="text-sm text-red-600 mb-2">
+      {{ venuesError }}
+    </div>
+
+    <!-- Horizontal scrollable list of buttons (always rendered; buttons appear when venues are present) -->
+    <div class="flex gap-2 overflow-x-auto pb-2" role="tablist" aria-label="Venue selector">
+      <!-- If no venues yet, show a subtle placeholder -->
+      <ng-container *ngIf="!venuesLoading && (!venues || venues.length === 0)">
+        <div class="text-sm text-gray-500 px-3 py-1">No venues found</div>
+      </ng-container>
+
+      <!-- NEW -->
+<button
+  *ngFor="let v of venues"
+  (click)="selectVenue(v.venueId)"
+  [attr.aria-pressed]="v.venueId === venueId"
+  class="whitespace-nowrap px-3 py-1 rounded-md border focus:outline-none text-sm"
+  [ngClass]="{
+    'bg-indigo-600 text-white border-indigo-700': v.venueId === venueId,
+    'bg-gray-100 text-slate-800 border-gray-200 hover:bg-gray-200': v.venueId !== venueId
+  }"
+  type="button"
+  [attr.aria-label]="'Show reports for ' + v.venueName">
+  {{ v.venueName }}
+</button>
+
+    </div>
+  </div>
+
+  <!-- Loading State for reports -->
+  <div *ngIf="loading" class="text-center py-8">
+    <mat-progress-spinner
+      diameter="48"
+      mode="indeterminate"
+      class="mx-auto"
+      aria-label="Loading reports spinner">
+    </mat-progress-spinner>
+    <p class="mt-2 text-gray-500">Loading reports…</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!loading && errorMessage" class="text-center text-red-600 py-4">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Table -->
+  <div *ngIf="!loading && !errorMessage" class="overflow-x-auto">
+    <table mat-table [dataSource]="reports" class="min-w-full bg-white border border-gray-200 rounded-md-lg">
+
+      <!-- Booking Code (forBookingId) -->
+      <ng-container matColumnDef="forBookingId">
+        <th mat-header-cell *matHeaderCellDef class="px-4 py-2 border-b bg-blue-50">Booking ID</th>
+        <td mat-cell *matCellDef="let r" class="px-4 py-2 border-b">{{ r.forBookingId }}</td>
+      </ng-container>
+
+      <!-- Customer -->
+      <ng-container matColumnDef="customerFullName">
+        <th mat-header-cell *matHeaderCellDef class="px-4 py-2 border-b bg-blue-50">Customer</th>
+        <td mat-cell *matCellDef="let r" class="px-4 py-2 border-b">{{ r.customerFullName }}</td>
+      </ng-container>
+
+      <!-- Phone -->
+      <ng-container matColumnDef="customerPhone">
+        <th mat-header-cell *matHeaderCellDef class="px-4 py-2 border-b bg-blue-50">Phone</th>
+        <td mat-cell *matCellDef="let r" class="px-4 py-2 border-b">{{ r.customerPhone }}</td>
+      </ng-container>
+
+      <!-- Venue -->
+      <ng-container matColumnDef="venueName">
+        <th mat-header-cell *matHeaderCellDef class="px-4 py-2 border-b bg-blue-50">Venue</th>
+        <td mat-cell *matCellDef="let r" class="px-4 py-2 border-b">{{ r.venueName }}</td>
+      </ng-container>
+
+      <!-- Price -->
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef class="px-4 py-2 border-b bg-blue-50">Price</th>
+        <td mat-cell *matCellDef="let r" class="px-4 py-2 border-b">{{ r.price | currency:'TZS':'symbol' }}</td>
+      </ng-container>
+
+      <!-- Check-In -->
+      <ng-container matColumnDef="checkInTime">
+        <th mat-header-cell *matHeaderCellDef class="px-4 py-2 border-b bg-blue-50">Check-In</th>
+        <td mat-cell *matCellDef="let r" class="px-4 py-2 border-b">
+          {{ r.checkInTime ? (r.checkInTime | date:'short') : '–' }}
+        </td>
+      </ng-container>
+
+      <!-- Check-Out -->
+      <ng-container matColumnDef="checkOutTime">
+        <th mat-header-cell *matHeaderCellDef class="px-4 py-2 border-b bg-blue-50">Check-Out</th>
+        <td mat-cell *matCellDef="let r" class="px-4 py-2 border-b">
+          {{ r.checkOutTime ? (r.checkOutTime | date:'short') : '–' }}
+        </td>
+      </ng-container>
+
+      <!-- Condition -->
+      <ng-container matColumnDef="conditionStatus">
+        <th mat-header-cell *matHeaderCellDef class="px-4 py-2 border-b bg-blue-50">Condition</th>
+        <td mat-cell *matCellDef="let r" class="px-4 py-2 border-b">{{ r.conditionStatus || '–' }}</td>
+      </ng-container>
+
+      <!-- Description -->
+      <ng-container matColumnDef="conditionDescription">
+        <th mat-header-cell *matHeaderCellDef class="px-4 py-2 border-b bg-blue-50">Description</th>
+        <td mat-cell *matCellDef="let r" class="px-4 py-2 border-b">{{ r.conditionDescription || '–' }}</td>
+      </ng-container>
+
+      <!-- Header & Row Declarations -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns" class="text-left"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="hover:bg-gray-50"></tr>
+
+      <!-- Empty state -->
+      <ng-container *ngIf="reports.length === 0">
+        <tr>
+          <td [attr.colspan]="displayedColumns.length" class="text-center py-8 text-gray-500">
+            No reports available.
+          </td>
+        </tr>
+      </ng-container>
+    </table>
+  </div>
+</div>

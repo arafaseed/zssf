@@ -11,8 +11,6 @@
       {{ 'feedback.description' | translate }}
     </p>
 
-    
-
     <form [formGroup]="form" (ngSubmit)="submitFeedback()" class="space-y-5">
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <mat-form-field class="w-full">
@@ -25,9 +23,13 @@
 
         <mat-form-field class="w-full">
           <mat-label>{{ 'feedback.phone' | translate }}</mat-label>
-          <input matInput formControlName="phone" [placeholder]="'feedback.placeholderPhone' | translate" required>
+          <!-- added blur handler -->
+          <input matInput formControlName="phone" (blur)="onPhoneBlur()" [placeholder]="'feedback.placeholderPhone' | translate" required>
           <mat-error *ngIf="form.controls['phone'].hasError('required')">
             {{ 'feedback.errors.phoneRequired' | translate }}
+          </mat-error>
+          <mat-error *ngIf="form.controls['phone'].hasError('pattern')">
+            {{ 'feedback.errors.phoneInvalid' | translate }}
           </mat-error>
         </mat-form-field>
       </div>
@@ -43,18 +45,28 @@
       <div>
         <label class="block mb-2 text-sm font-medium text-gray-700">{{ 'feedback.type' | translate }}</label>
         <p class="text-sm text-gray-600 mb-6 italic">
-      {{ 'feedback.tip' | translate }}
-    </p>
-       
+          {{ 'feedback.tip' | translate }}
+        </p>
+
         <mat-radio-group formControlName="type" class="flex gap-4">
-           
           <mat-radio-button value="FEEDBACK">{{ 'feedback.feedback' | translate }}</mat-radio-button>
           <mat-radio-button value="COMPLAINT">{{ 'feedback.complaint' | translate }}</mat-radio-button>
         </mat-radio-group>
       </div>
 
+      <!-- Inline verification status -->
+      <div class="mb-2">
+        <p *ngIf="phoneVerified === true" class="text-sm text-green-700">
+          {{ 'feedback.phoneVerified' | translate }}
+        </p>
+        <p *ngIf="phoneVerified === false" class="text-sm text-red-700">
+          {{ 'feedback.phoneNotRegistered' | translate }}
+        </p>
+      </div>
+
       <mat-form-field class="w-full">
         <mat-label>{{ 'feedback.message' | translate }}</mat-label>
+        <!-- the comment control is programmatically disabled until phone verification passes -->
         <textarea matInput rows="5" formControlName="comment" [placeholder]="'feedback.placeholderMessage' | translate"></textarea>
         <mat-error *ngIf="form.controls['comment'].hasError('required')">
           {{ 'feedback.errors.messageRequired' | translate }}
@@ -62,7 +74,7 @@
       </mat-form-field>
 
       <div class="flex gap-4">
-        <button mat-flat-button color="primary" type="submit" [disabled]="sending" class="flex-1">
+        <button mat-flat-button color="primary" type="submit" [disabled]="sending || phoneVerified === false" class="flex-1">
           <mat-icon class="mr-2">send</mat-icon>
           {{ sending ? ('feedback.sending' | translate) : ('feedback.submit' | translate) }}
         </button>

@@ -56,26 +56,15 @@
               <p><strong>{{ 'phoneSearch.bookingCode' | translate }}:</strong> {{ booking.bookingCode }}</p>
               <p><strong>{{ 'phoneSearch.customer' | translate }}:</strong> {{booking.customer.customerName}}</p>
               <p><strong>{{ 'phoneSearch.bookingDate' | translate }}:</strong> {{booking.bookingDate}}</p>
-              <p><strong>{{ 'phoneSearch.startDate' | translate }}:</strong> {{ booking.startDate | date }} {{ booking.startTime }}</p>
-              <p><strong>{{ 'phoneSearch.endDate' | translate }}:</strong> {{ booking.endDate | date }} {{ booking.endTime }}</p>
-              <p><strong>{{ 'phoneSearch.status' | translate }}:</strong>
-                <span [ngClass]="{
-                  'status-pending': booking.bookingStatus === 'PENDING',
-                  'status-complete': booking.bookingStatus === 'COMPLETED'
-                }">{{ booking.bookingStatus }}</span>
-              </p>
-              <p><strong>{{ 'phoneSearch.venue' | translate }}:</strong> {{ booking.venueName }}</p>
+              <p><strong>{{ 'phoneSearch.eventStartDate' | translate }}:</strong> {{ booking.startDate | date }} {{ booking.startTime }}</p>
+              <p><strong>{{ 'phoneSearch.eventEndDate' | translate }}:</strong> {{ booking.endDate | date }} {{ booking.endTime }}</p>
+              <p><strong>{{ 'phoneSearch.status' | translate }}:</strong> <span [ngClass]="{'status-cancelled': booking.bookingStatus === 'CANCELLED',
+                'status-expired': booking.bookingStatus === 'EXPIRED',
+                'status-pending': booking.bookingStatus === 'PENDING', 
+                'status-in-progress': booking.bookingStatus === 'IN_PROGRESS','status-complete': booking.bookingStatus === 'COMPLETE'}">{{ booking.bookingStatus }}</span></p>
+              <p><strong>{{ 'phoneSearch.venue' | translate }}:</strong> {{ booking.venueName }} </p>
               <p><strong>{{ 'phoneSearch.activity' | translate }}:</strong> {{ booking.venueActivityName }}</p>
               <p><strong>{{ 'phoneSearch.moreInfo' | translate }}</strong></p>
-              <p><strong>Booking Code:</strong> {{ booking.bookingCode }}</p>
-              <p><strong>Customer</strong> {{booking.customer.customerName}}</p>
-              <p><strong>Booking date</strong> {{booking.bookingDate}}</p>
-              <p><strong>Event Start date:</strong> {{ booking.startDate | date }} {{ booking.startTime }}</p>
-              <p><strong>Event End date:</strong> {{ booking.endDate | date }} {{ booking.endTime }}</p>
-              <p><strong>Status:</strong> <span [ngClass]="{'status-cancelled': booking.bookingStatus === 'CANCELLED','status-expired': booking.bookingStatus === 'EXPIRED','status-pending': booking.bookingStatus === 'PENDING', 'status-in-progress': booking.bookingStatus === 'IN_PROGRESS','status-complete': booking.bookingStatus === 'COMPLETE'}">{{ booking.bookingStatus }}</span></p>
-              <p><strong>Venue:</strong> {{ booking.venueName }} </p>
-              <p><strong>Activity:</strong> {{ booking.venueActivityName }}</p>
-              <p><strong>View invoice for more info</strong></p>
             </div>
 
             <mat-divider class="my-4"></mat-divider>
@@ -94,19 +83,14 @@
 
               <!-- <a
                 *ngIf="booking.invoiceId"
-                [href]="'/invoice/' + booking.invoiceId"
+                [href]="'/feedback/' + booking.invoiceId"
                 target="_blank"
                 mat-flat-button
                 color="primary"
                 class="action-button"
               >
-<<<<<<< HEAD
-                {{ 'phoneSearch.updateReservation' | translate }}
-              </a>
-=======
                 Update Reservation
               </a> -->
->>>>>>> ab056b9989bebea4add70ca9e41c246f2008a7ba
 
               <button
                 *ngIf="booking.bookingStatus.toLowerCase() !== 'completed' && booking.bookingStatus.toLowerCase() !== 'cancelled'"

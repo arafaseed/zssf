@@ -105,6 +105,9 @@
     "submit": "Submit Feedback",
     "cancel": "Cancel",
     "sending": "Sending…",
+    "phoneVerified": "Phone verified — you may proceed to enter your message.",
+    "phoneNotRegistered": "We couldn't find your phone number. Please book a venue first before sending feedback or a complaint.",
+    "phoneCheckFailed": "Unable to verify phone at the moment. Please try again later.",
     "errors": {
       "nameRequired": "Your name is required",
       "phoneRequired": "Required phone number must be in 10 digits",
@@ -141,12 +144,12 @@
     "bookingCode": "Booking Code",
     "customer": "Customer",
     "bookingDate": "Booking Date",
-    "eventStart": "Event Start Date",
-    "eventEnd": "Event End Date",
-    "status": "Status",
+    "eventStartDate": "Event Start Date",
+    "eventEndDate": "Event End Date",
+    "status": "Booking Status",
     "venue": "Venue",
     "activity": "Activity",
-    "viewInvoiceInfo": "View invoice for more info",
+    "moreInfo": "View invoice for more info",
     "viewInvoice": "View Invoice",
     "updateReservation": "Update Reservation",
     "cancelBooking": "Cancel Booking",
@@ -161,8 +164,8 @@
       "required": "Phone number is required.",
       "pattern": "Please enter exactly 10 digits."
     }
-  }
-},
+  },
+
 
 "INVOICE": {
 "HEADING": "Invoice",
@@ -172,14 +175,13 @@
 
 "GUIDANCE": {
 "TITLE": "Read payment Guidance and invoice",
-"HTML": "<p> You have 24 hours to pay your advance 25% of the total via control number <strong>[CONTROL_NUMBER]</strong>, if not so the booking will expire. You may update booking dates only if needed.</p>\n.\n <p>To pay this bill, use the provided Payment Control Number <strong>[CONTROL_NUMBER]</strong> at any authorized channel. Options include bank deposit/transfer or mobile money (M-Pesa, Tigo Pesa/Mix, Airtel Money, Halopesa)</p>\n.\n <p><strong>How to Pay!</strong></p>\n<p><strong>1.Bank Deposit or Transfer:</strong> Go to any branch or agent of a GePG-integrated bank (e.g. NMB, CRDB, TPB, NBC).Inform the teller you are making a government payment and give them the Payment Control Number found in your invoice as the reference number.Pay in cash or by electronic transfer.</p>\n.\n<p>(For online/mobile banking or ATM: select “Bill Pay” or “Government Payments” and enter the Payment Control Number.) Keep the deposit slip or transaction confirmation as proof.</p>\n.\n <p><strong>2.Mobile Money Payment:</strong></p>\n <p><strong>M-Pesa (Vodacom):</strong>Dial <strong>*150*00#</strong>, select Lipa Bili (Pay Bills), then Government Payments, and enter the PCN when prompted.</p>\n <p><strong>Tigo Pesa (Mix by Yass):</strong> Dial <strong>*150*01#</strong>, select Lipa Bili (usually option 4) then Government Payment (option 5), and enter the PCN.</p>\n <p><strong>Airtel Money:</strong> Dial <strong>*150*60#</strong>, choose Lipa Bili → Government Payments, then input the PCN.</p>\n <p><strong>Halopesa (Halotel):</strong> Dial <strong>*150*88#</strong>, choose Lipa Bili → Government Payments, then input the PCN</p>\n.\n<p>After entering the PCN and the amount, confirm with your mobile money PIN. You will receive an SMS receipt confirming the payment.</p>\n.\n<p>Always double-check that the PCN and amount are correct. The GePG system will automatically apply your payment using the PCN.Keep any receipt or confirmation as proof of payment.</p>"
+"HTML": "<p> You have 24 hours to pay your advance 25% of the total via control number <strong>{{pcn}}</strong>, if not so the booking will expire. You may update booking dates only if needed.</p>\n.\n <p>To pay this bill, use the provided Payment Control Number <strong>{{pcn}}</strong> at any authorized channel. Options include bank deposit/transfer or mobile money (M-Pesa, Tigo Pesa/Mix, Airtel Money, Halopesa)</p>\n.\n <p><strong>How to Pay!</strong></p>\n<p><strong>1.Bank Deposit or Transfer:</strong> Go to any branch or agent of a GePG-integrated bank (e.g. NMB, CRDB, TPB, NBC).Inform the teller you are making a government payment and give them the Payment Control Number found in your invoice as the reference number.Pay in cash or by electronic transfer.</p>\n.\n<p>(For online/mobile banking or ATM: select “Bill Pay” or “Government Payments” and enter the Payment Control Number.) Keep the deposit slip or transaction confirmation as proof.</p>\n.\n <p><strong>2.Mobile Money Payment:</strong></p>\n <p><strong>M-Pesa (Vodacom):</strong>Dial <strong>*150*00#</strong>, select Lipa Bili (Pay Bills), then Government Payments, and enter the PCN when prompted.</p>\n <p><strong>Tigo Pesa (Mix by Yass):</strong> Dial <strong>*150*01#</strong>, select Lipa Bili (usually option 4) then Government Payment (option 5), and enter the PCN.</p>\n <p><strong>Airtel Money:</strong> Dial <strong>*150*60#</strong>, choose Lipa Bili → Government Payments, then input the PCN.</p>\n <p><strong>Halopesa (Halotel):</strong> Dial <strong>*150*88#</strong>, choose Lipa Bili → Government Payments, then input the PCN</p>\n.\n<p>After entering the PCN and the amount, confirm with your mobile money PIN. You will receive an SMS receipt confirming the payment.</p>\n.\n<p>Always double-check that the PCN and amount are correct. The GePG system will automatically apply your payment using the PCN.Keep any receipt or confirmation as proof of payment.</p>"
 },
 
 
 "FEEDBACK": {
 "TITLE": "Click here to Leave feedback"
 },
-
 
 "A4": {
 "CUSTOMER_INFO_TITLE": "Customer Information / Taarifa za Mteja",
@@ -220,5 +222,6 @@
 "STAFF": {
 "TITLE": "For any inquiry, Please call..",
 "PHONE": "Phone"
+}
 }
 

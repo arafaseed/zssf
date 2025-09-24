@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -26,7 +26,6 @@ interface BookingStat {
   status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETE' | 'CANCELLED' | 'EXPIRED' | string;
   count: number;
 }
-
 
 @Component({
   selector: 'app-dashboard',
@@ -62,34 +61,30 @@ export class DashboardComponent implements OnInit {
   searchDate = '';
 
   /* ----------------- OVERLAY CONTROL PROPS (NEW) ----------------- */
-
-  /** flag controlling visibility of the overlay component */
   showPdfOverlay = false;
-
-  /** docs passed to overlay */
   selectedDocs: string[] = [];
-
-  /** selected booking info passed to overlay */
   selectedBookingId?: number;
   selectedBookingCode?: string;
   pdfAuthToken?: string;
-
-  /** ViewChild reference to call overlay cleanup before hiding */
   @ViewChild('pdfOverlay') pdfOverlay?: PdfViewerOverlayComponent;
-
   /* --------------------------------------------------------------- */
 
-    // New: booking stats for year/month
-  statsYear: number = new Date().getFullYear();     // default to current year
+  // New: booking stats for year/month
+  statsYear: number = new Date().getFullYear();
   statsMonth: string = (() => {
     const d = new Date();
     const mm = String(d.getMonth() + 1).padStart(2, '0');
     return `${d.getFullYear()}-${mm}`;
-  })(); // format "YYYY-MM"
+  })();
 
   yearlyStats: BookingStat[] = [];
   monthlyStats: BookingStat[] = [];
 
+  /**
+   * NEW minimal property: bound to the <select> in template so switching is immediate.
+   * Default to YEARLY to preserve previous behaviour.
+   */
+  viewMode: 'YEARLY' | 'MONTHLY' = 'YEARLY';
 
   constructor(
     private dashboardService: DashboardService,
@@ -212,26 +207,17 @@ export class DashboardComponent implements OnInit {
     this.availableVenues = [];
   }
 
-    /**
-   * Return a small width percentage for the tiny bar in the cards.
-   * Scale to a reasonable maximum (so tiny bars are visible).
-   */
   statBarWidth(count: number): string {
     const max = Math.max(1, ...this.yearlyStats.map(s => s.count), ...this.monthlyStats.map(s => s.count), 10);
     const pct = Math.round(Math.min(100, (count / max) * 100));
     return `${pct}%`;
   }
 
-  /**
-   * Load yearly booking stats for the given year.
-   */
   loadBookingStatsYear(year?: number) {
     const y = year ?? this.statsYear ?? new Date().getFullYear();
     this.statsYear = y;
-    // Use your DashboardService; we will add method getYearlyBookingStats in service
     this.dashboardService.getYearlyBookingStats(y).subscribe({
       next: (data: BookingStat[]) => {
-        // ensure we have canonical statuses in predictable order (optional)
         this.yearlyStats = this.normalizeStatsArray(data);
       },
       error: (err) => {
@@ -241,10 +227,6 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  /**
-   * Load monthly booking stats from statsMonth input which is "YYYY-MM".
-   * Will parse and call the service method.
-   */
   loadBookingStatsMonthFromInput() {
     if (!this.statsMonth) return;
     const [yStr, mStr] = (this.statsMonth || '').split('-');
@@ -255,7 +237,6 @@ export class DashboardComponent implements OnInit {
   }
 
   loadBookingStatsMonth(year: number, month: number) {
-    // call service method we'll add below
     this.dashboardService.getMonthlyBookingStats(year, month).subscribe({
       next: (data: BookingStat[]) => {
         this.monthlyStats = this.normalizeStatsArray(data);
@@ -267,17 +248,12 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  /**
-   * Normalize returned array so it always includes statuses in a stable order
-   * (PENDING, IN_PROGRESS, COMPLETE, CANCELLED, EXPIRED). If some missing, add 0.
-   */
   private normalizeStatsArray(data: BookingStat[]): BookingStat[] {
     const wanted = ['PENDING','IN_PROGRESS','COMPLETE','CANCELLED','EXPIRED'];
     const map = new Map<string, number>();
     (data || []).forEach(x => map.set(x.status, x.count ?? 0));
     return wanted.map(s => ({ status: s, count: map.get(s) ?? 0 }));
   }
-
 
   searchBookings() {
     this.filteredBookings = this.bookings.filter(b => {
@@ -297,9 +273,6 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/admin/bookinglist']);
   }
 
-  /* ---------- new helper + dialog integration for dashboard preview ---------- */
-
-  // Returns the last 5 bookings in reversed order (latest first)
   get recentBookings() {
     if (!this.filteredBookings) return [];
     const take = 5;
@@ -317,15 +290,9 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  /**
-   * Previously opened the Pdf viewer as a MatDialog.
-   * Now we set selected docs and show the overlay component in the DOM.
-   * This ONLY changes how the viewer is shown — logic for extracting docs is unchanged.
-   */
   openReferenceDocs(booking: any) {
     const docs = booking?.customer?.referenceDocument ?? [];
 
-    // set selected context
     this.selectedDocs = docs;
     this.selectedBookingId = booking?.bookingId ?? null;
     this.selectedBookingCode = booking?.bookingCode ?? null;
@@ -333,31 +300,45 @@ export class DashboardComponent implements OnInit {
     // optional: set auth token if your app needs to pass it to overlay (JWT etc.)
     // this.pdfAuthToken = this.authService.getToken();
 
-    // show overlay
     this.showPdfOverlay = true;
+  }
 
-    // If you used to open MatDialog, that code is intentionally removed.
+  closePdfPreview() {
+    try {
+      this.pdfOverlay?.close();
+    } catch (e) {
+      console.warn('Overlay cleanup failed or overlay not mounted yet', e);
+    }
+
+    this.showPdfOverlay = false;
+
+    this.selectedDocs = [];
+    this.selectedBookingId = undefined;
+    this.selectedBookingCode = undefined;
   }
 
   /**
-   * Close the overlay — call overlay cleanup then hide it.
-   * We call the overlay's `close()` method (which clears blob resources)
-   * and then set the flag to false so the parent removes it from DOM.
+   * NEW: called when the view mode select changes.
+   * Behavior:
+   *  - Immediately switch the UI to show cached stats (if any) for the chosen view.
+   *  - Only call the service to reload if we don't already have data for the target view/year/month.
+   *
+   * This is intentionally lightweight and does not remove any of your existing logic.
    */
-  closePdfPreview() {
-  try {
-    this.pdfOverlay?.close();
-  } catch (e) {
-    console.warn('Overlay cleanup failed or overlay not mounted yet', e);
+  onViewModeChange() {
+    if (this.viewMode === 'YEARLY') {
+      // If we already have yearlyStats for the selected year, just show them immediately.
+      if (!this.yearlyStats || !this.yearlyStats.length) {
+        this.loadBookingStatsYear(this.statsYear);
+      }
+      // nothing else required — template reads yearlyStats directly
+    } else {
+      // MONTHLY
+      // If monthlyStats are not present for the currently selected month, load them.
+      if (!this.monthlyStats || !this.monthlyStats.length) {
+        // statsMonth is "YYYY-MM". Try parsing and load.
+        this.loadBookingStatsMonthFromInput();
+      }
+    }
   }
-
-  this.showPdfOverlay = false;
-
-  this.selectedDocs = [];
-  this.selectedBookingId = undefined;
-  this.selectedBookingCode = undefined;
-}
-
-
-
 }

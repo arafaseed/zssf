@@ -127,12 +127,12 @@
 }
 
 .status-in-progress {
-  color: #008000;
+  color: #0000FF ;
   font-weight: bold;
 }
 
 .status-complete {
-  color: #0000FF ; 
+  color:  #008000; 
   font-weight: bold;
 }
 

@@ -91,6 +91,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { PdfViewerOverlayComponent } from './Admin/pdf-viewer-overlay/pdf-viewer-overlay.component';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { ReportsComponent } from './Admin/reports/reports.component';
 
 
 
@@ -145,6 +146,7 @@ export function createTranslateLoader(http: HttpClient) {
     AdminFeedbacksComponent,
     FeedbackDetailDialogComponent,
     PdfViewerOverlayComponent,
+    ReportsComponent,
     
 
     // DashboardSwitchComponent,
