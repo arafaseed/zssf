@@ -282,8 +282,8 @@ export class DashboardComponent implements OnInit {
   getStatusColor(status: string) {
     switch (status) {
       case 'CANCELLED': return 'red';
-      case 'EXPIRED': return 'grey';
-      case 'IN_PROGRESS': return 'yellow';
+      case 'EXPIRED': return 'red';
+      case 'IN_PROGRESS': return 'blue';
       case 'COMPLETE': return 'green';
       case 'PENDING': return 'goldenrod';
       default: return 'black';
