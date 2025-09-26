@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { BookingModalComponent } from '../booking-modal/booking-modal.component';
 import { trigger, style, animate, transition } from '@angular/animations';
 import { AvailabilityModalComponent } from '../availability-modal/availability-modal.component';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'app-venue-explorer',
@@ -25,6 +26,8 @@ import { AvailabilityModalComponent } from '../availability-modal/availability-m
       ]),
     ]),
   ],
+  // provide native date adapter so the material timepicker parses correctly
+  providers: [provideNativeDateAdapter()],
 })
 export class VenueExplorerComponent implements OnInit {
   venue: any = null;
@@ -38,9 +41,10 @@ export class VenueExplorerComponent implements OnInit {
   // availability form model
   startDate!: Date | null;
   // startTime and endTime intentionally undefined so inputs are empty by default
-  startTime: string | undefined = undefined;
+  // they may be either string (legacy) or Date (mat-timepicker)
+  startTime: string | Date | undefined = undefined;
   endDate!: Date | null;
-  endTime: string | undefined = undefined;
+  endTime: string | Date | undefined = undefined;
   selectedActivityId?: number;
 
   // date validation helpers
@@ -111,14 +115,6 @@ export class VenueExplorerComponent implements OnInit {
             this.minActivityPrice = prices.length
               ? Math.round(Math.min(...prices))
               : null;
-            // default select first activity if present
-            // if (this.activities.length) {
-            //   const maxPriceActivity = this.activities.reduce((prev, curr) =>
-            //     Number(curr.price) > Number(prev.price) ? curr : prev
-            //   );
-            //   this.selectedActivityId = maxPriceActivity.activityId;
-            // }
-
             this.loading = false;
           },
           error: (err) => {
@@ -205,12 +201,52 @@ export class VenueExplorerComponent implements OnInit {
     return a.getTime() < b.getTime();
   }
 
-    // --- new helper: parse a time string into 24-hour parts ---
-  private parseTimeString(time?: string | null): { hh: number; mm: number } | null {
-    if (!time) return null;
+  /**
+   * Parse a time value into { hh, mm }.
+   * Accepts:
+   *  - Date objects (e.g. from mat-timepicker)
+   *  - strings in "7:00 AM", "07:00", "19:00", "7:00AM", "07:00:00" formats
+   * Returns null on unknown/invalid formats.
+   */
+  private parseTimeString(time?: string | Date | null): { hh: number; mm: number } | null {
+    if (!time && time !== '') return null;
+
+    // If it's a Date-like object, extract hours/minutes
+    if (time instanceof Date) {
+      if (isNaN(time.getTime())) return null;
+      return { hh: time.getHours(), mm: time.getMinutes() };
+    }
+
+    // Some libraries may pass objects that look like date but aren't instance of Date.
+    if (typeof time === 'object' && time !== null) {
+      // try common properties
+      const anyT: any = time as any;
+      if (typeof anyT.getHours === 'function' && typeof anyT.getMinutes === 'function') {
+        try {
+          const hh = anyT.getHours();
+          const mm = anyT.getMinutes();
+          if (Number.isFinite(hh) && Number.isFinite(mm)) return { hh, mm };
+        } catch {
+          // fall through to string parsing
+        }
+      }
+    }
+
+    // From here treat as string
+    if (typeof time !== 'string') {
+      // fallback: convert to string
+      try {
+        time = String(time);
+      } catch {
+        return null;
+      }
+    }
+
     const t = time.trim();
 
-    // 1) Match 12-hour with AM/PM like "7:00 AM" or "12:30 pm"
+    if (!t) return null;
+
+    // 1) Match 12-hour with AM/PM like "7:00 AM" or "12:30 pm" (allow optional spaces)
     const reAmpm = /^([0]?[1-9]|1[0-2]):([0-5][0-9])\s*([AaPp][Mm])$/;
     const m1 = t.match(reAmpm);
     if (m1) {
@@ -225,7 +261,7 @@ export class VenueExplorerComponent implements OnInit {
       return { hh, mm };
     }
 
-    // 2) Match 24-hour "HH:mm" or "H:mm"
+    // 2) Match 24-hour "HH:mm" or "H:mm", optional seconds (ignored)
     const re24 = /^([01]?\d|2[0-3]):([0-5]\d)(?::([0-5]\d))?$/;
     const m2 = t.match(re24);
     if (m2) {
@@ -238,19 +274,31 @@ export class VenueExplorerComponent implements OnInit {
     return null;
   }
 
-  // --- new helper: format time the API expects ("HH:mm") ---
-  private formatTimeForApi(time?: string | undefined | null): string | null {
-    const parts = this.parseTimeString(time ?? '');
+  /**
+   * Format a time (string or Date) to "HH:mm" for API.
+   * Returns null when time cannot be parsed.
+   */
+  private formatTimeForApi(time?: string | Date | undefined | null): string | null {
+    if (!time && time !== '') return null;
+    // If Date
+    if (time instanceof Date) {
+      if (isNaN(time.getTime())) return null;
+      const hh = String(time.getHours()).padStart(2, '0');
+      const mm = String(time.getMinutes()).padStart(2, '0');
+      return `${hh}:${mm}`;
+    }
+
+    // Otherwise rely on parseTimeString
+    const parts = this.parseTimeString(time as any);
     if (!parts) return null;
     const hh = String(parts.hh).padStart(2, '0');
     const mm = String(parts.mm).padStart(2, '0');
     return `${hh}:${mm}`;
   }
 
-  // --- updated combineDateTime: uses robust parse ---
-  combineDateTime(date?: Date | null, time?: string | undefined) {
+  // --- combineDateTime: uses robust parse (handles Date or string time) ---
+  combineDateTime(date?: Date | null, time?: string | Date | undefined) {
     if (!date) return null;
-    // accept "7:00 AM", "07:00", "19:00", or null
     const parts = this.parseTimeString(time ?? '00:00');
     if (!parts) {
       // keep the previous behaviour of returning null on invalid times
@@ -260,7 +308,6 @@ export class VenueExplorerComponent implements OnInit {
     d.setHours(parts.hh, parts.mm, 0, 0);
     return d;
   }
-
 
   openAvailabilityModal() {
     if (!this.venue) return;
@@ -287,10 +334,32 @@ export class VenueExplorerComponent implements OnInit {
     }
 
     if (!this.startTime || !this.endTime) {
-  this.formError = 'Please enter start and end times.';
-  return;
-}
+      this.formError = 'Please enter start and end times.';
+      return;
+    }
 
+    // Additional time-range enforcement: ensure start/end fall into allowed window (06:00 - 23:30)
+    const minAllowed = 6 * 60 + 0; // 06:00
+    const maxAllowed = 23 * 60 + 30; // 23:30
+    const parsedStart = this.parseTimeString(this.startTime as any);
+    const parsedEnd = this.parseTimeString(this.endTime as any);
+
+    if (!parsedStart || !parsedEnd) {
+      this.formError = 'Invalid start or end time format.';
+      return;
+    }
+
+    const startM = parsedStart.hh * 60 + parsedStart.mm;
+    const endM = parsedEnd.hh * 60 + parsedEnd.mm;
+
+    if (startM < minAllowed || startM > maxAllowed) {
+      this.formError = 'Start time must be between 06:00 and 23:30.';
+      return;
+    }
+    if (endM < minAllowed || endM > maxAllowed) {
+      this.formError = 'End time must be between 06:00 and 23:30.';
+      return;
+    }
 
     // combine with times for precise datetimes
     const start = this.combineDateTime(this.startDate, this.startTime);
@@ -300,7 +369,7 @@ export class VenueExplorerComponent implements OnInit {
       return;
     }
 
-        const activity = this.activities.find(a => a.activityId === this.selectedActivityId);
+    const activity = this.activities.find(a => a.activityId === this.selectedActivityId);
 
     // format times for API (HH:mm)
     const apiStartTime = this.formatTimeForApi(this.startTime) ?? this.startTime ?? '00:00';
@@ -344,6 +413,4 @@ export class VenueExplorerComponent implements OnInit {
       });
     });
   }
-
-
 }

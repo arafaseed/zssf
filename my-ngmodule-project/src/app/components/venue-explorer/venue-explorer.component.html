@@ -73,6 +73,7 @@
           </div>
         </div>
 
+        <!-- optional services -->
         <div *ngIf="optionalServices.length" class="p-4 bg-white rounded-lg shadow">
           <h4 class="font-semibold">Optional services</h4>
           <ul class="mt-2 text-sm text-slate-700">
@@ -110,32 +111,56 @@
             </mat-form-field>
 
             <div class="flex gap-3">
+              <!-- START TIME: switched to Angular Material timepicker -->
               <mat-form-field class="flex-1" appearance="fill">
                 <mat-label>Start time</mat-label>
 
-                <input matInput placeholder="HH:mm" [ngxTimepicker]="startTimePicker" [(ngModel)]="startTime"
-                  name="startTime" readonly />
+                <!-- bind ngModel to startTime (keeps existing logic intact) -->
+                <input matInput placeholder="HH:mm" [(ngModel)]="startTime" name="startTime" readonly
+                  [matTimepicker]="startPickerTime" [matTimepickerMin]="'06:00'" [matTimepickerMax]="'23:30'"
+                  #startTimeCtrl="ngModel" />
 
-                <!-- Use the ngx-material-timepicker-toggle component (not an attribute) -->
-                <ngx-material-timepicker-toggle matSuffix [for]="startTimePicker" aria-label="Open start time">
-                  <!-- optional custom icon slot; otherwise it renders a default icon -->
+                <mat-timepicker-toggle matSuffix [for]="startPickerTime" aria-label="Open start time">
                   <mat-icon ngxMaterialTimepickerToggleIcon>access_time</mat-icon>
-                </ngx-material-timepicker-toggle>
+                </mat-timepicker-toggle>
 
-                <ngx-material-timepicker #startTimePicker></ngx-material-timepicker>
+                <mat-timepicker #startPickerTime></mat-timepicker>
+
+                <!-- Show timepicker-specific errors if present (keeps UX similar to example) -->
+                <mat-error *ngIf="startTimeCtrl?.errors?.['matTimepickerParse']">
+                  Value isn't a valid time
+                </mat-error>
+                <mat-error *ngIf="startTimeCtrl?.errors?.['matTimepickerMin']">
+                  Value is too early (earliest: 06:00)
+                </mat-error>
+                <mat-error *ngIf="startTimeCtrl?.errors?.['matTimepickerMax']">
+                  Value is too late (latest: 23:30)
+                </mat-error>
               </mat-form-field>
 
+              <!-- END TIME: switched to Angular Material timepicker -->
               <mat-form-field class="flex-1" appearance="fill">
                 <mat-label>End time</mat-label>
 
-                <input matInput placeholder="HH:mm" [ngxTimepicker]="endTimePicker" [(ngModel)]="endTime" name="endTime"
-                  readonly />
+                <input matInput placeholder="HH:mm" [(ngModel)]="endTime" name="endTime" readonly
+                  [matTimepicker]="endPickerTime" [matTimepickerMin]="'06:00'" [matTimepickerMax]="'23:30'"
+                  #endTimeCtrl="ngModel" />
 
-                <ngx-material-timepicker-toggle matSuffix [for]="endTimePicker" aria-label="Open end time">
+                <mat-timepicker-toggle matSuffix [for]="endPickerTime" aria-label="Open end time">
                   <mat-icon ngxMaterialTimepickerToggleIcon>access_time</mat-icon>
-                </ngx-material-timepicker-toggle>
+                </mat-timepicker-toggle>
 
-                <ngx-material-timepicker #endTimePicker></ngx-material-timepicker>
+                <mat-timepicker #endPickerTime></mat-timepicker>
+
+                <mat-error *ngIf="endTimeCtrl?.errors?.['matTimepickerParse']">
+                  Value isn't a valid time
+                </mat-error>
+                <mat-error *ngIf="endTimeCtrl?.errors?.['matTimepickerMin']">
+                  Value is too early (earliest: 06:00)
+                </mat-error>
+                <mat-error *ngIf="endTimeCtrl?.errors?.['matTimepickerMax']">
+                  Value is too late (latest: 23:30)
+                </mat-error>
               </mat-form-field>
             </div>
 
@@ -153,14 +178,14 @@
             </div>
 
             <div class="flex justify-center gap-2">
-              <button mat-flat-button color="primary" (click)="openAvailabilityModal()">
-                Check .... 
+              <button mat-flat-button color="primary" (click)="openAvailabilityModal()" [disabled]="!selectedActivityId"
+                aria-disabled="{{!selectedActivityId}}" title="Select an activity to enable">
+                Check ....
               </button>
             </div>
+
           </div>
         </div>
-
-        <!-- optional services -->
 
       </aside>
     </div>

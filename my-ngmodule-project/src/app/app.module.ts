@@ -86,8 +86,7 @@ import { StaffFormComponent } from './Admin/staff-form/staff-form.component';
 import { PoliciesSettingsComponent } from './Admin/policies-settings/policies-settings.component';
 import { AdminFeedbacksComponent } from './Admin/admin-feedbacks/admin-feedbacks.component';
 import { FeedbackDetailDialogComponent } from './Admin/feedback-detail-dialog/feedback-detail-dialog.component';
-import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import {MatTimepickerModule} from '@angular/material/timepicker';import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { PdfViewerOverlayComponent } from './Admin/pdf-viewer-overlay/pdf-viewer-overlay.component';
 import {MatExpansionModule} from '@angular/material/expansion';
@@ -190,11 +189,10 @@ export function createTranslateLoader(http: HttpClient) {
     LucideAngularModule,
     MatCheckboxModule,
     MatRadioModule,
-    NgxMaterialTimepickerModule,
+    MatTimepickerModule,
     MatButtonToggleModule,
     PdfViewerModule,
     MatExpansionModule,
-    
 
 
  TranslateModule.forRoot({
