@@ -113,15 +113,20 @@ export class CheckInListComponent implements OnInit {
    * and its startDate matches today. 
    */
   isCheckInEnabled(b: EnrichedBooking): boolean {
-    return b.bookingStatus !== 'PENDING';
-  }
+  const status = (b?.bookingStatus ?? '').toString().toUpperCase();
+  // disable check-in for PENDING, EXPIRED and IN_PROGRESS
+  return !['PENDING', 'EXPIRED', 'IN_PROGRESS'].includes(status);
+}
+
 
   onCheckIn(booking: EnrichedBooking): void {
     if (!this.isCheckInEnabled(booking)) {
-      if (booking.bookingStatus === 'PENDING') {
-        alert('This booking is still pending confirmation.');
-      } else {
-        alert('You can only check in on the booking start date.');
+      if (booking.bookingStatus === 'PENDING' || booking.bookingStatus === 'IN_PROGRESS') {
+        alert('This booking is still pending payments,tell customer to complete payment first.');
+      } else if (booking.bookingStatus === 'EXPIRED') {
+        alert('This booking is Expired , cannot be checked in.');
+      }else {
+        alert('You can only check-in this booking on the events start day.');
       }
       return;
     }
