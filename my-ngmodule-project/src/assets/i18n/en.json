@@ -8,7 +8,11 @@
     "title": "ZSSF HALL RESERVATION ",
     "slogan": "Key To The Future"
   },
-  
+
+  "footer": {
+    "rights": "All rights reserved."
+  },
+
   "home": {
     "searchPlaceholder": "Search by city, building, venue, or location address",
     "loading": "Loading buildings…",
@@ -39,8 +43,60 @@
     "bookNow": "Book Now",
     "noDescription": "No description available",
     "halls": "HALLS"
-
 },
+  "venue": {
+    "venueType": "Venue",
+    "guests": "guests",
+    "from": "From",
+    "perDay": "/ Day",
+    "noPrice": "Price not available",
+    "view": "View"
+  },
+  "availability": {
+    "title": "Check availability",
+    "allAvailable": "All days in your range are available",
+    "allAvailableHint": "You may continue with the full range or inspect individual days below.",
+    "someUnavailable": "One or more days in your range are not available. Please check or adjust for a new date range.",
+    "status": {
+      "available": "Available",
+      "booked": "Booked"
+    },
+    "statusLabel": "Status",
+    "pendingExpires": "Pending expires in {{minutes}} minutes",
+    "bookedTime": "Booked time: {{start}} - {{end}}",
+    "noData": "No availability information returned for this range.",
+    "back": "Back",
+    "refresh": "Refresh",
+    "continue": "Continue"
+  },
+
+  "booking": {
+    "title": "Book",
+    "range": "Booking range",
+    "single": "Selected date",
+    "activity": "Activity",
+    "optionalService": "Optional service",
+    "none": "None",
+    "customerType": "Customer type",
+    "individual": "Individual",
+    "organization": "Organization",
+    "customerName": "Customer name",
+    "phone": "Phone",
+    "phoneHint": "10 digits, must start with 06, 07 or 08",
+    "phoneError": "Phone must be 10 digits and start with 06, 07 or 08",
+    "email": "Email",
+    "address": "Address",
+    "referenceDoc": "Reference document (PDF)",
+    "selectedFile": "Selected",
+    "employeeVerify": "I am an employee of ZSSF",
+    "verifying": "Verifying…",
+    "employeeVerified": "Employee verified — discount applied ({{discount}}%)",
+    "required": "Required",
+    "cancel": "Cancel",
+    "submit": "Submit Booking",
+    "submitting": "Submitting..."
+  },
+
 
   "nav": {
     "home": "Home",

@@ -1,29 +1,34 @@
 <h2 mat-dialog-title class="flex items-center justify-between gap-3">
-  <span class="font-semibold">Book — {{ data?.venueName }}</span>
+  <span class="font-semibold">{{ 'booking.title' | translate }} — {{ data?.venueName }}</span>
+  <button mat-icon-button aria-label="close" (click)="cancel()">
     <i-lucide-x class="w-5 h-5"></i-lucide-x>
+  </button>
 </h2>
 
 <mat-dialog-content class="px-4 py-3 max-h-[80vh] overflow-auto">
   <div class="mb-3 text-sm text-slate-600">
     <div *ngIf="data.mode === 'range'">
-      Booking range:
+      {{ 'booking.range' | translate }}:
       <strong>{{ data.start | date: 'shortDate' }}</strong> →
       <strong>{{ data.end | date: 'shortDate' }}</strong>
     </div>
     <div *ngIf="data.mode === 'single'">
-      Selected date:
+      {{ 'booking.single' | translate }}:
       <strong>{{ data.item?.date }}</strong>
     </div>
-    <div>Activity: <strong>{{ data.activityName || '—' }}:{{ data.activityPrice || '—' }}</strong></div>
+    <div>
+      {{ 'booking.activity' | translate }}:
+      <strong>{{ data.activityName || '—' }} : {{ data.activityPrice || '—' }}</strong>
+    </div>
   </div>
 
   <form [formGroup]="detailsForm" class="space-y-4">
     <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
       <!-- Optional Service -->
       <mat-form-field class="w-full">
-        <mat-label>Optional service</mat-label>
+        <mat-label>{{ 'booking.optionalService' | translate }}</mat-label>
         <mat-select formControlName="optionalServiceId">
-          <mat-option [value]="null">None</mat-option>
+          <mat-option [value]="null">{{ 'booking.none' | translate }}</mat-option>
           <mat-option *ngFor="let s of optionalServices" [value]="s.serviceId">
             {{ s.optionalServiceName || s.serviceName }} — {{ s.price | number: '1.0-0' }} TZS
           </mat-option>
@@ -32,82 +37,88 @@
 
       <!-- Customer Type -->
       <mat-form-field class="w-full">
-        <mat-label>Customer type</mat-label>
+        <mat-label>{{ 'booking.customerType' | translate }}</mat-label>
         <mat-select formControlName="customerType">
-          <mat-option value="INDIVIDUAL">Individual</mat-option>
-          <mat-option value="ORGANIZATION">Organization</mat-option>
+          <mat-option value="INDIVIDUAL">{{ 'booking.individual' | translate }}</mat-option>
+          <mat-option value="ORGANIZATION">{{ 'booking.organization' | translate }}</mat-option>
         </mat-select>
       </mat-form-field>
 
       <!-- Customer Name -->
       <mat-form-field class="w-full">
-        <mat-label>Customer name</mat-label>
+        <mat-label>{{ 'booking.customerName' | translate }}</mat-label>
         <input matInput formControlName="customerName" />
-        <mat-error *ngIf="detailsForm.get('customerName')?.invalid">Required</mat-error>
+        <mat-error *ngIf="detailsForm.get('customerName')?.invalid">
+          {{ 'booking.required' | translate }}
+        </mat-error>
       </mat-form-field>
 
       <!-- Phone -->
       <mat-form-field class="w-full">
-        <mat-label>Phone</mat-label>
+        <mat-label>{{ 'booking.phone' | translate }}</mat-label>
         <input matInput formControlName="phoneNumber" maxlength="10" (input)="onPhoneInput($event)" />
-        <mat-hint>10 digits, must start with 06, 07 or 08</mat-hint>
+        <mat-hint>{{ 'booking.phoneHint' | translate }}</mat-hint>
         <mat-error *ngIf="detailsForm.get('phoneNumber')?.hasError('required')">
-          Required
+          {{ 'booking.required' | translate }}
         </mat-error>
         <mat-error *ngIf="detailsForm.get('phoneNumber')?.hasError('pattern')">
-          Phone must be 10 digits and start with 06, 07 or 08
+          {{ 'booking.phoneError' | translate }}
         </mat-error>
       </mat-form-field>
 
       <!-- Email -->
       <mat-form-field class="w-full">
-        <mat-label>Email</mat-label>
+        <mat-label>{{ 'booking.email' | translate }}</mat-label>
         <input matInput formControlName="email" />
       </mat-form-field>
 
       <!-- Address -->
       <mat-form-field class="w-full">
-        <mat-label>Address</mat-label>
+        <mat-label>{{ 'booking.address' | translate }}</mat-label>
         <input matInput formControlName="address" />
-        <mat-error *ngIf="detailsForm.get('address')?.invalid">Required</mat-error>
+        <mat-error *ngIf="detailsForm.get('address')?.invalid">
+          {{ 'booking.required' | translate }}
+        </mat-error>
       </mat-form-field>
     </div>
 
     <!-- PDF upload for organizations -->
     <div *ngIf="detailsForm.value.customerType === 'ORGANIZATION'" class="mt-2">
-      <label class="block mb-1 text-sm font-medium">Reference document (PDF)</label>
+      <label class="block mb-1 text-sm font-medium">{{ 'booking.referenceDoc' | translate }}</label>
       <input type="file" (change)="onFileSelected($event)" accept="application/pdf" />
       <div *ngIf="fileError" class="mt-1 text-sm text-rose-600">{{ fileError }}</div>
-      <div *ngIf="attachedFile" class="mt-1 text-sm text-slate-600">Selected: {{ attachedFile.name }}</div>
+      <div *ngIf="attachedFile" class="mt-1 text-sm text-slate-600">
+        {{ 'booking.selectedFile' | translate }}: {{ attachedFile.name }}
+      </div>
     </div>
 
     <!-- Employee Verification for Individual -->
     <div *ngIf="detailsForm.value.customerType === 'INDIVIDUAL'" class="flex items-center gap-3 mt-3">
-  <mat-checkbox
-    [checked]="employeeVerified"
-    [disabled]="verifying"
-    (change)="openEmployeeVerify($event)">
-    I am an employee of ZSSF
-  </mat-checkbox>
+      <mat-checkbox
+        [checked]="employeeVerified"
+        [disabled]="verifying"
+        (change)="openEmployeeVerify($event)">
+        {{ 'booking.employeeVerify' | translate }}
+      </mat-checkbox>
 
-  <span *ngIf="verifying" class="text-sm text-gray-500">Verifying…</span>
+      <span *ngIf="verifying" class="text-sm text-gray-500">{{ 'booking.verifying' | translate }}</span>
 
-  <div *ngIf="employeeVerified" class="flex items-center gap-2 text-sm text-emerald-600">
-    <i-lucide-check-circle class="w-4 h-4"></i-lucide-check-circle>
-    Employee verified — discount applied ({{ discountRate * 100 }}%)
-  </div>
-</div>
-
+      <div *ngIf="employeeVerified" class="flex items-center gap-2 text-sm text-emerald-600">
+        <i-lucide-check-circle class="w-4 h-4"></i-lucide-check-circle>
+        {{ 'booking.employeeVerified' | translate:{discount: discountRate * 100} }}
+      </div>
+    </div>
   </form>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end" class="px-4 pb-3">
   <div class="flex items-center justify-between w-full gap-3">
-      <button mat-stroked-button (click)="cancel()">Cancel</button>
-      <button mat-flat-button color="primary" (click)="submitBooking()" [disabled]="detailsForm.invalid || isSubmitting">
-    <i-lucide-send class="w-4 h-4 mr-2"></i-lucide-send>
-    {{ isSubmitting ? 'Submitting...' : 'Submit Booking' }}
-  </button>
+    <button mat-stroked-button (click)="cancel()">
+      {{ 'booking.cancel' | translate }}
+    </button>
+    <button mat-flat-button color="primary" (click)="submitBooking()" [disabled]="detailsForm.invalid || isSubmitting">
+      <i-lucide-send class="w-4 h-4 mr-2"></i-lucide-send>
+      {{ isSubmitting ? ('booking.submitting' | translate) : ('booking.submit' | translate) }}
+    </button>
   </div>
-  
 </mat-dialog-actions>
