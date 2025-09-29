@@ -1,6 +1,6 @@
 <!-- Title -->
 <h2 mat-dialog-title class="flex items-center justify-between gap-3">
-  <span class="font-semibold">Check availability — {{ data?.venueName }}</span>
+  <span class="font-semibold">{{ 'availability.title' | translate }} — {{ data?.venueName }}</span>
   <button mat-icon-button aria-label="close" (click)="cancel()">
     <i-lucide-x class="w-5 h-5"></i-lucide-x>
   </button>
@@ -19,61 +19,66 @@
 
   <!-- Results -->
   <div *ngIf="!loading && availability?.length">
-    <!-- If everything is free, show banner but still show list so user can inspect -->
+    <!-- All Available -->
     <div *ngIf="allAvailable" class="flex items-center gap-3 p-3 mb-3 border rounded-lg bg-emerald-50 border-emerald-100">
       <i-lucide-check-circle class="w-5 h-5 text-emerald-600"></i-lucide-check-circle>
       <div>
-        <div class="font-medium">All days in your range are available</div>
-        <div class="text-sm text-slate-600">You may continue with the full range or inspect individual days below.</div>
+        <div class="font-medium">{{ 'availability.allAvailable' | translate }}</div>
+        <div class="text-sm text-slate-600">{{ 'availability.allAvailableHint' | translate }}</div>
       </div>
-
-      <!-- if not available  -->
-      <div *ngIf="!allAvailable" class="flex items-center gap-3 p-3 mb-3 border border-red-100 rounded-lg bg-yellow-50">
-      <p class="mb-2 text-sm text-slate-600">One or more days in your range is not available, <strong>Check/Adjust for a new date range</strong> if available.</p>
     </div>
 
+    <!-- Some Not Available -->
+    <div *ngIf="!allAvailable" class="flex items-center gap-3 p-3 mb-3 border border-red-100 rounded-lg bg-yellow-50">
+      <p class="mb-2 text-sm text-slate-600">
+        {{ 'availability.someUnavailable' | translate }}
+      </p>
     </div>
 
-    
-
-    <mat-selection-list >
+    <mat-selection-list>
       <mat-list-option *ngFor="let it of availability" class="py-2">
         <div class="flex items-start justify-between w-full gap-4">
           <div class="flex-1">
             <div class="flex items-center gap-2">
               <div class="font-medium">{{ it.date }}</div>
               <div *ngIf="it.flag === 'AVAILABLE_FOR_BOOKING'" class="flex items-center gap-1 text-sm text-emerald-600">
-                <i-lucide-check-circle class="w-4 h-4"></i-lucide-check-circle> Available
+                <i-lucide-check-circle class="w-4 h-4"></i-lucide-check-circle> {{ 'availability.status.available' | translate }}
               </div>
               <div *ngIf="it.flag === 'ALREADY_BOOKED'" class="flex items-center gap-1 text-sm text-rose-600">
-                <i-lucide-x-circle class="w-4 h-4"></i-lucide-x-circle> Booked 
-                <p class="text-xs">-Status: {{ it.status }} </p>
+                <i-lucide-x-circle class="w-4 h-4"></i-lucide-x-circle> {{ 'availability.status.booked' | translate }}
+                <p class="text-xs">- {{ 'availability.statusLabel' | translate }}: {{ it.status }}</p>
               </div>
             </div>
+
             <div *ngIf="it.pendingExpiresInMinutes" class="mt-1 text-xs text-amber-600">
-                Pending expires in {{ it.pendingExpiresInMinutes }} minutes
-              </div>
-              <div *ngIf="it.bookedStart" class="text-xs">Booked time: {{ it.bookedStart }} - {{ it.bookedEnd }}
-              </div>
+              {{ 'availability.pendingExpires' | translate:{minutes: it.pendingExpiresInMinutes} }}
+            </div>
+
+            <div *ngIf="it.bookedStart" class="text-xs">
+              {{ 'availability.bookedTime' | translate:{start: it.bookedStart, end: it.bookedEnd} }}
+            </div>
           </div>
         </div>
       </mat-list-option>
     </mat-selection-list>
   </div>
 
+  <!-- No Data -->
   <div *ngIf="!loading && (!availability || availability.length === 0)" class="text-slate-600">
-    No availability information returned for this range.
+    {{ 'availability.noData' | translate }}
   </div>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end" class="px-4 pb-3">
   <div class="flex items-center justify-between w-full gap-3">
-    <button mat-stroked-button (click)="cancel()">Back</button>
+    <button mat-stroked-button (click)="cancel()">{{ 'availability.back' | translate }}</button>
 
     <div class="flex items-center gap-2">
-      <button mat-stroked-button color="primary" (click)="check()" class="mr-2">Refresh</button>
+      <button mat-stroked-button color="primary" (click)="check()" class="mr-2">
+        {{ 'availability.refresh' | translate }}
+      </button>
       <button mat-flat-button color="primary" (click)="continueWithRange()" [disabled]="!allAvailable">
-        Continue
+        {{ 'availability.continue' | translate }}
       </button>
     </div>
   </div>

@@ -1,13 +1,12 @@
 <div class="flex flex-col">
-  <!-- Your content here -->
-  <!-- For example, a form, image, or anything else -->
-  <!-- Leave this empty or small if you want the page short -->
+  <!-- Page content area -->
+  <ng-content></ng-content>
 
   <!-- Footer -->
   <footer class="bg-[#26867d] text-white font-sans text-center py-4 px-6 w-full">
     <div class="footer-bottom">
       <p class="text-sm md:text-base font-medium leading-tight">
-        © 2025 Zanzibar Social Security Fund (ZSSF). All rights reserved.
+        © 2025 Zanzibar Social Security Fund (ZSSF). {{ 'footer.rights' | translate }}
       </p>
     </div>
   </footer>

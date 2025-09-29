@@ -8,6 +8,11 @@
     "title": "UHIFADHI WA UKUMBI ZSSF",
     "slogan": "Ufunguo wa Maisha ya Baadaye"
   },
+
+  "footer": {
+    "rights": "Haki zote zimehifadhiwa."
+  },
+
   "home": {
     "searchPlaceholder": "Tafuta kwa mji, jengo, ukumbi, au anwani ya eneo",
     "loading": "Inapakia majengo…",
@@ -39,6 +44,59 @@
     "noDescription": "Hakuna maelezo",
     "halls": "UKUMBI"
 },
+  "venue": {
+    "venueType": "Aina ya Ukumbi",
+    "guests": "wageni",
+    "from": "Kuanzia",
+    "perDay": "/ Siku",
+    "noPrice": "Bei haijapatikana",
+    "view": "Angalia"
+  },
+
+  "availability": {
+    "title": "Angalia upatikanaji",
+    "allAvailable": "Siku zote kwenye kipindi chako zinapatikana",
+    "allAvailableHint": "Unaweza kuendelea na kipindi chote au kukagua siku moja moja hapa chini.",
+    "someUnavailable": "Siku moja au zaidi kwenye kipindi chako hazipatikani. Tafadhali kagua au badilisha tarehe.",
+    "status": {
+      "available": "Inapatikana",
+      "booked": "Imeshachukuliwa"
+    },
+    "statusLabel": "Hali",
+    "pendingExpires": "Inasubiri na itaisha baada ya dakika {{minutes}}",
+    "bookedTime": "Muda uliowekwa: {{start}} - {{end}}",
+    "noData": "Hakuna taarifa za upatikanaji zilizopatikana kwa kipindi hiki.",
+    "back": "Rudi",
+    "refresh": "Onyesha tena",
+    "continue": "Endelea"
+  },
+
+  "booking": {
+    "title": "Weka nafasi",
+    "range": "Mda wakuweka nafasi",
+    "single": "Tarehe iliyochaguliwa",
+    "activity": "Shughuli",
+    "optionalService": "Huduma ya ziada",
+    "none": "Hakuna",
+    "customerType": "Aina ya mteja",
+    "individual": "Mtu binafsi",
+    "organization": "Shirika",
+    "customerName": "Jina la mteja",
+    "phone": "Simu",
+    "phoneHint": "Weka Nambari zenye tarakimu 10, lazima ianze na 06, 07 au 08",
+    "phoneError": "Nambari ya simu lazima iwe tarakimu 10 na ianze na 06, 07 au 08",
+    "email": "Barua pepe",
+    "address": "Anuani",
+    "referenceDoc": "Hati ya kumbukumbu (PDF)",
+    "selectedFile": "File Lililochaguliwa",
+    "employeeVerify": "Mimi ni mfanyakazi wa ZSSF",
+    "verifying": "Inathibitisha…",
+    "employeeVerified": "Mfanyakazi amethibitishwa — punguzo limetumika ({{discount}}%)",
+    "required": "Inahitajika",
+    "cancel": "Ghairi",
+    "submit": "Tuma ",
+    "submitting": "Inatuma..."
+  },
 
   "nav": {
     "home": "Nyumbani",
