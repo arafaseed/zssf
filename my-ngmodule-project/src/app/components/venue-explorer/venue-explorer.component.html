@@ -2,43 +2,60 @@
 
 <div class="min-h-screen bg-slate-50">
   <div class="px-4 py-8 mx-auto max-w-7xl md:px-8">
-    <div *ngIf="loading" class="py-20 text-center">Loading...</div>
+    <div *ngIf="loading" class="py-20 text-center">
+      {{ 'home.loading' | translate }}
+    </div>
 
     <div *ngIf="venue" class="grid grid-cols-1 gap-6 md:grid-cols-3" [@fadeIn]>
-      <!-- LEFT: image gallery (span 2 cols on desktop) -->
+      <!-- LEFT: image gallery -->
       <div class="space-y-4 md:col-span-2">
-        <!-- Large image display: fixed container size, black background, image fully visible (no crop) -->
-        <div class="flex items-center justify-center overflow-hidden bg-black rounded-lg shadow-lg h-96">
-          <ng-container *ngIf="venue.venueImages && venue.venueImages.length; else noImage">
-            <img class="object-contain max-w-full max-h-full" [src]="venue.venueImages[currentImageIndex]"
-              alt="{{ venue.venueName }}" loading="lazy" />
+        <!-- Large image -->
+        <div
+          class="flex items-center justify-center overflow-hidden bg-black rounded-lg shadow-lg h-96">
+          <ng-container *ngIf="venue.venueImages?.length; else noImage">
+            <img
+              class="object-contain max-w-full max-h-full"
+              [src]="venue.venueImages[currentImageIndex]"
+              alt="{{ venue.venueName }}"
+              loading="lazy" />
           </ng-container>
           <ng-template #noImage>
-            <div class="px-4 text-center text-white">No image available</div>
+            <div class="px-4 text-center text-white">
+              {{ 'home.noDescription' | translate }}
+            </div>
           </ng-template>
         </div>
 
-        <!-- Thumbnail list -->
+        <!-- Thumbnails -->
         <div class="flex gap-3 py-2 overflow-x-auto">
           <ng-container *ngFor="let img of venue.venueImages; let i = index">
-            <button class="flex-shrink-0 overflow-hidden border-2 rounded-md"
-              [class.border-sky-500]="i === currentImageIndex" style="width: 110px; height: 70px"
+            <button
+              class="flex-shrink-0 overflow-hidden border-2 rounded-md"
+              [class.border-sky-500]="i === currentImageIndex"
+              style="width: 110px; height: 70px"
               (click)="onSelectImage(i)">
-              <img [src]="img" class="object-cover w-full h-full" loading="lazy" />
+              <img
+                [src]="img"
+                class="object-cover w-full h-full"
+                loading="lazy" />
             </button>
           </ng-container>
         </div>
 
+        <!-- Description -->
         <div class="p-6 bg-white rounded-lg shadow-sm">
-          <h3 class="text-lg font-semibold">Description</h3>
+          <h3 class="text-lg font-semibold">
+            {{ 'home.description' | translate }}
+          </h3>
           <ul class="mt-3 text-sm list-disc list-inside text-slate-700">
             <li *ngFor="let d of venue.description">{{ d }}</li>
           </ul>
         </div>
       </div>
 
-      <!-- RIGHT: details + booking -->
+      <!-- RIGHT: details -->
       <aside class="space-y-4">
+        <!-- Venue details -->
         <div class="p-5 bg-white rounded-lg shadow-lg">
           <h1 class="text-2xl font-bold">{{ venue.venueName }}</h1>
           <p class="mt-1 text-sm text-slate-500">
@@ -47,11 +64,15 @@
 
           <div class="grid grid-cols-2 gap-3 mt-4">
             <div class="p-3 rounded-md bg-sky-50">
-              <div class="text-xs text-slate-500">Capacity</div>
+              <div class="text-xs text-slate-500">
+                {{ 'home.capacity' | translate }}
+              </div>
               <div class="text-lg font-medium">{{ venue.capacity }}</div>
             </div>
             <div class="p-3 rounded-md bg-rose-50">
-              <div class="text-xs text-slate-500">Type</div>
+              <div class="text-xs text-slate-500">
+                {{ 'home.activities' | translate }}
+              </div>
               <div class="text-lg font-medium">
                 {{ venue.venueType || "—" }}
               </div>
@@ -59,23 +80,25 @@
           </div>
 
           <div class="mt-4">
-            <div class="text-xs text-slate-500">From</div>
+            <div class="text-xs text-slate-500">
+              {{ 'home.from' | translate }}
+            </div>
             <div class="text-2xl font-bold">
               {{
                 minActivityPrice
                   ? (minActivityPrice | number : "1.0-0") + " TZS"
-                  : "Price not available"
+                  : ('home.noPrice' | translate)
               }}
             </div>
             <div class="text-xs text-slate-400">
-              per Day (based on selected activity)
+              {{ 'home.perDay' | translate }}
             </div>
           </div>
         </div>
 
-        <!-- optional services -->
+        <!-- Optional services -->
         <div *ngIf="optionalServices.length" class="p-4 bg-white rounded-lg shadow">
-          <h4 class="font-semibold">Optional services</h4>
+          <h4 class="font-semibold">{{ 'home.optionalServices' | translate }}</h4>
           <ul class="mt-2 text-sm text-slate-700">
             <li *ngFor="let s of optionalServices">
               {{ s.serviceName }} — {{ s.price | number : "1.0-0" }} TZS
@@ -83,92 +106,75 @@
           </ul>
         </div>
 
-        <!-- availability form -->
+        <!-- Availability form -->
         <div class="p-6 bg-white rounded-lg shadow">
-          <h4 class="mb-3 font-semibold">Check availability</h4>
+          <h4 class="mb-3 font-semibold">
+            {{ 'home.checkAvailability' | translate }}
+          </h4>
 
           <div class="space-y-3">
+            <!-- Dates -->
             <mat-form-field class="w-full">
-              <mat-label>Event start date</mat-label>
-              <input matInput [min]="minDate" [matDatepicker]="startPicker" [(ngModel)]="startDate"
+              <mat-label>{{ 'home.startDate' | translate }}</mat-label>
+              <input
+                matInput
+                [min]="minDate"
+                [matDatepicker]="startPicker"
+                [(ngModel)]="startDate"
                 (ngModelChange)="onStartDateChange($event)" />
               <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
               <mat-datepicker #startPicker></mat-datepicker>
-              <div *ngIf="startDateInvalid" class="mt-1 text-sm text-red-600">
-                Selected start date cannot be in the past.
-              </div>
             </mat-form-field>
 
             <mat-form-field class="w-full">
-              <mat-label>Event end date</mat-label>
-              <input matInput [min]="minDate" [matDatepicker]="endPicker" [(ngModel)]="endDate"
+              <mat-label>{{ 'home.endDate' | translate }}</mat-label>
+              <input
+                matInput
+                [min]="minDate"
+                [matDatepicker]="endPicker"
+                [(ngModel)]="endDate"
                 (ngModelChange)="onEndDateChange($event)" />
               <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
               <mat-datepicker #endPicker></mat-datepicker>
-              <div *ngIf="endDateInvalid" class="mt-1 text-sm text-red-600">
-                Selected end date cannot be in the past.
-              </div>
             </mat-form-field>
 
+            <!-- Time pickers -->
             <div class="flex gap-3">
-              <!-- START TIME: switched to Angular Material timepicker -->
               <mat-form-field class="flex-1" appearance="fill">
-                <mat-label>Start time</mat-label>
-
-                <!-- bind ngModel to startTime (keeps existing logic intact) -->
-                <input matInput placeholder="HH:mm" [(ngModel)]="startTime" name="startTime" readonly
-                  [matTimepicker]="startPickerTime" [matTimepickerMin]="'06:00'" [matTimepickerMax]="'23:30'"
-                  #startTimeCtrl="ngModel" />
-
-                <mat-timepicker-toggle matSuffix [for]="startPickerTime" aria-label="Open start time">
-                  <mat-icon ngxMaterialTimepickerToggleIcon>access_time</mat-icon>
-                </mat-timepicker-toggle>
-
+                <mat-label>{{ 'home.startTime' | translate }}</mat-label>
+                <input
+                  matInput
+                  [(ngModel)]="startTime"
+                  name="startTime"
+                  readonly
+                  [matTimepicker]="startPickerTime"
+                  [matTimepickerMin]="'06:00'"
+                  [matTimepickerMax]="'23:30'" />
+                <mat-timepicker-toggle matSuffix [for]="startPickerTime"></mat-timepicker-toggle>
                 <mat-timepicker #startPickerTime></mat-timepicker>
-
-                <!-- Show timepicker-specific errors if present (keeps UX similar to example) -->
-                <mat-error *ngIf="startTimeCtrl?.errors?.['matTimepickerParse']">
-                  Value isn't a valid time
-                </mat-error>
-                <mat-error *ngIf="startTimeCtrl?.errors?.['matTimepickerMin']">
-                  Value is too early (earliest: 06:00)
-                </mat-error>
-                <mat-error *ngIf="startTimeCtrl?.errors?.['matTimepickerMax']">
-                  Value is too late (latest: 23:30)
-                </mat-error>
               </mat-form-field>
 
-              <!-- END TIME: switched to Angular Material timepicker -->
               <mat-form-field class="flex-1" appearance="fill">
-                <mat-label>End time</mat-label>
-
-                <input matInput placeholder="HH:mm" [(ngModel)]="endTime" name="endTime" readonly
-                  [matTimepicker]="endPickerTime" [matTimepickerMin]="'06:00'" [matTimepickerMax]="'23:30'"
-                  #endTimeCtrl="ngModel" />
-
-                <mat-timepicker-toggle matSuffix [for]="endPickerTime" aria-label="Open end time">
-                  <mat-icon ngxMaterialTimepickerToggleIcon>access_time</mat-icon>
-                </mat-timepicker-toggle>
-
+                <mat-label>{{ 'home.endTime' | translate }}</mat-label>
+                <input
+                  matInput
+                  [(ngModel)]="endTime"
+                  name="endTime"
+                  readonly
+                  [matTimepicker]="endPickerTime"
+                  [matTimepickerMin]="'06:00'"
+                  [matTimepickerMax]="'23:30'" />
+                <mat-timepicker-toggle matSuffix [for]="endPickerTime"></mat-timepicker-toggle>
                 <mat-timepicker #endPickerTime></mat-timepicker>
-
-                <mat-error *ngIf="endTimeCtrl?.errors?.['matTimepickerParse']">
-                  Value isn't a valid time
-                </mat-error>
-                <mat-error *ngIf="endTimeCtrl?.errors?.['matTimepickerMin']">
-                  Value is too early (earliest: 06:00)
-                </mat-error>
-                <mat-error *ngIf="endTimeCtrl?.errors?.['matTimepickerMax']">
-                  Value is too late (latest: 23:30)
-                </mat-error>
               </mat-form-field>
             </div>
 
+            <!-- Activity -->
             <mat-form-field class="w-full">
-              <mat-label>Activity/Purpose</mat-label>
+              <mat-label>{{ 'home.activityLabel' | translate }}</mat-label>
               <mat-select [(ngModel)]="selectedActivityId">
                 <mat-option *ngFor="let a of activities" [value]="a.activityId">
-                  {{ a.activityName }} Tzs :{{ a.price }} /=
+                  {{ a.activityName }} — {{ a.price | number : "1.0-0" }} TZS
                 </mat-option>
               </mat-select>
             </mat-form-field>
@@ -178,17 +184,19 @@
             </div>
 
             <div class="flex justify-center gap-2">
-              <button mat-flat-button color="primary" (click)="openAvailabilityModal()" [disabled]="!selectedActivityId"
-                aria-disabled="{{!selectedActivityId}}" title="Select an activity to enable">
-                Check ....
+              <button
+                mat-flat-button
+                color="primary"
+                (click)="openAvailabilityModal()"
+                [disabled]="!selectedActivityId">
+                {{ 'home.checkButton' | translate }}
               </button>
             </div>
-
           </div>
         </div>
-
       </aside>
     </div>
   </div>
 </div>
+
 <app-footer></app-footer>

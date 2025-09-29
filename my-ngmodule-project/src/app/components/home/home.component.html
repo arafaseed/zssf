@@ -8,7 +8,7 @@
         <mat-icon matPrefix class="text-slate-500">search</mat-icon>
         <input 
           matInput 
-          placeholder="Search by city, building, venue, or location address"
+          [placeholder]="'home.searchPlaceholder' | translate"
           [(ngModel)]="searchTerm"
           (input)="filterBuildings()" 
           class="px-4 border rounded-lg h-11">
@@ -16,7 +16,9 @@
     </div>
 
     <!-- buildings -->
-    <div *ngIf="loading" class="py-12 text-lg text-center text-slate-700">Loading buildings…</div>
+    <div *ngIf="loading" class="py-12 text-lg text-center text-slate-700">
+      {{ 'home.loading' | translate }}
+    </div>
 
     <section *ngFor="let b of filteredBuildings" class="mb-12">
       <div class="flex flex-col gap-3 mb-4 md:flex-row md:items-center md:justify-between">
@@ -30,24 +32,20 @@
             {{ b.address }}
           </p>
         </div>
-        <!-- desktop controls -->
-        <div class="hidden gap-2 md:flex">
-          <button mat-icon-button (click)="scroll(scrollRow.nativeElement, 'left')" *ngFor="let scrollRow of scrollRows">
-            <!-- placeholder remains -->
-          </button>
-        </div>
       </div>
 
       <div class="relative">
         <!-- arrow buttons for desktop -->
         <button mat-icon-button 
                 class="absolute left-0 z-10 hidden -translate-y-1/2 shadow md:flex top-1/2 bg-white/80"
-                (click)="scroll(rowRef, 'left')">
+                (click)="scroll(rowRef, 'left')"
+                [attr.aria-label]="'home.scrollLeft' | translate">
           <mat-icon>chevron_left</mat-icon>
         </button>
         <button mat-icon-button 
                 class="absolute right-0 z-10 hidden -translate-y-1/2 shadow md:flex top-1/2 bg-white/80"
-                (click)="scroll(rowRef, 'right')">
+                (click)="scroll(rowRef, 'right')"
+                [attr.aria-label]="'home.scrollRight' | translate">
           <mat-icon>chevron_right</mat-icon>
         </button>
 
@@ -62,10 +60,10 @@
 
         <!-- mobile buttons -->
         <div class="flex justify-end gap-2 mt-3 md:hidden">
-          <button mat-icon-button (click)="scroll(rowRef, 'left')">
+          <button mat-icon-button (click)="scroll(rowRef, 'left')" [attr.aria-label]="'home.scrollLeft' | translate">
             <mat-icon>chevron_left</mat-icon>
           </button>
-          <button mat-icon-button (click)="scroll(rowRef, 'right')">
+          <button mat-icon-button (click)="scroll(rowRef, 'right')" [attr.aria-label]="'home.scrollRight' | translate">
             <mat-icon>chevron_right</mat-icon>
           </button>
         </div>

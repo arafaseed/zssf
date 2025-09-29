@@ -8,6 +8,40 @@
     "title": "ZSSF HALL RESERVATION ",
     "slogan": "Key To The Future"
   },
+  
+  "home": {
+    "searchPlaceholder": "Search by city, building, venue, or location address",
+    "loading": "Loading buildings…",
+    "description": "Description",
+    "from": "From",
+    "noPrice": "Price not available",
+    "perDay": "per day (based on selected activity)",
+    "optionalServices": "Optional Services",
+    "checkAvailability": "Check availability",
+    "startDate": "Event start date",
+    "endDate": "Event end date",
+    "startTime": "Start time",
+    "endTime": "End time",
+    "checkButton": "Check",
+    "scrollLeft": "Scroll left",
+    "scrollRight": "Scroll right",
+    "searchHeading": "Find the perfect space for your event in seconds",
+    "searchSubHeading": "Explore spaces for meetings, conferences, parties, and more.",
+    "buildingLabel": "Building",
+    "allBuildings": "All Buildings",
+    "activityLabel": "Activity",
+    "allActivities": "All Activities",
+    "dateLabel": "Available Date",
+    "searchButton": "Search",
+    "clearButton": "Clear",
+    "capacity": "Capacity",
+    "activities": "Activities",
+    "bookNow": "Book Now",
+    "noDescription": "No description available",
+    "halls": "HALLS"
+
+},
+
   "nav": {
     "home": "Home",
     "my_reservation": "My Reservation",
