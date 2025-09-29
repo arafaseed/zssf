@@ -255,6 +255,81 @@
 "STAFF": {
 "TITLE": "Kwa maulizo tafadhali piga simu..",
 "PHONE": "Simu"
+},
+
+
+ "dialog": {
+    "title": "Thibitisha Maelezo ya Booking",
+    "errorMessage": "ujumbeWakosa"
+  },
+
+  "venue": {
+    "heading": "Ukumbi",
+    "label": "Ukumbi",
+    "noValue": "—"
+  },
+  "datesTimes": {
+    "heading": "Tarehe na Muda",
+    "fromDateLabel": "Kuanzia (Tarehe):",
+    "fromTimeLabel": "Kuanzia (Muda):",
+    "toDateLabel": "Mpaka (Tarehe):",
+    "toTimeLabel": "Mpaka (Muda):"
+  },
+  "activityService": {
+    "heading": "Shughuli & Huduma",
+    "activityPurposeLabel": "Shughuli / Madhumuni:",
+    "activityPricePerDay": "TZS /Siku",
+    "optionalServiceLabel": "Huduma ya Hiari:",
+    "optionalServiceIdLabel": "Nambari ya Huduma ya Hiari:"
+  },
+  "customer": {
+    "heading": "Mteja",
+    "name": "Jina:",
+    "phone": "Simu:",
+    "email": "Barua pepe:",
+    "address": "Anwani:",
+    "customerType": "Aina ya mteja:"
+  },
+  "attachedDocument": {
+    "heading": "Hati Imeambatanishwa",
+    "documentLabel": "Hati",
+    "noFile": "Hakuna faili imeambatanishwa"
+  },
+  "summary": {
+    "heading": "Muhtasari",
+    "discountRate": "Kiwango cha punguzo:",
+    "totalDays": "Jumla ya siku:",
+    "activityPricePerDay": "Bei ya shughuli (kwa siku):",
+    "optionalPrice": "Bei ya huduma ya hiari (kwa siku / flat):",
+    "totalBookingPrice": "Jumla ya malipo ya booking:",
+    "discountAmount": "Kiasi cha punguzo:",
+    "totalAfterDiscount": "Jumla baada ya punguzo:"
+  },
+  "terms": {
+    "acceptText": "Nakubali",
+    "termsLinkText": "masharti & vigezo"
+  },
+  "actions": {
+    "back": "Rudi",
+    "confirmSubmit": "Thibitisha & Tuma",
+    "submitting": "Inatuma…",
+    "submittingLabel": "Inatuma…"
+  },
+  "buttons": {
+    "confirmDisabledReason": "Tafadhali kubali masharti ili kuendelea"
+  },
+  "contact": {
+    "phone": "+255 24 2230242 | PIGA BURE: 0800710140",
+    "email": "info@zssf.or.tz",
+    "whatsapp": "ZSSF WhatsApp"
+  },
+  "misc": {
+    "accepted": "Imekubaliwa",
+    "notAccepted": "Haijakubaliwa",
+    "loading": "Inapakia…"
+  }
 }
-}
+
+
+
 
