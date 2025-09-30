@@ -313,5 +313,78 @@
 "TITLE": "For any inquiry, Please call..",
 "PHONE": "Phone"
 }
+,
+
+  "dialog": {
+    "title": "Confirm Booking Details",
+    "errorMessage": "errorMessage"
+  },
+
+  "venue": {
+    "heading": "Venue",
+    "label": "Venue",
+    "noValue": "—"
+  },
+  "datesTimes": {
+    "heading": "Dates & Times",
+    "fromDateLabel": "From (Date):",
+    "fromTimeLabel": "From (Time):",
+    "toDateLabel": "To (Date):",
+    "toTimeLabel": "To (Time):"
+  },
+  "activityService": {
+    "heading": "Activity & Service",
+    "activityPurposeLabel": "Activity / Purpose:",
+    "activityPricePerDay": "TZS /Day",
+    "optionalServiceLabel": "Optional Service:",
+    "optionalServiceIdLabel": "Optional Service ID:"
+  },
+  "customer": {
+    "heading": "Customer",
+    "name": "Name:",
+    "phone": "Phone:",
+    "email": "Email:",
+    "address": "Address:",
+    "customerType": "Customer type:"
+  },
+  "attachedDocument": {
+    "heading": "Attached Document",
+    "documentLabel": "Document",
+    "noFile": "No file attached"
+  },
+  "summary": {
+    "heading": "Summary",
+    "discountRate": "Discount rate:",
+    "totalDays": "Total days:",
+    "activityPricePerDay": "Activity price (per day):",
+    "optionalPrice": "Optional service price (per day / flat):",
+    "totalBookingPrice": "Total booking price:",
+    "discountAmount": "Discount amount:",
+    "totalAfterDiscount": "Total after discount:"
+  },
+  "terms": {
+    "acceptText": "I accept the",
+    "termsLinkText": "terms & conditions"
+  },
+  "actions": {
+    "back": "Back",
+    "confirmSubmit": "Confirm & Submit",
+    "submitting": "Submitting...",
+    "submittingLabel": "Submitting..."
+  },
+  "buttons": {
+    "confirmDisabledReason": "Please accept the terms to continue"
+  },
+  "contact": {
+    "phone": "+255 24 2230242 | TOLL FREE: 0800710140",
+    "email": "info@zssf.or.tz",
+    "whatsapp": "ZSSF WhatsApp"
+  },
+  "misc": {
+    "accepted": "Accepted",
+    "notAccepted": "Not accepted",
+    "loading": "Loading…"
+  }
+
 }
 
