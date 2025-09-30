@@ -13,38 +13,48 @@
       {{ 'contact.whatsapp' | translate }}
     </span>
   </div>
-
-  <div class="relative mt-2 contact-right sm:mt-0">
-    <button
-      (click)="showLangDropdown = !showLangDropdown"
-      class="flex items-center gap-2 bg-white text-[#009688] border border-[#009688] px-4 py-1.5 rounded-full font-semibold hover:bg-[#009688] hover:text-white transition text-base"
-    >
-
+<div class="relative">
+  <!-- Trigger button -->
+  <button
+    (click)="showLangDropdown = !showLangDropdown"
+    class="flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200"
+  >
+    <span class="fi" [ngClass]="currentLang === 'sw' ? 'fi-tz' : 'fi-gb'"></span>
+    <span class="font-medium text-gray-800">
       {{ currentLang === 'sw' ? 'Kiswahili' : 'English' }}
-      <svg class="w-4 h-4 ml-1"  viewBox="0 0 20 20">
-        <path
-          d="M5.23 7.21a.75.75 0 011.06-.02L10 10.67l3.71-3.48a.75.75 0 111.04 1.08l-4.25 4a.75.75 0 01-1.04 0l-4.25-4a.75.75 0 01-.02-1.06z" />
-      </svg>
-    </button>
-
-    <div
-      *ngIf="showLangDropdown"
-      class="absolute right-0 z-50 mt-2 bg-white rounded-lg shadow-md w-36 ring-1 ring-black ring-opacity-5"
+    </span>
+    <svg
+      class="w-4 h-4 ml-2 text-gray-500 transition-transform duration-200"
+      [ngClass]="{ 'rotate-180': showLangDropdown }"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      viewBox="0 0 24 24"
     >
-      <button
-        (click)="switchLanguage('en'); showLangDropdown = false"
-        class="w-full text-left px-4 py-2 text-base text-gray-700 hover:bg-[#009688] hover:text-white rounded-t-lg"
-      >
-        English
-      </button>
-      <button
-        (click)="switchLanguage('sw'); showLangDropdown = false"
-        class="w-full text-left px-4 py-2 text-base text-gray-700 hover:bg-[#009688] hover:text-white rounded-b-lg"
-      >
-        Kiswahili
-      </button>
-    </div>
+      <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+    </svg>
+  </button>
+
+  <!-- Dropdown -->
+  <div
+    *ngIf="showLangDropdown"
+    class="absolute right-0 mt-3 w-44 rounded-2xl bg-white shadow-lg ring-1 ring-black/5 transition-all animate-dropdown"
+  >
+    <button
+      (click)="switchLanguage('en'); showLangDropdown = false"
+      class="flex items-center gap-3 px-4 py-2 w-full text-left text-gray-800 hover:bg-gray-50 rounded-t-2xl"
+    >
+      <span class="fi fi-gb"></span> English
+    </button>
+    <button
+      (click)="switchLanguage('sw'); showLangDropdown = false"
+      class="flex items-center gap-3 px-4 py-2 w-full text-left text-gray-800 hover:bg-gray-50 rounded-b-2xl"
+    >
+      <span class="fi fi-tz"></span> Kiswahili
+    </button>
   </div>
+</div>
+
 </div>
 
 
