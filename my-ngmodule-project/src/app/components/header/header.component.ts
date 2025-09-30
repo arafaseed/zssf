@@ -49,6 +49,7 @@ currentLang = 'en'; // default
 
     // Use language saved in localStorage or fallback to 'en'
     const lang = localStorage.getItem('app_language') ?? 'en';
+    this.currentLang = lang;  
     this.translate.use(lang);
 
     // Format current date with localization - adjust locale dynamically if needed

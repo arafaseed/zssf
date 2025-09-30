@@ -1,3 +1,4 @@
+<!-- CONTACT BAR -->
 <div class="contact-bar bg-[#009688] text-white text-sm py-1 px-4 flex flex-wrap justify-between items-center">
   <div class="flex flex-wrap items-center gap-4 contact-left">
     <span class="flex items-center gap-2 text-base contact-item">
@@ -13,84 +14,95 @@
       {{ 'contact.whatsapp' | translate }}
     </span>
   </div>
-<div class="relative">
-  <!-- Trigger button -->
-  <button
-    (click)="showLangDropdown = !showLangDropdown"
-    class="flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200"
-  >
-    <span class="fi" [ngClass]="currentLang === 'sw' ? 'fi-tz' : 'fi-gb'"></span>
-    <span class="font-medium text-gray-800">
-      {{ currentLang === 'sw' ? 'Kiswahili' : 'English' }}
-    </span>
-    <svg
-      class="w-4 h-4 ml-2 text-gray-500 transition-transform duration-200"
-      [ngClass]="{ 'rotate-180': showLangDropdown }"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      viewBox="0 0 24 24"
-    >
-      <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-    </svg>
-  </button>
 
-  <!-- Dropdown -->
-  <div
-    *ngIf="showLangDropdown"
-    class="absolute right-0 mt-3 w-44 rounded-2xl bg-white shadow-lg ring-1 ring-black/5 transition-all animate-dropdown"
-  >
+  <!-- Language Switch -->
+  <div class="relative">
     <button
-      (click)="switchLanguage('en'); showLangDropdown = false"
-      class="flex items-center gap-3 px-4 py-2 w-full text-left text-gray-800 hover:bg-gray-50 rounded-t-2xl"
+      (click)="showLangDropdown = !showLangDropdown"
+      class="flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200"
     >
-      <span class="fi fi-gb"></span> English
+      <span class="fi" [ngClass]="currentLang === 'sw' ? 'fi-tz' : 'fi-gb'"></span>
+      <span class="font-medium text-gray-800">
+        {{ currentLang === 'sw' ? 'Kiswahili' : 'English' }}
+      </span>
+      <svg
+        class="w-4 h-4 ml-2 text-gray-500 transition-transform duration-200"
+        [ngClass]="{ 'rotate-180': showLangDropdown }"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+      </svg>
     </button>
-    <button
-      (click)="switchLanguage('sw'); showLangDropdown = false"
-      class="flex items-center gap-3 px-4 py-2 w-full text-left text-gray-800 hover:bg-gray-50 rounded-b-2xl"
+
+    <!-- Dropdown -->
+    <div
+      *ngIf="showLangDropdown"
+      class="absolute right-0 mt-3 w-44 rounded-2xl bg-white shadow-lg ring-1 ring-black/5 transition-all animate-dropdown"
     >
-      <span class="fi fi-tz"></span> Kiswahili
-    </button>
+      <button
+        (click)="switchLanguage('en'); showLangDropdown = false"
+        class="flex items-center gap-3 px-4 py-2 w-full text-left text-gray-800 hover:bg-gray-50 rounded-t-2xl"
+      >
+        <span class="fi fi-gb"></span> English
+      </button>
+      <button
+        (click)="switchLanguage('sw'); showLangDropdown = false"
+        class="flex items-center gap-3 px-4 py-2 w-full text-left text-gray-800 hover:bg-gray-50 rounded-b-2xl"
+      >
+        <span class="fi fi-tz"></span> Kiswahili
+      </button>
+    </div>
   </div>
 </div>
-
-</div>
-
-
 
 <!-- HEADER -->
-<div class="flex flex-wrap items-center justify-between px-4 py-4 bg-white header-container">
-  <img src="smz_logo.png" alt="Logo Left" class="w-20 h-auto logo-left sm:w-24" />
+<div class="flex flex-wrap items-center justify-between px-6 py-4 bg-white shadow-sm header-container">
+  <!-- Left Logo (SMZ) -->
+  <img 
+    src="smz_logo.png" 
+    alt="SMZ Logo" 
+    class="h-20 sm:h-24 w-auto mx-auto sm:mx-0"
+  />
 
+  <!-- Centered Title & Slogan -->
   <div class="flex-1 px-4 text-center header-text">
-    <h1 class="text-xl font-bold text-gray-700 sm:text-2xl">
-    {{ displayedText }}
+    <!-- Modern, attractive title -->
+    <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-800 tracking-tight leading-tight">
+      {{ displayedText }}
     </h1>
-    <small style="text-align: center; font-size: 15px; font-weight: 500; color: #444;">
-      <span class="mr-1 fa fa-key"></span>
-      {{ 'header.slogan' | translate }}
-    </small>
 
+    <!-- Slogan with key close -->
+    <p class="mt-1 sm:mt-2 text-gray-600 text-base sm:text-lg font-medium flex items-center justify-center gap-1">
+      <img src="key.png" alt="Key Icon" class="w-5 h-5 rotate-90 object-contain">
+      {{ 'header.slogan' | translate }}
+    </p>
   </div>
 
-  <img src="zssf-logo.png" alt="Logo Right" class="w-20 h-auto logo-right sm:w-24" />
+  <!-- Right Logo (ZSSF) -->
+  <img 
+    src="zssf-logo.png" 
+    alt="ZSSF Logo" 
+    class="h-20 sm:h-24 w-auto mx-auto sm:mx-0"
+  />
 </div>
 
-<!-- DATE + NAVIGATION BAR -->
-<div class="nav-container bg-white text-black text-sm px-4 py-4 flex flex-wrap justify-between items-center shadow-md min-h-[70px] font-[Poppins,sans-serif]">
+<!-- FIXED NAVIGATION -->
+<div class="nav-container fixed top-[calc(64px+40px)] left-0 w-full bg-white text-black text-sm px-4 py-4 flex flex-wrap justify-between items-center shadow-md min-h-[70px] font-[Poppins,sans-serif] z-50">
   <!-- Date Box -->
   <div class="date-box text-lg text-[#138C82] font-semibold flex items-center mb-2 sm:mb-0">
     <i class="mr-2 text-xl fas fa-calendar-alt"></i>
     {{ currentDate }}
   </div>
 
-  <!-- Navigation -->
+  <!-- Navigation Links -->
   <nav class="flex flex-wrap justify-center gap-4 text-base font-medium text-center text-gray-600 sm:gap-6">
     <a (click)="navigateTo('/')" class="cursor-pointer hover:text-blue-600 nav-link">{{ 'nav.home' | translate }}</a>
     <a (click)="navigateTo('/mybooking')" class="cursor-pointer hover:text-blue-600 nav-link">{{ 'nav.my_reservation' | translate }}</a>
     <a (click)="navigateTo('/login')" class="cursor-pointer hover:text-blue-600 nav-link">{{ 'nav.login' | translate }}</a>
-    <a (click)="navigateTo('/agreeterms')" class="cursor-pointer hover:text-blue-600 nav-link"> {{ 'nav.Terms & Conditions' | translate }} </a>
-     <a (click)="navigateTo('/feedback')" class="cursor-pointer hover:text-blue-600 nav-link"> {{'nav.Feedback' | translate }} </a>
+    <a (click)="navigateTo('/agreeterms')" class="cursor-pointer hover:text-blue-600 nav-link">{{ 'nav.Terms & Conditions' | translate }}</a>
+    <a (click)="navigateTo('/feedback')" class="cursor-pointer hover:text-blue-600 nav-link">{{ 'nav.Feedback' | translate }}</a>
   </nav>
 </div>
