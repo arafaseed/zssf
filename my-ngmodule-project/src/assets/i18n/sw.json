@@ -50,7 +50,10 @@
     "from": "Kuanzia",
     "perDay": "/ Siku",
     "noPrice": "Bei haijapatikana",
-    "view": "Angalia"
+    "view": "Angalia",
+   "heading": "Ukumbi",
+    "label": "Ukumbi",
+    "noValue": "—"
   },
 
   "availability": {
@@ -106,12 +109,13 @@
     "Terms & Conditions": "Masharti na Vigezo"
   },
   "terms": {
-    "title": "Sheria na Masharti",
     "lastUpdated": "Marekebisho ya Mwisho",
+    "acceptText": "Ninakubali",
+    "termsLinkText": "Vigezo na Masharti",
     "disclaimer": "Tafadhali soma Masharti haya kwa makini kabla ya kutumia mfumo wetu wa Kuhifadhi kumbi za ZSSF.",
     "intro": {
-      "heading": "1. Utangulizi",
-      "text": "Masharti haya yanaongoza matumizi ya Mfumo wetu wa kuhifadhi Ukumbi mtandaoni. Kwa kutumia Mfumo unaikubali Masharti haya. Ikiwa hauyakubali, tafadhali usitumie Mfumo."
+    "heading": "1. Utangulizi",
+    "text": "Masharti haya yanaongoza matumizi ya Mfumo wetu wa kuhifadhi Ukumbi mtandaoni. Kwa kutumia Mfumo unaikubali Masharti haya. Ikiwa hauyakubali, tafadhali usitumie Mfumo."
     },
     "scope": {
       "heading": "2. Uwajibu wa Huduma",
@@ -318,14 +322,9 @@
 
  "dialog": {
     "title": "Thibitisha Maelezo ya Booking",
-    "errorMessage": "ujumbeWakosa"
+    "errorMessage": "Ujumbe una makosa"
   },
 
-  "venue": {
-    "heading": "Ukumbi",
-    "label": "Ukumbi",
-    "noValue": "—"
-  },
   "datesTimes": {
     "heading": "Tarehe na Muda",
     "fromDateLabel": "Kuanzia (Tarehe):",
@@ -351,7 +350,7 @@
   "attachedDocument": {
     "heading": "Hati Imeambatanishwa",
     "documentLabel": "Hati",
-    "noFile": "Hakuna faili imeambatanishwa"
+    "noFile": "Hakuna faili lililoambatanishwa"
   },
   "summary": {
     "heading": "Muhtasari",
@@ -363,10 +362,6 @@
     "discountAmount": "Kiasi cha punguzo:",
     "totalAfterDiscount": "Jumla baada ya punguzo:"
   },
-  "terms": {
-    "acceptText": "Nakubali",
-    "termsLinkText": "masharti & vigezo"
-  },
   "actions": {
     "back": "Rudi",
     "confirmSubmit": "Thibitisha & Tuma",
@@ -376,15 +371,11 @@
   "buttons": {
     "confirmDisabledReason": "Tafadhali kubali masharti ili kuendelea"
   },
-  "contact": {
-    "phone": "+255 24 2230242 | PIGA BURE: 0800710140",
-    "email": "info@zssf.or.tz",
-    "whatsapp": "ZSSF WhatsApp"
-  },
+ 
   "misc": {
     "accepted": "Imekubaliwa",
     "notAccepted": "Haijakubaliwa",
-    "loading": "Inapakia…"
+    "loading": "Inalod…"
   }
 }
 

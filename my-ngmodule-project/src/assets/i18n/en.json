@@ -50,7 +50,10 @@
     "from": "From",
     "perDay": "/ Day",
     "noPrice": "Price not available",
-    "view": "View"
+    "view": "View",
+    "heading": "Venue",
+    "label": "Venue",
+    "noValue": "—"
   },
   "availability": {
     "title": "Check availability",
@@ -106,12 +109,13 @@
     "Terms & Conditions": "Terms & Conditions"
   },
   "terms": {
-    "title": "Terms & Conditions",
     "lastUpdated": "Last Updated",
+    "acceptText": "I accept the",
+    "termsLinkText": "Terms & Conditions",
     "disclaimer": "Please read these Terms carefully before using our ZSSF HALL RESERVATION. ",
     "intro": {
-      "heading": "1. Introduction",
-      "text": "These Terms govern the use of our online Hall Booking Reservation System. By using the System you acknowledge and accept these Terms. If you do not accept them, please do not use the System."
+    "heading": "1. Introduction",
+    "text": "These Terms govern the use of our online Hall Booking Reservation System. By using the System you acknowledge and accept these Terms. If you do not accept them, please do not use the System."
     },
     "scope": {
       "heading": "2. Scope of Service",
@@ -320,11 +324,7 @@
     "errorMessage": "errorMessage"
   },
 
-  "venue": {
-    "heading": "Venue",
-    "label": "Venue",
-    "noValue": "—"
-  },
+
   "datesTimes": {
     "heading": "Dates & Times",
     "fromDateLabel": "From (Date):",
@@ -362,10 +362,6 @@
     "discountAmount": "Discount amount:",
     "totalAfterDiscount": "Total after discount:"
   },
-  "terms": {
-    "acceptText": "I accept the",
-    "termsLinkText": "terms & conditions"
-  },
   "actions": {
     "back": "Back",
     "confirmSubmit": "Confirm & Submit",
@@ -374,11 +370,6 @@
   },
   "buttons": {
     "confirmDisabledReason": "Please accept the terms to continue"
-  },
-  "contact": {
-    "phone": "+255 24 2230242 | TOLL FREE: 0800710140",
-    "email": "info@zssf.or.tz",
-    "whatsapp": "ZSSF WhatsApp"
   },
   "misc": {
     "accepted": "Accepted",
