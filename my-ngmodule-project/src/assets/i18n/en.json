@@ -5,7 +5,7 @@
     "whatsapp": "ZSSF WhatsApp"
   },
   "header": {
-    "title": "ZSSF HALL RESERVATION ",
+    "title": "ZSSF HALL RESERVATION SYSTEM ",
     "slogan": "Key To The Future"
   },
 
@@ -85,8 +85,8 @@
     "organization": "Organization",
     "customerName": "Customer name",
     "phone": "Phone",
-    "phoneHint": "10 digits, must start with 06, 07 or 08",
-    "phoneError": "Phone must be 10 digits and start with 06, 07 or 08",
+    "phoneHint": "10 digits, must start with 0",
+    "phoneError": "Phone must be 10 digits and start with 0",
     "email": "Email",
     "address": "Address",
     "referenceDoc": "Reference document (PDF)",

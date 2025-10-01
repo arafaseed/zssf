@@ -36,7 +36,7 @@ export class BookingModalComponent implements OnInit {
 
   ngOnInit() {
     // Phone rules: must start with 06/07/08 and be 10 digits total
-    const phonePattern = /^(06|07|08)\d{8}$/;
+    const phonePattern = /^(0)\d{9}$/;
 
     this.detailsForm = this.fb.group({
       optionalServiceId: [null],

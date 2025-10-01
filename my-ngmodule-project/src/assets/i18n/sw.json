@@ -5,7 +5,7 @@
     "whatsapp": "ZSSF WhatsApp"
   },
   "header": {
-    "title": "UHIFADHI WA UKUMBI ZSSF",
+    "title": "MFUMO WA UKODISHAJI UKUMBI ZSSF",
     "slogan": "Ufunguo wa Maisha ya Baadaye"
   },
 
@@ -69,8 +69,8 @@
     "pendingExpires": "Inasubiri na itaisha baada ya dakika {{minutes}}",
     "bookedTime": "Muda uliowekwa: {{start}} - {{end}}",
     "noData": "Hakuna taarifa za upatikanaji zilizopatikana kwa kipindi hiki.",
-    "back": "Rudi",
-    "refresh": "Onyesha tena",
+    "back": "Rudi nyuma",
+    "refresh": "Onesha tena",
     "continue": "Endelea"
   },
 
@@ -86,12 +86,12 @@
     "organization": "Shirika",
     "customerName": "Jina la mteja",
     "phone": "Simu",
-    "phoneHint": "Weka Nambari zenye tarakimu 10, lazima ianze na 06, 07 au 08",
-    "phoneError": "Nambari ya simu lazima iwe tarakimu 10 na ianze na 06, 07 au 08",
+    "phoneHint": "Weka Nambari zenye tarakimu 10, lazima ianze na 0xxx",
+    "phoneError": "Nambari ya simu lazima iwe tarakimu 10 na ianze na 0xxx",
     "email": "Barua pepe",
-    "address": "Anuani",
-    "referenceDoc": "Hati ya kumbukumbu (PDF)",
-    "selectedFile": "File Lililochaguliwa",
+    "address": "Anuani ya makaazi",
+    "referenceDoc": "Barua ya maombi kwa upande wa shirika (PDF)",
+    "selectedFile": "Barua ya maombi iliochaguliwa",
     "employeeVerify": "Mimi ni mfanyakazi wa ZSSF",
     "verifying": "Inathibitisha…",
     "employeeVerified": "Mfanyakazi amethibitishwa — punguzo limetumika ({{discount}}%)",
@@ -106,7 +106,7 @@
     "my_reservation": "Booking zangu",
     "login": "Ingia",
     "Feedback": "Maoni",
-    "Terms & Conditions": "Masharti na Vigezo"
+    "Terms & Conditions": "Vigezo na Masharti  "
   },
   "terms": {
     "lastUpdated": "Marekebisho ya Mwisho",
@@ -240,21 +240,21 @@
     "bookingCode": "Nambari ya Booking",
     "customer": "Mteja",
     "bookingDate": "Tarehe iliyofanywa booking",
-    "eventStartDate": "Tarehe ya Kuanzia Tukio",
-    "eventEndDate": "Tarehe ya Mwisho wa Tukio",
+    "eventStartDate": "Tarehe ya Kuanza Shughuli/Tukio",
+    "eventEndDate": "Tarehe ya Mwisho wa Shughuli/Tukio",
     "status": "Hali ya booking",
     "venue": "Ukumbi",
     "activity": "Shughuli",
     "moreInfo": "Tazama ankara kwa maelezo zaidi",
     "viewInvoice": "Tazama Ankara",
-    "updateReservation": "Sasisha Booking",
+    "updateReservation": "Sahihisha Booking",
     "cancelBooking": "Ghairi Booking",
-    "noResults": "Hakuna bookings ziliopatikana kwa nambari ya simu",
+    "noResults": "Hakuna booking ziliopatikana kwa nambari ya simu",
     "noBookings": "Hakuna booking iliopatikana.",
     "fetchError": "Imeshindikana kupata booking. Tafadhali jaribu tena.",
     "confirmCancelTitle": "Thibitisha Ghairi",
-    "confirmCancelMsg": "Una hakika unataka kughairi booking hii?",
-    "cancelSuccess": "Booking imeghairiwa kwa mafanikio!",
+    "confirmCancelMsg": "Una uhakika unataka kughairi booking hii?",
+    "cancelSuccess": "Booking imefanikiwa kughairishwa!",
     "cancelError": "Imeshindikana kughairi booking. Tafadhali jaribu tena.",
     "errors": {
       "required": "Nambari ya simu inahitajika.",
@@ -269,7 +269,7 @@
 },
 
 "GUIDANCE": {
-"TITLE": "Soma Mwongozo wa Malipo na Ankara",
+"TITLE": "Soma Muongozo wa Malipo na Ankara",
 "HTML": "<p> Una masaa 24 ya kulipa malipo ya awali ambayo ni sawa na 25% ya Jumla ya malipo kupitia namba ya malipo <strong>{{pcn}}</strong> la-sihivyo booking itafutwa. Unaweza kubadilisha tarehe za booking tu ikiwa ni muhimu.</p>\n.\n <p>Ili kulipa bili hii, tumia kumbukumbu  namba ya malipo uliyopewa <strong>{{pcn}}</strong> kwa njia rasmi za malipo. Njia kuu ni kupitia benki au huduma za kifedha za  simu zamkononi(M-Pesa, Tigo Pesa/Mix, Airtel Money, Halopesa)</p>\n.\n <p><strong>Jinsi ya kufanya malipo!</strong></p>\n<p><strong>1.Kupitia Benki:</strong> Tembelea tawi lolote au wakala wa benki iliyounganishwa na mfumo wa serikali (mfano NMB, CRDB,PBZ, TPB, NBC). Waambie mtoa huduma kuwa unalipa malipo ya serikali na toa kumbukumbu namba ya malipo kwa ajili ya malipo.</p>\n.\n <p>Lipia pesa taslimu au tumia uhamisho wa kielektroniki. (Kwa ATM au benki mtandao: chagua “Lipa Bili” au “Malipo ya Serikali” na ingiza kumbukumbu namba ya malipo.) Hifadhi risiti au uthibitisho wa malipo.</p>\n.\n<p><strong>2.Kupitia Huduma za Simu:</strong> Tumia USSD ya huduma yako na fuata maelekezo ya kulipa bili za serikali:</p>\n<p><strong>M-Pesa:</strong> Piga <strong>*150*00#</strong>, chagua Lipa Bili, kisha Malipo ya Serikali, kisha ingiza kumbukumbu namba ya malipo (PCN) na kisha kiasi na PIN yako.</p>\n<p><strong>Tigo Pesa (Mix):</strong> Piga <strong>*150*01#</strong>, chagua Lipa Bili (hatua 4), kisha Malipo ya Serikali (hatua 5), na ingiza kumbukumbu namba ya malipo.</p>\n<p><strong>Airtel Money:</strong> Piga <strong>*150*60#</strong>, kisha Lipa Bili →Malipo ya Serikali, kisha ingiza kumbukumbu namba ya malipo.</p>\n<p><strong>Halopesa (Halotel):</strong> Piga <strong>*150*88#</strong>, kisha Lipa Bili → Malipo ya Serikali, kisha ingiza kumbukumbu namba ya malipo</p>\n.\n<p>Baada ya kuweka namba ya udhibiti na kiasi, ingiza PIN yako kuthibitisha. Utapokea ujumbe mfupi (SMS) unaothibitisha malipo yako.</p>\n.\n<p>Hakikisha umeingiza namba ya udhibiti na kiasi sahihi. Mfumo wa malipo wa serikali utatambua malipo yako kiotomatiki kwa kutumia namba hiyo. Hifadhi risiti au uthibitisho wa malipo kama kumbukumbu zako.</p>"
 },
 
@@ -337,19 +337,19 @@
     "activityPurposeLabel": "Shughuli / Madhumuni:",
     "activityPricePerDay": "TZS /Siku",
     "optionalServiceLabel": "Huduma ya Hiari:",
-    "optionalServiceIdLabel": "Nambari ya Huduma ya Hiari:"
+    "optionalServiceIdLabel": "Huduma ya Hiari:"
   },
   "customer": {
     "heading": "Mteja",
     "name": "Jina:",
     "phone": "Simu:",
     "email": "Barua pepe:",
-    "address": "Anwani:",
+    "address": "Anuani:",
     "customerType": "Aina ya mteja:"
   },
   "attachedDocument": {
-    "heading": "Hati Imeambatanishwa",
-    "documentLabel": "Hati",
+    "heading": "Faili Limeambatanishwa",
+    "documentLabel": "Faili",
     "noFile": "Hakuna faili lililoambatanishwa"
   },
   "summary": {
