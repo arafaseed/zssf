@@ -74,12 +74,13 @@
   },
 
   "booking": {
+   "uploadRequired": "Tafadhali tuma faili la PDF kabla ya kuwasilisha.",
    "chooseFile": "Chagua Faili",
     "title": "Weka nafasi",
     "range": "Mda wakuweka nafasi",
     "single": "Tarehe iliyochaguliwa",
     "activity": "Shughuli",
-    "optionalService": "Huduma ya ziada",
+    "optionalService": "Huduma ya Hiari",
     "none": "Hakuna",
     "customerType": "Aina ya mteja",
     "individual": "Mtu binafsi",

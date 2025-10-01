@@ -73,6 +73,7 @@
   },
 
   "booking": {
+    "uploadRequired": "Please upload a PDF document before submitting.",
     "chooseFile": "Choose File",
     "title": "Book",
     "range": "Booking range",
@@ -337,7 +338,7 @@
     "activityPurposeLabel": "Activity / Purpose:",
     "activityPricePerDay": "TZS /Day",
     "optionalServiceLabel": "Optional Service:",
-    "optionalServiceIdLabel": "Optional Service ID:"
+    "optionalServiceIdLabel": "Optional Service:"
   },
   "customer": {
     "heading": "Customer",

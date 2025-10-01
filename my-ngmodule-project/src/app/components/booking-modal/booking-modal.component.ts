@@ -7,6 +7,7 @@ import { BookingService } from '../../Services/booking.service';
 import { EmployeeVerifyComponent } from '../employee-verify/employee-verify.component';
 import { ConfirmBookingComponent } from '../confirm-booking/confirm-booking.component';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-booking-modal',
@@ -31,7 +32,8 @@ export class BookingModalComponent implements OnInit {
     private dialog: MatDialog,
     private router: Router,
     private api: BookingService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+     private translate: TranslateService 
   ) {}
 
   ngOnInit() {
@@ -191,6 +193,11 @@ export class BookingModalComponent implements OnInit {
       this.detailsForm.markAllAsTouched();
       return;
     }
+      // Force file upload for ORGANIZATION type
+ if (this.detailsForm.value.customerType === 'ORGANIZATION' && !this.attachedFile) {
+  this.fileError = this.translate.instant('booking.uploadRequired');
+  return;
+}
 
     const booking = this.buildBookingObject();
     const selectedOptionalService =
