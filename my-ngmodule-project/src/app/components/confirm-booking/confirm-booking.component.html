@@ -3,39 +3,32 @@
 </h2>
 
 <mat-dialog-content class="space-y-6">
+
   <!-- Venue -->
   <div class="p-4 shadow-sm rounded-2xl bg-green-50">
     <h4 class="mb-2 font-semibold text-green-700">{{ 'venue.heading' | translate }}</h4>
     <div class="flex items-center justify-between pt-3 border-t border-gray-300">
-      <div class="text-lg text-left text-gray-600">
-        <strong>{{ 'venue.label' | translate }}</strong>
-      </div>
-      <div class="text-lg font-medium text-right text-blue-900">
-        <p class="m-0">{{ data.venueName }}</p>
-      </div>
+      <div class="text-lg text-left text-gray-600"><strong>{{ 'venue.label' | translate }}</strong></div>
+      <div class="text-lg font-medium text-right text-blue-900">{{ data.venueName }}</div>
     </div>
   </div>
 
   <!-- Dates & Times -->
   <div class="p-4 shadow-sm rounded-2xl bg-green-50">
     <h4 class="mb-2 font-semibold text-green-700">{{ 'datesTimes.heading' | translate }}</h4>
-
     <div class="divide-y divide-gray-300">
       <div class="flex items-center justify-between py-4">
         <div class="text-lg text-left text-gray-600"><strong>{{ 'datesTimes.fromDateLabel' | translate }}</strong></div>
         <div class="text-lg font-medium text-right text-blue-900">{{ data.booking.startDate }}</div>
       </div>
-
       <div class="flex items-center justify-between py-4">
         <div class="text-lg text-left text-gray-600"><strong>{{ 'datesTimes.fromTimeLabel' | translate }}</strong></div>
         <div class="text-lg font-medium text-right text-blue-900">{{ data.booking.startTime }}</div>
       </div>
-
       <div class="flex items-center justify-between py-4">
         <div class="text-lg text-left text-gray-600"><strong>{{ 'datesTimes.toDateLabel' | translate }}</strong></div>
         <div class="text-lg font-medium text-right text-blue-900">{{ data.booking.endDate }}</div>
       </div>
-
       <div class="flex items-center justify-between py-4">
         <div class="text-lg text-left text-gray-600"><strong>{{ 'datesTimes.toTimeLabel' | translate }}</strong></div>
         <div class="text-lg font-medium text-right text-blue-900">{{ data.booking.endTime }}</div>
@@ -46,15 +39,14 @@
   <!-- Activity -->
   <div class="p-4 shadow-sm rounded-2xl bg-green-50">
     <h4 class="mb-2 font-semibold text-green-700">{{ 'activityService.heading' | translate }}</h4>
-
     <div class="divide-y divide-gray-300">
       <div class="flex items-start justify-between py-4">
-        <div class="pr-4 text-lg text-left text-gray-600">
-          <strong>{{ 'activityService.activityPurposeLabel' | translate }}</strong>
-        </div>
+        <div class="pr-4 text-lg text-left text-gray-600"><strong>{{ 'activityService.activityPurposeLabel' | translate }}</strong></div>
         <div class="text-lg font-medium text-right text-blue-900">
           <div>{{ data.booking.venueActivityName || '—' }}</div>
-          <div class="mt-1">{{ data.booking.venueActivityPrice | number:'1.0-0' }} <span class="text-sm text-gray-500">{{ 'activityService.activityPricePerDay' | translate }}</span></div>
+          <div class="mt-1">{{ data.booking.venueActivityPrice | number:'1.0-0' }}
+            <span class="text-sm text-gray-500">{{ 'activityService.activityPricePerDay' | translate }}</span>
+          </div>
         </div>
       </div>
 
@@ -80,45 +72,26 @@
   <!-- Customer -->
   <div class="p-4 shadow-sm rounded-2xl bg-green-50">
     <h4 class="mb-2 font-semibold text-green-700">{{ 'customer.heading' | translate }}</h4>
-
     <div class="divide-y divide-gray-300">
       <div class="flex items-center justify-between py-4">
         <div class="text-lg text-left text-gray-600"><strong>{{ 'customer.name' | translate }}</strong></div>
         <div class="text-lg font-medium text-right text-blue-900">{{ data.booking.customer?.customerName }}</div>
       </div>
-
       <div class="flex items-center justify-between py-4">
         <div class="text-lg text-left text-gray-600"><strong>{{ 'customer.phone' | translate }}</strong></div>
         <div class="text-lg font-medium text-right text-blue-900">{{ data.booking.customer?.phoneNumber }}</div>
       </div>
-
       <div class="flex items-center justify-between py-4">
         <div class="text-lg text-left text-gray-600"><strong>{{ 'customer.email' | translate }}</strong></div>
         <div class="text-lg font-medium text-right text-blue-900">{{ data.booking.customer?.email }}</div>
       </div>
-
       <div class="flex items-center justify-between py-4">
         <div class="text-lg text-left text-gray-600"><strong>{{ 'customer.address' | translate }}</strong></div>
         <div class="text-lg font-medium text-right text-blue-900">{{ data.booking.customer?.address }}</div>
       </div>
-
       <div class="flex items-center justify-between py-4">
         <div class="text-lg text-left text-gray-600"><strong>{{ 'customer.customerType' | translate }}</strong></div>
         <div class="text-lg font-medium text-right text-blue-900">{{ data.booking.customer?.customerType }}</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Attached File -->
-  <div *ngIf="data.booking.customer?.customerType !== 'INDIVIDUAL'" class="p-4 shadow-sm rounded-2xl bg-green-50">
-    <h4 class="mb-2 font-semibold text-green-700">{{ 'attachedDocument.heading' | translate }}</h4>
-    <div class="flex items-center justify-between pt-3 border-t border-gray-300">
-      <div class="text-lg text-left text-gray-600"><strong>{{ 'attachedDocument.documentLabel' | translate }}</strong></div>
-      <div class="text-lg font-medium text-right text-blue-900">
-        <p *ngIf="data.attachedFile?.name; else noFile" class="m-0">{{ data.attachedFile.name }}</p>
-        <ng-template #noFile>
-          <p class="m-0 italic text-gray-500">{{ 'attachedDocument.noFile' | translate }}</p>
-        </ng-template>
       </div>
     </div>
   </div>
@@ -127,10 +100,6 @@
   <div class="p-4 shadow-sm rounded-2xl bg-green-50">
     <h4 class="mb-2 font-semibold text-green-700">{{ 'summary.heading' | translate }}</h4>
     <div class="divide-y divide-gray-300">
-      <div class="flex items-center justify-between py-4">
-        <div class="text-lg text-left text-gray-600"><strong>{{ 'summary.discountRate' | translate }}</strong></div>
-        <div class="text-lg font-medium text-right text-blue-900">{{ data.booking.discountRate || 0 }}</div>
-      </div>
       <div class="flex items-center justify-between py-4">
         <div class="text-lg text-left text-gray-600"><strong>{{ 'summary.totalDays' | translate }}</strong></div>
         <div class="text-lg font-medium text-right text-blue-900">{{ totalDays }}</div>
@@ -147,46 +116,49 @@
         <div class="text-lg text-left text-gray-600"><strong>{{ 'summary.totalBookingPrice' | translate }}</strong></div>
         <div class="text-lg font-medium text-right text-blue-900">{{ totalBookingPrice | number:'1.0-0' }} TZS</div>
       </div>
-      <div class="flex items-center justify-between py-4">
-        <div class="text-lg text-left text-gray-600"><strong>{{ 'summary.discountAmount' | translate }}</strong></div>
-        <div class="text-lg font-medium text-right text-blue-900">{{ discountAmount | number:'1.0-0' }} TZS</div>
-      </div>
-      <div class="flex items-center justify-between py-4">
-        <div class="text-lg text-left text-gray-600"><strong>{{ 'summary.totalAfterDiscount' | translate }}</strong></div>
-        <div class="text-lg font-medium text-right text-blue-900">{{ netAmount | number:'1.0-0' }} TZS</div>
-      </div>
+
+      <!-- EMPLOYEE-only discount & net -->
+      <ng-container *ngIf="data.booking.customer?.customerType === 'EMPLOYEE' || data.employeeVerified">
+        <div class="flex items-center justify-between py-4">
+          <div class="text-lg text-left text-gray-600"><strong>{{ 'summary.discountRate' | translate }}</strong></div>
+          <div class="text-lg font-medium text-right text-blue-900">{{ data.booking.discountRate || 0 }}</div>
+        </div>
+        <div class="flex items-center justify-between py-4">
+          <div class="text-lg text-left text-gray-600"><strong>{{ 'summary.discountAmount' | translate }}</strong></div>
+          <div class="text-lg font-medium text-right text-blue-900">{{ discountAmount | number:'1.0-0' }} TZS</div>
+        </div>
+        <div class="flex items-center justify-between py-4">
+          <div class="text-lg text-left text-gray-600"><strong>{{ 'summary.totalAfterDiscount' | translate }}</strong></div>
+          <div class="text-lg font-medium text-right text-blue-900">{{ netAmount | number:'1.0-0' }} TZS</div>
+        </div>
+      </ng-container>
     </div>
   </div>
 
-  <!-- Error -->
-  <div *ngIf="errorMessage" class="mt-2 text-sm font-medium text-red-600">
-    {{ 'dialog.errorMessage' | translate }}
-  </div>
-
   <!-- Terms Checkbox -->
-<mat-checkbox [(ngModel)]="accepted" class="mt-3 text-gray-700">
-  {{ 'terms.acceptText' | translate }}
-  <a href="/agreeterms" target="_blank" class="text-blue-600 underline">
-    <strong>{{ 'terms.termsLinkText' | translate }}</strong>
-  </a>
-</mat-checkbox>
+  <mat-checkbox [(ngModel)]="accepted" class="mt-3 text-gray-700">
+    {{ 'terms.acceptText' | translate }}
+    <a href="/agreeterms" target="_blank" class="text-blue-600 underline">
+      <strong>{{ 'terms.termsLinkText' | translate }}</strong>
+    </a>
+  </mat-checkbox>
 
-
-<!-- Actions -->
-<mat-dialog-actions align="end" class="mt-6 space-x-3">
-  <div class="flex items-center justify-between w-full gap-3">
-    <button mat-stroked-button (click)="close(false)" [disabled]="submitting"
-      class="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-100">
-      {{ 'actions.back' | translate }}
-    </button>
-    <button mat-flat-button color="primary" (click)="confirmAndSubmit()" 
-      [disabled]="!accepted || submitting"
-      class="px-4 py-2 font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600">
-      <span *ngIf="!submitting">{{ 'actions.confirmSubmit' | translate }}</span>
-      <span *ngIf="submitting" class="flex items-center">
-        <mat-progress-spinner diameter="18" mode="indeterminate"></mat-progress-spinner>
-        &nbsp;{{ 'actions.submitting' | translate }}
-      </span>
-    </button>
-  </div>
-</mat-dialog-actions>
+  <!-- Actions -->
+  <mat-dialog-actions align="end" class="mt-6 space-x-3">
+    <div class="flex items-center justify-between w-full gap-3">
+      <button mat-stroked-button (click)="close(false)" [disabled]="submitting"
+        class="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-100">
+        {{ 'actions.back' | translate }}
+      </button>
+      <button mat-flat-button color="primary" (click)="confirmAndSubmit()" 
+        [disabled]="!accepted || submitting"
+        class="px-4 py-2 font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600">
+        <span *ngIf="!submitting">{{ 'actions.confirmSubmit' | translate }}</span>
+        <span *ngIf="submitting" class="flex items-center">
+          <mat-progress-spinner diameter="18" mode="indeterminate"></mat-progress-spinner>
+          &nbsp;{{ 'actions.submitting' | translate }}
+        </span>
+      </button>
+    </div>
+  </mat-dialog-actions>
+</mat-dialog-content>
