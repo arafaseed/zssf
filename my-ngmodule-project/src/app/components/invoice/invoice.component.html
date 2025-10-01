@@ -3,195 +3,182 @@
 <!-- Top heading (full width) -->
 <div class="page-wrap">
   <h1 class="invoice-heading">{{ 'INVOICE.HEADING' | translate }}</h1>
-  <p class="invoice-sub" ><em>{{ 'INVOICE.CONGRATS_SUB' | translate:{name: invoiceData?.customerName || ''} }}</em></p>
+  <p class="invoice-sub"><em>{{ 'INVOICE.CONGRATS_SUB' | translate:{name: invoiceData?.customerName || ''} }}</em></p>
 
-  <!-- Expansion panels row (information + feedback) -->
-   <div class="panels-row rounded-xl m-5 p-5 bg-emerald-100" multi>
-  <mat-accordion >
-    <!-- Information & Rules panel (translatable HTML content) -->
-    <mat-expansion-panel  class="info-panel " (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)" >
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          <mat-icon aria-hidden="false" aria-label="info">info</mat-icon>
-          &nbsp; {{ 'GUIDANCE.TITLE' | translate }}
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-
-      <!-- Content is expected to come from translations (HTML allowed). Fallback to raw content if translations are missing. -->
-      <div class="panel-content" [innerHTML]="'GUIDANCE.HTML' | translate:{pcn: invoiceData?.controlNumber || ''}"></div>
-    </mat-expansion-panel>
-  </mat-accordion>
-  <mat-accordion>
-    <!-- Clickable feedback panel: no body; clicking header navigates -->
-    <mat-expansion-panel class="feedback-panel" hideToggle (click)="goToFeedback()" [disabled]="false" role="button" aria-label="Leave feedback">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          <mat-icon>feedback</mat-icon>
-          &nbsp; {{ 'FEEDBACK.TITLE' | translate }}
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-    </mat-expansion-panel>
-  </mat-accordion>
+  <!-- Expansion panels row -->
+  <div class="panels-row rounded-xl m-5 p-5 bg-emerald-100" multi>
+    <mat-accordion>
+      <mat-expansion-panel class="info-panel" (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon aria-hidden="false" aria-label="info">info</mat-icon>
+            &nbsp; {{ 'GUIDANCE.TITLE' | translate }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="panel-content" [innerHTML]="'GUIDANCE.HTML' | translate:{pcn: invoiceData?.controlNumber || ''}"></div>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <mat-accordion>
+      <mat-expansion-panel class="feedback-panel" hideToggle (click)="goToFeedback()" [disabled]="false" role="button" aria-label="Leave feedback">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon>feedback</mat-icon>
+            &nbsp; {{ 'FEEDBACK.TITLE' | translate }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+      </mat-expansion-panel>
+    </mat-accordion>
   </div>
 
-  <!-- Invoice card / A4 viewport (always looks like a paper sheet) -->
-  <mat-card class="invoice-card" >
+  <!-- Invoice card -->
+  <mat-card class="invoice-card">
     <div id="invoice-a4">
-    <mat-card-content>
-      <div #a4wrapper class="a4-viewport" >
-        <div  class="invoice-container" role="document" aria-label="Invoice document">
-          <!-- Header -->
-          <div class="invoice-header header-row">
-            <div class="zssf-logo">
-              <img src="/zssf-logo.png" alt="ZSSF" class="logo" />
-            </div>
-            <div class="title-block">
-              <h1 class="paper-title">ZANZIBAR SOCIAL SECURITY FUND (ZSSF)</h1>
-              <p class="invoice-sub-title">HALLS RESERVATION INVOICE</p>
-            </div>
-            <!-- <div class="logo-right">
-              <img src="/smz_logo.png" alt="SMZ" class="logo" />
-            </div> -->
-            <div class="qr-code">
-              <div class="qr-block">
-                <img *ngIf="qrDataUrl" [src]="qrDataUrl" alt="Invoice QR" />
-                <p class="invoice-code">{{ invoiceData.invoiceCode }}</p>
+      <mat-card-content>
+        <div #a4wrapper class="a4-viewport">
+          <div class="invoice-container" role="document" aria-label="Invoice document">
 
+            <!-- Header -->
+            <div class="invoice-header header-row">
+              <div class="zssf-logo">
+                <img src="/zssf-logo.png" alt="ZSSF" class="logo" />
+              </div>
+              <div class="title-block">
+                <h1 class="paper-title">ZANZIBAR SOCIAL SECURITY FUND (ZSSF)</h1>
+                <p class="invoice-sub-title">HALLS RESERVATION INVOICE</p>
+              </div>
+              <div class="qr-code">
+                <div class="qr-block">
+                  <img *ngIf="qrDataUrl" [src]="qrDataUrl" alt="Invoice QR" />
+                  <p class="invoice-code">{{ invoiceData.invoiceCode }}</p>
+                </div>
               </div>
             </div>
+
+            <!-- Customer Information -->
+            <section class="invoice-section">
+              <h2>{{ 'A4.CUSTOMER_INFO_TITLE' | translate }}</h2>
+              <div class="invoice-line">
+                <span class="label">{{ 'A4.NAME_LABEL' | translate }}</span>
+                <span class="value">{{ invoiceData.customerName || '-' }}</span>
+              </div>
+              <div class="invoice-line">
+                <span class="label">{{ 'A4.PHONE_LABEL' | translate }}</span>
+                <span class="value">{{ invoiceData.customerPhone || '-' }}</span>
+              </div>
+              <div class="invoice-line">
+                <span class="label">{{ 'A4.EMAIL_LABEL' | translate }}</span>
+                <span class="value">{{ invoiceData.customerEmail || '-' }}</span>
+              </div>
+            </section>
+
+            <!-- Invoice Details -->
+            <section class="invoice-section">
+              <h2>{{ 'A4.INVOICE_DETAILS_TITLE' | translate }}</h2>
+              <div class="invoice-line">
+                <span class="label">{{ 'A4.ISSUED_DATE' | translate }}</span>
+                <span class="value">{{ invoiceData.issuedDate | date:'dd-MM-yyyy' }}</span>
+              </div>
+              <div class="invoice-line">
+                <span class="label">{{ 'A4.DUE_DATE' | translate }}</span>
+                <span class="value">{{ invoiceData.dueDate ? (invoiceData.dueDate | date:'dd-MM-yyyy') : ('A4.NOT_SPECIFIED' | translate) }}</span>
+              </div>
+              <div class="invoice-line">
+                <span class="label">{{ 'A4.STATUS' | translate }}</span>
+                <span class="value">{{ invoiceData.invoicestatus || invoiceData.status || '-' }}</span>
+              </div>
+              <div class="invoice-line">
+                <span class="label">{{ 'A4.CONTROL_NUMBER' | translate }}</span>
+                <span class="value" id="controlNum"><u><strong>{{ invoiceData.controlNumber || '-' }}</strong></u></span>
+              </div>
+              <div class="invoice-line">
+                <span class="label">{{ 'A4.START_DATE' | translate }}</span>
+                <span class="value">{{ invoiceData.startDate | date:'dd-MM-yyyy' }}</span>
+              </div>
+              <div class="invoice-line">
+                <span class="label">{{ 'A4.END_DATE' | translate }}</span>
+                <span class="value">{{ invoiceData.endDate | date:'dd-MM-yyyy' }}</span>
+              </div>
+              <div class="invoice-line">
+                <span class="label">{{ 'A4.VENUE' | translate }}</span>
+                <span class="value">{{ invoiceData.venueName || '-' }}</span>
+              </div>
+              <div class="invoice-line">
+                <span class="label">{{ 'A4.ACTIVITY' | translate }}</span>
+                <span class="value">{{ invoiceData.packageName || '-' }}</span>
+              </div>
+            </section>
+
+            <!-- Description -->
+            <section class="invoice-section">
+              <h2>{{ 'A4.DESCRIPTION' | translate }}</h2>
+              <p class="description">{{ invoiceData.description }}</p>
+            </section>
+
+            <!-- Amount Summary -->
+            <section class="amount-summary">
+              <h2><strong>{{ 'A4.AMOUNT_SUMMARY' | translate }}</strong></h2>
+              <div class="amount-line">
+                <span>{{ 'A4.AMOUNT' | translate }}</span>
+                <span>{{ invoiceData.amount | number:'1.2-2' }} TZS</span>
+              </div>
+
+              <!-- DISCOUNT ONLY FOR EMPLOYEES -->
+              <div class="amount-line" *ngIf="invoiceData.showDiscount">
+                <span>{{ 'A4.DISCOUNT' | translate }}</span>
+                <span>{{ invoiceData.discountApplied | number:'1.2-2' }} TZS</span>
+              </div>
+
+              <div class="amount-line total">
+                <span>{{ 'A4.TOTAL' | translate }}</span>
+                <span><u>{{ invoiceData.netAmount | number:'1.2-2' }} TZS</u></span>
+              </div>
+
+              <!-- Installments -->
+              <div class="installments-section" style="margin-top:12px;">
+                <div *ngIf="installmentsLoading" class="amount-line">
+                  <span class="label">{{ 'A4.INSTALLMENTS_LOADING' | translate }}</span>
+                  <span class="value">...</span>
+                </div>
+
+                <div *ngIf="!installmentsLoading && (!installments || installments.length === 0)" class="amount-line">
+                  <span class="label">{{ 'A4.INSTALLMENTS_NONE' | translate }}</span>
+                  <span class="value">{{ 'A4.NONE_YET' | translate }}</span>
+                </div>
+
+                <div *ngIf="!installmentsLoading && installments && installments.length > 0" class="installments-list">
+                  <div *ngFor="let inst of installments" class="amount-line">
+                    <span class="label">{{ inst.label }} ({{ inst.paymentDateFormatted }})</span>
+                    <span class="value">{{ inst.amountPaid | number:'1.2-2' }} TZS</span>
+                  </div>
+                  <div class="amount-line" style="border-top:1px solid #009688; padding-top:6px; margin-top:6px;">
+                    <span class="label">{{ 'A4.PAID_SO_FAR' | translate }}</span>
+                    <span class="value">{{ installmentsSum | number:'1.2-2' }} TZS</span>
+                  </div>
+                </div>
+
+                <div class="amount-line remaining" style="margin-top:10px;">
+                  <span>{{ 'A4.REMAINING' | translate }}</span>
+                  <span>{{ remainingAmount | number:'1.2-2' }} TZS</span>
+                </div>
+              </div>
+            </section>
           </div>
-
-          <!-- Customer Information -->
-          <section class="invoice-section">
-            <h2>{{ 'A4.CUSTOMER_INFO_TITLE' | translate }}</h2>
-            <div class="invoice-line">
-              <span class="label">{{ 'A4.NAME_LABEL' | translate }}</span>
-              <span class="value">{{ invoiceData.customerName || '-' }}</span>
-            </div>
-            <div class="invoice-line">
-              <span class="label">{{ 'A4.PHONE_LABEL' | translate }}</span>
-              <span class="value">{{ invoiceData.customerPhone || '-' }}</span>
-            </div>
-            <div class="invoice-line">
-              <span class="label">{{ 'A4.EMAIL_LABEL' | translate }}</span>
-              <span class="value">{{ invoiceData.customerEmail || '-' }}</span>
-            </div>
-          </section>
-
-          <!-- Invoice Details -->
-          <section class="invoice-section">
-            <h2>{{ 'A4.INVOICE_DETAILS_TITLE' | translate }}</h2>
-            <div class="invoice-line">
-              <span class="label">{{ 'A4.ISSUED_DATE' | translate }}</span>
-              <span class="value">{{ invoiceData.issuedDate | date:'dd-MM-yyyy' }}</span>
-            </div>
-            <div class="invoice-line">
-              <span class="label">{{ 'A4.DUE_DATE' | translate }}</span>
-              <span class="value">{{ invoiceData.dueDate ? (invoiceData.dueDate | date:'dd-MM-yyyy') : ('A4.NOT_SPECIFIED' | translate) }}</span>
-            </div>
-            <div class="invoice-line">
-              <span class="label">{{ 'A4.STATUS' | translate }}</span>
-              <span class="value">{{ invoiceData.invoicestatus || invoiceData.status || '-' }}</span>
-            </div>
-            <div class="invoice-line">
-              <span class="label">{{ 'A4.CONTROL_NUMBER' | translate }}</span>
-              <span class="value" id="controlNum"><u><strong>{{ invoiceData.controlNumber || '-' }}</strong></u></span>
-            </div>
-            <div class="invoice-line">
-              <span class="label">{{ 'A4.START_DATE' | translate }}</span>
-              <span class="value">{{ invoiceData.startDate | date:'dd-MM-yyyy' }}</span>
-            </div>
-            <div class="invoice-line">
-              <span class="label">{{ 'A4.END_DATE' | translate }}</span>
-              <span class="value">{{ invoiceData.endDate | date:'dd-MM-yyyy' }}</span>
-            </div>
-            <div class="invoice-line">
-              <span class="label">{{ 'A4.VENUE' | translate }}</span>
-              <span class="value">{{ invoiceData.venueName || '-' }}</span>
-            </div>
-            <div class="invoice-line">
-              <span class="label">{{ 'A4.ACTIVITY' | translate }}</span>
-              <span class="value">{{ invoiceData.packageName || '-' }}</span>
-            </div>
-          </section>
-
-          <!-- Description -->
-          <section class="invoice-section">
-            <h2>{{ 'A4.DESCRIPTION' | translate }}</h2>
-            <p class="description">{{ invoiceData.description }}</p>
-          </section>
-
-          <!-- Amount Summary -->
-          <section class="amount-summary">
-            <h2><strong>{{ 'A4.AMOUNT_SUMMARY' | translate }}</strong></h2>
-            <div class="amount-line">
-              <span>{{ 'A4.AMOUNT' | translate }}</span>
-              <span>{{ invoiceData.amount | number:'1.2-2' }} TZS</span>
-            </div>
-            <div class="amount-line">
-              <span>{{ 'A4.DISCOUNT' | translate }}</span>
-              <span>{{ invoiceData.discountApplied | number:'1.2-2' }} TZS</span>
-            </div>
-            <div class="amount-line total">
-              <span>{{ 'A4.TOTAL' | translate }}</span>
-              <span><u>{{ invoiceData.netAmount | number:'1.2-2' }} TZS</u></span>
-            </div>
-
-            <!-- Installments -->
-            <div class="installments-section" style="margin-top:12px;">
-              <div *ngIf="installmentsLoading" class="amount-line">
-                <span class="label">{{ 'A4.INSTALLMENTS_LOADING' | translate }}</span>
-                <span class="value">...</span>
-              </div>
-
-              <div *ngIf="!installmentsLoading && (!installments || installments.length === 0)" class="amount-line">
-                <span class="label">{{ 'A4.INSTALLMENTS_NONE' | translate }}</span>
-                <span class="value">{{ 'A4.NONE_YET' | translate }}</span>
-              </div>
-
-              <div *ngIf="!installmentsLoading && installments && installments.length > 0" class="installments-list">
-                <div *ngFor="let inst of installments" class="amount-line">
-                  <span class="label">{{ inst.label }} ({{ inst.paymentDateFormatted }})</span>
-                  <span class="value">{{ inst.amountPaid | number:'1.2-2' }} TZS</span>
-                </div>
-                <div class="amount-line" style="border-top:1px solid #009688; padding-top:6px; margin-top:6px;">
-                  <span class="label">{{ 'A4.PAID_SO_FAR' | translate }}</span>
-                  <span class="value">{{ installmentsSum | number:'1.2-2' }} TZS</span>
-                </div>
-              </div>
-
-              <div class="amount-line remaining" style="margin-top:10px;">
-                <span>{{ 'A4.REMAINING' | translate }}</span>
-                <span>{{ remainingAmount | number:'1.2-2' }} TZS</span>
-              </div>
-            </div>
-
-            
-          </section>
         </div>
-      </div>
-    </mat-card-content>
+      </mat-card-content>
     </div>
   </mat-card>
-  <div>
-    <!-- Control actions -->
-      <div class="control-actions">
-        <button mat-stroked-button color="primary" (click)="printInvoice()">
-          <mat-icon>print</mat-icon>&nbsp; {{ 'ACTIONS.PRINT' | translate }}
-        </button>
-        <button mat-flat-button color="primary" (click)="generatePDF()">
-          <mat-icon>download</mat-icon>&nbsp; {{ 'ACTIONS.DOWNLOAD' | translate }}
-        </button>
-      </div>
 
-      <!-- Loading state -->
-      <div *ngIf="loading" class="loading">
-        <mat-progress-spinner diameter="24" mode="indeterminate"></mat-progress-spinner>
-        <span>{{ 'ACTIONS.GENERATING' | translate }}</span>
-      </div>
+  <!-- Control actions -->
+  <div class="control-actions">
+    <button mat-stroked-button color="primary" (click)="printInvoice()">
+      <mat-icon>print</mat-icon>&nbsp; {{ 'ACTIONS.PRINT' | translate }}
+    </button>
+    <button mat-flat-button color="primary" (click)="generatePDF()">
+      <mat-icon>download</mat-icon>&nbsp; {{ 'ACTIONS.DOWNLOAD' | translate }}
+    </button>
   </div>
 
-  <!-- Staff area (below invoice) -->
+  <!-- Staff area -->
   <div *ngIf="!loading" class="staff-area">
     <h2 class="staff-title">{{ 'STAFF.TITLE' | translate }}</h2>
     <div class="staff-grid">
