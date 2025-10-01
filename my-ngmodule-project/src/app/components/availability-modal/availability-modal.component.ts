@@ -2,7 +2,7 @@ import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { MatSelectionListChange, MatSelectionList } from '@angular/material/list';
+import { MatSelectionList, MatSelectionListChange } from '@angular/material/list';
 
 @Component({
   selector: 'app-availability-modal',
@@ -14,6 +14,9 @@ export class AvailabilityModalComponent implements OnInit {
   availability: any[] = [];
   errorMsg = '';
   allAvailable = false;
+
+  // whether we should auto-check AVAILABLE_FOR_BOOKING items
+  autoCheckEnabled = false;
 
   // track selected items (objects from availability)
   selectedItems: any[] = [];
@@ -55,21 +58,56 @@ export class AvailabilityModalComponent implements OnInit {
     };
 
     this.loading = true;
-    // Use absolute backend URL (keeps your original logic)
     this.http.post<any[]>(`${environment.apiUrl}/api/bookings/venue/${this.data.venueId}/availability`, payload).subscribe({
       next: res => {
         this.loading = false;
-        // ensure availability sorted by date ascending so index-based contiguous checks are stable
+        // sort by date ascending for deterministic behavior
         this.availability = (res || []).slice().sort((a, b) => {
           const ta = new Date(a.date).getTime();
           const tb = new Date(b.date).getTime();
           return ta - tb;
         });
 
-        // clear any previous selection because list changed
-        this.clearSelectionState();
-
+        // compute allAvailable
         this.allAvailable = this.availability.length > 0 && this.availability.every(it => it.flag === 'AVAILABLE_FOR_BOOKING');
+
+        // compute autoCheckEnabled:
+        // auto-check is allowed ONLY when there are NO ALREADY_BOOKED items AND NO pendingExpiresInMinutes for any item.
+        const hasBookedOrPending = this.availability.some(it => it.flag === 'ALREADY_BOOKED' || Boolean(it.pendingExpiresInMinutes));
+        this.autoCheckEnabled = !hasBookedOrPending;
+
+        // set selectedItems based on auto-check rule or clear selection
+        if (this.autoCheckEnabled) {
+          // select all available items initially
+          this.selectedItems = this.availability.filter(it => it.flag === 'AVAILABLE_FOR_BOOKING');
+        } else {
+          this.selectedItems = [];
+        }
+
+        // clear UI selection first, then (if possible) apply selection programmatically to ensure
+        // selectionList state and selectedItems stay in sync. [selected] on template also helps.
+        try {
+          if (this.selectionList) {
+            this.selectionList.deselectAll();
+            // programmatically select items that are in selectedItems
+            if (this.selectedItems.length) {
+              // selectedOptions.select expects MatListOption instances; simpler approach:
+              // rely on [selected] binding in template so UI will be checked on render.
+              // However if selectionList already exists (re-render), we can attempt to select matching options:
+              const opts = this.selectionList.options.toArray();
+              opts.forEach(opt => {
+                const val = (opt.value as any);
+                const shouldSelect = this.selectedItems.some(si => si.date === val.date);
+                if (shouldSelect) {
+                  opt.selected = true;
+                }
+              });
+            }
+          }
+        } catch (e) {
+          // ignore — selection sync best-effort only
+          console.warn('selection sync failed', e);
+        }
       },
       error: err => {
         this.loading = false;
@@ -79,23 +117,11 @@ export class AvailabilityModalComponent implements OnInit {
     });
   }
 
-  // clear selection tracking and UI selection
-  private clearSelectionState() {
-    this.selectedItems = [];
-    // clear mat-selection-list UI if available
-    try {
-      if (this.selectionList) {
-        this.selectionList.deselectAll();
-      }
-    } catch (e) { /* ignore if not present yet */ }
-  }
-
   // Called by mat-selection-list (selectionChange)
   onSelectionChange(event: MatSelectionListChange) {
-    // extract selected values (we set [value]="it" on mat-list-option)
     const selected = event.source.selectedOptions.selected.map((opt: any) => opt.value);
     this.selectedItems = selected || [];
-    // Note: isContinueEnabled is a getter used by template
+    // Note: isContinueEnabled getter will reflect the updated selectedItems
   }
 
   // single-item shortcut (keeps your old API; you can still call selectItem to return a single day)
@@ -175,7 +201,6 @@ export class AvailabilityModalComponent implements OnInit {
 
     this.ref.close({
       mode: 'range',
-      // return Date objects as the original code used, keep consistency
       start: newStart,
       end: newEnd,
       startTime: this.data.startTime,
@@ -183,7 +208,6 @@ export class AvailabilityModalComponent implements OnInit {
       activityId: this.data.activityId,
       activityName: this.data.activityName,
       activityPrice: this.data.price,
-      // also include selectedDays if caller wants the day-by-day objects
       selectedDays: this.selectedItems
     });
   }

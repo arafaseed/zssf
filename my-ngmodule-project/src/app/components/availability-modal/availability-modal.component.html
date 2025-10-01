@@ -36,8 +36,13 @@
     </div>
 
     <!-- selection list: multiple selection allowed; we expose selected value objects -->
+    <!-- NOTE: [selected] controls the initial checked state per item based on autoCheckEnabled -->
     <mat-selection-list #selectionList="matSelectionList" [multiple]="true" (selectionChange)="onSelectionChange($event)">
-      <mat-list-option *ngFor="let it of availability" [value]="it" class="py-2">
+      <mat-list-option
+        *ngFor="let it of availability"
+        [value]="it"
+        class="py-2"
+        [selected]="autoCheckEnabled && it.flag === 'AVAILABLE_FOR_BOOKING'">
         <div class="flex items-start justify-between w-full gap-4">
           <div class="flex-1">
             <div class="flex items-center gap-2">
