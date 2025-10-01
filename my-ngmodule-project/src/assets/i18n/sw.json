@@ -14,7 +14,7 @@
 
   "home": {
     "searchPlaceholder": "Tafuta kwa mji, jengo, ukumbi, au anuani ya eneo",
-    "loading": "Inapakia majengo…",
+    "loading": "Subiri…",
      "description": "Maelezo",
     "from": "Kuanzia",
     "noPrice": "Bei haijapatikana",
@@ -57,9 +57,9 @@
 
   "availability": {
     "title": "Angalia upatikanaji",
-    "allAvailable": "Siku zote kwenye kipindi chako zinapatikana",
-    "allAvailableHint": "Unaweza kuendelea na kipindi chote au kukagua siku moja moja hapa chini.",
-    "someUnavailable": "Siku moja au zaidi kwenye kipindi chako hazipatikani. Tafadhali kagua au badilisha tarehe.",
+    "allAvailable": "Siku zote ulizochagua zinapatikana",
+    "allAvailableHint": "Unaweza kuendelea na Siku zote ulizochagua au kukagua siku moja moja hapa chini.",
+    "someUnavailable": "Siku moja au zaidi Ulizochagua hazipatikani. Tafadhali kagua au badilisha tarehe.",
     "status": {
       "available": "Inapatikana",
       "booked": "Imeshachukuliwa"
@@ -183,7 +183,7 @@
 
   "feedback": {
     "title": "Maoni ya Wateja",
-    "description": "Tunathamini maoni yako. Shre nasi uzoefu wako wa kubook kumbi kupitia mfumo wetu — iwe ni Pongezi au Malalamiko (mfano: utoaji wa maholi , hali ya holi, au ratiba). Maoni yako yatatusaidia kuboresha huduma zetu.",
+    "description": "Tunathamini maoni yako. Shirikiana nasi uzoefu wako wa kubook kumbi kupitia mfumo wetu — iwe ni Pongezi au Malalamiko (mfano: utoaji wa maholi , hali ya holi, au ratiba). Maoni yako yatatusaidia kuboresha huduma zetu.",
     "name": "Jina Kamili",
     "phone": "Simu (lazima)",
     "email": "Barua pepe (hiari)",
@@ -314,7 +314,7 @@
 
 
 "STAFF": {
-"TITLE": "Kwa maulizo tafadhali piga simu..",
+"TITLE": "Kwa maelezo zaidi tafadhali piga simu..",
 "PHONE": "Simu"
 },
 
@@ -374,7 +374,7 @@
   "misc": {
     "accepted": "Imekubaliwa",
     "notAccepted": "Haijakubaliwa",
-    "loading": "Inalod…"
+    "loading": "Subiri…"
   }
 }
 

@@ -101,11 +101,15 @@
         <div class="text-lg text-left text-gray-600"><strong>{{ 'customer.address' | translate }}</strong></div>
         <div class="text-lg font-medium text-right text-blue-900">{{ data.booking.customer?.address }}</div>
       </div>
+<div class="flex items-center justify-between py-4">
+  <div class="text-lg text-left text-gray-600">
+    <strong>{{ 'customer.customerType' | translate }}</strong>
+  </div>
+  <div class="text-lg font-medium text-right text-blue-900">
+    {{ ('booking.' + (data.booking.customer?.customerType?.toLowerCase())) | translate }}
+  </div>
+</div>
 
-      <div class="flex items-center justify-between py-4">
-        <div class="text-lg text-left text-gray-600"><strong>{{ 'customer.customerType' | translate }}</strong></div>
-        <div class="text-lg font-medium text-right text-blue-900">{{ data.booking.customer?.customerType }}</div>
-      </div>
     </div>
   </div>
 
