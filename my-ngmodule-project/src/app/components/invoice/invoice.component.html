@@ -6,19 +6,25 @@
   <p class="invoice-sub"><em>{{ 'INVOICE.CONGRATS_SUB' | translate:{name: invoiceData?.customerName || ''} }}</em></p>
 
   <!-- Expansion panels row -->
-  <div class="panels-row rounded-xl m-5 p-5 bg-emerald-100" multi>
-    <mat-accordion>
-      <mat-expansion-panel class="info-panel" (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            <mat-icon aria-hidden="false" aria-label="info">info</mat-icon>
-            &nbsp; {{ 'GUIDANCE.TITLE' | translate }}
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <div class="panel-content" [innerHTML]="'GUIDANCE.HTML' | translate:{pcn: invoiceData?.controlNumber || ''}"></div>
-      </mat-expansion-panel>
-    </mat-accordion>
-    <mat-accordion>
+<div class="panels-row rounded-xl m-5 p-5 bg-emerald-100 flex justify-center">
+  <mat-accordion class="w-[600px]"> <!-- adjust width -->
+    <mat-expansion-panel class="info-panel" 
+        (opened)="panelOpenState.set(true)" 
+        (closed)="panelOpenState.set(false)">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon aria-hidden="false" aria-label="info">info</mat-icon>
+          &nbsp; {{ 'GUIDANCE.TITLE' | translate }}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="panel-content"
+           [innerHTML]="'GUIDANCE.HTML' | translate:{pcn: invoiceData?.controlNumber || ''}">
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+
+    <!-- <mat-accordion>
       <mat-expansion-panel class="feedback-panel" hideToggle (click)="goToFeedback()" [disabled]="false" role="button" aria-label="Leave feedback">
         <mat-expansion-panel-header>
           <mat-panel-title>
@@ -27,7 +33,7 @@
           </mat-panel-title>
         </mat-expansion-panel-header>
       </mat-expansion-panel>
-    </mat-accordion>
+    </mat-accordion> -->
   </div>
 
   <!-- Invoice card -->
