@@ -26,7 +26,7 @@ export class EditVenueComponent implements OnInit {
   imagePreviews: string[] = [];
   existingImages: { url: string, id: string }[] = [];
 
-  venueTypes = ['In door', 'Out door', 'Hybrid'];
+  venueTypes = ['In door', 'Out door'];
 
   constructor(
     private fb: FormBuilder,
@@ -55,7 +55,6 @@ export class EditVenueComponent implements OnInit {
       data => this.buildings = data,
       (error: HttpErrorResponse) => {
         console.error('Error loading buildings:', error);
-        alert('Failed to load buildings.');
       }
     );
   }
