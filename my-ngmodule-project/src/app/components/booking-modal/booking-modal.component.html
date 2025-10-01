@@ -82,15 +82,40 @@
       </mat-form-field>
     </div>
 
-    <!-- PDF upload for organizations -->
-    <div *ngIf="detailsForm.value.customerType === 'ORGANIZATION'" class="mt-2">
-      <label class="block mb-1 text-sm font-medium">{{ 'booking.referenceDoc' | translate }}</label>
-      <input type="file" (change)="onFileSelected($event)" accept="application/pdf" />
-      <div *ngIf="fileError" class="mt-1 text-sm text-rose-600">{{ fileError }}</div>
-      <div *ngIf="attachedFile" class="mt-1 text-sm text-slate-600">
-        {{ 'booking.selectedFile' | translate }}: {{ attachedFile.name }}
-      </div>
-    </div>
+  <!-- PDF upload for organizations -->
+<div *ngIf="detailsForm.value.customerType === 'ORGANIZATION'" class="mt-2">
+  <label class="block mb-1 text-sm font-medium">{{ 'booking.referenceDoc' | translate }}</label>
+
+  <!-- Hidden file input -->
+  <input 
+    #fileInput 
+    type="file" 
+    (change)="onFileSelected($event)" 
+    accept="application/pdf" 
+    class="hidden"
+  />
+
+  <!-- Button to trigger file input -->
+  <button 
+    type="button" 
+    (click)="fileInput.click()" 
+    class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded"
+  >
+    {{ 'booking.chooseFile' | translate }}
+  </button>
+
+  <!-- OR as a link -->
+  <!-- <a href="#" (click)="fileInput.click(); $event.preventDefault()" class="text-blue-500 underline">
+    {{ 'booking.chooseFile' | translate }}
+  </a> -->
+
+  <div *ngIf="fileError" class="mt-1 text-sm text-rose-600">{{ fileError }}</div>
+
+  <div *ngIf="attachedFile" class="mt-1 text-sm text-slate-600">
+    {{ 'booking.selectedFile' | translate }}: {{ attachedFile.name }}
+  </div>
+</div>
+
 
     <!-- Employee Verification for Individual -->
     <div *ngIf="detailsForm.value.customerType === 'INDIVIDUAL'" class="flex items-center gap-3 mt-3">

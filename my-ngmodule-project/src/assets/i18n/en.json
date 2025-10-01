@@ -73,6 +73,7 @@
   },
 
   "booking": {
+    "chooseFile": "Choose File",
     "title": "Book",
     "range": "Booking range",
     "single": "Selected date",
