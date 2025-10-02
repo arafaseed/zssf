@@ -62,21 +62,14 @@
             {{ building?.buildingName }} • {{ building?.address }}
           </p>
 
-          <div class="grid grid-cols-2 gap-3 mt-4">
+          <div class="grid grid-cols-1 gap-3 mt-4">
             <div class="p-3 rounded-md bg-sky-50">
               <div class="text-xs text-slate-500">
                 {{ 'home.capacity' | translate }}
               </div>
               <div class="text-lg font-medium">{{ venue.capacity }}</div>
             </div>
-            <div class="p-3 rounded-md bg-rose-50">
-              <div class="text-xs text-slate-500">
-                {{ 'home.activities' | translate }}
-              </div>
-              <div class="text-lg font-medium">
-                {{ venue.venueType || "—" }}
-              </div>
-            </div>
+          
           </div>
 
           <div class="mt-4">
