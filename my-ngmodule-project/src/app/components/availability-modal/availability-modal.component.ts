@@ -1,8 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-
+import { MatSelectionList, MatSelectionListChange } from '@angular/material/list';
 
 @Component({
   selector: 'app-availability-modal',
@@ -14,6 +14,14 @@ export class AvailabilityModalComponent implements OnInit {
   availability: any[] = [];
   errorMsg = '';
   allAvailable = false;
+
+  // whether we should auto-check AVAILABLE_FOR_BOOKING items
+  autoCheckEnabled = false;
+
+  // track selected items (objects from availability)
+  selectedItems: any[] = [];
+
+  @ViewChild('selectionList') selectionList?: MatSelectionList;
 
   // data expected: { venueId, venueName, start (Date), end (Date), startTime, endTime, activityId, activityName }
   constructor(
@@ -50,13 +58,56 @@ export class AvailabilityModalComponent implements OnInit {
     };
 
     this.loading = true;
-    // Use absolute backend URL (keeps your original logic)
     this.http.post<any[]>(`${environment.apiUrl}/api/bookings/venue/${this.data.venueId}/availability`, payload).subscribe({
       next: res => {
         this.loading = false;
-        this.availability = res || [];
+        // sort by date ascending for deterministic behavior
+        this.availability = (res || []).slice().sort((a, b) => {
+          const ta = new Date(a.date).getTime();
+          const tb = new Date(b.date).getTime();
+          return ta - tb;
+        });
+
+        // compute allAvailable
         this.allAvailable = this.availability.length > 0 && this.availability.every(it => it.flag === 'AVAILABLE_FOR_BOOKING');
-        
+
+        // compute autoCheckEnabled:
+        // auto-check is allowed ONLY when there are NO ALREADY_BOOKED items AND NO pendingExpiresInMinutes for any item.
+        const hasBookedOrPending = this.availability.some(it => it.flag === 'ALREADY_BOOKED' || Boolean(it.pendingExpiresInMinutes));
+        this.autoCheckEnabled = !hasBookedOrPending;
+
+        // set selectedItems based on auto-check rule or clear selection
+        if (this.autoCheckEnabled) {
+          // select all available items initially
+          this.selectedItems = this.availability.filter(it => it.flag === 'AVAILABLE_FOR_BOOKING');
+        } else {
+          this.selectedItems = [];
+        }
+
+        // clear UI selection first, then (if possible) apply selection programmatically to ensure
+        // selectionList state and selectedItems stay in sync. [selected] on template also helps.
+        try {
+          if (this.selectionList) {
+            this.selectionList.deselectAll();
+            // programmatically select items that are in selectedItems
+            if (this.selectedItems.length) {
+              // selectedOptions.select expects MatListOption instances; simpler approach:
+              // rely on [selected] binding in template so UI will be checked on render.
+              // However if selectionList already exists (re-render), we can attempt to select matching options:
+              const opts = this.selectionList.options.toArray();
+              opts.forEach(opt => {
+                const val = (opt.value as any);
+                const shouldSelect = this.selectedItems.some(si => si.date === val.date);
+                if (shouldSelect) {
+                  opt.selected = true;
+                }
+              });
+            }
+          }
+        } catch (e) {
+          // ignore — selection sync best-effort only
+          console.warn('selection sync failed', e);
+        }
       },
       error: err => {
         this.loading = false;
@@ -66,7 +117,14 @@ export class AvailabilityModalComponent implements OnInit {
     });
   }
 
-  // user selects a single date item (an object returned by API)
+  // Called by mat-selection-list (selectionChange)
+  onSelectionChange(event: MatSelectionListChange) {
+    const selected = event.source.selectedOptions.selected.map((opt: any) => opt.value);
+    this.selectedItems = selected || [];
+    // Note: isContinueEnabled getter will reflect the updated selectedItems
+  }
+
+  // single-item shortcut (keeps your old API; you can still call selectItem to return a single day)
   selectItem(item: any) {
     // return selected single day to caller
     this.ref.close({
@@ -75,18 +133,82 @@ export class AvailabilityModalComponent implements OnInit {
     });
   }
 
+  // Helper: indices of selected items within the current availability array (sorted)
+  private getSelectedIndices(): number[] {
+    if (!this.selectedItems || this.selectedItems.length === 0) return [];
+    const indices: number[] = [];
+    for (const s of this.selectedItems) {
+      const idx = this.availability.findIndex(a => a.date === s.date);
+      if (idx >= 0) indices.push(idx);
+    }
+    return indices.sort((a, b) => a - b);
+  }
+
+  // Helper: returns true if selected indices form a contiguous block (no gaps)
+  private selectedIndicesContiguous(): boolean {
+    const indices = this.getSelectedIndices();
+    if (indices.length === 0) return false;
+    const min = indices[0];
+    const max = indices[indices.length - 1];
+    // contiguous if number of indices equals the span length
+    return (max - min + 1) === indices.length;
+  }
+
+  // continue enabled if either everything is available, or user selected a contiguous block of available days
+  get isContinueEnabled(): boolean {
+    if (this.allAvailable) return true;
+
+    if (!this.selectedItems || this.selectedItems.length === 0) return false;
+
+    // every selected must be AVAILABLE_FOR_BOOKING
+    const allSelectedAvailable = this.selectedItems.every(it => it.flag === 'AVAILABLE_FOR_BOOKING');
+    if (!allSelectedAvailable) return false;
+
+    // selected items must form a contiguous block with no skipped days between them
+    if (!this.selectedIndicesContiguous()) return false;
+
+    // passed all checks
+    return true;
+  }
+
   continueWithRange() {
-    // user explicitly chooses to continue with full range (only enable if allAvailable)
-    if (!this.allAvailable) return;
+    // user explicitly chooses to continue with full range (only enable if allAvailable or valid selection)
+    if (this.allAvailable) {
+      this.ref.close({
+        mode: 'range',
+        start: this.data.start,
+        end: this.data.end,
+        startTime: this.data.startTime,
+        endTime: this.data.endTime,
+        activityId: this.data.activityId,
+        activityName: this.data.activityName,
+        activityPrice: this.data.price
+      });
+      return;
+    }
+
+    // if manual selection is used, ensure it's valid and build new start/end from selected days
+    if (!this.selectedItems || this.selectedItems.length === 0) return;
+    if (!this.isContinueEnabled) return; // safety
+
+    // compute new start and end dates from selected items (they are contiguous by isContinueEnabled)
+    const selectedDates = this.selectedItems
+      .map(it => new Date(it.date))
+      .sort((a, b) => a.getTime() - b.getTime());
+
+    const newStart = selectedDates[0];
+    const newEnd = selectedDates[selectedDates.length - 1];
+
     this.ref.close({
       mode: 'range',
-      start: this.data.start,
-      end: this.data.end,
+      start: newStart,
+      end: newEnd,
       startTime: this.data.startTime,
       endTime: this.data.endTime,
       activityId: this.data.activityId,
       activityName: this.data.activityName,
-      activityPrice: this.data.price
+      activityPrice: this.data.price,
+      selectedDays: this.selectedItems
     });
   }
 

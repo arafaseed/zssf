@@ -163,6 +163,9 @@ export class VenueExplorerComponent implements OnInit {
       this.formError = '';
       this.endDateInvalid = false;
     }
+
+    // If the user changed startDate and it's today, optionally clear or validate startTime
+    // We'll not auto-change time but show validation at submit; clear any previous formError
   }
 
   // user changed end date via datepicker
@@ -309,6 +312,56 @@ export class VenueExplorerComponent implements OnInit {
     return d;
   }
 
+  // --- NEW: time picker min values (bound by template) ---
+
+  // Returns a "HH:mm" string used as matTimepickerMin for start input.
+  get startTimePickerMin(): string {
+    const baseMin = 6 * 60; // 06:00 in minutes
+    const maxAllowed = 23 * 60 + 59; // 23:59
+    // if startDate equals today, min is now + 60 minutes
+    if (this.startDate) {
+      const today = this.normalizeDate(new Date());
+      const sNorm = this.normalizeDate(this.startDate);
+      if (sNorm.getTime() === today.getTime()) {
+        const now = new Date();
+        const nowM = now.getHours() * 60 + now.getMinutes();
+        let minCandidate = nowM + 60; // at least 1 hour ahead
+        if (minCandidate > maxAllowed) minCandidate = maxAllowed;
+        if (minCandidate < baseMin) minCandidate = baseMin;
+        return this.minutesToHHMM(minCandidate);
+      }
+    }
+    return this.minutesToHHMM(baseMin);
+  }
+
+  // Returns a "HH:mm" string used as matTimepickerMin for end input.
+  // If startTime exists it will return startTime + 30 minutes (clamped), otherwise base start min + 30.
+  get endTimePickerMin(): string {
+    const maxAllowed = 23 * 60 + 59; // 23:59
+    let startM: number | null = null;
+    const parsedStart = this.parseTimeString(this.startTime as any);
+    if (parsedStart) {
+      startM = parsedStart.hh * 60 + parsedStart.mm;
+    } else {
+      // fallback to computed start min
+      const startMinParts = this.parseTimeString(this.startTimePickerMin);
+      if (startMinParts) startM = startMinParts.hh * 60 + startMinParts.mm;
+    }
+    if (startM === null) {
+      // safe fallback to 06:30
+      startM = 6 * 60 + 30;
+    }
+    let endMin = startM + 30; // at least 30 minutes after start
+    if (endMin > maxAllowed) endMin = maxAllowed;
+    return this.minutesToHHMM(endMin);
+  }
+
+  private minutesToHHMM(mins: number) {
+    const hh = Math.floor(mins / 60);
+    const mm = mins % 60;
+    return `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}`;
+  }
+
   openAvailabilityModal() {
     if (!this.venue) return;
 
@@ -338,9 +391,9 @@ export class VenueExplorerComponent implements OnInit {
       return;
     }
 
-    // Additional time-range enforcement: ensure start/end fall into allowed window (06:00 - 23:30)
+    // Additional time-range enforcement: ensure start/end fall into allowed window (06:00 - 23:59)
     const minAllowed = 6 * 60 + 0; // 06:00
-    const maxAllowed = 23 * 60 + 30; // 23:30
+    const maxAllowed = 23 * 60 + 59; // 23:59
     const parsedStart = this.parseTimeString(this.startTime as any);
     const parsedEnd = this.parseTimeString(this.endTime as any);
 
@@ -353,11 +406,29 @@ export class VenueExplorerComponent implements OnInit {
     const endM = parsedEnd.hh * 60 + parsedEnd.mm;
 
     if (startM < minAllowed || startM > maxAllowed) {
-      this.formError = 'Start time must be between 06:00 and 23:30.';
+      this.formError = 'Start time must be between 06:00 and 23:59.';
       return;
     }
     if (endM < minAllowed || endM > maxAllowed) {
-      this.formError = 'End time must be between 06:00 and 23:30.';
+      this.formError = 'End time must be between 06:00 and 23:59.';
+      return;
+    }
+
+    // If startDate is today, ensure start time is at least current time + 1 hour
+    const today = this.normalizeDate(new Date());
+    if (this.startDate && this.normalizeDate(this.startDate).getTime() === today.getTime()) {
+      const now = new Date();
+      const nowM = now.getHours() * 60 + now.getMinutes();
+      const requiredStart = nowM + 60; // at least +1 hour
+      if (startM < requiredStart) {
+        this.formError = 'For events starting today, start time must be at least 1 hour from now.';
+        return;
+      }
+    }
+
+    // Always require end time to be at least 30 minutes after start time
+    if (endM < startM + 30) {
+      this.formError = 'End time must be at least 30 minutes after start time.';
       return;
     }
 
