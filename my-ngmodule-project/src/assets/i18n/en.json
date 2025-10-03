@@ -64,7 +64,7 @@
       "booked": "Booked"
     },
     "statusLabel": "Status",
-    "pendingExpires": "Pending expires in {{minutes}} minutes",
+    "pendingExpires": "Pending expires after {{minutes}} minutes please try again letter",
     "bookedTime": "Booked time: {{start}} - {{end}}",
     "noData": "No availability information returned for this range.",
     "back": "Back",
