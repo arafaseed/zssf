@@ -16,7 +16,7 @@ export class TermsAndConditionsComponent implements OnInit, OnDestroy {
   sections = [
     'intro','scope','booking','payment','cancellation',
     'responsibilities','prohibited','liability','privacy',
-    'modifications','law'
+    'modifications','liabilnity','law',
   ];
 
   private langChangeSub?: Subscription;

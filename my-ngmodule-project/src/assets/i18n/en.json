@@ -64,7 +64,7 @@
       "booked": "Booked"
     },
     "statusLabel": "Status",
-    "pendingExpires": "Pending expires in {{minutes}} minutes",
+    "pendingExpires": "Pending expires after {{minutes}} minutes please try again letter",
     "bookedTime": "Booked time: {{start}} - {{end}}",
     "noData": "No availability information returned for this range.",
     "back": "Back",
@@ -176,8 +176,12 @@
       "heading": "10. Modifications",
       "text": "We may update these Terms periodically. Updates will be published and notified. Continued use means acceptance."
     },
+     "liabilnity": {
+      "heading": "11. Liability",
+      "text": "The platform is an intermediary: the venue provider is responsible for venue condition and services. We are not liable for loss, damage or injury arising from events at third-party venues, except as required by law."
+    },
     "law": {
-      "heading": "11. Governing Law",
+      "heading": "12. Governing Law",
       "text": "These Terms are governed by the laws of the United Republic of Tanzania. Disputes will be resolved in competent courts, including Zanzibar where applicable."
     },
     "contactTitle": "Contact",
