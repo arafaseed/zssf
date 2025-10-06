@@ -84,7 +84,7 @@
     "none": "Hakuna",
     "customerType": "Aina ya mteja",
     "individual": "Mtu binafsi/Taasisi binafsi",
-    "organization": "Taasisi",
+    "organization": "Taasisi za Serekali",
     "customerName": "Jina la mteja",
     "phone": "Simu",
     "phoneHint": "Weka Nambari zenye tarakimu 10, lazima ianze na 0xxx",
@@ -138,14 +138,16 @@
         "Ada za ziada (saa za ziada, vifaa vya ziada) zitalipwa kwa tofauti."
       ]
     },
+    
     "cancellation": {
-      "heading": "5. Kufuta na Marejesho",
-      "list": [
-        "Kufuta lazima kufanyike kupitia Mfumo. Ada za kufuta zitatangazwa wakati wa uhifadhi.",
-        "Muda wa marejesho hutegemea njia ya malipo na michakato ya watoa huduma wa malipo.",
-        "Tunaweza kukataa kutoa marejesho pale sera ya mtoa ukumbi haijaruhusu (utajulishwa wakati wa uhifadhi)."
-      ]
-    },
+  "heading": "5. Kufuta na Marejesho",
+  "list": [
+    "Kuna aina mbili za kufuta nafasi:",
+    "1) Ikiwa mtumiaji atafuta moja kwa moja baada ya kulipa 50%, atalazimika kukatwa 25% kama ada ya kufuta. Asilimia 25% iliyobaki atawasiliana na mfanyakazi wa ukumbi husika ili apate kurejeshewa. Kila ukumbi unaonyesha namba ya simu ya mfanyakazi anayehusika.",
+    "2) Ikiwa mtumiaji ataahirisha (kwa mfano kutokana na dharura) na kusogeza tarehe mbele, mfumo utamruhusu kufanya mabadiliko hayo mara ya kwanza bila makato yoyote. Lakini akifanya hivyo kwa mara ya pili, mfumo utamkata 25%. Baada ya hapo, atatakiwa kuwasiliana na mfanyakazi anayehusika na ukumbi huo ambaye namba yake ya simu inaonyeshwa kwenye ukurasa wa ukumbi."
+  ]
+},
+
     "responsibilities": {
       "heading": "6. Majukumu ya Mtumiaji",
       "list": [

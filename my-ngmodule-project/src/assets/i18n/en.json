@@ -82,8 +82,8 @@
     "optionalService": "Optional service",
     "none": "None",
     "customerType": "Customer type",
-    "individual": "Individual",
-    "organization": "Organization",
+    "individual": "Individual /Private Institution",
+    "organization": " Government Institution",
     "customerName": "Customer name",
     "phone": "Phone",
     "phoneHint": "10 digits, must start with 0",
@@ -138,14 +138,16 @@
         "Any additional charges (overtime, extra equipment) are billed separately."
       ]
     },
+    
     "cancellation": {
-      "heading": "5. Cancellation & Refund",
-      "list": [
-        "Cancellations must be submitted through the System. Cancellation fees are as shown at booking time.",
-        "Refund timelines depend on the payment method and processing held by payment partners.",
-        "We may refuse refunds where the venue provider’s policy forbids it (you will be informed at booking)."
-      ]
-    },
+  "heading": "5. Cancellation & Refund",
+  "list": [
+    "There are two types of cancellations:",
+    "1) If the user cancels directly after already paying 50%, a 25% cancellation fee will be deducted automatically. The remaining 25% can be claimed by contacting the staff responsible for that specific venue. Each venue displays the staff member’s phone number for communication.",
+    "2) If the user postpones the booking (for example, due to an emergency) and changes the date, the system will allow one free update without any deduction. However, if the user postpones a second time, the system will charge a 25% fee. After that, the user must contact the responsible venue staff, whose contact number is shown on the venue page."
+  ]
+},
+
     "responsibilities": {
       "heading": "6. User Responsibilities",
       "list": [
