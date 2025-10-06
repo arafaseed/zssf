@@ -11,11 +11,11 @@ import {
 import { PdfViewerOverlayComponent } from '../pdf-viewer-overlay/pdf-viewer-overlay.component';
 
 interface VenueRevenue {
-  venueId: number;
+  venueId: number;                              
   venueName: string;
   revenue: number;
 }
-
+           
 interface TopVenue {
   venueName: string;
   bookingCount: number;

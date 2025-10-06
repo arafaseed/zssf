@@ -1,0 +1,60 @@
+<div class="p-6 bg-gray-50 min-h-screen">
+  <h2 class="text-2xl font-bold mb-4">Admin Reports</h2>
+
+  <!-- Period Selector -->
+  <div class="flex items-center gap-4 mb-4">
+    <label class="font-medium">Report Type:</label>
+    <select [(ngModel)]="reportType" (change)="onReportTypeChange()" class="border px-2 py-1 rounded">
+      <option value="MONTHLY">Monthly</option>
+      <option value="QUARTERLY">Quarterly</option>
+      <option value="YEARLY">Yearly</option>
+    </select>
+
+    <input *ngIf="reportType==='MONTHLY'" type="month" [(ngModel)]="selectedMonth" class="border px-2 py-1 rounded">
+    <input *ngIf="reportType==='QUARTERLY'" type="number" min="1" max="4" [(ngModel)]="selectedQuarter" placeholder="Quarter (1-4)" class="border px-2 py-1 rounded w-28">
+    <input type="number" min="2000" max="2100" [(ngModel)]="selectedYear" placeholder="Year" class="border px-2 py-1 rounded w-28">
+
+    <button mat-flat-button color="primary" (click)="loadReport()">Load Report</button>
+  </div>
+
+  <!-- Report Display -->
+  <div #reportContent class="bg-white p-4 rounded-lg shadow-md">
+    <h3 class="text-xl font-semibold mb-2">Report - {{ reportType }} {{ selectedMonth || 'Q' + selectedQuarter || selectedYear }}</h3>
+    
+    <div *ngIf="!reportData">No data loaded yet.</div>
+
+    <table *ngIf="reportData" class="min-w-full table-auto divide-y divide-gray-200">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="px-4 py-2 text-left">Metric</th>
+          <th class="px-4 py-2 text-left">Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="px-4 py-2">Total Bookings</td>
+          <td class="px-4 py-2">{{ reportData.totalBookings }}</td>
+        </tr>
+        <tr>
+          <td class="px-4 py-2">Total Revenue</td>
+          <td class="px-4 py-2">{{ reportData.totalRevenue | number:'1.0-0' }} TZS</td>
+        </tr>
+        <tr>
+          <td class="px-4 py-2">Most Booked Venue</td>
+          <td class="px-4 py-2">{{ reportData.mostBookedVenue?.venueName || '–' }}</td>
+        </tr>
+        <tr>
+          <td class="px-4 py-2">Completed Bookings</td>
+          <td class="px-4 py-2">{{ reportData.completedBookings }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Actions -->
+  <div class="mt-4 flex gap-2">
+    <button mat-stroked-button color="primary" (click)="downloadReport()">Download PDF</button>
+    <button mat-stroked-button color="accent" (click)="printReport()">Print</button>
+  </div>
+</div>
+
