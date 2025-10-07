@@ -92,6 +92,7 @@ import { PdfViewerOverlayComponent } from './Admin/pdf-viewer-overlay/pdf-viewer
 import {MatExpansionModule} from '@angular/material/expansion';
 import { ReportsComponent } from './Admin/reports/reports.component';
 import { AdminReportComponent } from './Admin/admin-report/admin-report.component';
+import { PostponeDialogComponent } from './components/postpone-dialog/postpone-dialog.component';
 
 
 
@@ -150,6 +151,7 @@ export function createTranslateLoader(http: HttpClient) {
     PdfViewerOverlayComponent,
     ReportsComponent,
     AdminReportComponent,
+    PostponeDialogComponent,
    
     
     

@@ -92,6 +92,15 @@
                 Update Reservation
               </a> -->
 
+              <!-- Postpone Booking Button -->
+<button
+  *ngIf="booking.bookingStatus.toLowerCase() !== 'completed' && booking.bookingStatus.toLowerCase() !== 'cancelled'"
+  class="bg-amber-500 hover:bg-amber-600 text-white font-medium px-4 py-2 rounded-lg transition duration-200"
+  (click)="openPostponeDialog(booking)"
+>
+  Postpone Booking
+</button>
+
               <button
                 *ngIf="booking.bookingStatus.toLowerCase() !== 'completed' && booking.bookingStatus.toLowerCase() !== 'cancelled'"
                 mat-flat-button
