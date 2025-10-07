@@ -1,27 +1,36 @@
 <h2 mat-dialog-title class="flex items-center justify-between gap-3">
-  <span class="font-semibold">{{ 'booking.title' | translate }} — {{ data?.venueName }}</span>
+  <span class="font-semibold">
+    {{ 'booking.title' | translate }} — {{ data?.venueName }}
+  </span>
   <button mat-icon-button aria-label="close" (click)="cancel()">
     <i-lucide-x class="w-5 h-5"></i-lucide-x>
   </button>
 </h2>
 
 <mat-dialog-content class="px-4 py-3 max-h-[80vh] overflow-auto">
+  <!-- Booking details summary -->
   <div class="mb-3 text-sm text-slate-600">
     <div *ngIf="data.mode === 'range'">
       {{ 'booking.range' | translate }}:
       <strong>{{ data.start | date: 'shortDate' }}</strong> →
       <strong>{{ data.end | date: 'shortDate' }}</strong>
     </div>
+
     <div *ngIf="data.mode === 'single'">
       {{ 'booking.single' | translate }}:
       <strong>{{ data.item?.date }}</strong>
     </div>
+
     <div>
       {{ 'booking.activity' | translate }}:
-      <strong>{{ data.activityName || '—' }} : {{ data.activityPrice || '—' }}</strong>
+      <strong>
+        {{ data.activityName || '—' }} :
+        {{ data.activityPrice || '—' }} TZS
+      </strong>
     </div>
   </div>
 
+  <!-- Booking form -->
   <form [formGroup]="detailsForm" class="space-y-4">
     <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
       <!-- Optional Service -->
@@ -56,7 +65,12 @@
       <!-- Phone -->
       <mat-form-field class="w-full">
         <mat-label>{{ 'booking.phone' | translate }}</mat-label>
-        <input matInput formControlName="phoneNumber" maxlength="10" (input)="onPhoneInput($event)" />
+        <input
+          matInput
+          formControlName="phoneNumber"
+          maxlength="10"
+          (input)="onPhoneInput($event)"
+        />
         <mat-hint>{{ 'booking.phoneHint' | translate }}</mat-hint>
         <mat-error *ngIf="detailsForm.get('phoneNumber')?.hasError('required')">
           {{ 'booking.required' | translate }}
@@ -70,6 +84,9 @@
       <mat-form-field class="w-full">
         <mat-label>{{ 'booking.email' | translate }}</mat-label>
         <input matInput formControlName="email" />
+        <mat-error *ngIf="detailsForm.get('email')?.hasError('email')">
+          {{ 'booking.emailError' | translate }}
+        </mat-error>
       </mat-form-field>
 
       <!-- Address -->
@@ -82,48 +99,53 @@
       </mat-form-field>
     </div>
 
-  <!-- PDF upload for organizations -->
-<div *ngIf="detailsForm.value.customerType === 'ORGANIZATION'" class="mt-2">
-  <label class="block mb-1 text-sm font-medium">{{ 'booking.referenceDoc' | translate }}</label>
+    <!-- PDF Upload for Organization -->
+    <div *ngIf="detailsForm.value.customerType === 'ORGANIZATION'" class="mt-2">
+      <label class="block mb-1 text-sm font-medium">
+        {{ 'booking.referenceDoc' | translate }}
+      </label>
 
-  <!-- Hidden file input -->
-  <input 
-    #fileInput 
-    type="file" 
-    (change)="onFileSelected($event)" 
-    accept="application/pdf" 
-    class="hidden"
-  />
+      <input
+        #fileInput
+        type="file"
+        accept="application/pdf"
+        (change)="onFileSelected($event)"
+        class="hidden"
+      />
 
-  <!-- Button to trigger file input -->
-  <button 
-    type="button" 
-    (click)="fileInput.click()" 
-    class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded"
-  >
-    {{ 'booking.chooseFile' | translate }}
-  </button>
+      <button
+        type="button"
+        (click)="fileInput.click()"
+        class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded"
+      >
+        {{ 'booking.chooseFile' | translate }}
+      </button>
 
+      <div *ngIf="fileError" class="mt-1 text-sm text-rose-600">
+        {{ fileError }}
+      </div>
 
-
-  <div *ngIf="fileError" class="mt-1 text-sm text-rose-600">{{ fileError }}</div>
-
-  <div *ngIf="attachedFile" class="mt-1 text-sm text-slate-600">
-    {{ 'booking.selectedFile' | translate }}: {{ attachedFile.name }}
-  </div>
-</div>
-
+      <div *ngIf="attachedFile" class="mt-1 text-sm text-slate-600">
+        {{ 'booking.selectedFile' | translate }}: {{ attachedFile.name }}
+      </div>
+    </div>
 
     <!-- Employee Verification for Individual -->
-    <div *ngIf="detailsForm.value.customerType === 'INDIVIDUAL'" class="flex items-center gap-3 mt-3">
+    <div
+      *ngIf="detailsForm.value.customerType === 'INDIVIDUAL'"
+      class="flex items-center gap-3 mt-3"
+    >
       <mat-checkbox
         [checked]="employeeVerified"
         [disabled]="verifying"
-        (change)="openEmployeeVerify($event)">
+        (change)="openEmployeeVerify($event)"
+      >
         {{ 'booking.employeeVerify' | translate }}
       </mat-checkbox>
 
-      <span *ngIf="verifying" class="text-sm text-gray-500">{{ 'booking.verifying' | translate }}</span>
+      <span *ngIf="verifying" class="text-sm text-gray-500">
+        {{ 'booking.verifying' | translate }}
+      </span>
 
       <div *ngIf="employeeVerified" class="flex items-center gap-2 text-sm text-emerald-600">
         <i-lucide-check-circle class="w-4 h-4"></i-lucide-check-circle>
@@ -138,7 +160,13 @@
     <button mat-stroked-button (click)="cancel()">
       {{ 'booking.cancel' | translate }}
     </button>
-    <button mat-flat-button color="primary" (click)="submitBooking()" [disabled]="detailsForm.invalid || isSubmitting">
+
+    <button
+      mat-flat-button
+      color="primary"
+      (click)="submitBooking()"nh
+      [disabled]="detailsForm.invalid || isSubmitting"
+    >
       <i-lucide-send class="w-4 h-4 mr-2"></i-lucide-send>
       {{ isSubmitting ? ('booking.submitting' | translate) : ('booking.submit' | translate) }}
     </button>
