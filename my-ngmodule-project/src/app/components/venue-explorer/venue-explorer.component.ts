@@ -92,17 +92,21 @@ loadAll(venueId: number) {
         error: (err) => console.error('Failed to load building', err),
       });
 
-      // 👩‍💼 Fetch staff assigned to the venue
-    this.venueSvc.getVenueStaff(v.venueId).subscribe({
-  next: (staffList: any[]) => {
-    this.venueStaff = staffList;
-    console.log('✅ Staff loaded:', staffList);
-  },
-  error: (err) => {
-    console.warn('⚠️ No staff assigned for this venue:', err);
-    this.venueStaff = [];
-  }
-});
+        // 👩‍💼 Fetch staff assigned to the venue and filter out ADMIN
+      this.venueSvc.getVenueStaff(v.venueId).subscribe({
+        next: (staffList: any[]) => {
+          console.log('Raw staff list:', staffList);
+          this.venueStaff = staffList.filter(staff => {
+            const roleStr = (typeof staff.role === 'string' ? staff.role : staff.role?.name || '').trim().toUpperCase();
+            return roleStr !== 'ADMIN';
+          });
+          console.log('Filtered staff:', this.venueStaff);
+        },
+        error: (err) => {
+          console.warn('No staff:', err);
+          this.venueStaff = [];
+        }
+      });
 
       // ⚙️ Fetch activities and optional services in parallel
       const actObs =

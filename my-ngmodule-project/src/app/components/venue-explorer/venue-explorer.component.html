@@ -67,17 +67,13 @@
       </div>
       <div class="text-sm">
         <div class="font-medium text-slate-800">{{ staff.fullName || 'No Name' }}</div>
-        <div class="text-xs text-slate-500">Role: {{ staff.role || 'Not Assigned' }}</div>
         <div class="text-xs text-slate-500">📞 {{ staff.phoneNumber || 'No Phone' }}</div>
       </div>
     </div>
   </div>
 </div>
 
-<div *ngIf="!venueStaff || venueStaff.length === 0" 
-     class="mt-4 text-center text-gray-500 text-sm">
-  No staff assigned to this venue.
-</div>
+
 
 
           <!-- No Staff Case -->
