@@ -30,6 +30,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
   providers: [provideNativeDateAdapter()],
 })
 export class VenueExplorerComponent implements OnInit {
+[x: string]: any;
   venue: any = null;
   building: any = null;
   activities: any[] = [];
@@ -37,6 +38,8 @@ export class VenueExplorerComponent implements OnInit {
   minActivityPrice: number | null = null;
   loading = true;
   currentImageIndex = 0;
+  venueStaff: any = null;
+
 
   // availability form model
   startDate!: Date | null;
@@ -75,60 +78,69 @@ export class VenueExplorerComponent implements OnInit {
     this.loadAll(id);
   }
 
-  loadAll(venueId: number) {
-    this.loading = true;
-    this.currentImageIndex = 0;
-    this.venueSvc.getVenue(venueId).subscribe({
-      next: (v) => {
-        this.venue = v;
-        // fetch building
-        this.buildingSvc
-          .getBuilding(v.buildingId)
-          .subscribe((b) => (this.building = b));
-        // fetch activities and optional services in parallel
-        const actObs =
-          v.activityIds && v.activityIds.length
-            ? forkJoin(
-                v.activityIds.map((aid: number) =>
-                  this.activitySvc.getActivityById(aid)
-                )
-              )
-            : of([]);
-        const optObs =
-          v.optionalServiceIds && v.optionalServiceIds.length
-            ? forkJoin(
-                v.optionalServiceIds.map((sid: number) =>
-                  this.optionalSvc.getServiceById(sid)
-                )
-              )
-            : of([]);
+loadAll(venueId: number) {
+  this.loading = true;
+  this.currentImageIndex = 0;
 
-        forkJoin([actObs, optObs]).subscribe({
-          next: ([actsRaw, optsRaw]: any) => {
-            // filter nulls and normalize
-            this.activities = (actsRaw || []).filter(Boolean);
-            this.optionalServices = (optsRaw || []).filter(Boolean);
-            // compute min activity price
-            const prices = this.activities
-              .map((a: any) => Number(a.price))
-              .filter((p) => !isNaN(p));
-            this.minActivityPrice = prices.length
-              ? Math.round(Math.min(...prices))
-              : null;
-            this.loading = false;
-          },
-          error: (err) => {
-            console.warn(err);
-            this.loading = false;
-          },
-        });
-      },
-      error: (err) => {
-        console.error('failed loading venue', err);
-        this.loading = false;
-      },
-    });
+  this.venueSvc.getVenue(venueId).subscribe({
+    next: (v) => {
+      this.venue = v;
+
+      // 🏢 Fetch building
+      this.buildingSvc.getBuilding(v.buildingId).subscribe({
+        next: (b) => (this.building = b),
+        error: (err) => console.error('Failed to load building', err),
+      });
+
+      // 👩‍💼 Fetch staff assigned to the venue
+    this.venueSvc.getVenueStaff(v.venueId).subscribe({
+  next: (staffList: any[]) => {
+    this.venueStaff = staffList;
+    console.log('✅ Staff loaded:', staffList);
+  },
+  error: (err) => {
+    console.warn('⚠️ No staff assigned for this venue:', err);
+    this.venueStaff = [];
   }
+});
+
+      // ⚙️ Fetch activities and optional services in parallel
+      const actObs =
+        v.activityIds && v.activityIds.length
+          ? forkJoin(v.activityIds.map((aid: number) => this.activitySvc.getActivityById(aid)))
+          : of([]);
+
+      const optObs =
+        v.optionalServiceIds && v.optionalServiceIds.length
+          ? forkJoin(v.optionalServiceIds.map((sid: number) => this.optionalSvc.getServiceById(sid)))
+          : of([]);
+
+      forkJoin([actObs, optObs]).subscribe({
+        next: ([actsRaw, optsRaw]: any) => {
+          // normalize and filter nulls
+          this.activities = (actsRaw || []).filter(Boolean);
+          this.optionalServices = (optsRaw || []).filter(Boolean);
+
+          // 💰 compute min price
+          const prices = this.activities.map((a: any) => Number(a.price)).filter((p) => !isNaN(p));
+          this.minActivityPrice = prices.length ? Math.round(Math.min(...prices)) : null;
+
+          this.loading = false;
+        },
+        error: (err) => {
+          console.warn('⚠️ Failed to load activities or optional services', err);
+          this.loading = false;
+        },
+      });
+    },
+    error: (err) => {
+      console.error('❌ Failed loading venue', err);
+      this.loading = false;
+    },
+  });
+}
+
+
 
   // image gallery helper
   selectedImage(index: number) {
