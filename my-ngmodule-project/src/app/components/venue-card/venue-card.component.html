@@ -3,7 +3,7 @@
   style="font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;">
 
   <div class="w-full overflow-hidden rounded-t-lg h-44 md:h-48">
-    <img [src]="imageUrl" alt="{{ venue.venueName }}" class="object-cover w-full h-full">
+    <img [src]="imageUrl" alt="{{venue.venueName}}" class="object-cover w-full h-full">
   </div>
 
   <mat-card-content class="p-4 mt-3">
@@ -16,30 +16,27 @@
     <!-- Venue type with icon -->
     <p class="mb-3 text-sm truncate text-slate-600 flex items-center gap-2">
       <mat-icon aria-hidden="true" class="text-sm text-blue-600">category</mat-icon>
-      <span class="truncate">{{ venue.venueType ?? ('venue.venueType' | translate) }}</span>
+      <span class="truncate">{{ venue.venueType ?? 'Venue' }}</span>
     </p>
 
-    <!-- Capacity -->
     <div class="flex items-center gap-3 mb-3 text-sm text-slate-600">
       <mat-icon class="text-base text-blue-600">people</mat-icon>
-      <span>{{ venue.capacity }} {{ 'venue.guests' | translate }}</span>
+      <span> {{ venue.capacity }} guests</span>
     </div>
 
-    <!-- Price + Button -->
     <div class="flex items-center justify-between">
       <div class="text-sm font-medium">
+        <!-- Price line with icon -->
         <div class="flex items-baseline gap-2">
           <mat-icon aria-hidden="true" class="text-sm text-blue-600">paid</mat-icon>
-          <span class="block text-xs text-slate-600">{{ 'venue.from' | translate }}</span>
+          <span class="block text-xs text-slate-600">From</span>
           <span *ngIf="minPrice !== null" class="text-slate-900">{{ minPrice | number:'1.0-0' }} TZS</span>
-          <span class="block text-xs text-slate-500">{{ 'venue.perDay' | translate }}</span>
-          <span *ngIf="minPrice === null" class="text-slate-400">{{ 'venue.noPrice' | translate }}</span>
+          <span class="block text-xs text-slate-500">/ Day</span>
+          <span *ngIf="minPrice === null" class="text-slate-400">Price not available</span>
         </div>
       </div>
 
-      <button mat-stroked-button color="primary" class="text-sm">
-        {{ 'venue.view' | translate }}
-      </button>
+      <button mat-stroked-button color="primary" class="text-sm">View</button>
     </div>
   </mat-card-content>
 </mat-card>

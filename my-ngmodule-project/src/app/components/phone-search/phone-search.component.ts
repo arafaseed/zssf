@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { environment } from '../../../environments/environment';
 import { TranslateService } from '@ngx-translate/core';
+import { PostponeDialogComponent } from '../postpone-dialog/postpone-dialog.component';
 
 @Component({
   selector: 'app-phone-search',
@@ -118,4 +119,20 @@ export class PhoneSearchComponent {
       event.preventDefault();
     }
   }
+  openPostponeDialog(booking: any): void {
+  const dialogRef = this.dialog.open(PostponeDialogComponent, {
+    width: '400px',
+    data: { booking }
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      // You can handle the updated date/time here
+      console.log('Booking postponed:', result);
+       // Example: call your API
+      // this.bookingService.postponeBooking(result).subscribe(() => {
+      //   alert('Booking postponed successfully!');
+    }
+  });
+}
 }

@@ -29,6 +29,7 @@ import 'flag-icons/css/flag-icons.min.css';
 export class HeaderComponent {
   isHomePage = false;
   isBookingPage = false;
+  isInvoicePage = false;
   menuOpen = false;
   fullTitle = '';
   displayedText = ''; 
@@ -69,6 +70,7 @@ currentLang = 'en'; // default
         const currentUrl = event.urlAfterRedirects;
         this.isHomePage = currentUrl.startsWith('/venue');
         this.isBookingPage = currentUrl.startsWith('/mybooking');
+        this.isInvoicePage = currentUrl.startsWith('/invoice');
       });
   }
 
@@ -106,16 +108,31 @@ currentLang = 'en'; // default
       }
     );
   }
-   ngOnInit(): void {
-    // Get translated title and start animation
-    this.translate.get('header.title').subscribe((res: string) => {
-      this.fullTitle = res;
+  //  ngOnInit(): void {
+  //   // Get translated title and start animation
+  //   this.translate.get('header.title').subscribe((res: string) => {
+  //     this.fullTitle = res;
+  //     this.displayedText = '';
+  //     this.animateText();
+
+  //   });
+  // }
+  
+ngOnInit(): void {
+  this.translate.get('header.title').subscribe((res: string) => {
+    this.fullTitle = res;
+
+    if (this.isInvoicePage) {
+      // Show instantly on invoice
+      this.displayedText = res;
+      this.isAnimating = false;
+    } else {
+      // Animate elsewhere
       this.displayedText = '';
       this.animateText();
-  
-
-    });
-  }
+    }
+  });
+}
 
   animateText(index: number = 0): void {
     if (index < this.fullTitle.length) {

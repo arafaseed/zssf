@@ -1,0 +1,47 @@
+<h2 mat-dialog-title>Postpone Booking</h2>
+
+<mat-dialog-content class="dialog-content">
+  <p>You are postponing <strong>{{ data.booking.bookingCode }}</strong> for {{ data.booking.customer.customerName }}.</p>
+
+  <form #postponeForm="ngForm">
+    <!-- New Start Date -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>New Start Date</mat-label>
+      <input matInput [matDatepicker]="startPicker" [(ngModel)]="newStartDate" name="newStartDate" required />
+      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+      <mat-datepicker #startPicker></mat-datepicker>
+    </mat-form-field>
+
+    <!-- New Start Time -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>New Start Time</mat-label>
+      <input matInput type="time" [(ngModel)]="newStartTime" name="newStartTime" required />
+    </mat-form-field>
+
+    <!-- New End Date -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>New End Date</mat-label>
+      <input matInput [matDatepicker]="endPicker" [(ngModel)]="newEndDate" name="newEndDate" required />
+      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+      <mat-datepicker #endPicker></mat-datepicker>
+    </mat-form-field>
+
+    <!-- New End Time -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>New End Time</mat-label>
+      <input matInput type="time" [(ngModel)]="newEndTime" name="newEndTime" required />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button
+    mat-flat-button
+    color="primary"
+    [disabled]="!postponeForm.valid"
+    (click)="confirmPostpone()"
+  >
+    Confirm
+  </button>
+</mat-dialog-actions>

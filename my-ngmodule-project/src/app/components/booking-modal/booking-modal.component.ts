@@ -33,11 +33,10 @@ export class BookingModalComponent implements OnInit {
     private router: Router,
     private api: BookingService,
     private snackBar: MatSnackBar,
-     private translate: TranslateService 
+    private translate: TranslateService
   ) {}
 
   ngOnInit() {
-    // Phone rules: must start with 06/07/08 and be 10 digits total
     const phonePattern = /^(0)\d{9}$/;
 
     this.detailsForm = this.fb.group({
@@ -49,6 +48,7 @@ export class BookingModalComponent implements OnInit {
       customerType: ['', Validators.required],
     });
 
+    // Load optional services
     if (this.data?.venueId) {
       this.api.getOptionalServicesForVenue(this.data.venueId).subscribe({
         next: (arr) => {
@@ -60,6 +60,17 @@ export class BookingModalComponent implements OnInit {
         }
       });
     }
+
+    // Watch for customer type changes (auto discount for government institution)
+    this.detailsForm.get('customerType')?.valueChanges.subscribe((type) => {
+      if (type === 'ORGANIZATION') {
+        this.discountRate = 0.25;
+        this.employeeVerified = true;
+      } else {
+        this.discountRate = 0;
+         this.employeeVerified = false;
+      }
+    });
   }
 
   onPhoneInput(e: Event) {
@@ -93,61 +104,36 @@ export class BookingModalComponent implements OnInit {
     this.attachedFile = f;
   }
 
-  // openEmployeeVerify(event: any) {
-  //   if (event.checked) {
-  //     const dlg = this.dialog.open(EmployeeVerifyComponent, { width: '420px' });
-  //     dlg.afterClosed().subscribe((result: any) => {
-  //       if (result && result.verified) {
-  //         this.employeeVerified = true;
-  //         this.discountRate = result.discountRate ?? 0;
-  //       } else {
-  //         this.employeeVerified = false;
-  //         this.discountRate = 0;
-  //       }
-  //     });
-  //   } else {
-  //     this.employeeVerified = false;
-  //     this.discountRate = 0;
-  //   }
-  // }
-
   openEmployeeVerify(event: MatCheckboxChange): void {
-  if (event.checked) {
-    // Immediately un-check the checkbox visually so it doesn't "stick" while verifying.
-    try {
-      // MatCheckboxChange.source is the MatCheckbox instance
-      event.source.checked = false;
-    } catch {
-      // ignore if not available
-    }
+    if (event.checked) {
+      try {
+        event.source.checked = false;
+      } catch {}
+      this.verifying = true;
 
-    this.verifying = true;
-
-    const dlg = this.dialog.open(EmployeeVerifyComponent, { width: '420px' });
-    dlg.afterClosed().subscribe((result: any) => {
-      this.verifying = false;
-
-      if (result && result.verified) {
-        // only set to true when dialog explicitly returns verified
-        this.employeeVerified = true;
-        this.discountRate = result.discountRate ?? 0;
-      } else {
-        // dialog cancelled or not verified -> ensure unchecked state and zero discount
-        this.employeeVerified = false;
-        this.discountRate = 0;
-      }
-    }, () => {
-      // on error: ensure fields reset
-      this.verifying = false;
+      const dlg = this.dialog.open(EmployeeVerifyComponent, { width: '420px' });
+      dlg.afterClosed().subscribe(
+        (result: any) => {
+          this.verifying = false;
+          if (result && result.verified) {
+            this.employeeVerified = true;
+            this.discountRate = result.discountRate ?? 0;
+          } else {
+            this.employeeVerified = false;
+            this.discountRate = 0;
+          }
+        },
+        () => {
+          this.verifying = false;
+          this.employeeVerified = false;
+          this.discountRate = 0;
+        }
+      );
+    } else {
       this.employeeVerified = false;
       this.discountRate = 0;
-    });
-  } else {
-    // user manually unchecked -> clear verification & discount
-    this.employeeVerified = false;
-    this.discountRate = 0;
+    }
   }
-}
 
   buildBookingObject() {
     let startDateStr: string, endDateStr: string, startTimeStr: string, endTimeStr: string;
@@ -193,11 +179,11 @@ export class BookingModalComponent implements OnInit {
       this.detailsForm.markAllAsTouched();
       return;
     }
-      // Force file upload for ORGANIZATION type
- if (this.detailsForm.value.customerType === 'ORGANIZATION' && !this.attachedFile) {
-  this.fileError = this.translate.instant('booking.uploadRequired');
-  return;
-}
+
+    if (this.detailsForm.value.customerType === 'ORGANIZATION' && !this.attachedFile) {
+      this.fileError = this.translate.instant('booking.uploadRequired');
+      return;
+    }
 
     const booking = this.buildBookingObject();
     const selectedOptionalService =
@@ -218,46 +204,38 @@ export class BookingModalComponent implements OnInit {
     });
 
     dlgRef.afterClosed().subscribe((result: any) => {
-  this.isSubmitting = false;
+      this.isSubmitting = false;
+      const userFriendlyDefault =
+        'We could not complete the submission right now. Please try again later or contact support.';
 
-  const userFriendlyDefault = 'We could not complete the submission right now. Please try again later or contact support.';
+      if (result && result.success && result.bookingId) {
+        this.ref.close({ success: true, bookingId: result.bookingId });
+        this.snackBar.open('Booking created successfully.', 'OK', {
+          duration: 4000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top'
+        });
+        return;
+      }
 
-  if (result && result.success && result.bookingId) {
-    // Success: close and optionally notify success
-    this.ref.close({ success: true, bookingId: result.bookingId });
+      const friendlyFromBackend = result?.friendlyMessage;
+      const messageToShow =
+        friendlyFromBackend && typeof friendlyFromBackend === 'string'
+          ? friendlyFromBackend
+          : userFriendlyDefault;
 
-    // Optional — show a success snackbar (remove if you prefer no popup on success)
-    this.snackBar.open('Booking created successfully.', 'OK', {
-      duration: 4000,
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
+      this.snackBar.open(messageToShow, 'Close', {
+        duration: 6000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top'
+      });
+
+      if (result?.error) {
+        console.error('Submission failed (backend details):', result.error);
+      } else {
+        console.warn('Submission did not succeed; no backend error provided.', result);
+      }
     });
-
-    return;
-  }
-
-  // At this point submission did not succeed.
-  // Use friendlyMessage from backend if present (but never show raw "error" text).
-  const friendlyFromBackend = result?.friendlyMessage;
-  const messageToShow = friendlyFromBackend && typeof friendlyFromBackend === 'string'
-    ? friendlyFromBackend
-    : userFriendlyDefault;
-
-  // Show friendly message to user
-  this.snackBar.open(messageToShow, 'Close', {
-    duration: 6000,
-    horizontalPosition: 'right',
-    verticalPosition: 'top',
-  });
-
-  // Still record backend details for diagnostics (console only — not user-facing)
-  if (result?.error) {
-    console.error('Submission failed (backend details):', result.error);
-  } else {
-    console.warn('Submission did not succeed; no backend error provided.', result);
-  }
-});
-
   }
 
   cancel() {
