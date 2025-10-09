@@ -43,17 +43,19 @@
     "noDescription": "Hakuna maelezo",
     "halls": "UKUMBI"
 },
-  "venue": {
-    "venueType": "Aina ya Ukumbi",
-    "guests": "wageni",
+  "venueCard": {
     "from": "Kuanzia",
     "perDay": "/ Siku",
-    "noPrice": "Bei haijapatikana",
+    "priceNotAvailable": "Bei haijapatikana",
     "view": "Angalia",
-   "heading": "Ukumbi",
+    "guests": "wageni",
+    "venueType": "Aina ya Ukumbi",
+    "heading": "Ukumbi",
     "label": "Ukumbi",
     "noValue": "—"
+
   },
+
 
   "availability": {
     "title": "Angalia upatikanaji",
