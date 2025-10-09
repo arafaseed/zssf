@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
@@ -33,20 +33,29 @@ export class PhoneSearchComponent {
         this.translate.instant('Close'),
         { duration: 3000 }
       );
-      return;
+      return; 
     }
 
     this.searching = true;
     this.noResults = false;
     this.bookings = [];
 
+    const params = new HttpParams().set('phone', this.phoneNumber.trim());
+
     this.http
-      .get<any[]>(`${environment.apiUrl}/api/bookings/by-customer-phone?phone=${this.phoneNumber}`)
+      .get<any[]>(`${environment.apiUrl}/api/bookings/by-customer-phone`, { params })
       .subscribe({
         next: (data) => {
-          const filtered = data.filter(b => b.bookingStatus && b.bookingStatus.toLowerCase() !== 'cancelled');
-          this.bookings = this.sortByBookingDateDesc(filtered);
+          // Ensure we always handle array results
+          if (!Array.isArray(data)) {
+            data = [data];
+          }
 
+          const filtered = data.filter(
+            (b) => b.bookingStatus && b.bookingStatus.toLowerCase() !== 'cancelled'
+          );
+
+          this.bookings = this.sortByBookingDateDesc(filtered);
           this.noResults = this.bookings.length === 0;
           this.searching = false;
 
@@ -90,7 +99,8 @@ export class PhoneSearchComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.http.post<any>(`${environment.apiUrl}/api/bookings/cancel/${bookingId}`, {})
+        this.http
+          .post<any>(`${environment.apiUrl}/api/bookings/cancel/${bookingId}`, {})
           .subscribe({
             next: () => {
               this.snackBar.open(
@@ -119,20 +129,18 @@ export class PhoneSearchComponent {
       event.preventDefault();
     }
   }
-  openPostponeDialog(booking: any): void {
-  const dialogRef = this.dialog.open(PostponeDialogComponent, {
-    width: '400px',
-    data: { booking }
-  });
 
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      // You can handle the updated date/time here
-      console.log('Booking postponed:', result);
-       // Example: call your API
-      // this.bookingService.postponeBooking(result).subscribe(() => {
-      //   alert('Booking postponed successfully!');
-    }
-  });
-}
+  openPostponeDialog(booking: any): void {
+    const dialogRef = this.dialog.open(PostponeDialogComponent, {
+      width: '400px',
+      data: { booking },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('Booking postponed:', result);
+        // You can call your API here to save changes
+      }
+    });
+  }
 }
