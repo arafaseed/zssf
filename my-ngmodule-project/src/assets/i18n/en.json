@@ -235,6 +235,7 @@
       "invalidCredentials": "Invalid credentials"
     }
   },
+
   "phoneSearch": {
     "title": "Search Bookings",
     "subtitle": "by Phone Number",
@@ -261,6 +262,15 @@
     "confirmCancelMsg": "Are you sure you want to cancel this booking?",
     "cancelSuccess": "Booking successfully cancelled!",
     "cancelError": "Failed to cancel booking. Please try again.",
+    "fillAllFields": "Please fill all fields",
+    "futureDatesOnly": "You can only choose future dates.",
+    "startAfterEnd": "Start date cannot be after end date.",
+    "startTimeAfterEndTime": "Start time must be before end time.",
+    "checkingAvailability": "Checking venue availability...",
+    "venueNotAvailable": "Venue not available for selected date/time.",
+    "venueAvailable": "Venue is available for postpone.",
+    "checkError": "Error checking venue availability.",
+    "onlyOriginalBookingDays": "You can only postpone for up to the original booking duration.",
     "errors": {
       "required": "Phone number is required.",
       "pattern": "Please enter exactly 10 digits."
