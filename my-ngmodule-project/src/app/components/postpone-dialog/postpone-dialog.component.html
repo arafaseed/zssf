@@ -1,46 +1,82 @@
-<h2 mat-dialog-title>Postpone Booking</h2>
+<h2 class="text-2xl font-bold text-green-900 mb-4">
+  Postpone Booking
+</h2>
 
-<mat-dialog-content class="dialog-content">
-  <p>You are postponing <strong>{{ data.booking.bookingCode }}</strong> for {{ data.booking.customer.customerName }}.</p>
+<mat-dialog-content class="space-y-6 text-gray-700">
+  <p class="text-base">
+    You are postponing <strong>{{ data.booking.bookingCode }}</strong> for
+    <strong>{{ data.booking.customer.customerName }}</strong>.
+  </p>
 
-  <form #postponeForm="ngForm">
-    <!-- New Start Date -->
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>New Start Date</mat-label>
-      <input matInput [matDatepicker]="startPicker" [(ngModel)]="newStartDate" name="newStartDate" required />
-      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-      <mat-datepicker #startPicker></mat-datepicker>
-    </mat-form-field>
+  <!-- Booking Info Card -->
+  <div class="p-4 bg-green-50 rounded-2xl shadow-sm space-y-3">
+    <div class="flex justify-between">
+      <span class="font-medium text-gray-600">Venue</span>
+      <span class="font-semibold text-blue-900">{{ data.booking.venueName }}</span>
+    </div>
 
-    <!-- New Start Time -->
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>New Start Time</mat-label>
-      <input matInput type="time" [(ngModel)]="newStartTime" name="newStartTime" required />
-    </mat-form-field>
+    <div class="flex justify-between">
+      <span class="font-medium text-gray-600">Activity</span>
+      <span class="font-semibold text-blue-900">{{ data.booking.venueActivityName || '—' }}</span>
+    </div>
 
-    <!-- New End Date -->
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>New End Date</mat-label>
-      <input matInput [matDatepicker]="endPicker" [(ngModel)]="newEndDate" name="newEndDate" required />
-      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-      <mat-datepicker #endPicker></mat-datepicker>
-    </mat-form-field>
+    <div class="flex justify-between border-t border-gray-300 pt-3">
+      <span class="font-medium text-gray-600">Old Start Date</span>
+      <span class="font-semibold text-blue-900">{{ data.booking.startDate | date:'mediumDate' }}</span>
+    </div>
 
-    <!-- New End Time -->
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>New End Time</mat-label>
-      <input matInput type="time" [(ngModel)]="newEndTime" name="newEndTime" required />
-    </mat-form-field>
-  </form>
+    <div class="flex justify-between">
+      <span class="font-medium text-gray-600">Old Start Time</span>
+      <span class="font-semibold text-blue-900">{{ data.booking.startTime }}</span>
+    </div>
+
+    <div class="flex justify-between border-t border-gray-300 pt-3">
+      <span class="font-medium text-gray-600">Old End Date</span>
+      <span class="font-semibold text-blue-900">{{ data.booking.endDate | date:'mediumDate' }}</span>
+    </div>
+
+    <div class="flex justify-between">
+      <span class="font-medium text-gray-600">Old End Time</span>
+      <span class="font-semibold text-blue-900">{{ data.booking.endTime }}</span>
+    </div>
+  </div>
+
+  <!-- New Postpone Info -->
+  <div class="p-4 bg-green-50 rounded-2xl shadow-sm space-y-3">
+    <h3 class="text-lg font-semibold text-green-800 mb-2">New Postpone Details</h3>
+    <div class="flex justify-between">
+      <span class="font-medium text-gray-600">New Start Date</span>
+      <span class="font-semibold text-blue-900">{{ data.newStartDate | date:'mediumDate' }}</span>
+    </div>
+    <div class="flex justify-between">
+      <span class="font-medium text-gray-600">New Start Time</span>
+      <span class="font-semibold text-blue-900">{{ data.newStartTime }}</span>
+    </div>
+    <div class="flex justify-between border-t border-gray-300 pt-3">
+      <span class="font-medium text-gray-600">New End Date</span>
+      <span class="font-semibold text-blue-900">{{ data.newEndDate | date:'mediumDate' }}</span>
+    </div>
+    <div class="flex justify-between">
+      <span class="font-medium text-gray-600">New End Time</span>
+      <span class="font-semibold text-blue-900">{{ data.newEndTime }}</span>
+    </div>
+  </div>
 </mat-dialog-content>
 
-<mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Cancel</button>
+<!-- Actions -->
+<mat-dialog-actions align="end" class="mt-6 flex justify-end gap-3">
+  <button
+    mat-stroked-button
+    mat-dialog-close
+    class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100"
+  >
+    Cancel
+  </button>
   <button
     mat-flat-button
     color="primary"
-    [disabled]="!postponeForm.valid"
     (click)="confirmPostpone()"
+    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
   >
     Confirm
   </button>
