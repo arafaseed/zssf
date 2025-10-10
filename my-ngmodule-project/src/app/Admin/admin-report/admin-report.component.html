@@ -1,60 +1,84 @@
 <div class="p-6 bg-gray-50 min-h-screen">
-  <h2 class="text-2xl font-bold mb-4">Admin Reports</h2>
+  <h2 class="text-3xl font-bold text-center mb-6">Sales Report</h2>
 
-  <!-- Period Selector -->
-  <div class="flex items-center gap-4 mb-4">
+  <!-- Filters -->
+  <div class="flex flex-wrap items-center gap-4 mb-6 justify-center">
     <label class="font-medium">Report Type:</label>
-    <select [(ngModel)]="reportType" (change)="onReportTypeChange()" class="border px-2 py-1 rounded">
+    <select [(ngModel)]="reportType" (change)="onReportTypeChange()" class="border px-3 py-2 rounded">
       <option value="MONTHLY">Monthly</option>
       <option value="QUARTERLY">Quarterly</option>
       <option value="YEARLY">Yearly</option>
     </select>
 
-    <input *ngIf="reportType==='MONTHLY'" type="month" [(ngModel)]="selectedMonth" class="border px-2 py-1 rounded">
-    <input *ngIf="reportType==='QUARTERLY'" type="number" min="1" max="4" [(ngModel)]="selectedQuarter" placeholder="Quarter (1-4)" class="border px-2 py-1 rounded w-28">
-    <input type="number" min="2000" max="2100" [(ngModel)]="selectedYear" placeholder="Year" class="border px-2 py-1 rounded w-28">
+    <input *ngIf="reportType==='MONTHLY'" type="month" [(ngModel)]="selectedMonth" class="border px-3 py-2 rounded">
+    <input *ngIf="reportType==='QUARTERLY'" type="number" min="1" max="4" [(ngModel)]="selectedQuarter" placeholder="Quarter (1–4)" class="border px-3 py-2 rounded w-28">
+    <input type="number" min="2000" max="2100" [(ngModel)]="selectedYear" placeholder="Year" class="border px-3 py-2 rounded w-28">
 
     <button mat-flat-button color="primary" (click)="loadReport()">Load Report</button>
   </div>
 
-  <!-- Report Display -->
-  <div #reportContent class="bg-white p-4 rounded-lg shadow-md">
-    <h3 class="text-xl font-semibold mb-2">Report - {{ reportType }} {{ selectedMonth || 'Q' + selectedQuarter || selectedYear }}</h3>
-    
-    <div *ngIf="!reportData">No data loaded yet.</div>
+  <!-- REPORT CONTENT -->
+  <div #reportContent class="bg-white p-6 rounded-xl shadow-md">
+    <div *ngIf="!reportData" class="text-center text-gray-500 py-10">
+      No data loaded yet.
+    </div>
 
-    <table *ngIf="reportData" class="min-w-full table-auto divide-y divide-gray-200">
-      <thead>
-        <tr class="bg-gray-100">
-          <th class="px-4 py-2 text-left">Metric</th>
-          <th class="px-4 py-2 text-left">Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="px-4 py-2">Total Bookings</td>
-          <td class="px-4 py-2">{{ reportData.totalBookings }}</td>
-        </tr>
-        <tr>
-          <td class="px-4 py-2">Total Revenue</td>
-          <td class="px-4 py-2">{{ reportData.totalRevenue | number:'1.0-0' }} TZS</td>
-        </tr>
-        <tr>
-          <td class="px-4 py-2">Most Booked Venue</td>
-          <td class="px-4 py-2">{{ reportData.mostBookedVenue?.venueName || '–' }}</td>
-        </tr>
-        <tr>
-          <td class="px-4 py-2">Completed Bookings</td>
-          <td class="px-4 py-2">{{ reportData.completedBookings }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    <div *ngIf="reportData">
+      <!-- Date Info -->
+      <div class="flex flex-wrap justify-between mb-6">
+        <div>
+          <p><strong>Report Type:</strong> {{ reportType }}</p>
+          <p><strong>Month:</strong> {{ selectedMonth || 'N/A' }}</p>
+          <p><strong>Quarter:</strong> {{ reportType==='QUARTERLY' ? selectedQuarter : 'N/A' }}</p>
+          <p><strong>Year:</strong> {{ selectedYear }}</p>
+        </div>
+        <div class="text-right">
+          <p><strong>Start Date:</strong> {{ reportData.startDate }}</p>
+          <p><strong>End Date:</strong> {{ reportData.endDate }}</p>
+        </div>
+      </div>
 
-  <!-- Actions -->
-  <div class="mt-4 flex gap-2">
-    <button mat-stroked-button color="primary" (click)="downloadReport()">Download PDF</button>
-    <button mat-stroked-button color="accent" (click)="printReport()">Print</button>
+      <!-- Charts + Table -->
+      <div class="grid md:grid-cols-2 gap-8 items-start">
+        <!-- Pie Chart -->
+        <div class="flex flex-col items-center">
+          <h4 class="font-semibold mb-2">Bookings & Revenue</h4>
+          <canvas id="pieChart"></canvas>
+        </div>
+
+        <!-- Table -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm border-collapse border border-gray-200">
+            <thead class="bg-gray-100">
+              <tr>
+                <th class="border px-3 py-2 text-left">Metric</th>
+                <th *ngFor="let header of getWeekHeaders()" class="border px-3 py-2 text-left">{{ header }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of reportData.items">
+                <td class="border px-3 py-2 font-medium">{{ item.name }}</td>
+                <td class="border px-3 py-2">{{ item.week1 }}</td>
+                <td class="border px-3 py-2">{{ item.week2 }}</td>
+                <td class="border px-3 py-2">{{ item.week3 }}</td>
+                <td class="border px-3 py-2">{{ item.week4 }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Bar Chart -->
+      <div class="mt-8">
+        <h4 class="font-semibold mb-3 text-center">Bookings by Item</h4>
+        <canvas id="barChart"></canvas>
+      </div>
+
+      <!-- Actions -->
+      <div class="mt-6 flex justify-center gap-3">
+        <button mat-stroked-button color="primary" (click)="downloadReport()">Download PDF</button>
+        <button mat-stroked-button color="accent" (click)="printReport()">Print</button>
+      </div>
+    </div>
   </div>
 </div>
-

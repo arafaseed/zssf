@@ -16,27 +16,36 @@
     <!-- Venue type with icon -->
     <p class="mb-3 text-sm truncate text-slate-600 flex items-center gap-2">
       <mat-icon aria-hidden="true" class="text-sm text-blue-600">category</mat-icon>
-      <span class="truncate">{{ venue.venueType ?? 'Venue' }}</span>
+      <span class="truncate">
+        {{ venue.venueType ?? ('venueCard.venueTypeDefault' | translate) }}
+      </span>
     </p>
 
+    <!-- Capacity -->
     <div class="flex items-center gap-3 mb-3 text-sm text-slate-600">
       <mat-icon class="text-base text-blue-600">people</mat-icon>
-      <span> {{ venue.capacity }} guests</span>
+      <span>{{ venue.capacity }} {{ 'venueCard.guests' | translate }}</span>
     </div>
 
+    <!-- Price -->
     <div class="flex items-center justify-between">
       <div class="text-sm font-medium">
-        <!-- Price line with icon -->
         <div class="flex items-baseline gap-2">
           <mat-icon aria-hidden="true" class="text-sm text-blue-600">paid</mat-icon>
-          <span class="block text-xs text-slate-600">From</span>
-          <span *ngIf="minPrice !== null" class="text-slate-900">{{ minPrice | number:'1.0-0' }} TZS</span>
-          <span class="block text-xs text-slate-500">/ Day</span>
-          <span *ngIf="minPrice === null" class="text-slate-400">Price not available</span>
+          <span class="block text-xs text-slate-600">{{ 'venueCard.from' | translate }}</span>
+          <span *ngIf="minPrice !== null" class="text-slate-900">
+            {{ minPrice | number:'1.0-0' }} TZS
+          </span>
+          <span class="block text-xs text-slate-500">{{ 'venueCard.perDay' | translate }}</span>
+          <span *ngIf="minPrice === null" class="text-slate-400">
+            {{ 'venueCard.priceNotAvailable' | translate }}
+          </span>
         </div>
       </div>
 
-      <button mat-stroked-button color="primary" class="text-sm">View</button>
+      <button mat-stroked-button color="primary" class="text-sm">
+        {{ 'venueCard.view' | translate }}
+      </button>
     </div>
   </mat-card-content>
 </mat-card>

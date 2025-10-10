@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
@@ -47,15 +47,17 @@ endTime: string = '';
         this.translate.instant('Close'),
         { duration: 3000 }
       );
-      return;
+      return; 
     }
 
     this.searching = true;
     this.noResults = false;
     this.bookings = [];
 
+    const params = new HttpParams().set('phone', this.phoneNumber.trim());
+
     this.http
-      .get<any[]>(`${environment.apiUrl}/api/bookings/by-customer-phone?phone=${this.phoneNumber}`)
+      .get<any[]>(`${environment.apiUrl}/api/bookings/by-customer-phone`, { params })
       .subscribe({
         next: (data) => {
           const filtered = data.filter(

@@ -43,16 +43,17 @@
     "noDescription": "No description available",
     "halls": "HALLS"
 },
-  "venue": {
-    "venueType": "Venue",
-    "guests": "guests",
+  "venueCard": {
     "from": "From",
     "perDay": "/ Day",
-    "noPrice": "Price not available",
+    "priceNotAvailable": "Price not available",
     "view": "View",
-    "heading": "Venue",
+    "guests": "guests",
+    "venueType": "Venue",
     "label": "Venue",
+    "heading": "Venue",
     "noValue": "—"
+
   },
   "availability": {
     "title": "Check availability",
