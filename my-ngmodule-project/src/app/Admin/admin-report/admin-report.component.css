@@ -1,0 +1,29 @@
+/* admin-report.component.css - print friendly */
+.paper {
+  background: white;
+  border-radius: 4px;
+}
+
+/* print styles */
+@media print {
+  body * { visibility: hidden; }
+  .paper, .paper * { visibility: visible; }
+  .paper { position: absolute; left: 0; top: 0; width: 100%; }
+  .controls { display: none !important; }
+}
+
+/* basic table styling */
+table {
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #e6e6e6;
+  padding: 8px;
+}
+
+.report-title {
+  letter-spacing: 0.2px;
+}
+
+.summary-card { min-height: 64px; display:flex; flex-direction:column; justify-content:center; }

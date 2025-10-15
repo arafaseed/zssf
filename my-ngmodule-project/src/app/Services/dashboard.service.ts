@@ -1,8 +1,7 @@
-import { HttpClient, HttpHeaders  } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin, map } from 'rxjs';
 import { environment } from '../../environments/environment';
-
 
 export interface VenueRevenue {
   venueId: number;
@@ -15,23 +14,22 @@ export interface RawVenueRevenue {
     venueId: number;
     venueName: string;
     bookingIds: number[];
-    // …etc
   };
   revenue: number;
 }
 
 export interface BestRevenueVenue {
   venue: {
-    venueId:      number;
-    venueName:    string;
-    capacity:     number;
-    description:  string;
-    venueImages:  string[];
-    buildingId:   number;
-    leasePackageIds:    number[];
-    assignedStaffIds:   number[];
-    bookingIds:         number[];
-    activitiesAllowedIds:number[];
+    venueId: number;
+    venueName: string;
+    capacity: number;
+    description: string;
+    venueImages: string[];
+    buildingId: number;
+    leasePackageIds: number[];
+    assignedStaffIds: number[];
+    bookingIds: number[];
+    activitiesAllowedIds: number[];
   };
   revenue: number;
 }
@@ -45,29 +43,58 @@ interface BookingStat {
   providedIn: 'root'
 })
 export class DashboardService {
-
   private apiUrl = `${environment.apiUrl}/api`;
 
   constructor(private http: HttpClient) {}
 
+  // ------------------- MAIN DASHBOARD DATA -------------------
+  getDashboardData(): Observable<any> {
+    return forkJoin({
+      allBookings: this.getAllBookings(),
+      totalRevenue: this.getTotalRevenue(),
+      mostBookedVenue: this.getMostBookedVenue(),
+      bestRevenueVenue: this.getBestRevenueVenue(),
+      topVenuesByRevenue: this.getTopVenuesByRevenue(),
+    }).pipe(
+      map((results) => {
+        const bookings = results.allBookings || [];
+        const totalCustomers = new Set(bookings.map(b => b.customerId || b.customer?.id)).size;
+        const completedBookings = bookings.filter(b => b.status === 'COMPLETE').length;
+
+        return {
+          totalBookings: bookings.length,
+          totalCustomers,
+          totalRevenue: results.totalRevenue || 0,
+          completedBookings,
+          mostBookedVenue: results.mostBookedVenue?.venueName || 'N/A',
+          bestRevenueVenue: results.bestRevenueVenue?.venue?.venueName || 'N/A',
+          topVenuesByRevenue: results.topVenuesByRevenue?.map(v => ({
+            name: v.venue.venueName,
+            revenue: v.revenue
+          })) || [],
+          dateGenerated: new Date().toLocaleString()
+        };
+      })
+    );
+  }
+
+  // ------------------- EXISTING METHODS -------------------
   getAllBookings(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/bookings/view-all`);
   }
 
   searchBookings(phone: string, date: string): Observable<any[]> {
-  const params: any = {};
-  if (phone) params.phone = phone;
-  if (date) params.date = date;
-  return this.http.get<any[]>(`${this.apiUrl}/bookings/search`, { params });
-}
+    const params: any = {};
+    if (phone) params.phone = phone;
+    if (date) params.date = date;
+    return this.http.get<any[]>(`${this.apiUrl}/bookings/search`, { params });
+  }
 
-getAllVenues(): Observable<any[]> {
-  return this.http.get<any[]>(`${this.apiUrl}/venues/view/all`);
-}
+  getAllVenues(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/venues/view/all`);
+  }
 
-  
-  
-   getTotalRevenue(): Observable<number> {
+  getTotalRevenue(): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/payments/revenue/total`);
   }
 
@@ -84,16 +111,18 @@ getAllVenues(): Observable<any[]> {
   }
 
   getAvailableVenues(date: string): Observable<{ count: number, venues: any[] }> {
-  return this.http.get<{ count: number, venues: any[] }>(
-    `${this.apiUrl}/bookings/list-available-venues`, { params: { date } }
-  );
-}
-  getBestRevenueVenue(): Observable<BestRevenueVenue> {
-    return this.http.get<BestRevenueVenue>(
-      `${this.apiUrl}/analytics/venues/revenue/best`);
+    return this.http.get<{ count: number, venues: any[] }>(
+      `${this.apiUrl}/bookings/list-available-venues`, { params: { date } }
+    );
   }
 
-   getTopVenuesByRevenue(): Observable<RawVenueRevenue[]> {
+  getBestRevenueVenue(): Observable<BestRevenueVenue> {
+    return this.http.get<BestRevenueVenue>(
+      `${this.apiUrl}/analytics/venues/revenue/best`
+    );
+  }
+
+  getTopVenuesByRevenue(): Observable<RawVenueRevenue[]> {
     return this.http.get<RawVenueRevenue[]>(
       `${this.apiUrl}/analytics/venues/revenue/all`
     );
@@ -105,10 +134,7 @@ getAllVenues(): Observable<any[]> {
   }
 
   getMonthlyBookingStats(year: number, month: number): Observable<BookingStat[]> {
-    // month expected as 1..12
     const url = `${this.apiUrl}/analytics/booking-stats/monthly?year=${encodeURIComponent(String(year))}&month=${encodeURIComponent(String(month))}`;
     return this.http.get<BookingStat[]>(url);
   }
-
-
 }
