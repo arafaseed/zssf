@@ -238,6 +238,9 @@
   },
 
   "phoneSearch": {
+    "postponeSuccess":"Booking extended successfully!",
+    "limitReached":"You cannot update more than two times.",
+    "postponeError":"Error extending booking.",
     "title": "Search Bookings",
     "subtitle": "by Phone Number",
     "phoneLabel": "Phone Number",
