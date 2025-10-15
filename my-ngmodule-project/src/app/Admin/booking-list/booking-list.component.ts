@@ -1,4 +1,3 @@
-// src/app/components/booking-list/booking-list.component.ts
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { BookingService, Booking, CustomerType } from '../../Services/booking.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -20,6 +19,7 @@ export class BookingListComponent implements OnInit, AfterViewInit {
     'activity',
     'venue',
     'customer',
+    'phoneNumber', // new column
     'customerType',
     'startDate',
     'startTime',
@@ -35,7 +35,6 @@ export class BookingListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  // filter state
   currentStatus: string = 'ALL';
   currentCustomerType: 'ALL' | CustomerType = 'ALL';
   searchDate: string = ''; // ISO string yyyy-MM-dd
@@ -46,23 +45,13 @@ export class BookingListComponent implements OnInit, AfterViewInit {
   loading = false;
   errorMessage = '';
 
-   /* ----------------- OVERLAY CONTROL PROPS (NEW) ----------------- */
-  
-    /** flag controlling visibility of the overlay component */
-    showPdfOverlay = false;
-  
-    /** docs passed to overlay */
-    selectedDocs: string[] = [];
-  
-    /** selected booking info passed to overlay */
-    selectedBookingId?: number;
-    selectedBookingCode?: string;
-    pdfAuthToken?: string;
-  
-    /** ViewChild reference to call overlay cleanup before hiding */
-    @ViewChild('pdfOverlay') pdfOverlay?: PdfViewerOverlayComponent;
-  
-    /* --------------------------------------------------------------- */
+  /** Overlay control */
+  showPdfOverlay = false;
+  selectedDocs: string[] = [];
+  selectedBookingId?: number;
+  selectedBookingCode?: string;
+  pdfAuthToken?: string;
+  @ViewChild('pdfOverlay') pdfOverlay?: PdfViewerOverlayComponent;
 
   constructor(
     private bookingService: BookingService,
@@ -82,15 +71,11 @@ export class BookingListComponent implements OnInit, AfterViewInit {
     this.loading = true;
     this.bookingService.fetchBookings().subscribe({
       next: (data) => {
-        // ensure predictable ordering by startDate
         this.bookings = data.sort((a, b) =>
           new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
         );
-
-        // If venueName or activity missing, they may already be present in backend response.
-        // We keep the values from backend if provided.
         this.dataSource.data = [...this.bookings];
-        this.applyFilters(); // initial filter application
+        this.applyFilters();
         this.loading = false;
       },
       error: (err) => {
@@ -101,10 +86,9 @@ export class BookingListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // simple helper to format date strings (YYYY-MM-DD) into local display
   formatDate(d?: string | null): string {
     if (!d) return '';
-    return d; // keep the raw ISO date string; adapt if you want localized formatting
+    return d;
   }
 
   setStatus(status: string) {
@@ -118,7 +102,6 @@ export class BookingListComponent implements OnInit, AfterViewInit {
   }
 
   onDateChange(ev: any) {
-    // If using native <input type="date"> value will be yyyy-MM-dd
     this.searchDate = ev?.target?.value ?? '';
     this.applyFilters();
   }
@@ -140,13 +123,10 @@ export class BookingListComponent implements OnInit, AfterViewInit {
     }
 
     if (this.searchDate) {
-      // match by startDate or bookingDate? The user asked search by date; we'll match startDate as before.
-      // If you want bookingDate, change b.startDate -> b.bookingDate
       filtered = filtered.filter(b => b.startDate === this.searchDate);
     }
 
     this.dataSource.data = filtered;
-    // reset paginator to first page after filter
     if (this.paginator) this.paginator.firstPage();
   }
 
@@ -161,45 +141,23 @@ export class BookingListComponent implements OnInit, AfterViewInit {
     }
   }
 
-   /**
-   * Previously opened the Pdf viewer as a MatDialog.
-   * Now we set selected docs and show the overlay component in the DOM.
-   * This ONLY changes how the viewer is shown — logic for extracting docs is unchanged.
-   */
   openReferenceDocs(booking: any) {
     const docs = booking?.customer?.referenceDocument ?? [];
-
-    // set selected context
     this.selectedDocs = docs;
     this.selectedBookingId = booking?.bookingId ?? null;
     this.selectedBookingCode = booking?.bookingCode ?? null;
-
-    // optional: set auth token if your app needs to pass it to overlay (JWT etc.)
-    // this.pdfAuthToken = this.authService.getToken();
-
-    // show overlay
     this.showPdfOverlay = true;
-
-    // If you used to open MatDialog, that code is intentionally removed.
   }
 
-  /**
-   * Close the overlay — call overlay cleanup then hide it.
-   * We call the overlay's `close()` method (which clears blob resources)
-   * and then set the flag to false so the parent removes it from DOM.
-   */
- closePdfPreview() {
-  try {
-    this.pdfOverlay?.close();
-  } catch (e) {
-    console.warn('Overlay cleanup failed or overlay not mounted yet', e);
+  closePdfPreview() {
+    try {
+      this.pdfOverlay?.close();
+    } catch (e) {
+      console.warn('Overlay cleanup failed or overlay not mounted yet', e);
+    }
+    this.showPdfOverlay = false;
+    this.selectedDocs = [];
+    this.selectedBookingId = undefined;
+    this.selectedBookingCode = undefined;
   }
-
-  this.showPdfOverlay = false;
-
-  this.selectedDocs = [];
-  this.selectedBookingId = undefined;
-  this.selectedBookingCode = undefined;
-}
-
 }

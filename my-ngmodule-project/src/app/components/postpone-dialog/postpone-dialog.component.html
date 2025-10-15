@@ -1,8 +1,9 @@
-<h2 class="text-2xl font-bold text-green-900 mb-4">
+<h2 class="text-2xl font-bold text-green-900 mb-6 text-center">
   Postpone Booking
 </h2>
 
 <mat-dialog-content class="space-y-6 text-gray-700">
+
   <p class="text-base">
     You are postponing <strong>{{ data.booking.bookingCode }}</strong> for
     <strong>{{ data.booking.customer.customerName }}</strong>.
@@ -43,12 +44,13 @@
 
   <!-- NEW POSTPONE INFO -->
   <div class="p-4 bg-green-50 rounded-2xl shadow-sm space-y-3">
-    <h3 class="text-lg font-semibold text-green-800 mb-2">New Postpone Details</h3>
+    <h3 class="text-lg font-semibold text-green-800 mb-3 text-center">New Postpone Details</h3>
 
     <div class="flex justify-between">
       <span class="font-medium text-gray-600">New Start Date</span>
       <span class="font-semibold text-blue-900">{{ newStartDate | date:'mediumDate' }}</span>
     </div>
+
     <div class="flex justify-between">
       <span class="font-medium text-gray-600">New Start Time</span>
       <span class="font-semibold text-blue-900">{{ newStartTime }}</span>
@@ -58,6 +60,7 @@
       <span class="font-medium text-gray-600">New End Date</span>
       <span class="font-semibold text-blue-900">{{ newEndDate | date:'mediumDate' }}</span>
     </div>
+
     <div class="flex justify-between">
       <span class="font-medium text-gray-600">New End Time</span>
       <span class="font-semibold text-blue-900">{{ newEndTime }}</span>

@@ -4,18 +4,38 @@ import { MatDialog } from '@angular/material/dialog';
 
 import {
   DashboardService,
-  BestRevenueVenue,
-  RawVenueRevenue
+  BestRevenueVenue
 } from '../../Services/dashboard.service';
 
 import { PdfViewerOverlayComponent } from '../pdf-viewer-overlay/pdf-viewer-overlay.component';
 
+interface Customer {
+  customerName: string;
+  customerType?: string;
+  phoneNumber?: string;           // <-- phone number added
+  referenceDocument?: string[];
+}
+
+interface Booking {
+  bookingId: number;
+  bookingCode: string;
+  bookingDate: string;
+  venueActivityName?: string;
+  venueName?: string;
+  venueId?: number;
+  startDate: string;
+  endDate: string;
+  bookingStatus: string;
+  customer?: Customer;
+  venue?: any;
+}
+
 interface VenueRevenue {
-  venueId: number;                              
+  venueId: number;
   venueName: string;
   revenue: number;
 }
-           
+
 interface TopVenue {
   venueName: string;
   bookingCount: number;
@@ -29,7 +49,7 @@ interface BookingStat {
 
 @Component({
   selector: 'app-dashboard',
-  standalone: false,
+  standalone:false,
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
@@ -53,23 +73,22 @@ export class DashboardComponent implements OnInit {
   bestRevenueVenue: BestRevenueVenue | null = null;
   topRevenueVenues: TopVenue[] = [];
 
-  bookings: any[] = [];
-  filteredBookings: any[] = [];
+  bookings: Booking[] = [];
+  filteredBookings: Booking[] = [];
   venues: any[] = [];
 
   searchPhone = '';
   searchDate = '';
 
-  /* ----------------- OVERLAY CONTROL PROPS (NEW) ----------------- */
+  /* ----------------- OVERLAY CONTROL PROPS ----------------- */
   showPdfOverlay = false;
   selectedDocs: string[] = [];
   selectedBookingId?: number;
   selectedBookingCode?: string;
   pdfAuthToken?: string;
   @ViewChild('pdfOverlay') pdfOverlay?: PdfViewerOverlayComponent;
-  /* --------------------------------------------------------------- */
+  /* -------------------------------------------------------- */
 
-  // New: booking stats for year/month
   statsYear: number = new Date().getFullYear();
   statsMonth: string = (() => {
     const d = new Date();
@@ -79,11 +98,6 @@ export class DashboardComponent implements OnInit {
 
   yearlyStats: BookingStat[] = [];
   monthlyStats: BookingStat[] = [];
-
-  /**
-   * NEW minimal property: bound to the <select> in template so switching is immediate.
-   * Default to YEARLY to preserve previous behaviour.
-   */
   viewMode: 'YEARLY' | 'MONTHLY' = 'YEARLY';
 
   constructor(
@@ -106,9 +120,11 @@ export class DashboardComponent implements OnInit {
       this.bookings = data;
       this.filteredBookings = [...data];
       this.totalBookings = data.length;
-      const uniquePhones = new Set(data.map(b => b.customer?.phoneNumber).filter(p=>p));
+
+      const uniquePhones = new Set(data.map(b => b.customer?.phoneNumber).filter(p => p));
       this.totalUsers = uniquePhones.size;
-      this.totalBookedVenues = data.filter(b => b.status === 'COMPLETE').length;
+
+      this.totalBookedVenues = data.filter(b => b.bookingStatus === 'COMPLETE').length;
       this.attachVenueNames();
     });
   }
@@ -149,21 +165,17 @@ export class DashboardComponent implements OnInit {
 
   private loadVenueStats() {
     this.dashboardService.getMostBookedVenue().subscribe(v => this.mostBookedVenue = v);
-    this.dashboardService.getMostBookedCompletedVenue()
-      .subscribe(v => this.mostBookedCompletedVenue = v);
-
-    this.dashboardService.getBestRevenueVenue()
-      .subscribe(v => this.bestRevenueVenue = v);
-
+    this.dashboardService.getMostBookedCompletedVenue().subscribe(v => this.mostBookedCompletedVenue = v);
+    this.dashboardService.getBestRevenueVenue().subscribe(v => this.bestRevenueVenue = v);
     this.dashboardService.getTopVenuesByRevenue()
       .subscribe((list) => {
         this.topRevenueVenues = list
           .sort((a, b) => b.revenue - a.revenue)
           .slice(0, 3)
           .map(item => ({
-            venueName:    item.venue.venueName,
+            venueName: item.venue.venueName,
             bookingCount: item.venue.bookingIds.length,
-            revenue:      item.revenue
+            revenue: item.revenue
           }));
       });
   }
@@ -183,7 +195,7 @@ export class DashboardComponent implements OnInit {
 
     const sel = new Date(this.availabilityDate);
     const today = new Date();
-    today.setHours(0,0,0,0);
+    today.setHours(0, 0, 0, 0);
 
     if (sel < today) {
       this.availableError = "Can't check for past dates";
@@ -191,13 +203,12 @@ export class DashboardComponent implements OnInit {
       this.availableVenueCount = 0;
       return;
     }
-    this.availableError = null;
 
-    this.dashboardService
-      .getAvailableVenues(this.availabilityDate)
+    this.availableError = null;
+    this.dashboardService.getAvailableVenues(this.availabilityDate)
       .subscribe(response => {
         this.availableVenueCount = response.count;
-        this.availableVenues      = response.venues;
+        this.availableVenues = response.venues;
       });
   }
 
@@ -217,19 +228,14 @@ export class DashboardComponent implements OnInit {
     const y = year ?? this.statsYear ?? new Date().getFullYear();
     this.statsYear = y;
     this.dashboardService.getYearlyBookingStats(y).subscribe({
-      next: (data: BookingStat[]) => {
-        this.yearlyStats = this.normalizeStatsArray(data);
-      },
-      error: (err) => {
-        console.error('Failed to load yearly stats', err);
-        this.yearlyStats = [];
-      }
+      next: (data: BookingStat[]) => this.yearlyStats = this.normalizeStatsArray(data),
+      error: () => this.yearlyStats = []
     });
   }
 
   loadBookingStatsMonthFromInput() {
     if (!this.statsMonth) return;
-    const [yStr, mStr] = (this.statsMonth || '').split('-');
+    const [yStr, mStr] = this.statsMonth.split('-');
     const year = Number(yStr);
     const month = Number(mStr);
     if (!year || !month) return;
@@ -238,13 +244,8 @@ export class DashboardComponent implements OnInit {
 
   loadBookingStatsMonth(year: number, month: number) {
     this.dashboardService.getMonthlyBookingStats(year, month).subscribe({
-      next: (data: BookingStat[]) => {
-        this.monthlyStats = this.normalizeStatsArray(data);
-      },
-      error: (err) => {
-        console.error('Failed to load monthly stats', err);
-        this.monthlyStats = [];
-      }
+      next: (data: BookingStat[]) => this.monthlyStats = this.normalizeStatsArray(data),
+      error: () => this.monthlyStats = []
     });
   }
 
@@ -275,8 +276,7 @@ export class DashboardComponent implements OnInit {
 
   get recentBookings() {
     if (!this.filteredBookings) return [];
-    const take = 5;
-    return [...this.filteredBookings].slice(-take).reverse();
+    return [...this.filteredBookings].slice(-5).reverse();
   }
 
   getStatusColor(status: string) {
@@ -290,53 +290,28 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  openReferenceDocs(booking: any) {
-    const docs = booking?.customer?.referenceDocument ?? [];
-
-    this.selectedDocs = docs;
+  openReferenceDocs(booking: Booking) {
+    this.selectedDocs = booking?.customer?.referenceDocument ?? [];
     this.selectedBookingId = booking?.bookingId ?? null;
     this.selectedBookingCode = booking?.bookingCode ?? null;
-
-    // optional: set auth token if your app needs to pass it to overlay (JWT etc.)
-    // this.pdfAuthToken = this.authService.getToken();
-
     this.showPdfOverlay = true;
   }
 
   closePdfPreview() {
-    try {
-      this.pdfOverlay?.close();
-    } catch (e) {
-      console.warn('Overlay cleanup failed or overlay not mounted yet', e);
-    }
-
+    this.pdfOverlay?.close();
     this.showPdfOverlay = false;
-
     this.selectedDocs = [];
     this.selectedBookingId = undefined;
     this.selectedBookingCode = undefined;
   }
 
-  /**
-   * NEW: called when the view mode select changes.
-   * Behavior:
-   *  - Immediately switch the UI to show cached stats (if any) for the chosen view.
-   *  - Only call the service to reload if we don't already have data for the target view/year/month.
-   *
-   * This is intentionally lightweight and does not remove any of your existing logic.
-   */
   onViewModeChange() {
     if (this.viewMode === 'YEARLY') {
-      // If we already have yearlyStats for the selected year, just show them immediately.
       if (!this.yearlyStats || !this.yearlyStats.length) {
         this.loadBookingStatsYear(this.statsYear);
       }
-      // nothing else required — template reads yearlyStats directly
     } else {
-      // MONTHLY
-      // If monthlyStats are not present for the currently selected month, load them.
       if (!this.monthlyStats || !this.monthlyStats.length) {
-        // statsMonth is "YYYY-MM". Try parsing and load.
         this.loadBookingStatsMonthFromInput();
       }
     }
