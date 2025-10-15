@@ -8,7 +8,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrl: './postpone-dialog.component.css'
 })
 export class PostponeDialogComponent {
-   newStartDate!: Date;
+  newStartDate!: Date;
   newEndDate!: Date;
   newStartTime!: string;
   newEndTime!: string;
@@ -17,7 +17,7 @@ export class PostponeDialogComponent {
     public dialogRef: MatDialogRef<PostponeDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    // Initialize with data from availability check
+    // Initialize using passed data
     this.newStartDate = new Date(data.startDate);
     this.newEndDate = new Date(data.endDate);
     this.newStartTime = data.startTime;
@@ -25,7 +25,6 @@ export class PostponeDialogComponent {
   }
 
   confirmPostpone() {
-    // Return the updated data to parent component
     this.dialogRef.close({
       newStartDate: this.newStartDate,
       newEndDate: this.newEndDate,

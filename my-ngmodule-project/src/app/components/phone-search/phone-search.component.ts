@@ -23,10 +23,8 @@ export class PhoneSearchComponent {
   currentBooking: any = null;
   startDate!: Date;
   endDate!: Date;
-  // startTime!: string;
-  // endTime!: string;
-startTime: string = '';
-endTime: string = '';
+  startTime: string = '';
+  endTime: string = '';
   selectedActivityId!: number;
   activities: any[] = [];
   formError: string = '';
@@ -138,177 +136,208 @@ endTime: string = '';
 
   // ----------------- POSTPONE / AVAILABILITY -----------------
 
-
-// Set current booking
-setCurrentBooking(booking: any) {
-  this.currentBooking = booking;
-
-  // Dates
-  this.startDate = new Date(booking.startDate);
-  this.endDate = new Date(booking.endDate);
-
-  // Times as HH:mm strings
-  this.startTime = this.formatBookingTime(booking.startTime);
-  this.endTime = this.formatBookingTime(booking.endTime);
-}
-
-formatBookingTime(time: any): string {
-  if (!time) return '';
-  
-  // If it's a string in ISO format "2025-10-30T21:30:00"
-  if (typeof time === 'string') {
-    const t = time.includes('T') ? time.split('T')[1].substring(0,5) : time.substring(0,5);
-    return t;
+  // Set current booking
+  setCurrentBooking(booking: any) {
+    this.currentBooking = booking;
+    this.startDate = new Date(booking.startDate);
+    this.endDate = new Date(booking.endDate);
+    this.startTime = this.formatBookingTime(booking.startTime);
+    this.endTime = this.formatBookingTime(booking.endTime);
   }
 
-  // If it's Date object
-  if (time instanceof Date) {
-    const h = time.getHours().toString().padStart(2,'0');
-    const m = time.getMinutes().toString().padStart(2,'0');
-    return `${h}:${m}`;
+  formatBookingTime(time: any): string {
+    if (!time) return '';
+    if (typeof time === 'string') {
+      const t = time.includes('T') ? time.split('T')[1].substring(0, 5) : time.substring(0, 5);
+      return t;
+    }
+    if (time instanceof Date) {
+      const h = time.getHours().toString().padStart(2, '0');
+      const m = time.getMinutes().toString().padStart(2, '0');
+      return `${h}:${m}`;
+    }
+    return '';
   }
 
-  return '';
-}
-checkVenueAvailabilityForBooking() {
-  if (!this.currentBooking || !this.startDate || !this.endDate || !this.startTime || !this.endTime) {
-    this.formError = this.translate.instant('phoneSearch.fillAllFields') || 'Please fill all fields';
-    return;
-  }
+  checkVenueAvailabilityForBooking() {
+    if (!this.currentBooking || !this.startDate || !this.endDate || !this.startTime || !this.endTime) {
+      this.formError = this.translate.instant('phoneSearch.fillAllFields') || 'Please fill all fields';
+      return;
+    }
 
-  const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-  // Ensure startDate/endDate are not today or in the past
-  const startDateOnly = new Date(this.startDate.getFullYear(), this.startDate.getMonth(), this.startDate.getDate());
-  const endDateOnly = new Date(this.endDate.getFullYear(), this.endDate.getMonth(), this.endDate.getDate());
+    const startDateOnly = new Date(this.startDate.getFullYear(), this.startDate.getMonth(), this.startDate.getDate());
+    const endDateOnly = new Date(this.endDate.getFullYear(), this.endDate.getMonth(), this.endDate.getDate());
 
-  if (startDateOnly <= today || endDateOnly <= today) {
+    if (startDateOnly <= today || endDateOnly <= today) {
+      this.snackBar.open(
+        this.translate.instant('phoneSearch.futureDatesOnly') || 'You can only choose future dates.',
+        this.translate.instant('Close'),
+        { duration: 4000 }
+      );
+      return;
+    }
+
+    if (this.startDate > this.endDate) {
+      this.snackBar.open(
+        this.translate.instant('phoneSearch.startAfterEnd') || 'Start date cannot be after end date.',
+        this.translate.instant('Close'),
+        { duration: 4000 }
+      );
+      return;
+    }
+
+    const originalStart = new Date(this.currentBooking.startDate);
+    const originalEnd = new Date(this.currentBooking.endDate);
+    const originalDays = Math.ceil((originalEnd.getTime() - originalStart.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+
+    const selectedDays = Math.ceil((this.endDate.getTime() - this.startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+    if (selectedDays > originalDays) {
+      this.snackBar.open(
+        this.translate.instant('phoneSearch.onlyOriginalBookingDays') || 
+        `You can only postpone for up to ${originalDays} day(s).`,
+        this.translate.instant('Close'),
+        { duration: 4000 }
+      );
+      return;
+    }
+
+    const [startHour, startMin] = this.startTime.split(':').map(Number);
+    const [endHour, endMin] = this.endTime.split(':').map(Number);
+    const startDateTime = new Date(this.startDate);
+    startDateTime.setHours(startHour, startMin, 0, 0);
+    const endDateTime = new Date(this.endDate);
+    endDateTime.setHours(endHour, endMin, 0, 0);
+
+    if (startDateTime >= endDateTime) {
+      this.snackBar.open(
+        this.translate.instant('phoneSearch.startTimeAfterEndTime') || 'Start time must be before end time.',
+        this.translate.instant('Close'),
+        { duration: 4000 }
+      );
+      return;
+    }
+
+    // Check venue availability from backend
+    const checkUrl = `${environment.apiUrl}/api/bookings/venue/${this.currentBooking.venueId}/availability`;
+    const body = {
+      startDate: this.formatDate(this.startDate),
+      endDate: this.formatDate(this.endDate),
+      startTime: this.startTime,
+      endTime: this.endTime
+    };
+
     this.snackBar.open(
-      this.translate.instant('phoneSearch.futureDatesOnly') || 'You can only choose future dates.',
-      this.translate.instant('Close'),
-      { duration: 4000 }
+      this.translate.instant('phoneSearch.checkingAvailability') || 'Checking venue availability...',
+      '',
+      { duration: 1500 }
     );
-    return;
-  }
 
-  // Ensure startDate <= endDate
-  if (this.startDate > this.endDate) {
-    this.snackBar.open(
-      this.translate.instant('phoneSearch.startAfterEnd') || 'Start date cannot be after end date.',
-      this.translate.instant('Close'),
-      { duration: 4000 }
-    );
-    return;
-  }
+    this.http.post<any[]>(checkUrl, body).subscribe({
+      next: (response) => {
+        const notAvailable = response.some(day => day.flag !== 'AVAILABLE_FOR_BOOKING');
+        if (notAvailable) {
+          this.snackBar.open(
+            this.translate.instant('phoneSearch.venueNotAvailable') || 'Venue not available.',
+            this.translate.instant('Close'),
+            { duration: 4000 }
+          );
+        } else {
+          const dialogRef = this.dialog.open(PostponeDialogComponent, {
+            width: '400px',
+            data: {
+              booking: this.currentBooking,
+              startDate: this.startDate,
+              endDate: this.endDate,
+              startTime: this.startTime,
+              endTime: this.endTime
+            }
+          });
 
-  // Calculate original booking days
-  const originalStart = new Date(this.currentBooking.startDate);
-  const originalEnd = new Date(this.currentBooking.endDate);
-  const originalDiffTime = originalEnd.getTime() - originalStart.getTime();
-  const originalDays = Math.ceil(originalDiffTime / (1000 * 60 * 60 * 24)) + 1; // include start
+          // ✅ Updated section
+          dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+              this.http.put(
+                `${environment.apiUrl}/api/bookings/extend/${this.currentBooking.bookingId}`,
+                {
+                  startDate: this.formatDate(this.startDate),
+                  endDate: this.formatDate(this.endDate),
+                  startTime: this.startTime,
+                  endTime: this.endTime
+                },
+                { responseType: 'json' }
+              ).subscribe({
+                next: (response: any) => {
+                  if (response?.message?.toLowerCase().includes('two times')) {
+                    this.snackBar.open(
+                      this.translate.instant('phoneSearch.limitReached') || 
+                      'You cannot update more than two times.',
+                      this.translate.instant('Close'),
+                      { duration: 4000 }
+                    );
+                    return;
+                  }
 
-  // Calculate selected postpone days
-  const selectedDiffTime = this.endDate.getTime() - this.startDate.getTime();
-  const selectedDays = Math.ceil(selectedDiffTime / (1000 * 60 * 60 * 24)) + 1;
+                  this.snackBar.open(
+                    this.translate.instant('phoneSearch.postponeSuccess') || 
+                    response?.message || 
+                    'Booking extended successfully!',
+                    this.translate.instant('Close'),
+                    { duration: 3000 }
+                  );
 
-  if (selectedDays > originalDays) {
-    this.snackBar.open(
-      this.translate.instant('phoneSearch.onlyOriginalBookingDays') || 
-      `You can only postpone for up to ${originalDays} day(s) of your original booking.`,
-      this.translate.instant('Close'),
-      { duration: 4000 }
-    );
-    return;
-  }
+                  // Update visible booking data immediately
+                  this.currentBooking.startDate = this.startDate;
+                  this.currentBooking.endDate = this.endDate;
+                  this.currentBooking.startTime = this.startTime;
+                  this.currentBooking.endTime = this.endTime;
 
-  // Validate times
-  const [startHour, startMin] = this.startTime.split(':').map(Number);
-  const [endHour, endMin] = this.endTime.split(':').map(Number);
-  const startDateTime = new Date(this.startDate);
-  startDateTime.setHours(startHour, startMin, 0, 0);
-  const endDateTime = new Date(this.endDate);
-  endDateTime.setHours(endHour, endMin, 0, 0);
+                  this.currentBooking = null;
+                  this.onSubmit(); // refresh list
+                },
+                error: (err) => {
+                  console.error('Error extending booking:', err);
+                  const errorMsg =
+                    err.error?.message?.toLowerCase().includes('two times')
+                      ? 'You cannot update more than two times.'
+                      : this.translate.instant('phoneSearch.postponeError') || 
+                        'Error extending booking.';
 
-  if (startDateTime >= endDateTime) {
-    this.snackBar.open(
-      this.translate.instant('phoneSearch.startTimeAfterEndTime') || 'Start time must be before end time.',
-      this.translate.instant('Close'),
-      { duration: 4000 }
-    );
-    return;
-  }
+                  this.snackBar.open(
+                    errorMsg,
+                    this.translate.instant('Close'),
+                    { duration: 4000 }
+                  );
+                }
+              });
+            }
+          });
 
-  // Check availability from backend
-  const checkUrl = `${environment.apiUrl}/api/bookings/venue/${this.currentBooking.venueId}/availability`;
-  const body = {
-    startDate: this.formatDate(this.startDate),
-    endDate: this.formatDate(this.endDate),
-    startTime: this.startTime,
-    endTime: this.endTime
-  };
-
-  this.snackBar.open(
-    this.translate.instant('phoneSearch.checkingAvailability') || 'Checking venue availability...',
-    '',
-    { duration: 1500 }
-  );
-
-  this.http.post<any[]>(checkUrl, body).subscribe({
-    next: (response) => {
-      const notAvailable = response.some(day => day.flag !== 'AVAILABLE_FOR_BOOKING');
-
-      if (notAvailable) {
+          this.snackBar.open(
+            this.translate.instant('phoneSearch.venueAvailable') || 'Venue available for postpone.',
+            this.translate.instant('Close'),
+            { duration: 3000 }
+          );
+        }
+      },
+      error: (err) => {
+        console.error('Error checking venue availability:', err);
         this.snackBar.open(
-          this.translate.instant('phoneSearch.venueNotAvailable') || 'Venue not available for selected date/time.',
-          this.translate.instant('Close'),
-          { duration: 4000 }
-        );
-      } else {
-        const dialogRef = this.dialog.open(PostponeDialogComponent, {
-          width: '400px',
-          data: {
-            booking: this.currentBooking,
-            startDate: this.startDate,
-            endDate: this.endDate,
-            startTime: this.startTime,
-            endTime: this.endTime
-          }
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-          if (result) {
-            console.log('Booking postponed:', result);
-            this.currentBooking = null; // reset form
-          }
-        });
-
-        this.snackBar.open(
-          this.translate.instant('phoneSearch.venueAvailable') || 'Venue is available for postpone.',
+          this.translate.instant('phoneSearch.checkError') || 'Error checking venue availability.',
           this.translate.instant('Close'),
           { duration: 3000 }
         );
       }
-    },
-    error: (err) => {
-      console.error('Error checking venue availability:', err);
-      this.snackBar.open(
-        this.translate.instant('phoneSearch.checkError') || 'Error checking venue availability.',
-        this.translate.instant('Close'),
-        { duration: 3000 }
-      );
-    }
-  });
-}
+    });
+  }
 
-
-// Helper to format date as yyyy-MM-dd
-private formatDate(date: Date): string {
-  const yyyy = date.getFullYear();
-  const mm = (date.getMonth() + 1).toString().padStart(2, '0');
-  const dd = date.getDate().toString().padStart(2, '0');
-  return `${yyyy}-${mm}-${dd}`;
-}
-
-
+  // Helper to format date
+  private formatDate(date: Date): string {
+    const yyyy = date.getFullYear();
+    const mm = (date.getMonth() + 1).toString().padStart(2, '0');
+    const dd = date.getDate().toString().padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  }
 }
