@@ -31,6 +31,7 @@ import { StaffTableComponent } from './Admin/staff-table/staff-table.component';
 import { AdminFeedbacksComponent } from './Admin/admin-feedbacks/admin-feedbacks.component';
 import { ReportsComponent } from './Admin/reports/reports.component';
 import { AdminReportComponent } from './Admin/admin-report/admin-report.component';
+import { BlockDateComponent } from './block-date/block-date.component';
 
 
 const routes: Routes = [
@@ -87,6 +88,8 @@ const routes: Routes = [
       { path: 'report', component: ReportsComponent},
        { path: 'addstaff', component: StaffFormComponent },
 
+       
+     { path: 'blockdate', component: BlockDateComponent },
 
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Default admin page
       { path: '**', redirectTo: 'dashboard' }, // Catch-all
