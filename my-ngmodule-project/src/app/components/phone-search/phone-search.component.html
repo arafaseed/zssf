@@ -1,11 +1,14 @@
 <div class="main-wrapper">
   <app-header></app-header>
+
   <main class="content-container">
+    <!-- Search Card -->
     <mat-card class="search-card">
       <mat-card-header>
         <mat-card-title class="card-title">{{ 'phoneSearch.title' | translate }}</mat-card-title>
         <mat-card-subtitle class="card-subtitle">{{ 'phoneSearch.subtitle' | translate }}</mat-card-subtitle>
       </mat-card-header>
+
       <mat-card-content>
         <form (ngSubmit)="onSubmit()" #searchForm="ngForm" class="search-form">
           <mat-form-field class="full-width-input">
@@ -50,21 +53,25 @@
     <!-- Bookings List -->
     <div *ngIf="bookings.length > 0" class="results-container">
       <h4 class="results-title">{{ 'phoneSearch.resultsTitle' | translate }}</h4>
+
       <div *ngFor="let booking of bookings" class="booking-card-wrapper">
         <mat-card class="booking-card">
           <mat-card-content>
             <div class="booking-details-grid">
               <p><strong>{{ 'phoneSearch.bookingCode' | translate }}:</strong> {{ booking.bookingCode }}</p>
-              <p><strong>{{ 'phoneSearch.customer' | translate }}:</strong> {{booking.customer.customerName}}</p>
-              <p><strong>{{ 'phoneSearch.bookingDate' | translate }}:</strong> {{booking.bookingDate}}</p>
+              <p><strong>{{ 'phoneSearch.customer' | translate }}:</strong> {{ booking.customer.customerName }}</p>
+              <p><strong>{{ 'phoneSearch.bookingDate' | translate }}:</strong> {{ booking.bookingDate | date }}</p>
               <p><strong>{{ 'phoneSearch.eventStartDate' | translate }}:</strong> {{ booking.startDate | date }} {{ booking.startTime }}</p>
               <p><strong>{{ 'phoneSearch.eventEndDate' | translate }}:</strong> {{ booking.endDate | date }} {{ booking.endTime }}</p>
-              <p><strong>{{ 'phoneSearch.status' | translate }}:</strong> <span [ngClass]="{
-                'status-cancelled': booking.bookingStatus === 'CANCELLED',
-                'status-expired': booking.bookingStatus === 'EXPIRED',
-                'status-pending': booking.bookingStatus === 'PENDING', 
-                'status-in-progress': booking.bookingStatus === 'IN_PROGRESS',
-                'status-complete': booking.bookingStatus === 'COMPLETE'}">{{ booking.bookingStatus }}</span></p>
+              <p><strong>{{ 'phoneSearch.status' | translate }}:</strong>
+                <span [ngClass]="{
+                  'status-cancelled': booking.bookingStatus === 'CANCELLED',
+                  'status-expired': booking.bookingStatus === 'EXPIRED',
+                  'status-pending': booking.bookingStatus === 'PENDING', 
+                  'status-in-progress': booking.bookingStatus === 'IN_PROGRESS',
+                  'status-complete': booking.bookingStatus === 'COMPLETE'
+                }">{{ booking.bookingStatus }}</span>
+              </p>
               <p><strong>{{ 'phoneSearch.venue' | translate }}:</strong> {{ booking.venueName }}</p>
               <p><strong>{{ 'phoneSearch.activity' | translate }}:</strong> {{ booking.venueActivityName }}</p>
             </div>
@@ -87,7 +94,8 @@
               <button
                 *ngIf="booking.bookingStatus.toLowerCase() !== 'completed' && booking.bookingStatus.toLowerCase() !== 'cancelled'"
                 class="bg-amber-500 hover:bg-amber-600 text-white font-medium px-4 py-2 rounded-lg transition duration-200"
-                (click)="setCurrentBooking(booking)">
+                (click)="setCurrentBooking(booking)"
+              >
                 Postpone Booking
               </button>
 
@@ -106,52 +114,52 @@
       </div>
 
       <!-- Availability Form -->
-<mat-card *ngIf="currentBooking" class="p-6 bg-white rounded-lg shadow mt-6">
-  <h4 class="mb-3 font-semibold">{{ 'home.checkAvailability' | translate }}</h4>
+      <mat-card *ngIf="currentBooking" class="p-6 bg-white rounded-lg shadow mt-6">
+        <h4 class="mb-3 font-semibold">{{ 'home.checkAvailability' | translate }}</h4>
 
-  <div class="space-y-3">
-    <mat-form-field class="w-full">
-      <mat-label>{{ 'home.startDate' | translate }}</mat-label>
-      <input matInput [min]="minDate" [matDatepicker]="startPicker" [(ngModel)]="startDate" name="startDate"/>
-      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-      <mat-datepicker #startPicker></mat-datepicker>
-    </mat-form-field>
+        <div class="space-y-3">
+          <mat-form-field class="w-full">
+            <mat-label>{{ 'home.startDate' | translate }}</mat-label>
+            <input matInput [min]="minDate" [matDatepicker]="startPicker" [(ngModel)]="startDate" name="startDate"/>
+            <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+            <mat-datepicker #startPicker></mat-datepicker>
+          </mat-form-field>
 
-    <mat-form-field class="w-full">
-      <mat-label>{{ 'home.endDate' | translate }}</mat-label>
-      <input matInput [min]="minDate" [matDatepicker]="endPicker" [(ngModel)]="endDate" name="endDate"/>
-      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-      <mat-datepicker #endPicker></mat-datepicker>
-    </mat-form-field>
+          <mat-form-field class="w-full">
+            <mat-label>{{ 'home.endDate' | translate }}</mat-label>
+            <input matInput [min]="minDate" [matDatepicker]="endPicker" [(ngModel)]="endDate" name="endDate"/>
+            <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+            <mat-datepicker #endPicker></mat-datepicker>
+          </mat-form-field>
 
- <!-- Time pickers -->
-<div class="flex gap-3">
-  <mat-form-field class="flex-1" appearance="fill">
-    <mat-label>{{ 'home.startTime' | translate }}</mat-label>
-    <input matInput type="time" [(ngModel)]="startTime" name="startTime"/>
-  </mat-form-field>
+          <!-- Time pickers -->
+          <div class="flex gap-3">
+            <mat-form-field class="flex-1" appearance="fill">
+              <mat-label>{{ 'home.startTime' | translate }}</mat-label>
+              <input matInput type="time" [(ngModel)]="startTime" name="startTime"/>
+            </mat-form-field>
 
-  <mat-form-field class="flex-1" appearance="fill">
-    <mat-label>{{ 'home.endTime' | translate }}</mat-label>
-    <input matInput type="time" [(ngModel)]="endTime" name="endTime"/>
-  </mat-form-field>
-</div>
+            <mat-form-field class="flex-1" appearance="fill">
+              <mat-label>{{ 'home.endTime' | translate }}</mat-label>
+              <input matInput type="time" [(ngModel)]="endTime" name="endTime"/>
+            </mat-form-field>
+          </div>
 
-    <div *ngIf="formError" class="mb-2 text-sm text-red-600">
-      {{ formError }}
+          <div *ngIf="formError" class="mb-2 text-sm text-red-600">
+            {{ formError }}
+          </div>
+
+          <div class="flex justify-center gap-2">
+            <button mat-flat-button color="primary" (click)="checkVenueAvailabilityForBooking()"
+              [disabled]="!startDate || !endDate || !startTime || !endTime">
+              {{ 'home.checkButton' | translate }}
+            </button>
+          </div>
+        </div>
+      </mat-card>
     </div>
 
-    <div class="flex justify-center gap-2">
-      <button mat-flat-button color="primary" (click)="checkVenueAvailabilityForBooking()"
-        [disabled]="!startDate || !endDate || !startTime || !endTime">
-        {{ 'home.checkButton' | translate }}
-      </button>
-    </div>
-  </div>
-</mat-card>
-
-    </div>
-
+    <!-- No Results -->
     <mat-card *ngIf="noResults" class="no-results-card">
       <mat-card-content>
         <p class="no-results-text">
@@ -161,5 +169,6 @@
       </mat-card-content>
     </mat-card>
   </main>
+
   <app-footer></app-footer>
 </div>

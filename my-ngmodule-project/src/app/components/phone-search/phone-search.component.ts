@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { PostponeDialogComponent } from '../postpone-dialog/postpone-dialog.component';
 import { environment } from '../../../environments/environment';
 import { TranslateService } from '@ngx-translate/core';
-import { PostponeDialogComponent } from '../postpone-dialog/postpone-dialog.component';
 
 @Component({
   selector: 'app-phone-search',
   templateUrl: './phone-search.component.html',
-  standalone: false,
   styleUrls: ['./phone-search.component.css'],
+  standalone: false,
 })
 export class PhoneSearchComponent {
   phoneNumber: string = '';
@@ -52,10 +52,9 @@ export class PhoneSearchComponent {
     this.noResults = false;
     this.bookings = [];
 
-    const params = new HttpParams().set('phone', this.phoneNumber.trim());
-
+    // ✅ NEW API CALL with path variable
     this.http
-      .get<any[]>(`${environment.apiUrl}/api/bookings/by-customer-phone`, { params })
+      .get<any[]>(`${environment.apiUrl}/api/bookings/by-phone/${this.phoneNumber.trim()}`)
       .subscribe({
         next: (data) => {
           const filtered = data.filter(
@@ -135,8 +134,6 @@ export class PhoneSearchComponent {
   }
 
   // ----------------- POSTPONE / AVAILABILITY -----------------
-
-  // Set current booking
   setCurrentBooking(booking: any) {
     this.currentBooking = booking;
     this.startDate = new Date(booking.startDate);
@@ -256,7 +253,6 @@ export class PhoneSearchComponent {
             }
           });
 
-          // ✅ Updated section
           dialogRef.afterClosed().subscribe(result => {
             if (result) {
               this.http.put(
@@ -288,7 +284,6 @@ export class PhoneSearchComponent {
                     { duration: 3000 }
                   );
 
-                  // Update visible booking data immediately
                   this.currentBooking.startDate = this.startDate;
                   this.currentBooking.endDate = this.endDate;
                   this.currentBooking.startTime = this.startTime;
@@ -333,7 +328,6 @@ export class PhoneSearchComponent {
     });
   }
 
-  // Helper to format date
   private formatDate(date: Date): string {
     const yyyy = date.getFullYear();
     const mm = (date.getMonth() + 1).toString().padStart(2, '0');
