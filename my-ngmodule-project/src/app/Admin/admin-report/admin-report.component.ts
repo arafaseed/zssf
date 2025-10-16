@@ -12,6 +12,7 @@ import { lastValueFrom } from 'rxjs';
   styleUrls: ['./admin-report.component.css']
 })
 export class AdminReportComponent implements AfterViewInit {
+ 
   reportType: 'MONTHLY' | 'QUARTERLY' | 'YEARLY' = 'MONTHLY';
   selectedMonth: string = '';
   selectedQuarter: number = 1;
@@ -48,6 +49,37 @@ export class AdminReportComponent implements AfterViewInit {
     this.dateGenerated = new Date().toLocaleString();
   }
 
+  // ----------------- helpers to normalize booking shape -----------------
+  private getBookingDateObj(b: any): Date | null {
+    const raw = b?.date || b?.bookingDate || b?.startDate || b?.booking_date;
+    if (!raw) return null;
+    const d = new Date(raw);
+    if (isNaN(d.getTime())) return null;
+    return d;
+  }
+
+  private getBookingDateString(b: any): string {
+    const d = this.getBookingDateObj(b);
+    return d ? d.toISOString() : 'N/A';
+  }
+
+  private getBookingRevenue(b: any): number {
+    // try common fields used for amount
+    const candidates = [b?.totalAmount, b?.amount, b?.price, b?.revenue, b?.bookingAmount];
+    for (const c of candidates) {
+      if (typeof c === 'number' && !isNaN(c)) return c;
+      if (typeof c === 'string' && !isNaN(Number(c))) return Number(c);
+    }
+    // fallback: maybe there's a nested venue.price or similar
+    if (b?.venue?.price) {
+      const p = b.venue.price;
+      if (typeof p === 'number') return p;
+      if (typeof p === 'string' && !isNaN(Number(p))) return Number(p);
+    }
+    return 0;
+  }
+  // ----------------------------------------------------------------------
+
   async loadReport() {
     // reset
     this.reportData = null;
@@ -68,24 +100,36 @@ export class AdminReportComponent implements AfterViewInit {
     try {
       // fetch parallel
       const bookings = await lastValueFrom(this.dashboardService.getAllBookings());
-      const totalRevenue = await lastValueFrom(this.dashboardService.getTotalRevenue());
+      // fetch totals / top lists (we'll still use them as "overall" references)
+      const totalRevenueOverall = await lastValueFrom(this.dashboardService.getTotalRevenue());
       const mostBooked = await lastValueFrom(this.dashboardService.getMostBookedVenue());
       const mostBookedComplete = await lastValueFrom(this.dashboardService.getMostBookedCompletedVenue());
       const bestRevenue = await lastValueFrom(this.dashboardService.getBestRevenueVenue());
       const topVenues = await lastValueFrom(this.dashboardService.getTopVenuesByRevenue());
 
-      // filter bookings by requested period
+      // normalize/filter bookings by requested period using bookingDate/startDate/bookingDate etc.
       const filtered = (bookings || []).filter((b: any) => this.bookingMatchesPeriod(b));
-      // sort by date so we can set start/end
-      filtered.sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
-      const uniqueCustomers = new Set((filtered || []).map((b: any) => b.customerId ?? b.customer?.customerId ?? b.customer?.phoneNumber));
+      // sort by date so we can set start/end
+      filtered.sort((a: any, b: any) => {
+        const da = this.getBookingDateObj(a)?.getTime() ?? 0;
+        const db = this.getBookingDateObj(b)?.getTime() ?? 0;
+        return da - db;
+      });
+
+      // unique customers — use phoneNumber as unique identifier where possible
+      const uniqueCustomers = new Set(
+        (filtered || []).map((b: any) => {
+          return b?.customer?.phoneNumber?.trim() || b?.customerId || b?.customer?.customerName || 'Unknown';
+        }).filter((x: any) => !!x)
+      );
+
       const completedCount = (filtered || []).filter((b: any) => (b.bookingStatus || b.status) === 'COMPLETE').length;
 
-      // top customer calculation (by booking count) from filtered bookings
+      // top customer calculation (by booking count) from filtered bookings — prefer phone number
       const customerCountMap = new Map<string, number>();
       (filtered || []).forEach((b: any) => {
-        const key = b.customer?.customerName || b.customerId || b.customer?.phoneNumber || 'Unknown';
+        const key = b?.customer?.phoneNumber || b?.customer?.customerName || b?.customerId || 'Unknown';
         customerCountMap.set(key, (customerCountMap.get(key) || 0) + 1);
       });
       let topCustomerName = '';
@@ -101,25 +145,50 @@ export class AdminReportComponent implements AfterViewInit {
       const totalBookings = filtered.length;
       const numCustomers = uniqueCustomers.size;
 
-      // if no filtered booking dates, show N/A
-      const startDate = filtered.length ? filtered[0].date : 'N/A';
-      const endDate = filtered.length ? filtered[filtered.length - 1].date : 'N/A';
+      // compute filtered revenue by summing booking-level revenue (best-effort)
+      const filteredRevenue = filtered.reduce((acc: number, b: any) => acc + this.getBookingRevenue(b), 0);
 
-      // create weekly breakdown items (same as previous logic)
+      // if no filtered booking dates, show N/A
+      const startDate = filtered.length ? this.getBookingDateString(filtered[0]) : 'N/A';
+      const endDate = filtered.length ? this.getBookingDateString(filtered[filtered.length - 1]) : 'N/A';
+
+      // compute most booked venue from filtered bookings (fallback to service-mostBooked if filtered empty)
+      const computeMostBookedFromFiltered = () => {
+        const map = new Map<string, number>();
+        filtered.forEach((b: any) => {
+          const vname = b?.venue?.venueName || b?.venueName || 'Unknown';
+          map.set(vname, (map.get(vname) || 0) + 1);
+        });
+        let best = '', bestCount = 0;
+        for (const [k, v] of map.entries()) {
+          if (v > bestCount) { bestCount = v; best = k; }
+        }
+        return best || (mostBooked?.venueName || 'N/A');
+      };
+
+      const mostBookedFilteredName = filtered.length ? computeMostBookedFromFiltered() : (mostBooked?.venueName || 'N/A');
+
+      // create weekly breakdown items (same as previous logic but using normalized date)
+      const weekCount = (predicate: (d: Date) => boolean) =>
+        filtered.filter((b: any) => {
+          const d = this.getBookingDateObj(b);
+          return d ? predicate(d) : false;
+        }).length;
+
       const items = [
         {
           name: "Total Overall Bookings",
-          week1: filtered.filter((b: any) => new Date(b.date).getDate() >= 1 && new Date(b.date).getDate() <= 7).length,
-          week2: filtered.filter((b: any) => new Date(b.date).getDate() >= 8 && new Date(b.date).getDate() <= 14).length,
-          week3: filtered.filter((b: any) => new Date(b.date).getDate() >= 15 && new Date(b.date).getDate() <= 21).length,
-          week4: filtered.filter((b: any) => new Date(b.date).getDate() >= 22).length
+          week1: weekCount(d => d.getDate() >= 1 && d.getDate() <= 7),
+          week2: weekCount(d => d.getDate() >= 8 && d.getDate() <= 14),
+          week3: weekCount(d => d.getDate() >= 15 && d.getDate() <= 21),
+          week4: weekCount(d => d.getDate() >= 22)
         },
         {
           name: "Most Overall Booked Venue",
-          week1: mostBooked?.venueName || 'N/A',
-          week2: mostBooked?.venueName || 'N/A',
-          week3: mostBooked?.venueName || 'N/A',
-          week4: mostBooked?.venueName || 'N/A'
+          week1: mostBookedFilteredName,
+          week2: mostBookedFilteredName,
+          week3: mostBookedFilteredName,
+          week4: mostBookedFilteredName
         },
         {
           name: "Best Revenue Venue",
@@ -129,11 +198,11 @@ export class AdminReportComponent implements AfterViewInit {
           week4: bestRevenue?.venue?.venueName || 'N/A'
         },
         {
-          name: "Total Revenue",
-          week1: totalRevenue || 0,
-          week2: totalRevenue || 0,
-          week3: totalRevenue || 0,
-          week4: totalRevenue || 0
+          name: "Total Revenue (period)",
+          week1: filteredRevenue,
+          week2: filteredRevenue,
+          week3: filteredRevenue,
+          week4: filteredRevenue
         },
         {
           name: "Top 'COMPLETE' Booked Venue",
@@ -151,7 +220,7 @@ export class AdminReportComponent implements AfterViewInit {
         }
       ];
 
-      // assign topRevenueVenues simplified
+      // assign topRevenueVenues simplified (these are overall top venues from service)
       this.topRevenueVenues = (topVenues || []).map((t: any) => ({
         venueName: t.venue?.venueName || t.venueName || 'Unknown',
         revenue: t.revenue ?? 0
@@ -160,13 +229,14 @@ export class AdminReportComponent implements AfterViewInit {
       // populate stats used in template
       this.stats.totalBookings = totalBookings;
       this.stats.totalCustomers = numCustomers;
-      this.stats.totalRevenue = totalRevenue || 0;
-      this.stats.mostBookedVenue = mostBooked?.venueName || '–';
+      // now show revenue for the selected period (filteredRevenue). Keep overall available if needed elsewhere.
+      this.stats.totalRevenue = filteredRevenue || totalRevenueOverall || 0;
+      this.stats.mostBookedVenue = mostBookedFilteredName || (mostBooked?.venueName || '–');
       this.stats.bestRevenueVenue = bestRevenue?.venue?.venueName || '–';
       this.stats.completedBookings = completedCount;
       this.stats.topCustomer = { name: topCustomerName || '–', bookings: topCustomerBookings || 0 };
 
-      this.reportData = { startDate, endDate, platforms: [{name:'Bookings',value: totalBookings},{name:'Revenue',value: totalRevenue || 0}], items };
+      this.reportData = { startDate, endDate, platforms: [{name:'Bookings',value: totalBookings},{name:'Revenue',value: this.stats.totalRevenue}], items };
 
       // create the bar chart (top)
       setTimeout(() => this.createTopBarChart(), 50);
@@ -189,10 +259,10 @@ export class AdminReportComponent implements AfterViewInit {
   }
 
   private bookingMatchesPeriod(b: any): boolean {
-    if (!b || !b.date) return false;
-    const d = new Date(b.date);
-    const year = d.getFullYear();
-    const month = d.getMonth() + 1;
+    const dObj = this.getBookingDateObj(b);
+    if (!dObj) return false;
+    const year = dObj.getFullYear();
+    const month = dObj.getMonth() + 1;
     if (this.reportType === 'MONTHLY') {
       if (!this.selectedMonth) return true;
       const sel = new Date(this.selectedMonth);
@@ -220,7 +290,6 @@ export class AdminReportComponent implements AfterViewInit {
       labels = this.topRevenueVenues.map(v => v.venueName);
       dataValues = this.topRevenueVenues.map(v => v.revenue);
     } else if (this.reportData && this.reportData.items) {
-      // fallback: use first item's weekly numbers aggregated by name (not ideal but fallback)
       labels = this.reportData.items.map((i: any) => i.name);
       dataValues = this.reportData.items.map((i: any) => Number(i.week1 || 0) + Number(i.week2 || 0) + Number(i.week3 || 0) + Number(i.week4 || 0));
     }

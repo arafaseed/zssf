@@ -58,6 +58,7 @@ export class BookingService {
   bookings$ = this.bookingsSubject.asObservable();
 
   checkDateAvailability: any;
+  getAllBookings: any;
 
   constructor(private http: HttpClient) {}
 
