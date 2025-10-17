@@ -18,6 +18,8 @@ export class PhoneSearchComponent {
   bookings: any[] = [];
   noResults = false;
   searching = false;
+  today = new Date();
+
 
   // POSTPONE / AVAILABILITY FIELDS
   currentBooking: any = null;
