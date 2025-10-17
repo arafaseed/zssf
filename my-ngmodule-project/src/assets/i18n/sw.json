@@ -240,7 +240,8 @@
     }
   },
   "phoneSearch": {
-     "postponeSuccess":"Hongera Booking yako imeghairishwa!",
+   "postponeSuccess":"Hongera Booking yako imeghairishwa!",
+    "postponeBooking" :"Ghairisha Booking",
     "limitReached":"Huwezi kubadilisha zaidi ya mara mbili.",
     "postponeError":"Booking haiwezi kubadilishika.",
     "title": "Tafuta Booking",

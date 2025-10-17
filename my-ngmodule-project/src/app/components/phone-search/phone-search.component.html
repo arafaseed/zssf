@@ -24,6 +24,7 @@
               maxlength="10"
               #phoneInput="ngModel"
               (keypress)="validateNumberInput($event)"
+              (keyup.enter)="onSubmit()" 
               [placeholder]="'phoneSearch.phonePlaceholder' | translate"
             />
             <mat-icon matSuffix>phone</mat-icon>
@@ -78,8 +79,12 @@
 
             <mat-divider class="my-4"></mat-divider>
 
-            <!-- Booking Actions -->
-            <div class="booking-actions">
+            <!-- ✅ Booking Actions -->
+            <div
+              class="booking-actions"
+              *ngIf="booking.bookingStatus.toLowerCase() !== 'expired' && booking.bookingStatus.toLowerCase() !== 'cancelled'"
+            >
+              <!-- View Invoice -->
               <a
                 *ngIf="booking.invoiceId"
                 [href]="'/invoice/' + booking.invoiceId"
@@ -91,16 +96,17 @@
                 {{ 'phoneSearch.viewInvoice' | translate }}
               </a>
 
+              <!-- ✅ Postpone only for COMPLETE -->
               <button
-                *ngIf="booking.bookingStatus.toLowerCase() !== 'completed' && booking.bookingStatus.toLowerCase() !== 'cancelled'"
+                *ngIf="booking.bookingStatus.toLowerCase() === 'complete'"
                 class="bg-amber-500 hover:bg-amber-600 text-white font-medium px-4 py-2 rounded-lg transition duration-200"
                 (click)="setCurrentBooking(booking)"
               >
-                Postpone Booking
+                {{ 'phoneSearch.postponeBooking' | translate }}
               </button>
 
+              <!-- ✅ Cancel button for active bookings -->
               <button
-                *ngIf="booking.bookingStatus.toLowerCase() !== 'completed' && booking.bookingStatus.toLowerCase() !== 'cancelled'"
                 mat-flat-button
                 color="warn"
                 class="action-button"
@@ -113,7 +119,7 @@
         </mat-card>
       </div>
 
-      <!-- Availability Form -->
+      <!-- Availability / Postpone Form -->
       <mat-card *ngIf="currentBooking" class="p-6 bg-white rounded-lg shadow mt-6">
         <h4 class="mb-3 font-semibold">{{ 'home.checkAvailability' | translate }}</h4>
 
@@ -132,7 +138,6 @@
             <mat-datepicker #endPicker></mat-datepicker>
           </mat-form-field>
 
-          <!-- Time pickers -->
           <div class="flex gap-3">
             <mat-form-field class="flex-1" appearance="fill">
               <mat-label>{{ 'home.startTime' | translate }}</mat-label>
@@ -150,8 +155,12 @@
           </div>
 
           <div class="flex justify-center gap-2">
-            <button mat-flat-button color="primary" (click)="checkVenueAvailabilityForBooking()"
-              [disabled]="!startDate || !endDate || !startTime || !endTime">
+            <button
+              mat-flat-button
+              color="primary"
+              (click)="checkVenueAvailabilityForBooking()"
+              [disabled]="!startDate || !endDate || !startTime || !endTime"
+            >
               {{ 'home.checkButton' | translate }}
             </button>
           </div>
