@@ -329,7 +329,7 @@ export class AdminReportComponent implements AfterViewInit {
     }).catch(err => console.error('PDF export failed', err));
   }
 
-  printReports() {
+  printReport() {
     if (!this.reportContent) { window.print(); return; }
     // We keep printing simple: open a new window with the image to preserve styles
     html2canvas(this.reportContent.nativeElement, { scale: 2 }).then(canvas => {
@@ -358,49 +358,4 @@ export class AdminReportComponent implements AfterViewInit {
       window.print();
     });
   }
-  printReport() {
-  if (!this.reportContent) return;
-
-  const printContents = this.reportContent.nativeElement.innerHTML;
-  const originalContents = document.body.innerHTML;
-
-  // Replace body content with report content only
-  document.body.innerHTML = `
-    <html>
-      <head>
-        <title>Print Report</title>
-        <style>
-          body {
-            font-family: Arial, sans-serif;
-            background: white;
-            color: #000;
-            margin: 0;
-            padding: 20px;
-          }
-          table {
-            width: 100%;
-            border-collapse: collapse;
-          }
-          th, td {
-            border: 1px solid #ccc;
-            padding: 6px;
-          }
-          .text-center { text-align: center; }
-          .text-right { text-align: right; }
-          .border { border: 1px solid #ddd; }
-          .p-3 { padding: 12px; }
-        </style>
-      </head>
-      <body>
-        ${printContents}
-      </body>
-    </html>
-  `;
-
-  window.print();
-  // restore original page after printing
-  document.body.innerHTML = originalContents;
-  window.location.reload(); // reload to restore Angular bindings
-}
-
 }
