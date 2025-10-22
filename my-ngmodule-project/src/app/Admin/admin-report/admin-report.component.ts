@@ -317,38 +317,53 @@ export class AdminReportComponent implements AfterViewInit {
     });
   }
 
- downloadReport() {
+downloadReport() {
   if (!this.reportContent) return;
 
   setTimeout(() => {
     html2canvas(this.reportContent.nativeElement, {
       scale: 2,
-      useCORS: true,             // handle cross-origin images
-      backgroundColor: '#ffffff'  // force white background
+      useCORS: true,
+      backgroundColor: '#ffffff'
     }).then(canvas => {
-      const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
       const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-      let heightLeft = pdfHeight;
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = pdfWidth;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      let heightLeft = imgHeight;
       let position = 0;
 
-      // Add first page
-      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
-      heightLeft -= pdf.internal.pageSize.getHeight();
-
-      // Add remaining pages
       while (heightLeft > 0) {
-        position = heightLeft - pdfHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
-        heightLeft -= pdf.internal.pageSize.getHeight();
+        const pageHeight = Math.min(heightLeft, pdfHeight);
+        const canvasPage = document.createElement('canvas');
+        canvasPage.width = canvas.width;
+        canvasPage.height = (pageHeight * canvas.width) / imgWidth;
+
+        const ctx = canvasPage.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(
+            canvas,
+            0, (imgHeight - heightLeft) * (canvas.height / imgHeight),
+            canvas.width, canvasPage.height,
+            0, 0,
+            canvas.width, canvasPage.height
+          );
+        }
+
+        const pageData = canvasPage.toDataURL('image/png');
+        pdf.addImage(pageData, 'PNG', 0, 0, imgWidth, pageHeight);
+
+        heightLeft -= pdfHeight;
+        if (heightLeft > 0) pdf.addPage();
       }
 
       pdf.save(`venue-report-${this.reportType}-${this.selectedYear}.pdf`);
-    }).catch(err => console.error('PDF export failed', err));
-  }, 300); // small delay to ensure DOM is fully rendered
+    });
+  }, 300);
 }
+
 
 
   printReports() {

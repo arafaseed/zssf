@@ -3,31 +3,52 @@
   background: white;
   border-radius: 4px;
 }
-
 /* print styles */
 @media print {
   body * { visibility: hidden; }
   .paper, .paper * { visibility: visible; }
   .paper { position: absolute; left: 0; top: 0; width: 100%; }
   .controls { display: none !important; }
+
+  /* Force weekly breakdown table to start on a new page */
+ /* Weekly table print/page specific */
+.bookings-table {
+  page-break-before: always; /* starts on new page */
+  display: flex;
+  justify-content: center;  /* center horizontally */
 }
 
-/* basic table styling */
-table {
-  border-collapse: collapse;
-}
-th{
-    background-color: #62add8;
+.bookings-table table {
+  width: 80%; /* smaller table width */
+  font-size: 12px; /* smaller text */
 }
 
-th, td {
-  border: 1px solid #0e067f;
-  padding: 8px;
+.bookings-table th, 
+.bookings-table td {
+  padding: 4px !important; /* smaller padding */
+  text-align: center;
+}
+
+.bookings-table th:first-child,
+.bookings-table td:first-child {
+  text-align: left; /* keep first column left-aligned */
+}
+
+.bookings-table .report-footer {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 10px;
+  color: #64748b;
+}
 }
 
 .report-title {
   letter-spacing: 0.2px;
 }
 
-.summary-card { min-height: 64px; display:flex; flex-direction:column; justify-content:center; }
-
+.summary-card { 
+  min-height: 64px; 
+  display:flex; 
+  flex-direction:column; 
+  justify-content:center; 
+}
