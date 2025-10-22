@@ -366,78 +366,111 @@ downloadReport() {
 
 
 
-  printReports() {
-    if (!this.reportContent) { window.print(); return; }
-    // We keep printing simple: open a new window with the image to preserve styles
-    html2canvas(this.reportContent.nativeElement, { scale: 2 }).then(canvas => {
-      const img = canvas.toDataURL('image/png');
-      const w = window.open('', '_blank', 'width=900,height=700');
-      if (!w) { window.print(); return; }
-      w.document.write(`
+  // printReports() {
+  //   if (!this.reportContent) { window.print(); return; }
+  //   // We keep printing simple: open a new window with the image to preserve styles
+  //   html2canvas(this.reportContent.nativeElement, { scale: 2 }).then(canvas => {
+  //     const img = canvas.toDataURL('image/png');
+  //     const w = window.open('', '_blank', 'width=900,height=700');
+  //     if (!w) { window.print(); return; }
+  //     w.document.write(`
+  //       <html>
+  //         <head>
+  //           <title>Print Report</title>
+  //           <style>
+  //             body { margin: 0; padding: 12px; font-family: Arial, sans-serif; background: #fff; }
+  //             img { width: 100%; height: auto; display:block; }
+  //           </style>
+  //         </head>
+  //         <body>
+  //           <img src="${img}" />
+  //         </body>
+  //       </html>
+  //     `);
+  //     w.document.close();
+  //     w.focus();
+  //     w.print();
+  //   }).catch(err => {
+  //     console.error('Print failed, falling back to window.print', err);
+  //     window.print();
+  //   });
+  // }
+ printReport() {
+  if (!this.reportContent) return;
+
+  // take snapshot first
+  html2canvas(this.reportContent.nativeElement, { scale: 2, useCORS: true })
+    .then(canvas => {
+      const imgData = canvas.toDataURL('image/png');
+
+      const printWindow = window.open('', '_blank', 'width=900,height=700');
+      if (!printWindow) return;
+
+      printWindow.document.write(`
         <html>
           <head>
-            <title>Print Report</title>
             <style>
-              body { margin: 0; padding: 12px; font-family: Arial, sans-serif; background: #fff; }
-              img { width: 100%; height: auto; display:block; }
+              body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 12px;
+                background: #fff;
+                color: #000;
+              }
+              .report-page {
+                max-width: 900px;
+                margin: 0 auto;
+                background: #fff;
+                padding: 12px;
+                border-radius: 4px;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+                page-break-after: avoid;
+              }
+              table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 12px;
+                text-align: center;
+              }
+              th, td {
+                border: 1px solid #ccc;
+                padding: 6px;
+              }
+              .report-footer {
+                text-align: left;
+                font-size: 10px;
+                margin-top: 12px;
+              }
+              img.chart-canvas {
+                max-width: 100%;
+                height: auto;
+                display: block;
+                margin-bottom: 12px;
+              }
             </style>
           </head>
           <body>
-            <img src="${img}" />
+            <div class="report-page">
+              <img src="${imgData}" class="chart-canvas" />
+            </div>
+            <script>
+              window.onload = function() {
+                window.focus();
+                window.print();
+              };
+            </script>
           </body>
         </html>
       `);
-      w.document.close();
-      w.focus();
-      w.print();
-    }).catch(err => {
+
+      printWindow.document.close();
+    })
+    .catch(err => {
       console.error('Print failed, falling back to window.print', err);
       window.print();
     });
-  }
-  printReport() {
-  if (!this.reportContent) return;
-
-  const printContents = this.reportContent.nativeElement.innerHTML;
-  const originalContents = document.body.innerHTML;
-
-  // Replace body content with report content only
-  document.body.innerHTML = `
-    <html>
-      <head>
-        <title>Print Report</title>
-        <style>
-          body {
-            font-family: Arial, sans-serif;
-            background: white;
-            color: #000;
-            margin: 0;
-            padding: 20px;
-          }
-          table {
-            width: 100%;
-            border-collapse: collapse;
-          }
-          th, td {
-            border: 1px solid #ccc;
-            padding: 6px;
-          }
-          .text-center { text-align: center; }
-          .text-right { text-align: right; }
-          .border { border: 1px solid #ddd; }
-          .p-3 { padding: 12px; }
-        </style>
-      </head>
-      <body>
-        ${printContents}
-      </body>
-    </html>
-  `;
-
-  window.print();
-  // restore original page after printing
-  document.body.innerHTML = originalContents;
-  window.location.reload(); // reload to restore Angular bindings
 }
+
+
 
 }
