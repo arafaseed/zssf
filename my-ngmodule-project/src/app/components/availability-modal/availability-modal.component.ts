@@ -22,6 +22,7 @@ export class AvailabilityModalComponent implements OnInit {
   selectedItems: any[] = [];
 
   @ViewChild('selectionList') selectionList?: MatSelectionList;
+it: any;
 
   // data expected: { venueId, venueName, start (Date), end (Date), startTime, endTime, activityId, activityName }
   constructor(
@@ -43,79 +44,86 @@ export class AvailabilityModalComponent implements OnInit {
     return `${yyyy}-${mm}-${dd}`;
   }
 
-  check() {
-    if (!this.data?.venueId) {
-      this.errorMsg = 'Missing venue id';
-      this.loading = false;
-      return;
-    }
-
-    const payload = {
-      startDate: this.formatDate(this.data.start),
-      endDate: this.formatDate(this.data.end),
-      startTime: (this.data.startTime ?? ''),
-      endTime: (this.data.endTime ?? '')
-    };
-
-    this.loading = true;
-    this.http.post<any[]>(`${environment.apiUrl}/api/bookings/venue/${this.data.venueId}/availability`, payload).subscribe({
-      next: res => {
-        this.loading = false;
-        // sort by date ascending for deterministic behavior
-        this.availability = (res || []).slice().sort((a, b) => {
-          const ta = new Date(a.date).getTime();
-          const tb = new Date(b.date).getTime();
-          return ta - tb;
-        });
-
-        // compute allAvailable
-        this.allAvailable = this.availability.length > 0 && this.availability.every(it => it.flag === 'AVAILABLE_FOR_BOOKING');
-
-        // compute autoCheckEnabled:
-        // auto-check is allowed ONLY when there are NO ALREADY_BOOKED items AND NO pendingExpiresInMinutes for any item.
-        const hasBookedOrPending = this.availability.some(it => it.flag === 'ALREADY_BOOKED' || Boolean(it.pendingExpiresInMinutes));
-        this.autoCheckEnabled = !hasBookedOrPending;
-
-        // set selectedItems based on auto-check rule or clear selection
-        if (this.autoCheckEnabled) {
-          // select all available items initially
-          this.selectedItems = this.availability.filter(it => it.flag === 'AVAILABLE_FOR_BOOKING');
-        } else {
-          this.selectedItems = [];
-        }
-
-        // clear UI selection first, then (if possible) apply selection programmatically to ensure
-        // selectionList state and selectedItems stay in sync. [selected] on template also helps.
-        try {
-          if (this.selectionList) {
-            this.selectionList.deselectAll();
-            // programmatically select items that are in selectedItems
-            if (this.selectedItems.length) {
-              // selectedOptions.select expects MatListOption instances; simpler approach:
-              // rely on [selected] binding in template so UI will be checked on render.
-              // However if selectionList already exists (re-render), we can attempt to select matching options:
-              const opts = this.selectionList.options.toArray();
-              opts.forEach(opt => {
-                const val = (opt.value as any);
-                const shouldSelect = this.selectedItems.some(si => si.date === val.date);
-                if (shouldSelect) {
-                  opt.selected = true;
-                }
-              });
-            }
-          }
-        } catch (e) {
-          // ignore — selection sync best-effort only
-          console.warn('selection sync failed', e);
-        }
-      },
-      error: err => {
-        this.loading = false;
-        this.errorMsg = 'Availability check failed. Please try again.';
-        console.error('availability error', err);
-      }
-    });
+check() {
+  if (!this.data?.venueId) {
+    this.errorMsg = 'Missing venue id';
+    this.loading = false;
+    return;
   }
+
+  const payload = {
+    startDate: this.formatDate(this.data.start),
+    endDate: this.formatDate(this.data.end),
+    startTime: (this.data.startTime ?? ''),
+    endTime: (this.data.endTime ?? '')
+  };
+
+  this.loading = true;
+  this.http.post<any[]>(`${environment.apiUrl}/api/bookings/venue/${this.data.venueId}/availability`, payload).subscribe({
+    next: res => {
+      this.loading = false;
+
+      // sort by date ascending
+      this.availability = (res || []).slice().sort((a, b) => {
+        const ta = new Date(a.date).getTime();
+        const tb = new Date(b.date).getTime();
+        return ta - tb;
+      });
+
+      // ✅ check if venue is blocked
+      const isVenueBlocked = this.availability.length > 0 &&
+        this.availability.every(it => it.flag === 'BLOCKED');
+
+      if (isVenueBlocked) {
+        this.errorMsg = 'This venue is temporarily blocked and cannot be booked at the moment.';
+        this.allAvailable = false;
+        this.selectedItems = [];
+        return; // stop here, no selection needed
+      }
+
+      // compute allAvailable
+      this.allAvailable = this.availability.length > 0 &&
+        this.availability.every(it => it.flag === 'AVAILABLE_FOR_BOOKING' || it.flag === 'ALREADY_BOOKED');
+        
+
+      // compute autoCheckEnabled
+      const hasBookedOrPending = this.availability.some(it =>
+        it.flag === 'ALREADY_BOOKED' || Boolean(it.pendingExpiresInMinutes)
+      );
+      this.autoCheckEnabled = !hasBookedOrPending;
+
+      // set selectedItems
+      if (this.autoCheckEnabled) {
+        this.selectedItems = this.availability.filter(it => it.flag === 'AVAILABLE_FOR_BOOKING');
+      } else {
+        this.selectedItems = [];
+      }
+
+      // sync selection with UI
+      try {
+        if (this.selectionList) {
+          this.selectionList.deselectAll();
+          if (this.selectedItems.length) {
+            const opts = this.selectionList.options.toArray();
+            opts.forEach(opt => {
+              const val = opt.value as any;
+              const shouldSelect = this.selectedItems.some(si => si.date === val.date);
+              if (shouldSelect) opt.selected = true;
+            });
+          }
+        }
+      } catch (e) {
+        console.warn('selection sync failed', e);
+      }
+    },
+    error: err => {
+      this.loading = false;
+      this.errorMsg = 'Availability check failed. Please try again.';
+      console.error('availability error', err);
+    }
+  });
+}
+
 
   // Called by mat-selection-list (selectionChange)
   onSelectionChange(event: MatSelectionListChange) {

@@ -12,10 +12,6 @@
     <mat-progress-spinner diameter="44" mode="indeterminate"></mat-progress-spinner>
   </div>
 
-  <!-- Error -->
-  <div *ngIf="!loading && errorMsg" class="py-2 text-red-600">
-    {{ errorMsg }}
-  </div>
 
   <!-- Results -->
   <div *ngIf="!loading && availability?.length">
@@ -47,6 +43,10 @@
           <div class="flex-3">
             <div class="flex items-center gap-2">
               <div class="font-medium">{{ it.date }}</div>
+              <!-- Blocked -->
+            <div *ngIf="it.flag === 'BLOCKED'" class="flex items-center gap-1 text-sm text-gray-600">
+              <i-lucide-slash class="w-4 h-4"></i-lucide-slash> This date is blocked and can't be booked 
+            </div>
               <div *ngIf="it.flag === 'AVAILABLE_FOR_BOOKING'" class="flex items-center gap-1 text-sm text-emerald-600">
                 <i-lucide-check-circle class="w-4 h-4"></i-lucide-check-circle> {{ 'availability.status.available' | translate }}
               </div>
