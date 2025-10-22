@@ -317,45 +317,160 @@ export class AdminReportComponent implements AfterViewInit {
     });
   }
 
-  downloadReport() {
-    if (!this.reportContent) return;
-    html2canvas(this.reportContent.nativeElement, { scale: 2 }).then(canvas => {
-      const imgData = canvas.toDataURL('image/png');
+downloadReport() {
+  if (!this.reportContent) return;
+
+  setTimeout(() => {
+    html2canvas(this.reportContent.nativeElement, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: '#ffffff'
+    }).then(canvas => {
       const pdf = new jsPDF('p', 'mm', 'a4');
       const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      pdf.save(`venue-report-${this.reportType}-${this.selectedYear}.pdf`);
-    }).catch(err => console.error('PDF export failed', err));
-  }
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = pdfWidth;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-  printReport() {
-    if (!this.reportContent) { window.print(); return; }
-    // We keep printing simple: open a new window with the image to preserve styles
-    html2canvas(this.reportContent.nativeElement, { scale: 2 }).then(canvas => {
-      const img = canvas.toDataURL('image/png');
-      const w = window.open('', '_blank', 'width=900,height=700');
-      if (!w) { window.print(); return; }
-      w.document.write(`
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      while (heightLeft > 0) {
+        const pageHeight = Math.min(heightLeft, pdfHeight);
+        const canvasPage = document.createElement('canvas');
+        canvasPage.width = canvas.width;
+        canvasPage.height = (pageHeight * canvas.width) / imgWidth;
+
+        const ctx = canvasPage.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(
+            canvas,
+            0, (imgHeight - heightLeft) * (canvas.height / imgHeight),
+            canvas.width, canvasPage.height,
+            0, 0,
+            canvas.width, canvasPage.height
+          );
+        }
+
+        const pageData = canvasPage.toDataURL('image/png');
+        pdf.addImage(pageData, 'PNG', 0, 0, imgWidth, pageHeight);
+
+        heightLeft -= pdfHeight;
+        if (heightLeft > 0) pdf.addPage();
+      }
+
+      pdf.save(`venue-report-${this.reportType}-${this.selectedYear}.pdf`);
+    });
+  }, 300);
+}
+
+
+
+  // printReports() {
+  //   if (!this.reportContent) { window.print(); return; }
+  //   // We keep printing simple: open a new window with the image to preserve styles
+  //   html2canvas(this.reportContent.nativeElement, { scale: 2 }).then(canvas => {
+  //     const img = canvas.toDataURL('image/png');
+  //     const w = window.open('', '_blank', 'width=900,height=700');
+  //     if (!w) { window.print(); return; }
+  //     w.document.write(`
+  //       <html>
+  //         <head>
+  //           <title>Print Report</title>
+  //           <style>
+  //             body { margin: 0; padding: 12px; font-family: Arial, sans-serif; background: #fff; }
+  //             img { width: 100%; height: auto; display:block; }
+  //           </style>
+  //         </head>
+  //         <body>
+  //           <img src="${img}" />
+  //         </body>
+  //       </html>
+  //     `);
+  //     w.document.close();
+  //     w.focus();
+  //     w.print();
+  //   }).catch(err => {
+  //     console.error('Print failed, falling back to window.print', err);
+  //     window.print();
+  //   });
+  // }
+ printReport() {
+  if (!this.reportContent) return;
+
+  // take snapshot first
+  html2canvas(this.reportContent.nativeElement, { scale: 2, useCORS: true })
+    .then(canvas => {
+      const imgData = canvas.toDataURL('image/png');
+
+      const printWindow = window.open('', '_blank', 'width=900,height=700');
+      if (!printWindow) return;
+
+      printWindow.document.write(`
         <html>
           <head>
-            <title>Print Report</title>
             <style>
-              body { margin: 0; padding: 12px; font-family: Arial, sans-serif; background: #fff; }
-              img { width: 100%; height: auto; display:block; }
+              body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 12px;
+                background: #fff;
+                color: #000;
+              }
+              .report-page {
+                max-width: 900px;
+                margin: 0 auto;
+                background: #fff;
+                padding: 12px;
+                border-radius: 4px;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+                page-break-after: avoid;
+              }
+              table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 12px;
+                text-align: center;
+              }
+              th, td {
+                border: 1px solid #ccc;
+                padding: 6px;
+              }
+              .report-footer {
+                text-align: left;
+                font-size: 10px;
+                margin-top: 12px;
+              }
+              img.chart-canvas {
+                max-width: 100%;
+                height: auto;
+                display: block;
+                margin-bottom: 12px;
+              }
             </style>
           </head>
           <body>
-            <img src="${img}" />
+            <div class="report-page">
+              <img src="${imgData}" class="chart-canvas" />
+            </div>
+            <script>
+              window.onload = function() {
+                window.focus();
+                window.print();
+              };
+            </script>
           </body>
         </html>
       `);
-      w.document.close();
-      w.focus();
-      w.print();
-    }).catch(err => {
+
+      printWindow.document.close();
+    })
+    .catch(err => {
       console.error('Print failed, falling back to window.print', err);
       window.print();
     });
-  }
+}
+
+
+
 }
