@@ -7,12 +7,12 @@ import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-admin-report',
-  standalone: false,
+  standalone:false,
   templateUrl: './admin-report.component.html',
   styleUrls: ['./admin-report.component.css']
 })
 export class AdminReportComponent implements AfterViewInit {
-
+ 
   reportType: 'MONTHLY' | 'QUARTERLY' | 'YEARLY' = 'MONTHLY';
   selectedMonth: string = '';
   selectedQuarter: number = 1;
@@ -64,11 +64,13 @@ export class AdminReportComponent implements AfterViewInit {
   }
 
   private getBookingRevenue(b: any): number {
+    // try common fields used for amount
     const candidates = [b?.totalAmount, b?.amount, b?.price, b?.revenue, b?.bookingAmount];
     for (const c of candidates) {
       if (typeof c === 'number' && !isNaN(c)) return c;
       if (typeof c === 'string' && !isNaN(Number(c))) return Number(c);
     }
+    // fallback: maybe there's a nested venue.price or similar
     if (b?.venue?.price) {
       const p = b.venue.price;
       if (typeof p === 'number') return p;
@@ -79,6 +81,7 @@ export class AdminReportComponent implements AfterViewInit {
   // ----------------------------------------------------------------------
 
   async loadReport() {
+    // reset
     this.reportData = null;
     this.topRevenueVenues = [];
     this.stats = {
@@ -91,35 +94,44 @@ export class AdminReportComponent implements AfterViewInit {
       topCustomer: { name: '', bookings: 0 }
     };
 
+    // compute date range string for the period label
     this.reportPeriod = this.computeReportPeriod();
 
     try {
+      // fetch parallel
       const bookings = await lastValueFrom(this.dashboardService.getAllBookings());
+      // fetch totals / top lists (we'll still use them as "overall" references)
       const totalRevenueOverall = await lastValueFrom(this.dashboardService.getTotalRevenue());
       const mostBooked = await lastValueFrom(this.dashboardService.getMostBookedVenue());
       const mostBookedComplete = await lastValueFrom(this.dashboardService.getMostBookedCompletedVenue());
       const bestRevenue = await lastValueFrom(this.dashboardService.getBestRevenueVenue());
       const topVenues = await lastValueFrom(this.dashboardService.getTopVenuesByRevenue());
 
+      // normalize/filter bookings by requested period using bookingDate/startDate/bookingDate etc.
       const filtered = (bookings || []).filter((b: any) => this.bookingMatchesPeriod(b));
+
+      // sort by date so we can set start/end
       filtered.sort((a: any, b: any) => {
         const da = this.getBookingDateObj(a)?.getTime() ?? 0;
         const db = this.getBookingDateObj(b)?.getTime() ?? 0;
         return da - db;
       });
 
+      // unique customers — use phoneNumber as unique identifier where possible
       const uniqueCustomers = new Set(
-        filtered.map((b: any) => b?.customer?.phoneNumber?.trim() || b?.customerId || b?.customer?.customerName || 'Unknown').filter(x => !!x)
+        (filtered || []).map((b: any) => {
+          return b?.customer?.phoneNumber?.trim() || b?.customerId || b?.customer?.customerName || 'Unknown';
+        }).filter((x: any) => !!x)
       );
 
-      const completedCount = filtered.filter((b: any) => (b.bookingStatus || b.status) === 'COMPLETE').length;
+      const completedCount = (filtered || []).filter((b: any) => (b.bookingStatus || b.status) === 'COMPLETE').length;
 
+      // top customer calculation (by booking count) from filtered bookings — prefer phone number
       const customerCountMap = new Map<string, number>();
-      filtered.forEach((b: any) => {
+      (filtered || []).forEach((b: any) => {
         const key = b?.customer?.phoneNumber || b?.customer?.customerName || b?.customerId || 'Unknown';
         customerCountMap.set(key, (customerCountMap.get(key) || 0) + 1);
       });
-
       let topCustomerName = '';
       let topCustomerBookings = 0;
       for (const [k, v] of customerCountMap.entries()) {
@@ -129,13 +141,18 @@ export class AdminReportComponent implements AfterViewInit {
         }
       }
 
+      // prepare reportData (keeps your old structure for weekly table display)
       const totalBookings = filtered.length;
       const numCustomers = uniqueCustomers.size;
+
+      // compute filtered revenue by summing booking-level revenue (best-effort)
       const filteredRevenue = filtered.reduce((acc: number, b: any) => acc + this.getBookingRevenue(b), 0);
 
+      // if no filtered booking dates, show N/A
       const startDate = filtered.length ? this.getBookingDateString(filtered[0]) : 'N/A';
       const endDate = filtered.length ? this.getBookingDateString(filtered[filtered.length - 1]) : 'N/A';
 
+      // compute most booked venue from filtered bookings (fallback to service-mostBooked if filtered empty)
       const computeMostBookedFromFiltered = () => {
         const map = new Map<string, number>();
         filtered.forEach((b: any) => {
@@ -151,6 +168,7 @@ export class AdminReportComponent implements AfterViewInit {
 
       const mostBookedFilteredName = filtered.length ? computeMostBookedFromFiltered() : (mostBooked?.venueName || 'N/A');
 
+      // create weekly breakdown items (same as previous logic but using normalized date)
       const weekCount = (predicate: (d: Date) => boolean) =>
         filtered.filter((b: any) => {
           const d = this.getBookingDateObj(b);
@@ -202,21 +220,25 @@ export class AdminReportComponent implements AfterViewInit {
         }
       ];
 
+      // assign topRevenueVenues simplified (these are overall top venues from service)
       this.topRevenueVenues = (topVenues || []).map((t: any) => ({
         venueName: t.venue?.venueName || t.venueName || 'Unknown',
         revenue: t.revenue ?? 0
-      })).sort((a, b) => b.revenue - a.revenue).slice(0, 5);
+      })).sort((a: any,b:any) => b.revenue - a.revenue).slice(0, 5);
 
+      // populate stats used in template
       this.stats.totalBookings = totalBookings;
       this.stats.totalCustomers = numCustomers;
+      // now show revenue for the selected period (filteredRevenue). Keep overall available if needed elsewhere.
       this.stats.totalRevenue = filteredRevenue || totalRevenueOverall || 0;
       this.stats.mostBookedVenue = mostBookedFilteredName || (mostBooked?.venueName || '–');
       this.stats.bestRevenueVenue = bestRevenue?.venue?.venueName || '–';
       this.stats.completedBookings = completedCount;
       this.stats.topCustomer = { name: topCustomerName || '–', bookings: topCustomerBookings || 0 };
 
-      this.reportData = { startDate, endDate, platforms: [{ name: 'Bookings', value: totalBookings }, { name: 'Revenue', value: this.stats.totalRevenue }], items };
+      this.reportData = { startDate, endDate, platforms: [{name:'Bookings',value: totalBookings},{name:'Revenue',value: this.stats.totalRevenue}], items };
 
+      // create the bar chart (top)
       setTimeout(() => this.createTopBarChart(), 50);
 
     } catch (err) {
@@ -229,7 +251,8 @@ export class AdminReportComponent implements AfterViewInit {
       const d = new Date(this.selectedMonth);
       return d.toLocaleString(undefined, { month: 'long', year: 'numeric' });
     } else if (this.reportType === 'QUARTERLY') {
-      return `Q${this.selectedQuarter} ${this.selectedYear}`;
+      const q = this.selectedQuarter;
+      return `Q${q} ${this.selectedYear}`;
     } else {
       return `${this.selectedYear}`;
     }
@@ -256,9 +279,11 @@ export class AdminReportComponent implements AfterViewInit {
     const canvas = document.getElementById('topBarChart') as HTMLCanvasElement;
     if (!canvas) return;
 
+    // destroy existing
     const existing = Chart.getChart(canvas as any);
     if (existing) existing.destroy();
 
+    // Prefer revenue per venue if available; else show number of bookings per venue (fallback)
     let labels: string[] = [];
     let dataValues: number[] = [];
     if (this.topRevenueVenues && this.topRevenueVenues.length) {
@@ -292,20 +317,43 @@ export class AdminReportComponent implements AfterViewInit {
     });
   }
 
-  downloadReport() {
-    if (!this.reportContent) return;
-    html2canvas(this.reportContent.nativeElement, { scale: 2 }).then(canvas => {
+ downloadReport() {
+  if (!this.reportContent) return;
+
+  setTimeout(() => {
+    html2canvas(this.reportContent.nativeElement, {
+      scale: 2,
+      useCORS: true,             // handle cross-origin images
+      backgroundColor: '#ffffff'  // force white background
+    }).then(canvas => {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      let heightLeft = pdfHeight;
+      let position = 0;
+
+      // Add first page
+      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+      heightLeft -= pdf.internal.pageSize.getHeight();
+
+      // Add remaining pages
+      while (heightLeft > 0) {
+        position = heightLeft - pdfHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+        heightLeft -= pdf.internal.pageSize.getHeight();
+      }
+
       pdf.save(`venue-report-${this.reportType}-${this.selectedYear}.pdf`);
     }).catch(err => console.error('PDF export failed', err));
-  }
+  }, 300); // small delay to ensure DOM is fully rendered
+}
+
 
   printReports() {
     if (!this.reportContent) { window.print(); return; }
+    // We keep printing simple: open a new window with the image to preserve styles
     html2canvas(this.reportContent.nativeElement, { scale: 2 }).then(canvas => {
       const img = canvas.toDataURL('image/png');
       const w = window.open('', '_blank', 'width=900,height=700');
@@ -332,48 +380,49 @@ export class AdminReportComponent implements AfterViewInit {
       window.print();
     });
   }
-
   printReport() {
-    if (!this.reportContent) return;
+  if (!this.reportContent) return;
 
-    const printContents = this.reportContent.nativeElement.innerHTML;
-    const originalContents = document.body.innerHTML;
+  const printContents = this.reportContent.nativeElement.innerHTML;
+  const originalContents = document.body.innerHTML;
 
-    document.body.innerHTML = `
-      <html>
-        <head>
-          <title>Print Report</title>
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              background: white;
-              color: #000;
-              margin: 0;
-              padding: 20px;
-            }
-            table {
-              width: 100%;
-              border-collapse: collapse;
-            }
-            th, td {
-              border: 1px solid #ccc;
-              padding: 6px;
-            }
-            .text-center { text-align: center; }
-            .text-right { text-align: right; }
-            .border { border: 1px solid #ddd; }
-            .p-3 { padding: 12px; }
-          </style>
-        </head>
-        <body>
-          ${printContents}
-        </body>
-      </html>
-    `;
+  // Replace body content with report content only
+  document.body.innerHTML = `
+    <html>
+      <head>
+        <title>Print Report</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            background: white;
+            color: #000;
+            margin: 0;
+            padding: 20px;
+          }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+          }
+          th, td {
+            border: 1px solid #ccc;
+            padding: 6px;
+          }
+          .text-center { text-align: center; }
+          .text-right { text-align: right; }
+          .border { border: 1px solid #ddd; }
+          .p-3 { padding: 12px; }
+        </style>
+      </head>
+      <body>
+        ${printContents}
+      </body>
+    </html>
+  `;
 
-    window.print();
-    document.body.innerHTML = originalContents;
-    window.location.reload();
-  }
+  window.print();
+  // restore original page after printing
+  document.body.innerHTML = originalContents;
+  window.location.reload(); // reload to restore Angular bindings
+}
 
 }
