@@ -62,7 +62,8 @@
     "someUnavailable": "One or more days in your range are not available. Please check or adjust for a new date range.",
     "status": {
       "available": "Available",
-      "booked": "Booked"
+     "blocked": "Unfortunately, this date is unavailable",
+      "booked": "Already booked"
     },
     "statusLabel": "Status",
     "pendingExpires": "Pending expires after {{minutes}} minutes please try again letter",

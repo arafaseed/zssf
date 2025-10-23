@@ -63,8 +63,9 @@
     "allAvailableHint": "Unaweza kuendelea na Siku zote ulizochagua au kukagua siku moja moja hapa chini.",
     "someUnavailable": "Siku moja au zaidi Ulizochagua hazipatikani. Tafadhali kagua au badilisha tarehe.",
     "status": {
-      "available": "Inapatikana",
-      "booked": "Imeshachukuliwa"
+    "available": "Inapatikana",
+   "blocked": "Samahani, tarehe hii haipatikani",
+    "booked": "Tayari imewekwa nafasi"
     },
     "statusLabel": "Hali",
     "pendingExpires": "Jaribu tena Inasubiri na itaisha baada ya dakika {{minutes}}",
