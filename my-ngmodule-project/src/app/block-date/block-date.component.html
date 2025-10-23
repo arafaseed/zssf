@@ -26,16 +26,16 @@
     </button>
   </form>
 
-  <!-- Show blocked dates -->
+  <!-- Blocked Dates List -->
   <div *ngIf="blockDateForm.value.venueId">
     <h3 class="mt-6 font-semibold text-lg">Blocked Dates</h3>
 
     <div *ngIf="loadingBlockedDates" class="text-gray-500 mt-2">Loading blocked dates...</div>
 
     <ul *ngIf="!loadingBlockedDates && blockedDates.length > 0" class="mt-2 space-y-2">
-      <li *ngFor="let date of blockedDates" class="flex justify-between items-center p-2 bg-gray-100 rounded">
-        <span>{{ date | date:'longDate' }}</span>
-        <button (click)="unblockDate(date)" mat-icon-button color="warn">
+      <li *ngFor="let blocked of blockedDates" class="flex justify-between items-center p-2 bg-gray-100 rounded">
+        <span>{{ blocked.blockedDate | date:'longDate' }}</span>
+        <button (click)="unblockDate(blocked)" mat-icon-button color="warn">
           <mat-icon>delete</mat-icon>
         </button>
       </li>

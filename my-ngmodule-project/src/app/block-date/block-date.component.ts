@@ -9,6 +9,11 @@ interface Venue {
   venueName: string;
 }
 
+interface BlockedDate {
+  id: number;
+  blockedDate: string; // ISO string
+}
+
 @Component({
   selector: 'app-block-date',
   templateUrl: './block-date.component.html',
@@ -17,8 +22,8 @@ interface Venue {
 })
 export class BlockDateComponent implements OnInit {
   blockDateForm: FormGroup;
-  blockedDates: string[] = [];
   venues: Venue[] = [];
+  blockedDates: BlockedDate[] = [];
   loading = false;
   loadingBlockedDates = false;
 
@@ -36,7 +41,7 @@ export class BlockDateComponent implements OnInit {
   ngOnInit(): void {
     this.fetchVenues();
 
-    // Whenever venue changes, reload its blocked dates
+    // Reload blocked dates when venue changes
     this.blockDateForm.get('venueId')?.valueChanges.subscribe(venueId => {
       if (venueId) {
         this.fetchBlockedDates(venueId);
@@ -46,29 +51,21 @@ export class BlockDateComponent implements OnInit {
     });
   }
 
-  // ✅ Fetch available venues
- fetchVenues() {
-  this.http.get<any>(`${environment.apiUrl}/api/venues/view/all`)
-    .subscribe({
-      next: (res) => {
-        this.venues = res || [];
-      },
-      error: () => {
-        this.snackBar.open('Failed to load venues', 'Close', { duration: 3000 });
-      }
-    });
-}
+  // Fetch all venues
+  fetchVenues() {
+    this.http.get<Venue[]>(`${environment.apiUrl}/api/venues/view/all`)
+      .subscribe({
+        next: res => this.venues = res || [],
+        error: () => this.snackBar.open('Failed to load venues', 'Close', { duration: 3000 })
+      });
+  }
 
-
-  // ✅ Fetch blocked dates for a venue
+  // Fetch blocked dates for selected venue
   fetchBlockedDates(venueId: number) {
     this.loadingBlockedDates = true;
-    this.http.get<any>(`${environment.apiUrl}/api/bookings/venue/${venueId}/blocked-dates`)
+    this.http.get<BlockedDate[]>(`${environment.apiUrl}/api/bookings/${venueId}/blocked-dates`)
       .subscribe({
-        next: (res) => {
-          // expect res to be like: { blockedDates: ["2025-10-20", "2025-10-21"] }
-          this.blockedDates = res.blockedDates || [];
-        },
+        next: res => this.blockedDates = res || [],
         error: () => {
           this.blockedDates = [];
           this.snackBar.open('Failed to load blocked dates', 'Close', { duration: 3000 });
@@ -77,37 +74,48 @@ export class BlockDateComponent implements OnInit {
       });
   }
 
-  // ✅ Block selected date for venue (fixed timezone issue)
+  // Block a new date
   blockDate() {
     if (this.blockDateForm.invalid) return;
 
     const venueId = this.blockDateForm.value.venueId;
     const selectedDate: Date = this.blockDateForm.value.date;
+    const formattedDate = selectedDate.toLocaleDateString('en-CA'); // YYYY-MM-DD
 
-    // 🕒 FIX: prevent timezone shift
-    const formattedDate = selectedDate.toLocaleDateString('en-CA'); // YYYY-MM-DD (local)
+    // ✅ Check if date is already blocked
+    const alreadyBlocked = this.blockedDates.some(d => d.blockedDate === formattedDate);
+    if (alreadyBlocked) {
+      this.snackBar.open('This date is already blocked for the selected venue!', 'Close', { duration: 3000 });
+      return;
+    }
 
     this.loading = true;
 
-    this.http.post(`${environment.apiUrl}/api/bookings/venue/${venueId}/block-dates`, {
-      dates: [formattedDate],
-      reason: 'Blocked by admin'
+    this.http.post<BlockedDate[]>(`${environment.apiUrl}/api/bookings/venue/${venueId}/block-dates`, {
+      dates: [formattedDate]
     }).subscribe({
-      next: () => {
-        this.blockedDates.push(formattedDate);
+      next: res => {
+        // Add newly blocked date(s) with IDs returned from backend
+        this.blockedDates.push(...res);
         this.snackBar.open('Date blocked successfully!', 'Close', { duration: 3000 });
         this.blockDateForm.patchValue({ date: null });
       },
-      error: (err) => {
-        this.snackBar.open(`Error blocking date: ${err.error?.message || 'Server error'}`, 'Close', { duration: 4000 });
-      },
+      error: (err) => this.snackBar.open(`Error blocking date: ${err.error?.message || 'Server error'}`, 'Close', { duration: 4000 }),
       complete: () => this.loading = false
     });
   }
 
-  // ✅ Unblock locally only
-  unblockDate(date: string) {
-    this.blockedDates = this.blockedDates.filter(d => d !== date);
-    this.snackBar.open('Date unblocked', 'Close', { duration: 3000 });
+  // Delete a blocked date
+  unblockDate(blocked: BlockedDate) {
+    if (!blocked.id) return;
+
+    this.http.delete(`${environment.apiUrl}/api/bookings/blocked-dates/${blocked.id}`)
+      .subscribe({
+        next: () => {
+          this.blockedDates = this.blockedDates.filter(d => d.id !== blocked.id);
+          this.snackBar.open('Blocked date deleted successfully!', 'Close', { duration: 3000 });
+        },
+        error: (err) => this.snackBar.open(`Failed to delete blocked date: ${err.error?.message || 'Server error'}`, 'Close', { duration: 4000 })
+      });
   }
 }
