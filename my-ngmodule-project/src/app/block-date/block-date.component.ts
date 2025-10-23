@@ -36,7 +36,7 @@ export class BlockDateComponent implements OnInit {
   ngOnInit(): void {
     this.fetchVenues();
 
-    // whenever venue changes, reload its blocked dates
+    // Whenever venue changes, reload its blocked dates
     this.blockDateForm.get('venueId')?.valueChanges.subscribe(venueId => {
       if (venueId) {
         this.fetchBlockedDates(venueId);
@@ -47,18 +47,18 @@ export class BlockDateComponent implements OnInit {
   }
 
   // ✅ Fetch available venues
-  fetchVenues() {
-    const today = new Date().toISOString().split('T')[0];
-    this.http.get<any>(`${environment.apiUrl}/api/bookings/list-available-venues?date=${today}`)
-      .subscribe({
-        next: (res) => {
-          this.venues = res.venues || [];
-        },
-        error: () => {
-          this.snackBar.open('Failed to load venues', 'Close', { duration: 3000 });
-        }
-      });
-  }
+ fetchVenues() {
+  this.http.get<any>(`${environment.apiUrl}/api/venues/view/all`)
+    .subscribe({
+      next: (res) => {
+        this.venues = res || [];
+      },
+      error: () => {
+        this.snackBar.open('Failed to load venues', 'Close', { duration: 3000 });
+      }
+    });
+}
+
 
   // ✅ Fetch blocked dates for a venue
   fetchBlockedDates(venueId: number) {
@@ -77,13 +77,15 @@ export class BlockDateComponent implements OnInit {
       });
   }
 
-  // ✅ Block selected date for venue
+  // ✅ Block selected date for venue (fixed timezone issue)
   blockDate() {
     if (this.blockDateForm.invalid) return;
 
     const venueId = this.blockDateForm.value.venueId;
     const selectedDate: Date = this.blockDateForm.value.date;
-    const formattedDate = selectedDate.toISOString().split('T')[0];
+
+    // 🕒 FIX: prevent timezone shift
+    const formattedDate = selectedDate.toLocaleDateString('en-CA'); // YYYY-MM-DD (local)
 
     this.loading = true;
 
@@ -106,6 +108,6 @@ export class BlockDateComponent implements OnInit {
   // ✅ Unblock locally only
   unblockDate(date: string) {
     this.blockedDates = this.blockedDates.filter(d => d !== date);
-    this.snackBar.open('Date unblocked locally', 'Close', { duration: 3000 });
+    this.snackBar.open('Date unblocked', 'Close', { duration: 3000 });
   }
 }
