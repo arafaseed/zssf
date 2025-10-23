@@ -11,8 +11,11 @@ interface Venue {
 
 interface BlockedDate {
   id: number;
-  blockedDate: string; // ISO string
+  venueName: string;
+  blockedDate: string;
+  reason: string;
 }
+
 
 @Component({
   selector: 'app-block-date',
@@ -106,16 +109,22 @@ export class BlockDateComponent implements OnInit {
   }
 
   // Delete a blocked date
-  unblockDate(blocked: BlockedDate) {
-    if (!blocked.id) return;
+unblockDate(blocked: BlockedDate) {
+  if (!blocked.id) return;
 
-    this.http.delete(`${environment.apiUrl}/api/bookings/blocked-dates/${blocked.id}`)
-      .subscribe({
-        next: () => {
-          this.blockedDates = this.blockedDates.filter(d => d.id !== blocked.id);
-          this.snackBar.open('Blocked date deleted successfully!', 'Close', { duration: 3000 });
-        },
-        error: (err) => this.snackBar.open(`Failed to delete blocked date: ${err.error?.message || 'Server error'}`, 'Close', { duration: 4000 })
-      });
-  }
+  const originalDates = [...this.blockedDates];
+  this.blockedDates = this.blockedDates.filter(d => d.id !== blocked.id);
+
+this.http.delete(`${environment.apiUrl}/api/bookings/blocked-dates/${blocked.id}`, { responseType: 'text' })
+  .subscribe({
+    next: () => {
+      this.snackBar.open('Blocked date deleted successfully!', 'Close', { duration: 3000 });
+    },
+    error: (err) => {
+      this.blockedDates = originalDates; // rollback
+      this.snackBar.open(`Failed to delete blocked date: ${err.error?.message || 'Server error'}`, 'Close', { duration: 4000 });
+    }
+  });
+}
+
 }
