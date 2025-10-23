@@ -403,13 +403,23 @@ downloadReport() {
     .then(canvas => {
       const imgData = canvas.toDataURL('image/png');
 
-      const printWindow = window.open('', '_blank', 'width=900,height=700');
+      const printWindow = window.open( 'width=900,height=700');
       if (!printWindow) return;
 
       printWindow.document.write(`
         <html>
           <head>
             <style>
+              @media print {
+                body, html {
+                  margin: 0;
+                  padding: 0;
+                }
+                .report-page {
+                  page-break-after: avoid;
+                  page-break-inside: avoid;
+                }
+              }
               body {
                 font-family: Arial, sans-serif;
                 margin: 0;
@@ -424,7 +434,6 @@ downloadReport() {
                 padding: 12px;
                 border-radius: 4px;
                 box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-                page-break-after: avoid;
               }
               table {
                 width: 100%;
@@ -435,11 +444,6 @@ downloadReport() {
               th, td {
                 border: 1px solid #ccc;
                 padding: 6px;
-              }
-              .report-footer {
-                text-align: left;
-                font-size: 10px;
-                margin-top: 12px;
               }
               img.chart-canvas {
                 max-width: 100%;
@@ -470,7 +474,5 @@ downloadReport() {
       window.print();
     });
 }
-
-
 
 }

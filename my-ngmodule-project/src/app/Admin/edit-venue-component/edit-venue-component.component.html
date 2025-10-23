@@ -36,16 +36,7 @@
     </mat-form-field>
 
     <!-- Building -->
-    <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Building</mat-label>
-      <select matNativeControl formControlName="buildingId">
-        <option value="" disabled>Select building</option>
-        <option *ngFor="let building of buildings" [value]="building.buildingId">{{ building.buildingName }}</option>
-      </select>
-      <mat-error *ngIf="venueForm.get('buildingId')?.invalid && (venueForm.get('buildingId')?.touched || submitted)">
-        Building selection is required
-      </mat-error>
-    </mat-form-field>
+  
 
     <!-- Venue Type -->
     <mat-form-field appearance="fill" class="full-width">
