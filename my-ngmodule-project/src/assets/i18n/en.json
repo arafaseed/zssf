@@ -239,6 +239,7 @@
   },
 
   "phoneSearch": {
+    "hidePostponeForm":"Hide",
     "postponeSuccess":"Booking extended successfully!",
     "postponeBooking" :"Postpone Booking",
     "limitReached":"You cannot update more than two times.",

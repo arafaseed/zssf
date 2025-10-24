@@ -136,13 +136,44 @@ export class PhoneSearchComponent {
   }
 
   // ----------------- POSTPONE / AVAILABILITY -----------------
-  setCurrentBooking(booking: any) {
-    this.currentBooking = booking;
+ setCurrentBooking(booking: any) {
+  const now = new Date();
+  const bookingEnd = new Date(booking.endDate);
+
+  // 🛑 If booking date is passed, don't allow postpone
+  if (bookingEnd < now) {
+    this.snackBar.open(
+      this.translate.instant('phoneSearch.cannotPostponePast') || 
+      'You cannot postpone a booking whose date has already passed.',
+      this.translate.instant('Close'),
+      { duration: 4000 }
+    );
+    return;
+  }
+
+  // 🛑 If extended more than 2 times, block
+  if ((booking.extendCount || 0) >= 2) {
+    this.snackBar.open(
+      this.translate.instant('phoneSearch.limitReached') || 
+      'You cannot extend this booking more than two times.',
+      this.translate.instant('Close'),
+      { duration: 4000 }
+    );
+    return;
+  }
+
+  // ✅ Otherwise, show the form normally
+  this.currentBooking =
+    this.currentBooking?.bookingId === booking.bookingId ? null : booking;
+
+  if (this.currentBooking) {
     this.startDate = new Date(booking.startDate);
     this.endDate = new Date(booking.endDate);
     this.startTime = this.formatBookingTime(booking.startTime);
     this.endTime = this.formatBookingTime(booking.endTime);
   }
+}
+
 
   formatBookingTime(time: any): string {
     if (!time) return '';
@@ -265,7 +296,7 @@ export class PhoneSearchComponent {
                   startTime: this.startTime,
                   endTime: this.endTime
                 },
-                { responseType: 'json' }
+                  { responseType: 'json' } 
               ).subscribe({
                 next: (response: any) => {
                   if (response?.message?.toLowerCase().includes('two times')) {
@@ -300,7 +331,7 @@ export class PhoneSearchComponent {
                     err.error?.message?.toLowerCase().includes('two times')
                       ? 'You cannot update more than two times.'
                       : this.translate.instant('phoneSearch.postponeError') || 
-                        'Error extending booking.';
+                        'You cannot update more than two times..';
 
                   this.snackBar.open(
                     errorMsg,
@@ -336,5 +367,12 @@ export class PhoneSearchComponent {
     const dd = date.getDate().toString().padStart(2, '0');
     return `${yyyy}-${mm}-${dd}`;
   }
+  isDatePassed(date: any): boolean {
+  const now = new Date();
+  const checkDate = new Date(date);
+  return checkDate < now; // true if the date already passed
+}
+
+
   
 }

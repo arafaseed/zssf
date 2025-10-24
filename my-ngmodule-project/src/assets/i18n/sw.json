@@ -241,6 +241,7 @@
     }
   },
   "phoneSearch": {
+    "hidePostponeForm":"Ficha",
    "postponeSuccess":"Hongera Booking yako imeghairishwa!",
     "postponeBooking" :"Ghairisha Booking",
     "limitReached":"Huwezi kubadilisha zaidi ya mara mbili.",

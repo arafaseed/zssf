@@ -108,7 +108,14 @@
             </div>
 
             <!-- ✅ Postpone Button BELOW Each Card -->
-            <div *ngIf="booking.bookingStatus.toLowerCase() === 'complete'" class="mt-4 border-t pt-3">
+            <div
+  *ngIf="
+    booking.bookingStatus.toLowerCase() === 'complete' &&
+    !isDatePassed(booking.endDate) &&
+    (booking.extendCount || 0) < 2
+  "
+  class="mt-4 border-t pt-3"
+>
               <button
                 class="bg-amber-500 hover:bg-amber-600 text-white w-full font-medium py-2 rounded-lg transition duration-200"
                 (click)="setCurrentBooking(booking)"
