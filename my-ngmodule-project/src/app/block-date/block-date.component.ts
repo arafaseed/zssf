@@ -16,7 +16,6 @@ interface BlockedDate {
   reason: string;
 }
 
-
 @Component({
   selector: 'app-block-date',
   templateUrl: './block-date.component.html',
@@ -77,7 +76,7 @@ export class BlockDateComponent implements OnInit {
       });
   }
 
-  // Block a new date
+  // ✅ Block a new date (auto-refresh after success)
   blockDate() {
     if (this.blockDateForm.invalid) return;
 
@@ -85,7 +84,7 @@ export class BlockDateComponent implements OnInit {
     const selectedDate: Date = this.blockDateForm.value.date;
     const formattedDate = selectedDate.toLocaleDateString('en-CA'); // YYYY-MM-DD
 
-    // ✅ Check if date is already blocked
+    // Prevent duplicate block
     const alreadyBlocked = this.blockedDates.some(d => d.blockedDate === formattedDate);
     if (alreadyBlocked) {
       this.snackBar.open('This date is already blocked for the selected venue!', 'Close', { duration: 3000 });
@@ -94,37 +93,39 @@ export class BlockDateComponent implements OnInit {
 
     this.loading = true;
 
-    this.http.post<BlockedDate[]>(`${environment.apiUrl}/api/bookings/venue/${venueId}/block-dates`, {
+    this.http.post(`${environment.apiUrl}/api/bookings/venue/${venueId}/block-dates`, {
       dates: [formattedDate]
     }).subscribe({
-      next: res => {
-        // Add newly blocked date(s) with IDs returned from backend
-        this.blockedDates.push(...res);
+      next: () => {
         this.snackBar.open('Date blocked successfully!', 'Close', { duration: 3000 });
+
+        // ✅ Auto-refresh the list
+        this.fetchBlockedDates(venueId);
+
+        // Reset form date field
         this.blockDateForm.patchValue({ date: null });
       },
-      error: (err) => this.snackBar.open(`Error blocking date: ${err.error?.message || 'Server error'}`, 'Close', { duration: 4000 }),
+      error: (err) => this.snackBar.open(`Error blocking date: ${err.error?.message }`, 'Close', { duration: 4000 }),
       complete: () => this.loading = false
     });
   }
 
-  // Delete a blocked date
-unblockDate(blocked: BlockedDate) {
-  if (!blocked.id) return;
+  // ✅ Unblock date (auto-refresh after delete)
+  unblockDate(blocked: BlockedDate) {
+    if (!blocked.id) return;
 
-  const originalDates = [...this.blockedDates];
-  this.blockedDates = this.blockedDates.filter(d => d.id !== blocked.id);
+    const venueId = this.blockDateForm.value.venueId;
 
-this.http.delete(`${environment.apiUrl}/api/bookings/blocked-dates/${blocked.id}`, { responseType: 'text' })
-  .subscribe({
-    next: () => {
-      this.snackBar.open('Blocked date deleted successfully!', 'Close', { duration: 3000 });
-    },
-    error: (err) => {
-      this.blockedDates = originalDates; // rollback
-      this.snackBar.open(`Failed to delete blocked date: ${err.error?.message || 'Server error'}`, 'Close', { duration: 4000 });
-    }
-  });
-}
-
+    this.http.delete(`${environment.apiUrl}/api/bookings/blocked-dates/${blocked.id}`, { responseType: 'text' })
+      .subscribe({
+        next: () => {
+          this.snackBar.open('Blocked date deleted successfully!', 'Close', { duration: 3000 });
+          // ✅ Auto-refresh after delete
+          this.fetchBlockedDates(venueId);
+        },
+        error: (err) => {
+          this.snackBar.open(`Failed to delete blocked date: ${err.error?.message || 'Server error'}`, 'Close', { duration: 4000 });
+        }
+      });
+  }
 }
