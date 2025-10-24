@@ -77,38 +77,49 @@ export class BlockDateComponent implements OnInit {
   }
 
   // ✅ Block a new date (auto-refresh after success)
-  blockDate() {
-    if (this.blockDateForm.invalid) return;
+ blockDate() {
+  if (this.blockDateForm.invalid) return;
 
-    const venueId = this.blockDateForm.value.venueId;
-    const selectedDate: Date = this.blockDateForm.value.date;
-    const formattedDate = selectedDate.toLocaleDateString('en-CA'); // YYYY-MM-DD
+  const venueId = this.blockDateForm.value.venueId;
+  const selectedDate: Date = this.blockDateForm.value.date;
+  const formattedDate = selectedDate.toLocaleDateString('en-CA'); // YYYY-MM-DD
 
-    // Prevent duplicate block
-    const alreadyBlocked = this.blockedDates.some(d => d.blockedDate === formattedDate);
-    if (alreadyBlocked) {
-      this.snackBar.open('This date is already blocked for the selected venue!', 'Close', { duration: 3000 });
-      return;
-    }
-
-    this.loading = true;
-
-    this.http.post(`${environment.apiUrl}/api/bookings/venue/${venueId}/block-dates`, {
-      dates: [formattedDate]
-    }).subscribe({
-      next: () => {
-        this.snackBar.open('Date blocked successfully!', 'Close', { duration: 3000 });
-
-        // ✅ Auto-refresh the list
-        this.fetchBlockedDates(venueId);
-
-        // Reset form date field
-        this.blockDateForm.patchValue({ date: null });
-      },
-      error: (err) => this.snackBar.open(`Error blocking date: ${err.error?.message }`, 'Close', { duration: 4000 }),
-      complete: () => this.loading = false
-    });
+  // Prevent duplicate block
+  const alreadyBlocked = this.blockedDates.some(d => d.blockedDate === formattedDate);
+  if (alreadyBlocked) {
+    this.snackBar.open('This date is already blocked for this venue!', 'Close', { duration: 2500 });
+    return;
   }
+
+  this.loading = true;
+
+  this.http.post(`${environment.apiUrl}/api/bookings/venue/${venueId}/block-dates`, {
+    dates: [formattedDate]
+  }).subscribe({
+    next: () => {
+      this.snackBar.open('Date blocked successfully!', 'Close', { duration: 2500 });
+
+      // ✅ Refresh list after success
+      this.fetchBlockedDates(venueId);
+
+      // Reset date field
+      this.blockDateForm.patchValue({ date: null });
+    },
+    error: (err) => {
+      // ✅ Always stop loading even on error
+      this.loading = false;
+
+      // ✅ Shorter and safer message
+      const msg = err?.error?.message || 'Failed to block date. Try again.';
+      this.snackBar.open(msg, 'Close', { duration: 3000 });
+    },
+    complete: () => {
+      // ✅ Ensure loading resets even if no error triggered
+      this.loading = false;
+    }
+  });
+}
+
 
   // ✅ Unblock date (auto-refresh after delete)
   unblockDate(blocked: BlockedDate) {
