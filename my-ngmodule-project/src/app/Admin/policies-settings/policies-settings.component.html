@@ -3,10 +3,10 @@
   <p class="text-sm text-slate-600">Manage booking expiry, employee discount, and date blocking policies.</p>
 
   <!-- Grid for all three cards -->
-  <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+  <div class="grid grid-cols-1 gap-6 md:grid-cols-3 md:items-start">
 
-    <!-- Booking Expiry Card (compact) -->
-    <section class="p-5 bg-white shadow-xl rounded-2xl self-start flex flex-col">
+    <!-- Booking Expiry Card (compact, fixed visual height) -->
+    <section class="p-5 bg-white shadow-xl rounded-2xl self-start flex flex-col min-h-[380px]">
       <div class="flex items-start justify-between gap-4">
         <div>
           <h2 class="flex items-center gap-2 text-lg font-medium text-slate-800">
@@ -20,7 +20,7 @@
         </button>
       </div>
 
-      <div class="mt-4 text-sm text-slate-700">
+      <div class="mt-4 text-sm text-slate-700 flex-1">
         <span class="font-semibold">Current:</span>
         <span *ngIf="!expiryLoading">{{ expiryHours }} hours
           <span *ngIf="expiryHours % 24 === 0">({{ expiryHours / 24 }} days)</span>
@@ -51,8 +51,8 @@
       </form>
     </section>
 
-    <!-- Discount Policy Card (compact) -->
-    <section class="p-5 bg-white shadow-xl rounded-2xl self-start flex flex-col">
+    <!-- Discount Policy Card (compact, fixed visual height) -->
+    <section class="p-5 bg-white shadow-xl rounded-2xl self-start flex flex-col min-h-[380px]">
       <div class="flex items-start justify-between gap-4">
         <div>
           <h2 class="flex items-center gap-2 text-lg font-medium text-slate-800">
@@ -73,7 +73,7 @@
         </div>
       </div>
 
-      <div class="mt-4 text-sm text-slate-700">
+      <div class="mt-4 text-sm text-slate-700 flex-1">
         <ng-container *ngIf="discountPolicy; else noPolicy">
           <div><span class="font-semibold">Year:</span> {{ discountPolicy.year }}</div>
           <div><span class="font-semibold">Rate:</span> {{ discountPolicy.discountRate * 100 | number:'1.0-2' }}%</div>
