@@ -399,6 +399,11 @@
     "accepted": "Accepted",
     "notAccepted": "Not accepted",
     "loading": "Loading…"
+  },
+  "venue":{
+    "heading" : "Venue",
+    "label" : " Venue name"
+    
   }
 
 }
