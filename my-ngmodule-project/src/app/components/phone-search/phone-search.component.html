@@ -81,32 +81,35 @@
 
             <!-- ✅ Booking Actions -->
             <div
-              class="booking-actions"
-              *ngIf="booking.bookingStatus.toLowerCase() !== 'expired' && booking.bookingStatus.toLowerCase() !== 'cancelled'"
-            >
-              <!-- View Invoice -->
-              <a
-                *ngIf="booking.invoiceId"
-                [href]="'/invoice/' + booking.invoiceId"
-                target="_blank"
-                mat-flat-button
-                color="primary"
-                class="action-button"
-              >
-                {{ 'phoneSearch.viewInvoice' | translate }}
-              </a>
+  class="booking-actions"
+  *ngIf="
+    booking.bookingStatus.toLowerCase() !== 'expired' &&
+    booking.bookingStatus.toLowerCase() !== 'cancelled'
+  "
+>
+  <!-- View Invoice -->
+  <a
+    *ngIf="booking.invoiceId"
+    [href]="'/invoice/' + booking.invoiceId"
+    target="_blank"
+    mat-flat-button
+    color="primary"
+    class="action-button"
+  >
+    {{ 'phoneSearch.viewInvoice' | translate }}
+  </a>
 
-              <!-- Cancel -->
-              <button
-                mat-flat-button
-                color="warn"
-                class="action-button"
-                (click)="cancelBooking(booking.bookingId)"
-              >
-                {{ 'phoneSearch.cancelBooking' | translate }}
-              </button>
-            </div>
-
+  <!-- Cancel only if event is in the future -->
+  <button
+    *ngIf="!isDatePassed(booking.endDate)"
+    mat-flat-button
+    color="warn"
+    class="action-button"
+    (click)="cancelBooking(booking.bookingId)"
+  >
+    {{ 'phoneSearch.cancelBooking' | translate }}
+  </button>
+</div>
             <!-- ✅ Postpone Button BELOW Each Card -->
             <div
   *ngIf="
