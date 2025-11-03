@@ -66,7 +66,7 @@
       "booked": "Already booked"
     },
     "statusLabel": "Status",
-    "pendingExpires": "Pending expires after {{minutes}} minutes please try again letter",
+    "pendingExpires": "Pending expires after {{minutes}} minutes please try again later",
     "bookedTime": "Booked time: {{start}} - {{end}}",
     "noData": "No availability information returned for this range.",
     "back": "Back",
@@ -417,6 +417,11 @@
     "accepted": "Accepted",
     "notAccepted": "Not accepted",
     "loading": "Loading…"
+  },
+  "venue":{
+    "heading" : "Venue",
+    "label" : " Venue name"
+    
   }
 
 }

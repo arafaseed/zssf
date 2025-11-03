@@ -406,6 +406,11 @@
     "accepted": "Imekubaliwa",
     "notAccepted": "Haijakubaliwa",
     "loading": "Subiri…"
+  },
+  "venue":{
+    "heading" : "Ukumbi",
+    "label" : "Jina la ukumbi"
+    
   }
 }
 
