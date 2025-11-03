@@ -117,30 +117,36 @@
     "acceptText": "Ninakubali",
     "termsLinkText": "Vigezo na Masharti",
     "disclaimer": "Tafadhali soma Masharti haya kwa makini kabla ya kutumia mfumo wetu wa Kuhifadhi kumbi za ZSSF.",
+
     "intro": {
     "heading": "1. Utangulizi",
-    "text": "Masharti haya yanaongoza matumizi ya Mfumo wetu wa kuhifadhi Ukumbi mtandaoni. Kwa kutumia Mfumo unaikubali Masharti haya. Ikiwa hauyakubali, tafadhali usitumie Mfumo."
+    "text": "Masharti haya yanaongoza matumizi ya Mfumo wetu wa kusimamia na kuendesha Ukumbi mtandaoni. Unapotumia Mfumo unatakiwa kukubali masharti yaliyowekwa. Kuendelea kutumia Mfumo huu, utahesabika umekubaliana na masharti yaliyowekwa hapo chini."
     },
     "scope": {
-      "heading": "2. Uwajibu wa Huduma",
-      "text": "Mfumo unaruhusu watumiaji kuangalia ukumbi, kuona upatikanaji, kuweka nafasi na kusimamia uhifadhi. Sisi tunatoa jukwaa; ukumbi wa mtu wa tatu hutolewa na watoa huduma wenye sheria na upatikanaji wao."
+      "heading": "2. Matumizi ya Mfumo",
+      "text": "Mfumo utatumika kuwaruhusu waombaji kuona Ukumbi, kuona upatikanaji, kuweka nafasi ya Ukumbi anaoutaka na kufanya malipo"
     },
     "booking": {
-      "heading": "3. Sera za Hifadhi",
+      "heading":"3. Masharti ya Kukodi Ukumbi",
       "list": [
-        "Uwekaji ni lazima ufanyike kupitia Mfumo na utoe taarifa sahihi.",
-        "Uhifadhi unathibitishwa tu baada ya malipo au dhamana ya malipo iliyoandikwa kupokelewa.",
-        "Maombi maalum (catering, upangaji, mapambo) lazima yatangazwe wakati wa kuhifadhi na yanaweza kusababisha ada za ziada.",
-        "Kikomo cha watu kilichowekwa na ukumbi au sheria lazima kiheshimiwe kila wakati."
+        "Mtumiaji atatakiwa kutoa taarifa sahihi wakati wa kutumia mfumo huu.",
+        "Muombaji atalazimika kuomba nafasi ya ukumbi kwa kutumia mfumo huu.",
+	      "Upatikanaji wa nafasi ya Ukumbi itathibitishwa mara tu baada ya kupokelewa malipo au dhamana ya malipo.",
+	      "Ni lazima muombaji aainishe iwapo maombi maalum (viti,meza n.k) yatahitajika wakati wa kuomba ukumbi, maombi haya yatasababisha gharama za ziada.",
+	      "Ni lazima kufuata masharti yaliyowekwa ikiwemo kikomo cha idadi ya watu kilichowekwa pamoja na ukumbi au sheria lazima kiheshimiwe kila wakati.",
+	      "Muda wa Mfumo(System) kusubiria malipo ya Maombi ya Ukumbi ulioekeshwa ni masaa 24 ambao utahesabika mara tu baada ya kufanya maombi hayo."
       ]
     },
     "payment": {
       "heading": "4. Masharti ya Malipo",
       "list": [
-        "Njia za malipo zinazokubaliwa ni pamoja na pesa za simu za ndani (M-Pesa, TigoPesa, Airtel Money), uhamisho wa benki, au kadi (iwapo inatolewa).",
-        "Ada za ziada (saa za ziada, vifaa vya ziada) zitalipwa kwa tofauti."
+       "Unatakiwa ufanye malipo kwa kutumia nambari ya Malipo (Control Number) ambayo utapatiwa kutoka kwenye mfumo huo.",
+	     "Unatakiwa ulipe malipo ya mapema (Advance) ya asilimia 50% ya bei ya gharama ya ukumbi.",
+	     "Njia za malipo zinazokubaliwa ni pamoja na Malipo kwa njia za Miamala ya simu za ndani (M-Pesa, Mixx by YAS, Airtel Money), uhamisho kutoka benki, na kwa njia ya Benki",
+	     "Taasisi haitohusika na upoteaji wa fedha wakati wa malipo kabla ya kuthibitishwa na Mfumo."
       ]
     },
+    
     
     "cancellation": {
   "heading": "5. Kufuta na Marejesho",
@@ -150,43 +156,44 @@
     "2) Ikiwa mtumiaji ataahirisha (kwa mfano kutokana na dharura) na kusogeza tarehe mbele, mfumo utamruhusu kufanya mabadiliko hayo mara ya kwanza bila makato yoyote. Lakini akifanya hivyo kwa mara ya pili, mfumo utamkata 25%. Baada ya hapo, atatakiwa kuwasiliana na mfanyakazi anayehusika na ukumbi huo ambaye namba yake ya simu inaonyeshwa kwenye ukurasa wa ukumbi."
   ]
 },
-
     "responsibilities": {
       "heading": "6. Majukumu ya Mtumiaji",
-      "list": [
-        "Watumiaji lazima wafuate kanuni za ukumbi, sheria za eneo na leseni zinazohitajika (mfano: pombe au muziki).",
-        "Watumiaji wanawajibika kwa uharibifu wa mali ya ukumbi na lazima walipie gharama za matengenezo au uingizwaji.",
-        "Taka zote lazima zitolewe na eneo lirudishwe safi isipokuwa usafi umejumuishwa."
-      ]
-    },
+       "list": [
+      "Watumiaji lazima wafuate kanuni na sheria za ukumbi zilizowekwa na Uongozi.", 
+	    "Watumiaji wanawajibika kwa uharibifu wa mali katika ukumbi na lazima walipie gharama za matengenezo ya uharibifu huo.",
+	    "Usafi Uzingatiwe, Taka zote lazima zitolewe na kuacha eneo kuwa safi."
+  ]
+},
     "prohibited": {
       "heading": "7. Mambo Yasiyoruhusiwa",
       "list": [
-        "Shughuli haramu, tabia hatarishi au matumizi ya vifaa hatarishi haviruhusiwi.",
-        "Kukodisha tena bila kibali, kelele kupita kiasi baada ya muda ulioruhusiwa, au shughuli haramu haziruhusiwi.",
-        "Uvunjaji wa masharti unaweza kusababisha kuondolewa na kupoteza malipo; ukiukaji mkubwa utaripotiwa kwa mamlaka."
-      ]
-    },
-    "liability": {
-      "heading": "8. Wajibu",
-      "text": "Jukwaa ni mpatanishi: mtoa ukumbi anawajibika kwa hali ya ukumbi na huduma zake. Sisi hatuwajibiki kwa hasara, uharibifu au majeraha yanayotokana na matukio kwenye ukumbi wa mtu wa tatu, isipokuwa pale sheria inapotulazimisha."
-    },
+     "Kufanya Shughuli zisizozingatia maadili ya Kizanzibari, tabia hatarishi au matumizi ya vifaa hatarishi haviruhusiwi.",
+	   "Hairuhusiwi kumkodisha mtu mwengine.",
+	   "Hairuhusiwi kufanya kelele kupita kiasi.", 
+	   "Uvunjaji wa masharti unaweza kusababisha kuondolewa na kupoteza malipo.Ukiukaji mkubwa utaripotiwa kwa mamlaka Husika na hatua za kisheria zitachukuliwa dhidi yake."
+  ]
+},
+    "liability": {    "heading": "8. Wajibu",
+      "list": [
+	  "Mfuko una wajibika kwa hali ya ukumbi na huduma zake.", 
+	  "Mfuko hautawajibika kwa hasara, uharibifu au majeraha yanayotokana na matukio kwenye ukumbi wakati wa shughuli, isipokuwa pale sheria inapotulazimisha."
+  ]  
+ },
     "privacy": {
-      "heading": "9. Faragha na Ulinzi wa Data",
-      "text": "Data binafsi inashughulikiwa kwa usalama kwa ajili ya uhifadhi, mawasiliano na kufuata sheria. Hatuzwi data binafsi. Taarifa zinaweza kufichuliwa pale sheria inavyotutaka."
-    },
+      "heading": "9. Faragha na Ulinzi wa Taarifa",
+      "text": "Taarifa zote zitakazotolewa zitatunzwa kwa usalama na usiri, mawasiliano na kufuata sheria. Taarifa zinaweza kufichuliwa pale sheria inavyotutaka."
+  },
     "modifications": {
       "heading": "10. Mabadiliko ya Masharti",
-      "text": "Tunaweza kusasisha Masharti haya mara kwa mara. Tutachapisha mabadiliko na kuwajulisha watumiaji. Kuendelea kutumia Mfumo kunamaanisha umekubali masharti mapya."
-    },
-      "liabilnity": {
-      "heading": "11. Wajibu",
-      "text": "Jukwaa ni mpatanishi: mtoa ukumbi anawajibika kwa hali ya ukumbi na huduma zake. Sisi hatuwajibiki kwa hasara, uharibifu au majeraha yanayotokana na matukio kwenye ukumbi wa mtu wa tatu, isipokuwa pale sheria inapotulazimisha."
-    },
+      "text": "Tunaweza kufanya marekebisho ya Masharti haya mara kwa mara. Marekebisho yatachapishwa na kuwajulisha watumiaji. Kuendelea kutumia Mfumo kunamaanisha umekubali masharti mapya."
+  },
     "law": {
-      "heading": "12. Sheria Inayotumika",
-      "text": "Masharti haya yanaendeshwa na sheria za Jamhuri ya Muungano wa Tanzania. Migogoro itatatuliwa katika mahakama husika, ikiwemo Zanzibar inapohitajika."
-    },
+       "heading": "12. Sheria Inayotumika",
+      "list": [
+        "Masharti haya yanaendeshwa na Sheria za Zanzibar.",
+        "Migogoro itatatuliwa katika mahakama husika."
+    ]
+  },
     "contactTitle": "Wasiliana",
     "contactText": "Kwa maswali au migogoro, wasiliana na msaada kupitia Mfumo au piga simu kwenye nambari ya msaada ya ukumbi."
   },
