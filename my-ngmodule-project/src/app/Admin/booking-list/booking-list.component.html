@@ -30,6 +30,11 @@
 </mat-card>
 
 <div class="table-wrapper" *ngIf="!loading">
+  <div class="flex justify-end gap-3 mb-3">
+  <button mat-raised-button color="primary" (click)="printTable()">Print</button>
+  <button mat-raised-button color="accent" (click)="downloadTable()">Download PDF</button>
+</div>
+
   <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z2 w-full table-auto">
 
     <!-- Booking Code -->

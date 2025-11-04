@@ -94,6 +94,10 @@ import { ReportsComponent } from './Admin/reports/reports.component';
 import { AdminReportComponent } from './Admin/admin-report/admin-report.component';
 import { PostponeDialogComponent } from './components/postpone-dialog/postpone-dialog.component';
 import { BlockDateComponent } from './block-date/block-date.component';
+import { ReportComponent } from './report/report.component';
+import { NgChartsModule } from 'ng2-charts';
+
+
 
 
 
@@ -154,6 +158,7 @@ export function createTranslateLoader(http: HttpClient) {
     AdminReportComponent,
     PostponeDialogComponent,
     BlockDateComponent,
+    ReportComponent,
    
     
     
@@ -163,6 +168,7 @@ export function createTranslateLoader(http: HttpClient) {
 
   ],
   imports: [
+    NgChartsModule,
     BrowserModule,
     FormsModule,
     AppRoutingModule,
