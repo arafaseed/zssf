@@ -113,82 +113,100 @@
   },
   "terms": {
     "lastUpdated": "Last Updated",
-    "acceptText": "I accept the",
-    "termsLinkText": "Terms & Conditions",
-    "disclaimer": "Please read these Terms carefully before using our ZSSF HALL RESERVATION. ",
+    "acceptText": "I Accept",
+    "termsLinkText": "Terms and Conditions",
+    "disclaimer": "Please read these Terms carefully before using our ZSSF HALL RESERVATION System.",
+
     "intro": {
-    "heading": "1. Introduction",
-    "text": "These Terms govern the use of our online Hall Booking Reservation System. By using the System you acknowledge and accept these Terms. If you do not accept them, please do not use the System."
+      "heading": "1. Introduction",
+      "text": "These Terms govern the use of our Online Hall Management and Booking System. By using the System, you agree to comply with the stated conditions. Continuing to use the System indicates your acceptance of these Terms below."
     },
+
     "scope": {
-      "heading": "2. Scope of Service",
-      "text": "The System allows users to browse halls, check availability, make reservations and manage bookings. We provide the platform; individual halls are supplied by third-party venue providers whose local rules and availability apply."
+      "heading": "2. Use of the System",
+      "text": "The System is used to allow applicants to view available halls, check availability, book their preferred hall, and make payments."
     },
+
     "booking": {
-      "heading": "3. Booking Policy",
+      "heading": "3. Hall Booking Terms",
       "list": [
-        "Bookings must be made through the System and provide accurate information.",
-        "Reservations become confirmed only after payment or a written payment guarantee is received.",
-        "Special requests (catering, set-up, decorations) must be declared when booking and may require additional fees.",
-        "Capacity limits set by the venue or law must be observed at all times."
+        "Users must provide accurate information when using this system.",
+        "Applicants must submit hall booking requests through the system.",
+        "Hall availability will be confirmed once payment or a payment guarantee is received.",
+        "Applicants must specify if any special requests (chairs, tables, etc.) are required during the booking process. These requests may incur additional charges.",
+        "All rules must be followed, including the maximum number of people allowed in the hall, and all laws must be respected at all times.",
+        "The System allows a payment waiting period of 24 hours for hall booking requests, starting immediately after the request is made."
       ]
     },
+
     "payment": {
       "heading": "4. Payment Terms",
       "list": [
-        "Accepted payment methods include local mobile money (M-Pesa, TigoPesa, Airtel Money), bank transfer, or card payment where provided.",
-        "Any additional charges (overtime, extra equipment) are billed separately."
+        "You must make payments using the Payment Control Number provided by the System.",
+        "You are required to pay an advance payment of 50% of the hall booking fee.",
+        "Accepted payment methods include mobile money services (M-Pesa, Mixx by YAS, Airtel Money), bank transfers, and direct bank payments.",
+        "The Fund will not be responsible for any loss of money before the payment is confirmed by the System."
       ]
     },
-    
+
     "cancellation": {
-  "heading": "5. Cancellation & Refund",
-  "list": [
-    "There are two types of cancellations:",
-    "1) If the user cancels directly after already paying 50%, a 25% cancellation fee will be deducted automatically. The remaining 25% can be claimed by contacting the staff responsible for that specific venue. Each venue displays the staff member’s phone number for communication.",
-    "2) If the user postpones the booking (for example, due to an emergency) and changes the date, the system will allow one free update without any deduction. However, if the user postpones a second time, the system will charge a 25% fee. After that, the user must contact the responsible venue staff, whose contact number is shown on the venue page."
-  ]
-},
+      "heading": "5. Cancellations and Refunds",
+      "list": [
+        "There are two types of cancellations:",
+        "1) If a user cancels immediately after paying 50%, a 25% cancellation fee will be deducted. The remaining 25% can be refunded by contacting the hall staff. Each hall shows the contact phone number of the responsible staff member.",
+        "2) If a user postpones (for example, due to an emergency) and changes the booking date, the system allows the first reschedule without any deduction. However, for the second reschedule, the system will deduct 25%. After that, the user must contact the hall’s responsible staff member directly, whose phone number is shown on the hall page."
+      ]
+    },
 
     "responsibilities": {
       "heading": "6. User Responsibilities",
       "list": [
-        "Users must follow venue rules, local laws and licensing requirements (e.g., alcohol or music permits).",
-        "Users are liable for damage to venue property during their booking and must cover repair or replacement costs.",
-        "All waste must be removed and spaces returned in a clean condition unless cleaning is included."
+        "Users must follow the hall rules and regulations established by the Management.",
+        "Users are responsible for any damage to hall property and must cover repair costs for such damage.",
+        "Cleanliness must be maintained; all waste must be properly disposed of, and the venue should be left clean."
       ]
     },
+
     "prohibited": {
       "heading": "7. Prohibited Activities",
       "list": [
-        "Illegal activities, unsafe conduct or hazardous materials are strictly forbidden.",
-        "Unlicensed sub-letting, excessive noise beyond permitted hours, or illegal activities are prohibited.",
-        "Breach of terms may lead to eviction and loss of payments; serious violations may be reported to authorities."
+        "Engaging in activities that violate Zanzibari morals, indecent behavior, or the use of dangerous materials or equipment is prohibited.",
+        "Subleasing the hall to another person is not allowed.",
+        "Excessive noise is strictly prohibited.",
+        "Violation of these terms may result in removal from the venue and loss of payments. Severe violations will be reported to the relevant authorities and may lead to legal action."
       ]
     },
+
     "liability": {
       "heading": "8. Liability",
-      "text": "The platform is an intermediary: the venue provider is responsible for venue condition and services. We are not liable for loss, damage or injury arising from events at third-party venues, except as required by law."
+      "list": [
+        "The Fund is responsible for the condition of the hall and the services provided.",
+        "The Fund shall not be liable for any loss, damage, or injury occurring during events at the hall unless required by law."
+      ]
     },
+
     "privacy": {
-      "heading": "9. Privacy & Data Protection",
-      "text": "Personal data is processed securely for booking, communications and legal compliance. We do not sell data. Information may be disclosed where required by law."
+      "heading": "9. Privacy and Data Protection",
+      "text": "All information provided will be handled securely and confidentially in accordance with legal requirements. Data may be disclosed only when required by law."
     },
+
     "modifications": {
-      "heading": "10. Modifications",
-      "text": "We may update these Terms periodically. Updates will be published and notified. Continued use means acceptance."
+      "heading": "10. Changes to the Terms",
+      "text": "We may revise these Terms from time to time. Any changes will be published and communicated to users. Continued use of the System indicates your acceptance of the new Terms."
     },
-     "liabilnity": {
-      "heading": "11. Liability",
-      "text": "The platform is an intermediary: the venue provider is responsible for venue condition and services. We are not liable for loss, damage or injury arising from events at third-party venues, except as required by law."
-    },
+
     "law": {
-      "heading": "12. Governing Law",
-      "text": "These Terms are governed by the laws of the United Republic of Tanzania. Disputes will be resolved in competent courts, including Zanzibar where applicable."
+      "heading": "11. Governing Law",
+      "list": [
+        "These Terms are governed by the Laws of Zanzibar.",
+        "Disputes will be resolved in the appropriate courts."
+      ]
     },
+
     "contactTitle": "Contact",
-    "contactText": "For questions or disputes, reach support via the System or call the help-line on the venue page."
-  },
+    "contactText": "For questions or disputes, please contact support through the System or call the hall’s support number."
+},
+
 
   "feedback": {
     "title": "Customer Feedback",
