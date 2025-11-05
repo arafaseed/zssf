@@ -24,7 +24,7 @@ export class ReportsComponent implements OnInit, OnDestroy {
   errorMessage: string | null = null;
 
   displayedColumns: string[] = [
-    'forBookingId',
+   
     'customerFullName',
     'customerPhone',
     'venueName',

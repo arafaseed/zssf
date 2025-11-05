@@ -1,5 +1,22 @@
 <span class="text-lg font-semibold m-5">Bookings</span>
 <span class="spacer"></span>
+<mat-form-field appearance="fill">
+  <mat-label>Filter by Venue</mat-label>
+  <mat-select [(value)]="venueId" (selectionChange)="setVenueFilter($event.value)">
+    <mat-option [value]="0">All Venues</mat-option>
+    <mat-option *ngFor="let v of venues" [value]="v.venueId">{{ v.venueName }}</mat-option>
+  </mat-select>
+</mat-form-field>
+
+
+<mat-form-field class="filter-field min-w-[180px]">
+  <mat-label>Filter by Phone Number</mat-label>
+  <input matInput type="text" [value]="searchPhone" (input)="onPhoneChange($event)" placeholder="Enter phone number">
+  <button mat-icon-button matSuffix *ngIf="searchPhone" aria-label="Clear" (click)="clearPhone()">
+    <mat-icon>clear</mat-icon>
+  </button>
+</mat-form-field>
+
 
 <mat-card class="booking-card m-5 ">
   <div class="controls flex flex-wrap gap-3 p-4 items-center">

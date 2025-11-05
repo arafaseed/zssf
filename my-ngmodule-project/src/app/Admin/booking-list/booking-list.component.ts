@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { BookingService, Booking, CustomerType } from '../../Services/booking.service';
+import { ViewVenueService } from '../../Services/view-venue.service'; // 🔹 Add this import
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -7,7 +8,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { PdfViewerOverlayComponent } from '../pdf-viewer-overlay/pdf-viewer-overlay.component';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-
 
 @Component({
   selector: 'app-booking-list',
@@ -22,7 +22,7 @@ export class BookingListComponent implements OnInit, AfterViewInit {
     'activity',
     'venue',
     'customer',
-    'phoneNumber', // new column
+    'phoneNumber',
     'customerType',
     'startDate',
     'startTime',
@@ -40,7 +40,10 @@ export class BookingListComponent implements OnInit, AfterViewInit {
 
   currentStatus: string = 'ALL';
   currentCustomerType: 'ALL' | CustomerType = 'ALL';
-  searchDate: string = ''; // ISO string yyyy-MM-dd
+  searchDate: string = '';
+  venueId: number = 0; // 🔹 Current venue filter selection
+
+  venues: any[] = []; // 🔹 Store venue list
 
   customerTypeOptions: Array<'ALL' | CustomerType> = ['ALL', 'INDIVIDUAL', 'ORGANIZATION'];
   statusOptions = ['ALL', 'EXPIRED', 'PENDING', 'IN_PROGRESS', 'COMPLETE', 'CANCELLED'];
@@ -48,21 +51,23 @@ export class BookingListComponent implements OnInit, AfterViewInit {
   loading = false;
   errorMessage = '';
 
-  /** Overlay control */
   showPdfOverlay = false;
   selectedDocs: string[] = [];
   selectedBookingId?: number;
   selectedBookingCode?: string;
+  searchPhone: string = ''; // 🔹 new phone number filter
   pdfAuthToken?: string;
   @ViewChild('pdfOverlay') pdfOverlay?: PdfViewerOverlayComponent;
 
   constructor(
     private bookingService: BookingService,
+    private viewVenueService: ViewVenueService, // 🔹 Inject service
     private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
     this.loadBookings();
+    this.loadVenues(); // 🔹 Load all venues
   }
 
   ngAfterViewInit(): void {
@@ -87,6 +92,24 @@ export class BookingListComponent implements OnInit, AfterViewInit {
         this.loading = false;
       }
     });
+  }
+
+  // 🔹 Fetch all venues
+  loadVenues(): void {
+    this.viewVenueService.getAllVenues().subscribe({
+      next: (vs: any[]) => {
+        this.venues = (vs || []).map(v => ({
+          venueId: v.venueId ?? v.id ?? 0,
+          venueName: v.venueName ?? v.name ?? 'Unnamed Venue'
+        }));
+      },
+      error: (err) => console.error('Failed to load venues', err)
+    });
+  }
+
+  setVenueFilter(id: number) {
+    this.venueId = id;
+    this.applyFilters();
   }
 
   formatDate(d?: string | null): string {
@@ -114,24 +137,48 @@ export class BookingListComponent implements OnInit, AfterViewInit {
     this.applyFilters();
   }
 
+  onPhoneChange(event: any) {
+  this.searchPhone = event?.target?.value ?? '';
+  this.applyFilters();
+}
+
+clearPhone() {
+  this.searchPhone = '';
+  this.applyFilters();
+}
+
+
   applyFilters() {
     let filtered = [...this.bookings];
 
-    if (this.currentStatus && this.currentStatus !== 'ALL') {
+    if (this.currentStatus !== 'ALL') {
       filtered = filtered.filter(b => b.bookingStatus === this.currentStatus);
     }
 
-    if (this.currentCustomerType && this.currentCustomerType !== 'ALL') {
+    if (this.currentCustomerType !== 'ALL') {
       filtered = filtered.filter(b => b.customer?.customerType === this.currentCustomerType);
     }
 
     if (this.searchDate) {
       filtered = filtered.filter(b => b.startDate === this.searchDate);
     }
+    
+    if (this.searchPhone) {
+    filtered = filtered.filter(b => 
+      b.customer?.phoneNumber?.toString().includes(this.searchPhone)
+    );
+  }
+
+    // 🔹 Apply venue filter
+    if (this.venueId && this.venueId !== 0) {
+      filtered = filtered.filter(b => b.venueId === this.venueId);
+    }
 
     this.dataSource.data = filtered;
     if (this.paginator) this.paginator.firstPage();
   }
+
+   
 
   getStatusColor(status: string) {
     switch (status) {
@@ -163,47 +210,48 @@ export class BookingListComponent implements OnInit, AfterViewInit {
     this.selectedBookingId = undefined;
     this.selectedBookingCode = undefined;
   }
+
   printTable() {
-  const tableElement = document.querySelector('.table-wrapper');
-  if (!tableElement) return;
+    const tableElement = document.querySelector('.table-wrapper');
+    if (!tableElement) return;
 
-  const printWindow = window.open('', '_blank');
-  printWindow?.document.write('<html><head><title>Bookings</title>');
-  printWindow?.document.write('<style>table{width:100%;border-collapse:collapse;}th,td{border:1px solid #ccc;padding:8px;text-align:left;}th{background:#0c1429;color:white;}</style>');
-  printWindow?.document.write('</head><body>');
-  printWindow?.document.write('<h2>Bookings</h2>');
-  printWindow?.document.write(tableElement.outerHTML);
-  printWindow?.document.write('</body></html>');
-  printWindow?.document.close();
-  printWindow?.print();
-}
-downloadTable() {
-  const tableElement = document.querySelector('.table-wrapper') as HTMLElement;
-  if (!tableElement) return;
+    const printWindow = window.open('', '_blank');
+    printWindow?.document.write('<html><head><title>Bookings</title>');
+    printWindow?.document.write('<style>table{width:100%;border-collapse:collapse;}th,td{border:1px solid #ccc;padding:8px;text-align:left;}th{background:#0c1429;color:white;}</style>');
+    printWindow?.document.write('</head><body>');
+    printWindow?.document.write('<h2>Bookings</h2>');
+    printWindow?.document.write(tableElement.outerHTML);
+    printWindow?.document.write('</body></html>');
+    printWindow?.document.close();
+    printWindow?.print();
+  }
 
-  html2canvas(tableElement, {
-    scale: 2,
-    useCORS: true,
-    backgroundColor: '#ffffff', // set background to white
-    onclone: (doc) => {
-      // Fallback: replace unsupported oklch colors with standard rgb
-      doc.querySelectorAll('*').forEach((el: any) => {
-        const style = getComputedStyle(el);
-        if (style.color.includes('oklch') || style.backgroundColor.includes('oklch')) {
-          el.style.color = 'black';
-          el.style.backgroundColor = 'white';
-        }
-      });
-    },
-  }).then(canvas => {
-    const pdf = new jsPDF('p', 'mm', 'a4');
-    const imgData = canvas.toDataURL('image/png');
-    const imgWidth = 190;
-    const pageHeight = 295;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-    let position = 10;
-    pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-    pdf.save('Bookings.pdf');
-  });
-}
+  downloadTable() {
+    const tableElement = document.querySelector('.table-wrapper') as HTMLElement;
+    if (!tableElement) return;
+
+    html2canvas(tableElement, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: '#ffffff',
+      onclone: (doc) => {
+        doc.querySelectorAll('*').forEach((el: any) => {
+          const style = getComputedStyle(el);
+          if (style.color.includes('oklch') || style.backgroundColor.includes('oklch')) {
+            el.style.color = 'black';
+            el.style.backgroundColor = 'white';
+          }
+        });
+      },
+    }).then(canvas => {
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgData = canvas.toDataURL('image/png');
+      const imgWidth = 190;
+      const pageHeight = 295;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let position = 10;
+      pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+      pdf.save('Bookings.pdf');
+    });
+  }
 }

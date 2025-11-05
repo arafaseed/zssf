@@ -38,7 +38,7 @@ export class ReportComponent {
     topCompleteVenue: 'MICHENZANI MALL HALL',
     bestRevenueVenue: {
       name: 'MICHENZANI MALL HALL',
-      capacity: 350,
+      capacity: 32222250,
       revenue: 800
     },
     topVenuesByRevenue: [
