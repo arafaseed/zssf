@@ -31,6 +31,7 @@ export class LayoutComponent {
     { label: 'Customer Feedback', link: '/admin/feedback', icon: 'feedback' },
     { label: 'Policy Settings', link: '/admin/policies-settings', icon: 'settings' },
     { label: 'Admin Report', link: '/admin/admin-reports', icon: 'report' },
+     { label: 'Sample Report', link: '/admin/app-report', icon: 'report' },
   ];
 
   constructor(private auth: AuthService) {

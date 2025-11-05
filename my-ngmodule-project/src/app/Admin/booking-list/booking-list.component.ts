@@ -5,6 +5,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { PdfViewerOverlayComponent } from '../pdf-viewer-overlay/pdf-viewer-overlay.component';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+
 
 @Component({
   selector: 'app-booking-list',
@@ -160,4 +163,47 @@ export class BookingListComponent implements OnInit, AfterViewInit {
     this.selectedBookingId = undefined;
     this.selectedBookingCode = undefined;
   }
+  printTable() {
+  const tableElement = document.querySelector('.table-wrapper');
+  if (!tableElement) return;
+
+  const printWindow = window.open('', '_blank');
+  printWindow?.document.write('<html><head><title>Bookings</title>');
+  printWindow?.document.write('<style>table{width:100%;border-collapse:collapse;}th,td{border:1px solid #ccc;padding:8px;text-align:left;}th{background:#0c1429;color:white;}</style>');
+  printWindow?.document.write('</head><body>');
+  printWindow?.document.write('<h2>Bookings</h2>');
+  printWindow?.document.write(tableElement.outerHTML);
+  printWindow?.document.write('</body></html>');
+  printWindow?.document.close();
+  printWindow?.print();
+}
+downloadTable() {
+  const tableElement = document.querySelector('.table-wrapper') as HTMLElement;
+  if (!tableElement) return;
+
+  html2canvas(tableElement, {
+    scale: 2,
+    useCORS: true,
+    backgroundColor: '#ffffff', // set background to white
+    onclone: (doc) => {
+      // Fallback: replace unsupported oklch colors with standard rgb
+      doc.querySelectorAll('*').forEach((el: any) => {
+        const style = getComputedStyle(el);
+        if (style.color.includes('oklch') || style.backgroundColor.includes('oklch')) {
+          el.style.color = 'black';
+          el.style.backgroundColor = 'white';
+        }
+      });
+    },
+  }).then(canvas => {
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const imgData = canvas.toDataURL('image/png');
+    const imgWidth = 190;
+    const pageHeight = 295;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    let position = 10;
+    pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+    pdf.save('Bookings.pdf');
+  });
+}
 }
