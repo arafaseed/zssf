@@ -242,7 +242,7 @@ clearPhone() {
   // Header with logo, title and datetime
   printWindow.document.write(`
     <div class="header">
-      <div><img class="logo" src="assets/logo.png" alt="Logo"></div>
+      <div><img class="logo" src="zssf.png" alt="Logo"></div>
       <div>
         <h1>${reportTitle}</h1>
         <div class="meta">Generated on: ${currentDateTime}</div>
@@ -256,49 +256,55 @@ clearPhone() {
   printWindow.document.close();
   printWindow.print();
 }
-
 downloadTable() {
-  const reportTitle = 'My Booking System';
+  const reportTitle = 'ZSSF Hall Reservation System';
   const currentDateTime = new Date().toLocaleString();
-  const heading = this.venueId && this.venueId !== 0
-    ? `Bookings for Venue: ${this.venues.find(v => v.venueId === this.venueId)?.venueName || ''}`
-    : 'All Bookings';
 
-  // 1️⃣ Create container
+  // Build filter summary
+  const venueName = this.venueId && this.venueId !== 0 
+    ? this.venues.find(v => v.venueId === this.venueId)?.venueName || '-' 
+    : 'All Venues';
+  const statusFilter = this.currentStatus !== 'ALL' ? this.currentStatus : 'All Statuses';
+  const customerTypeFilter = this.currentCustomerType !== 'ALL' ? this.currentCustomerType : 'All Types';
+  const phoneFilter = this.searchPhone || 'Any Phone';
+
+  const heading = `Filtered by: Venue: ${venueName} | Status: ${statusFilter} | Customer Type: ${customerTypeFilter} | Phone: ${phoneFilter}`;
+
   const container = document.createElement('div');
   container.style.background = '#ffffff';
   container.style.padding = '20px';
   container.style.fontFamily = 'Arial, sans-serif';
 
-  // 2️⃣ Add header with logo, title, date/time
+  // Centered logo and title
   container.innerHTML = `
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-      <img src="zssf.png" alt="Logo" style="height:50px;">
-      <div>
-        <h1 style="margin:0;">${reportTitle}</h1>
-        <small>Generated on: ${currentDateTime}</small>
-      </div>
+    <div style="text-align:center; margin-bottom:10px;">
+      <img src="zssf.png" alt="Logo" style="height:70px; display:block; margin:0 auto 10px auto;">
+      <h1 style="margin:0; font-size:24px;">${reportTitle}</h1>
+      <small>Generated on: ${currentDateTime}</small>
     </div>
-    <h2>${heading}</h2>
+    <h2 style="font-size:16px; margin-bottom:15px;">${heading}</h2>
   `;
 
-  // 3️⃣ Build table dynamically
   const table = document.createElement('table');
   table.style.width = '100%';
   table.style.borderCollapse = 'collapse';
   table.style.marginTop = '10px';
+  table.style.fontSize = '13px'; // slightly bigger font
+
+  // Columns without 'reference'
+  const columnsToShow = this.displayedColumns.filter(col => col !== 'reference');
 
   // Table header
   const thead = table.createTHead();
   const headerRow = thead.insertRow();
-  this.displayedColumns.forEach(col => {
+  columnsToShow.forEach(col => {
     const th = document.createElement('th');
-    th.innerText = col;
+    th.innerText = col.charAt(0).toUpperCase() + col.slice(1); // prettify header
     th.style.border = '1px solid #ccc';
-    th.style.padding = '6px';
+    th.style.padding = '8px';
     th.style.background = '#0c1429';
     th.style.color = '#fff';
-    th.style.fontSize = '12px';
+    th.style.fontSize = '14px'; // bigger header
     headerRow.appendChild(th);
   });
 
@@ -306,50 +312,55 @@ downloadTable() {
   const tbody = table.createTBody();
   this.dataSource.data.forEach(row => {
     const tr = tbody.insertRow();
-    this.displayedColumns.forEach(col => {
+    columnsToShow.forEach(col => {
       const td = tr.insertCell();
-      let value: any = (row as any)[col] ?? '-';
+      let value: any = '-';
 
-      // Optional: format dates if needed
-      if (col.toLowerCase().includes('date') && value) {
-        value = new Date(value).toLocaleDateString();
+      switch (col) {
+        case 'bookingCode': value = row.bookingCode; break;
+        case 'bookingDate': value = row.bookingDate ? new Date(row.bookingDate).toLocaleDateString() : '-'; break;
+        case 'activity': value = row.venueActivityName || '-'; break;
+        case 'venue': value = row.venueName || '-'; break;
+        case 'customer': value = row.customer?.customerName || '-'; break;
+        case 'phoneNumber': value = row.customer?.phoneNumber || '-'; break;
+        case 'customerType': value = row.customer?.customerType || '-'; break;
+        case 'startDate': value = row.startDate ? new Date(row.startDate).toLocaleDateString() : '-'; break;
+        case 'startTime': value = row.startTime || '-'; break;
+        case 'endDate': value = row.endDate ? new Date(row.endDate).toLocaleDateString() : '-'; break;
+        case 'endTime': value = row.endTime || '-'; break;
+        case 'status': value = row.bookingStatus || '-'; break;
+        default: value = (row as any)[col] ?? '-';
       }
 
       td.innerText = value;
       td.style.border = '1px solid #ccc';
-      td.style.padding = '6px';
-      td.style.fontSize = '11px';
+      td.style.padding = '8px';
+      td.style.fontSize = '13px';
       td.style.color = '#000';
     });
   });
 
   container.appendChild(table);
 
-  // 4️⃣ Append container to body temporarily
   container.style.position = 'fixed';
   container.style.left = '-9999px';
   document.body.appendChild(container);
 
-  // 5️⃣ Generate PDF
   html2canvas(container, { scale: 2, useCORS: true, backgroundColor: '#ffffff' })
     .then(canvas => {
       const pdf = new jsPDF('p', 'mm', 'a4');
       const imgData = canvas.toDataURL('image/png');
       const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
-
-      const imgWidth = pageWidth - 20; // 10mm margin each side
+      const imgWidth = pageWidth - 20;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
       pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
       pdf.save('Bookings.pdf');
 
-      // Remove temporary container
       document.body.removeChild(container);
     })
     .catch(err => console.error('html2canvas error', err));
 }
-
 
 
 }
