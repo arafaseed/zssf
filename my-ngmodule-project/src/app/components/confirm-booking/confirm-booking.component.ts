@@ -4,10 +4,12 @@ import { BookingService } from '../../Services/booking.service';
 import { firstValueFrom } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+
 
 @Component({
   selector: 'app-confirm-booking',
-  standalone:false,
+  standalone: false,
   templateUrl: './confirm-booking.component.html',
   styleUrls: ['./confirm-booking.component.css']
 })
@@ -28,7 +30,8 @@ export class ConfirmBookingComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private api: BookingService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private translate: TranslateService 
   ) {}
 
   ngOnInit(): void {
@@ -62,12 +65,10 @@ export class ConfirmBookingComponent implements OnInit {
     }
   }
 
-  // Close dialog
   close(result: boolean) {
     this.dialogRef.close(result);
   }
 
-  // Confirm and submit booking
   async confirmAndSubmit() {
     if (!this.accepted) return;
     this.errorMessage = null;
@@ -99,23 +100,40 @@ export class ConfirmBookingComponent implements OnInit {
 
       if (bookingId) {
         this.dialogRef.close({ success: true, bookingId });
-        this.snackBar.open('Booking created successfully.', 'OK', {
-          duration: 4000,
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-        });
-        this.router.navigate(['/invoice', bookingId]);
+       this.snackBar.open(this.translate.instant('Message.success'), 'OK', {
+  duration: 4000,
+  horizontalPosition: 'right',
+  verticalPosition: 'top',
+});
+
+setTimeout(() => {
+  const message = this.translate.instant('Message.paymentReminder');
+  const proceed = window.confirm(message);
+  if (proceed) {
+    this.router.navigate(['/invoice', bookingId]);
+  }
+}, 1000);
+
+
         return;
       }
 
       const friendlyMessage = resp?.friendlyMessage ?? 'Booking created but we did not receive a reference.';
-      this.snackBar.open(friendlyMessage, 'Close', { duration: 6000, horizontalPosition: 'right', verticalPosition: 'top' });
+      this.snackBar.open(friendlyMessage, 'Close', {
+        duration: 6000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+      });
       this.errorMessage = friendlyMessage;
       this.submitting = false;
     } catch (err: any) {
       console.error('Booking submission error:', err);
       const friendlyError = err?.friendlyMessage ?? 'We could not complete your booking. Please try again later.';
-      this.snackBar.open(friendlyError, 'Close', { duration: 6000, horizontalPosition: 'right', verticalPosition: 'top' });
+      this.snackBar.open(friendlyError, 'Close', {
+        duration: 6000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+      });
       this.errorMessage = friendlyError;
       this.submitting = false;
     }

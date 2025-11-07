@@ -355,6 +355,12 @@
     "errorMessage": "Ujumbe una makosa"
   },
 
+  "Message": {
+    "success": "Booking imefanikiwa.",
+    "paymentReminder": "⚠️ Kumbusho la Malipo:\n\nUnatakiwa kulipa 50% ya jumla ya gharama ndani ya saa 24. Vinginevyo, booking yako itafutwa na mtu mwingine ataweza kufanya booking.\n\nBonyeza OK kuendelea kufungua invoice."
+  },
+
+
   "datesTimes": {
     "heading": "Tarehe na Muda",
     "fromDateLabel": "Kuanzia (Tarehe):",
