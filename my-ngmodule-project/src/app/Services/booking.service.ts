@@ -20,6 +20,7 @@ export interface Customer {
 }
 
 export interface Booking {
+  totalAmount: number;
   bookingId: number;
   bookingCode: string;
   bookingDate: string;            // added
