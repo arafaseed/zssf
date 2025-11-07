@@ -212,46 +212,144 @@ clearPhone() {
   }
 
   printTable() {
-    const tableElement = document.querySelector('.table-wrapper');
-    if (!tableElement) return;
+  const tableElement = document.querySelector('.table-wrapper');
+  if (!tableElement) return;
 
-    const printWindow = window.open('', '_blank');
-    printWindow?.document.write('<html><head><title>Bookings</title>');
-    printWindow?.document.write('<style>table{width:100%;border-collapse:collapse;}th,td{border:1px solid #ccc;padding:8px;text-align:left;}th{background:#0c1429;color:white;}</style>');
-    printWindow?.document.write('</head><body>');
-    printWindow?.document.write('<h2>Bookings</h2>');
-    printWindow?.document.write(tableElement.outerHTML);
-    printWindow?.document.write('</body></html>');
-    printWindow?.document.close();
-    printWindow?.print();
-  }
+  const reportTitle = 'My Booking System';
+  const currentDateTime = new Date().toLocaleString();
+  const heading = this.venueId && this.venueId !== 0
+    ? `Bookings for Venue: ${this.venues.find(v => v.venueId === this.venueId)?.venueName || ''}`
+    : 'All Bookings';
 
-  downloadTable() {
-    const tableElement = document.querySelector('.table-wrapper') as HTMLElement;
-    if (!tableElement) return;
+  const printWindow = window.open('', '_blank');
+  if (!printWindow) return;
 
-    html2canvas(tableElement, {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: '#ffffff',
-      onclone: (doc) => {
-        doc.querySelectorAll('*').forEach((el: any) => {
-          const style = getComputedStyle(el);
-          if (style.color.includes('oklch') || style.backgroundColor.includes('oklch')) {
-            el.style.color = 'black';
-            el.style.backgroundColor = 'white';
-          }
-        });
-      },
-    }).then(canvas => {
+  printWindow.document.write('<html><head><title>' + reportTitle + '</title>');
+  printWindow.document.write(`
+    <style>
+      body { font-family: Arial, sans-serif; margin: 20px; }
+      table { width:100%; border-collapse: collapse; margin-top: 20px; }
+      th, td { border: 1px solid #ccc; padding: 8px; text-align: left; font-size: 12px; }
+      th { background:#0c1429; color:white; }
+      h1, h2 { margin: 0; padding: 0; }
+      .header { display:flex; align-items:center; justify-content: space-between; }
+      .logo { height: 50px; }
+      .meta { font-size: 12px; color: #555; }
+    </style>
+  `);
+  printWindow.document.write('</head><body>');
+
+  // Header with logo, title and datetime
+  printWindow.document.write(`
+    <div class="header">
+      <div><img class="logo" src="assets/logo.png" alt="Logo"></div>
+      <div>
+        <h1>${reportTitle}</h1>
+        <div class="meta">Generated on: ${currentDateTime}</div>
+      </div>
+    </div>
+    <h2>${heading}</h2>
+  `);
+
+  printWindow.document.write(tableElement.outerHTML);
+  printWindow.document.write('</body></html>');
+  printWindow.document.close();
+  printWindow.print();
+}
+
+downloadTable() {
+  const reportTitle = 'My Booking System';
+  const currentDateTime = new Date().toLocaleString();
+  const heading = this.venueId && this.venueId !== 0
+    ? `Bookings for Venue: ${this.venues.find(v => v.venueId === this.venueId)?.venueName || ''}`
+    : 'All Bookings';
+
+  // 1️⃣ Create container
+  const container = document.createElement('div');
+  container.style.background = '#ffffff';
+  container.style.padding = '20px';
+  container.style.fontFamily = 'Arial, sans-serif';
+
+  // 2️⃣ Add header with logo, title, date/time
+  container.innerHTML = `
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+      <img src="zssf.png" alt="Logo" style="height:50px;">
+      <div>
+        <h1 style="margin:0;">${reportTitle}</h1>
+        <small>Generated on: ${currentDateTime}</small>
+      </div>
+    </div>
+    <h2>${heading}</h2>
+  `;
+
+  // 3️⃣ Build table dynamically
+  const table = document.createElement('table');
+  table.style.width = '100%';
+  table.style.borderCollapse = 'collapse';
+  table.style.marginTop = '10px';
+
+  // Table header
+  const thead = table.createTHead();
+  const headerRow = thead.insertRow();
+  this.displayedColumns.forEach(col => {
+    const th = document.createElement('th');
+    th.innerText = col;
+    th.style.border = '1px solid #ccc';
+    th.style.padding = '6px';
+    th.style.background = '#0c1429';
+    th.style.color = '#fff';
+    th.style.fontSize = '12px';
+    headerRow.appendChild(th);
+  });
+
+  // Table body
+  const tbody = table.createTBody();
+  this.dataSource.data.forEach(row => {
+    const tr = tbody.insertRow();
+    this.displayedColumns.forEach(col => {
+      const td = tr.insertCell();
+      let value: any = (row as any)[col] ?? '-';
+
+      // Optional: format dates if needed
+      if (col.toLowerCase().includes('date') && value) {
+        value = new Date(value).toLocaleDateString();
+      }
+
+      td.innerText = value;
+      td.style.border = '1px solid #ccc';
+      td.style.padding = '6px';
+      td.style.fontSize = '11px';
+      td.style.color = '#000';
+    });
+  });
+
+  container.appendChild(table);
+
+  // 4️⃣ Append container to body temporarily
+  container.style.position = 'fixed';
+  container.style.left = '-9999px';
+  document.body.appendChild(container);
+
+  // 5️⃣ Generate PDF
+  html2canvas(container, { scale: 2, useCORS: true, backgroundColor: '#ffffff' })
+    .then(canvas => {
       const pdf = new jsPDF('p', 'mm', 'a4');
       const imgData = canvas.toDataURL('image/png');
-      const imgWidth = 190;
-      const pageHeight = 295;
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+
+      const imgWidth = pageWidth - 20; // 10mm margin each side
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      let position = 10;
-      pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+
+      pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
       pdf.save('Bookings.pdf');
-    });
-  }
+
+      // Remove temporary container
+      document.body.removeChild(container);
+    })
+    .catch(err => console.error('html2canvas error', err));
+}
+
+
+
 }
