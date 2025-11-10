@@ -10,7 +10,6 @@
         <th class="p-3 text-left">Payment ID</th>
         <th class="p-3 text-left">Amount</th>
         <th class="p-3 text-left">Date</th>
-        <th class="p-3 text-left">Description</th>
         <th class="p-3 text-left">Customer</th>
         <th class="p-3 text-left">Venue</th>
       </tr>
@@ -20,7 +19,6 @@
         <td class="p-3">{{ p.paymentId }}</td>
         <td class="p-3">{{ p.amountPaid | currency:'TZS' }}</td>
         <td class="p-3">{{ p.paymentDate | date:'medium' }}</td>
-        <td class="p-3">{{ p.paymentDescription }}</td>
         <td class="p-3">{{ p.customerName }}</td>
         <td class="p-3">{{ p.venueName }}</td>
       </tr>

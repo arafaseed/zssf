@@ -1,36 +1,53 @@
 import { Component, OnInit } from '@angular/core';
+import { forkJoin } from 'rxjs';
 import { Payment, PaymentService } from '../../Services/payment.service';
+
 
 @Component({
   selector: 'app-payment-list',
-  standalone: false,
   templateUrl: './payment-list.component.html',
-  styleUrl: './payment-list.component.css'
+  standalone:false,
+  styleUrls: ['./payment-list.component.css']
 })
 export class PaymentListComponent implements OnInit {
   payments: Payment[] = [];
   loading = true;
-errorMessage: any;
+  errorMessage = '';
 
   constructor(private paymentService: PaymentService) {}
 
   ngOnInit(): void {
-    this.loadPayments();
+    this.loadAllPayments();
   }
 
-  loadPayments() {
-    this.paymentService.getAllPayments().subscribe({
-      next: (data) => {
-        // enrich with customer and venue name if nested
-        this.payments = data.map(p => ({
-          ...p,
-          customerName: (p as any).controlNumber?.invoice?.booking?.customer?.fullName || 'N/A',
-          venueName: (p as any).controlNumber?.invoice?.booking?.venue?.venueName || 'N/A'
-        }));
+  loadAllPayments() {
+    forkJoin({
+      payments: this.paymentService.getPayments(),
+      customers: this.paymentService.getCustomers(),
+      venues: this.paymentService.getVenues()
+    }).subscribe({
+      next: ({ payments, customers, venues }) => {
+        this.payments = payments.map(p => {
+          // Match customer via booking IDs
+          const customer = customers.find(c =>
+            c.bookingIds?.includes(p.controlNumberId)
+          );
+          // Match venue via controlNumberId or adjust as needed
+          const venue = venues.find(v =>
+            v.venueId === p.controlNumberId
+          );
+
+          return {
+            ...p,
+            customerName: customer?.customerName || 'N/A',
+            venueName: venue?.venueName || 'N/A'
+          };
+        });
         this.loading = false;
       },
-      error: (err) => {
+      error: err => {
         console.error('Error loading payments:', err);
+        this.errorMessage = 'Failed to load payments.';
         this.loading = false;
       }
     });
