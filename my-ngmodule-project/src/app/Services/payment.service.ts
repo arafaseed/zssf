@@ -1,32 +1,46 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin, Observable, map } from 'rxjs';
 
-export interface Payment {
-  paymentId: number;
-  paymentDate: string;
-  amountPaid: number;
-  controlNumberId: number;
-  zanmalipo?: string;
-  customerName?: string;
-  venueName?: string;
-}
-
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class PaymentService {
-  private baseUrl = 'http://localhost:6070/api'; // your backend
+
+  private baseUrl = 'http://localhost:6070/api';
 
   constructor(private http: HttpClient) {}
 
-  getPayments(): Observable<Payment[]> {
-    return this.http.get<Payment[]>(`${this.baseUrl}/payments/view/all`);
-  }
+  getPaymentsWithDetails(): Observable<any[]> {
+    const payments$ = this.http.get<any[]>(`${this.baseUrl}/payments/view/all`);
+    const controlNumbers$ = this.http.get<any[]>(`${this.baseUrl}/control-numbers/vew/all`);
+    const invoices$ = this.http.get<any[]>(`${this.baseUrl}/invoices`);
+    const bookings$ = this.http.get<any[]>(`${this.baseUrl}/bookings/view-all`);
 
-  getCustomers(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/customers`);
-  }
+    return forkJoin([payments$, controlNumbers$, invoices$, bookings$]).pipe(
+      map(([payments, controlNumbers, invoices, bookings]) => {
 
-  getVenues(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/venues/view/all`);
+        // Create maps for quick lookup
+        const controlNumberMap = new Map(controlNumbers.map(cn => [cn.controlId, cn]));
+        const invoiceMap = new Map(invoices.map(inv => [inv.invoiceId, inv]));
+        const bookingMap = new Map(bookings.map(bk => [bk.bookingId, bk]));
+
+        // Attach full details to payments
+        return payments.map(payment => {
+          const control = controlNumberMap.get(payment.controlNumberId);
+          const invoice = control ? invoiceMap.get(control.invoiceId) : null;
+          const booking = invoice ? bookingMap.get(invoice.bookingId) : null;
+
+          return {
+            ...payment,
+            controlNumber: control || null,
+            invoice: invoice || null,
+            booking: booking || null,
+            customer: booking?.customer || invoice?.customer || null,
+            venue: booking?.venueName || invoice?.booking?.venueName || 'N/A'
+          };
+        });
+      })
+    );
   }
 }
