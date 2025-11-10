@@ -1,0 +1,29 @@
+<div class="max-w-6xl mx-auto p-6">
+  <h2 class="text-2xl font-semibold text-gray-800 mb-4">Payment Records</h2>
+
+  <div *ngIf="loading" class="text-gray-500">Loading payments...</div>
+  <div *ngIf="errorMessage" class="text-red-600">{{ errorMessage }}</div>
+
+  <table *ngIf="!loading && !errorMessage" class="min-w-full border border-gray-300 shadow rounded-lg">
+    <thead class="bg-gray-100 text-gray-700">
+      <tr>
+        <th class="p-3 text-left">Payment ID</th>
+        <th class="p-3 text-left">Amount</th>
+        <th class="p-3 text-left">Date</th>
+        <th class="p-3 text-left">Description</th>
+        <th class="p-3 text-left">Customer</th>
+        <th class="p-3 text-left">Venue</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of payments" class="border-t hover:bg-gray-50">
+        <td class="p-3">{{ p.paymentId }}</td>
+        <td class="p-3">{{ p.amountPaid | currency:'TZS' }}</td>
+        <td class="p-3">{{ p.paymentDate | date:'medium' }}</td>
+        <td class="p-3">{{ p.paymentDescription }}</td>
+        <td class="p-3">{{ p.customerName }}</td>
+        <td class="p-3">{{ p.venueName }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
