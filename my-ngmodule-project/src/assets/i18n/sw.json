@@ -127,16 +127,18 @@
       "text": "Mfumo utatumika kuwaruhusu waombaji kuona Ukumbi, kuona upatikanaji, kuweka nafasi ya Ukumbi anaoutaka na kufanya malipo"
     },
     "booking": {
-      "heading":"3. Masharti ya Kukodi Ukumbi",
-      "list": [
-        "Mtumiaji atatakiwa kutoa taarifa sahihi wakati wa kutumia mfumo huu.",
-        "Muombaji atalazimika kuomba nafasi ya ukumbi kwa kutumia mfumo huu.",
-	      "Upatikanaji wa nafasi ya Ukumbi itathibitishwa mara tu baada ya kupokelewa malipo au dhamana ya malipo.",
-	      "Ni lazima muombaji aainishe iwapo maombi maalum (viti,meza n.k) yatahitajika wakati wa kuomba ukumbi, maombi haya yatasababisha gharama za ziada.",
-	      "Ni lazima kufuata masharti yaliyowekwa ikiwemo kikomo cha idadi ya watu kilichowekwa pamoja na ukumbi au sheria lazima kiheshimiwe kila wakati.",
-	      "Muda wa Mfumo(System) kusubiria malipo ya Maombi ya Ukumbi ulioekeshwa ni masaa 24 ambao utahesabika mara tu baada ya kufanya maombi hayo."
-      ]
-    },
+  "heading": "3. Masharti ya Kukodi Ukumbi",
+  "list": [
+    "Mtumiaji atatakiwa kutoa taarifa sahihi wakati wa kutumia mfumo huu.",
+    "Muombaji atalazimika kuomba nafasi ya ukumbi kwa kutumia mfumo huu.",
+    "Upatikanaji wa nafasi ya Ukumbi itathibitishwa mara tu baada ya kupokelewa malipo au dhamana ya malipo.",
+    "Ni lazima muombaji aainishe iwapo maombi maalum (viti, meza n.k) yatahitajika wakati wa kuomba ukumbi, maombi haya yatasababisha gharama za ziada.",
+    "Ni lazima kufuata masharti yaliyowekwa ikiwemo kikomo cha idadi ya watu kilichowekwa pamoja na ukumbi au sheria lazima kiheshimiwe kila wakati.",
+    "Muda wa Mfumo (System) kusubiria malipo ya Maombi ya Ukumbi ulioekeshwa ni masaa 24 ambao utahesabika mara tu baada ya kufanya maombi hayo.",
+    "Mteja anatakiwa kulipia angalau 50% ndani ya masaa 24. Iwapo hatalipia ndani ya muda huo, booking yake itafutwa kiotomatiki, nafasi itakuwa wazi kwa mtu mwingine, na pesa yoyote iliyolipwa itapotea."
+  ]
+},
+
     "payment": {
       "heading": "4. Masharti ya Malipo",
       "list": [
@@ -148,14 +150,14 @@
     },
     
     
-    "cancellation": {
+  "cancellation": {
   "heading": "5. Kufuta na Marejesho",
   "list": [
     "Kuna aina mbili za kufuta nafasi:",
     "1) Ikiwa mtumiaji atafuta moja kwa moja baada ya kulipa 50%, atalazimika kukatwa 25% kama ada ya kufuta. Asilimia 25% iliyobaki atawasiliana na mfanyakazi wa ukumbi husika ili apate kurejeshewa. Kila ukumbi unaonyesha namba ya simu ya mfanyakazi anayehusika.",
-    "2) Ikiwa mtumiaji ataahirisha (kwa mfano kutokana na dharura) na kusogeza tarehe mbele, mfumo utamruhusu kufanya mabadiliko hayo mara ya kwanza bila makato yoyote. Lakini akifanya hivyo kwa mara ya pili, mfumo utamkata 25%. Baada ya hapo, atatakiwa kuwasiliana na mfanyakazi anayehusika na ukumbi huo ambaye namba yake ya simu inaonyeshwa kwenye ukurasa wa ukumbi."
-  ]
-},
+    "2) Katika suala la kuahirisha (kwa mfano kutokana na dharura), mteja hataruhusiwa kuahirisha mpaka awe amelipa kiasi chote (100%) cha malipo. Mfumo utamruhusu kuahirisha mara mbili pekee. Baada ya hapo, atalazimika kuanza upya mchakato wa kufanya booking, na kuhusu fedha atalazimika kuwasiliana na mfanyakazi wa ukumbi husika ambaye namba yake ya simu inaonyeshwa kwenye ukurasa wa ukumbi."
+    ]
+  },
     "responsibilities": {
       "heading": "6. Majukumu ya Mtumiaji",
        "list": [

@@ -6,7 +6,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
-
 @Component({
   selector: 'app-confirm-booking',
   standalone: false,
@@ -31,7 +30,7 @@ export class ConfirmBookingComponent implements OnInit {
     private api: BookingService,
     private router: Router,
     private snackBar: MatSnackBar,
-    private translate: TranslateService 
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -79,15 +78,24 @@ export class ConfirmBookingComponent implements OnInit {
       return;
     }
 
-    const fd = new FormData();
-    fd.append('booking', new Blob([JSON.stringify(booking)], { type: 'application/json' }));
-
     const attachedFile: File | null = this.data?.attachedFile ?? null;
     if (booking.customer?.customerType === 'ORGANIZATION' && !attachedFile) {
       this.errorMessage = 'Organization bookings require a PDF reference document.';
       return;
     }
 
+    // 🟡 Show payment reminder BEFORE submitting
+    const message = this.translate.instant('Message.paymentReminder');
+    const proceed = window.confirm(message);
+    if (!proceed) {
+      // If user cancels, stop submission and close the dialog
+      this.dialogRef.close(false);
+      return;
+    }
+
+    // ✅ Proceed with submission if user clicked OK
+    const fd = new FormData();
+    fd.append('booking', new Blob([JSON.stringify(booking)], { type: 'application/json' }));
     if (attachedFile) {
       fd.append('referenceDocument', attachedFile, attachedFile.name);
     }
@@ -100,20 +108,16 @@ export class ConfirmBookingComponent implements OnInit {
 
       if (bookingId) {
         this.dialogRef.close({ success: true, bookingId });
-       this.snackBar.open(this.translate.instant('Message.success'), 'OK', {
-  duration: 4000,
-  horizontalPosition: 'right',
-  verticalPosition: 'top',
-});
+        this.snackBar.open(this.translate.instant('Message.success'), 'OK', {
+          duration: 4000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+        });
 
-setTimeout(() => {
-  const message = this.translate.instant('Message.paymentReminder');
-  const proceed = window.confirm(message);
-  if (proceed) {
-    this.router.navigate(['/invoice', bookingId]);
-  }
-}, 1000);
-
+        // ✅ Redirect to invoice page automatically after success
+        setTimeout(() => {
+          this.router.navigate(['/invoice', bookingId]);
+        }, 1000);
 
         return;
       }
