@@ -32,6 +32,7 @@ import { AdminFeedbacksComponent } from './Admin/admin-feedbacks/admin-feedbacks
 import { ReportsComponent } from './Admin/reports/reports.component';
 import { AdminReportComponent } from './Admin/admin-report/admin-report.component';
 import { ReportComponent } from './report/report.component';
+import { PaymentListComponent } from './Admin/payment-list/payment-list.component';
 
 
 
@@ -89,6 +90,8 @@ const routes: Routes = [
       { path: 'report', component: ReportsComponent},
        { path: 'addstaff', component: StaffFormComponent },
       { path: 'app-report', component: ReportComponent },
+
+      { path: 'payment-list', component: PaymentListComponent },
   
 
        

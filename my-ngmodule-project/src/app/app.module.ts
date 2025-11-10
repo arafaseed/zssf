@@ -96,6 +96,7 @@ import { PostponeDialogComponent } from './components/postpone-dialog/postpone-d
 import { BlockDateComponent } from './block-date/block-date.component';
 import { ReportComponent } from './report/report.component';
 import { NgChartsModule } from 'ng2-charts';
+import { PaymentListComponent } from './Admin/payment-list/payment-list.component';
 
 
 
@@ -159,6 +160,7 @@ export function createTranslateLoader(http: HttpClient) {
     PostponeDialogComponent,
     BlockDateComponent,
     ReportComponent,
+    PaymentListComponent,
    
     
     

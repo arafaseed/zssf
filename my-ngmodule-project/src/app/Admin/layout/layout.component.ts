@@ -31,7 +31,10 @@ export class LayoutComponent {
     { label: 'Customer Feedback', link: '/admin/feedback', icon: 'feedback' },
     { label: 'Policy Settings', link: '/admin/policies-settings', icon: 'settings' },
     { label: 'Admin Report', link: '/admin/admin-reports', icon: 'report' },
-     { label: 'Chart', link: '/admin/app-report', icon: 'graph' },
+     { label: 'Chart', link: '/admin/app-report', icon: 'bar-chart-2' },
+{ label: 'Payment', link: '/admin/payment-list', icon: 'credit-card' },
+
+     
   ];
 
   constructor(private auth: AuthService) {
