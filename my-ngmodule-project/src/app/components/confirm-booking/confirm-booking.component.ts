@@ -1,10 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BookingService } from '../../Services/booking.service';
 import { firstValueFrom } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-confirm-booking',
@@ -31,7 +32,8 @@ export class ConfirmBookingComponent implements OnInit {
     private api: BookingService,
     private router: Router,
     private snackBar: MatSnackBar,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private matDialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -72,84 +74,88 @@ export class ConfirmBookingComponent implements OnInit {
     this.dialogRef.close(result);
   }
 
-  async confirmAndSubmit() {
-    if (!this.accepted) return;
-    this.errorMessage = null;
+ async confirmAndSubmit() {
+  if (!this.accepted) return;
+  this.errorMessage = null;
 
-    const booking = this.data?.booking;
-    if (!booking) {
-      this.errorMessage = 'No booking data provided.';
-      return;
-    }
-
-    const attachedFile: File | null = this.data?.attachedFile ?? null;
-    if (booking.customer?.customerType === 'ORGANIZATION' && !attachedFile) {
-      this.errorMessage = 'Organization bookings require a PDF reference document.';
-      return;
-    }
-
-    // 🟢 Show translated payment reminder BEFORE submitting
-    const message = `${this.translate.instant('Message.paymentReminder')}
-    
-${this.translate.instant('Message.halfPayment')}: Tsh ${this.halfPayment.toLocaleString()}.
-    
-${this.translate.instant('Message.continueQuestion') || 'Do you want to continue?'}`;
-
-    const proceed = window.confirm(message);
-    if (!proceed) {
-      // If user cancels, stop submission and close the dialog
-      this.dialogRef.close(false);
-      return;
-    }
-
-    // ✅ Proceed with submission if user clicked OK
-    const fd = new FormData();
-    fd.append('booking', new Blob([JSON.stringify(booking)], { type: 'application/json' }));
-    if (attachedFile) {
-      fd.append('referenceDocument', attachedFile, attachedFile.name);
-    }
-
-    this.submitting = true;
-
-    try {
-      const resp: any = await firstValueFrom(this.api.placeReservation(fd));
-      const bookingId = resp?.bookingId ?? resp?.id ?? null;
-
-      if (bookingId) {
-        this.dialogRef.close({ success: true, bookingId });
-        this.snackBar.open(this.translate.instant('Message.success'), 'OK', {
-          duration: 4000,
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-        });
-
-        // ✅ Redirect to invoice page automatically after success
-        setTimeout(() => {
-          this.router.navigate(['/invoice', bookingId]);
-        }, 1000);
-
-        return;
-      }
-
-      const friendlyMessage = resp?.friendlyMessage ?? 'Booking created but no reference received.';
-      this.snackBar.open(friendlyMessage, 'Close', {
-        duration: 6000,
-        horizontalPosition: 'right',
-        verticalPosition: 'top',
-      });
-      this.errorMessage = friendlyMessage;
-      this.submitting = false;
-    } catch (err: any) {
-      console.error('Booking submission error:', err);
-      const friendlyError =
-        err?.friendlyMessage ?? 'We could not complete your booking. Please try again later.';
-      this.snackBar.open(friendlyError, 'Close', {
-        duration: 6000,
-        horizontalPosition: 'right',
-        verticalPosition: 'top',
-      });
-      this.errorMessage = friendlyError;
-      this.submitting = false;
-    }
+  const booking = this.data?.booking;
+  if (!booking) {
+    this.errorMessage = 'No booking data provided.';
+    return;
   }
+
+  const attachedFile: File | null = this.data?.attachedFile ?? null;
+  if (booking.customer?.customerType === 'ORGANIZATION' && !attachedFile) {
+    this.errorMessage = 'Organization bookings require a PDF reference document.';
+    return;
+  }
+
+  // 🟢 Use Angular Material dialog instead of window.confirm
+  const message = `${this.translate.instant('Message.halfPayment')}: Tsh ${this.halfPayment.toLocaleString()}\n\n${this.translate.instant('Message.continueQuestion') || 'Do you want to continue?'}`;
+
+  const dialogRef = this.matDialog.open(ConfirmDialogComponent, {
+    width: '400px',
+    data: {
+      title: this.translate.instant('Message.paymentReminder'),
+      message: message,
+    },
+  });
+
+  const proceed = await dialogRef.afterClosed().toPromise();
+  if (!proceed) {
+    this.dialogRef.close(false);
+    return;
+  }
+
+  // ✅ Proceed with submission if user clicked OK
+  const fd = new FormData();
+  fd.append('booking', new Blob([JSON.stringify(booking)], { type: 'application/json' }));
+  if (attachedFile) {
+    fd.append('referenceDocument', attachedFile, attachedFile.name);
+  }
+
+  this.submitting = true;
+
+  try {
+    const resp: any = await firstValueFrom(this.api.placeReservation(fd));
+    const bookingId = resp?.bookingId ?? resp?.id ?? null;
+
+    if (bookingId) {
+      this.dialogRef.close({ success: true, bookingId });
+      this.snackBar.open(this.translate.instant('Message.success'), 'OK', {
+        duration: 4000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+      });
+
+      // ✅ Redirect to invoice page automatically after success
+      setTimeout(() => {
+        this.router.navigate(['/invoice', bookingId]);
+      }, 1000);
+
+      return;
+    }
+
+    const friendlyMessage = resp?.friendlyMessage ?? 'Booking created but no reference received.';
+    this.snackBar.open(friendlyMessage, 'Close', {
+      duration: 6000,
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+    });
+    this.errorMessage = friendlyMessage;
+    this.submitting = false;
+  } catch (err: any) {
+    console.error('Booking submission error:', err);
+    const friendlyError =
+      err?.friendlyMessage ?? 'We could not complete your booking. Please try again later.';
+    this.snackBar.open(friendlyError, 'Close', {
+      duration: 6000,
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+    });
+    this.errorMessage = friendlyError;
+    this.submitting = false;
+  }
+}
+
 }

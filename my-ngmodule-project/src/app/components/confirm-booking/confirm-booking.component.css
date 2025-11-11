@@ -1,0 +1,29 @@
+/* Style all dialog content */
+.mat-dialog-content {
+  font-family: 'Roboto', sans-serif; /* Change font */
+  font-size: 14px;                   /* Adjust font size */
+  color: #1F2937;                    /* Dark gray text */
+  line-height: 1.5;                  /* Better readability */
+  white-space: pre-line;             /* Keep your line breaks (\n) in message string */
+}
+
+/* Optional: style the dialog title */
+.mat-dialog-title {
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #16A34A; /* Green title */
+  margin-bottom: 10px;
+}
+
+/* Optional: style the dialog actions buttons */
+.mat-dialog-actions button {
+  font-family: 'Roboto', sans-serif;
+  font-size: 13px;
+  text-transform: none; /* Keep button text normal case */
+}
+
+/* Optional: add a subtle padding for content */
+.mat-dialog-content {
+  padding: 16px 24px;
+}
