@@ -119,20 +119,23 @@ currentLang = 'en'; // default
   // }
   
 ngOnInit(): void {
+  // Get translated title
   this.translate.get('header.title').subscribe((res: string) => {
     this.fullTitle = res;
 
-    if (this.isInvoicePage) {
-      // Show instantly on invoice
+    // If we're on invoice page, show instantly
+    if (this.router.url.startsWith('/invoice')) {
       this.displayedText = res;
-      this.isAnimating = false;
+      this.isAnimating = false; // skip animation completely
     } else {
-      // Animate elsewhere
+      // Animate everywhere else
       this.displayedText = '';
+      this.isAnimating = true;
       this.animateText();
     }
   });
 }
+
 
   animateText(index: number = 0): void {
     if (index < this.fullTitle.length) {
@@ -144,15 +147,21 @@ ngOnInit(): void {
     }
   }
 setAnimatedTitle(): void {
-   if (this.isAnimating) return;
   this.translate.get('header.title').subscribe(res => {
-    // console.log('Translated title:', res); // check the output here
     this.fullTitle = res;
-    this.displayedText = '';
-    this.isAnimating = true;
-    this.animateText(0);
+
+    // If on invoice page, show instantly
+    if (this.router.url.startsWith('/invoice')) {
+      this.displayedText = res;
+      this.isAnimating = false;
+    } else {
+      this.displayedText = '';
+      this.isAnimating = true;
+      this.animateText(0);
+    }
   });
 }
+
 
 switchLanguageFromEvent(event: Event) {
   const selectElement = event.target as HTMLSelectElement;
