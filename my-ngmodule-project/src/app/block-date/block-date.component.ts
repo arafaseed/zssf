@@ -28,6 +28,7 @@ export class BlockDateComponent implements OnInit {
   blockedDates: BlockedDate[] = [];
   loading = false;
   loadingBlockedDates = false;
+  today: Date = new Date();
 
   constructor(
     private fb: FormBuilder,
@@ -63,18 +64,23 @@ export class BlockDateComponent implements OnInit {
   }
 
   // Fetch blocked dates for selected venue
-  fetchBlockedDates(venueId: number) {
-    this.loadingBlockedDates = true;
-    this.http.get<BlockedDate[]>(`${environment.apiUrl}/api/bookings/${venueId}/blocked-dates`)
-      .subscribe({
-        next: res => this.blockedDates = res || [],
-        error: () => {
-          this.blockedDates = [];
-          this.snackBar.open('Failed to load blocked dates', 'Close', { duration: 3000 });
-        },
-        complete: () => this.loadingBlockedDates = false
-      });
-  }
+ fetchBlockedDates(venueId: number) {
+  this.loadingBlockedDates = true;
+  this.http.get<BlockedDate[]>(`${environment.apiUrl}/api/bookings/${venueId}/blocked-dates`)
+    .subscribe({
+      next: res => {
+        this.blockedDates = res || [];
+        // Automatically remove past dates from DB
+        this.deletePastBlockedDates(venueId);
+      },
+      error: () => {
+        this.blockedDates = [];
+        this.snackBar.open('Failed to load blocked dates', 'Close', { duration: 3000 });
+      },
+      complete: () => this.loadingBlockedDates = false
+    });
+}
+
 
   // ✅ Block a new date (auto-refresh after success)
  blockDate() {
@@ -120,6 +126,19 @@ export class BlockDateComponent implements OnInit {
   });
 }
 
+deletePastBlockedDates(venueId: number) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // compare only the date part
+
+  this.blockedDates.forEach(date => {
+    const blockedDate = new Date(date.blockedDate);
+    blockedDate.setHours(0, 0, 0, 0);
+
+    if (blockedDate < today) {
+      this.unblockDate(date); // uses your existing delete API
+    }
+  });
+}
 
   // ✅ Unblock date (auto-refresh after delete)
   unblockDate(blocked: BlockedDate) {
@@ -139,4 +158,12 @@ export class BlockDateComponent implements OnInit {
         }
       });
   }
+  dateFilter = (d: Date | null): boolean => {
+  if (!d) return false;
+  const date = new Date(d);
+  date.setHours(0, 0, 0, 0);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return date >= today; // only allow today or future
+};
 }
