@@ -1,36 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import { Payment, PaymentService } from '../../Services/payment.service';
+import {  PaymentService } from '../../Services/payment.service';
+
 
 @Component({
   selector: 'app-payment-list',
-  standalone: false,
   templateUrl: './payment-list.component.html',
-  styleUrl: './payment-list.component.css'
+  standalone:false,
+  styleUrls: ['./payment-list.component.css']
 })
 export class PaymentListComponent implements OnInit {
-  payments: Payment[] = [];
+  payments: any[] = [];
   loading = true;
-errorMessage: any;
+
 
   constructor(private paymentService: PaymentService) {}
 
   ngOnInit(): void {
-    this.loadPayments();
-  }
-
-  loadPayments() {
-    this.paymentService.getAllPayments().subscribe({
+    this.paymentService.getPaymentsWithDetails().subscribe({
       next: (data) => {
-        // enrich with customer and venue name if nested
-        this.payments = data.map(p => ({
-          ...p,
-          customerName: (p as any).controlNumber?.invoice?.booking?.customer?.fullName || 'N/A',
-          venueName: (p as any).controlNumber?.invoice?.booking?.venue?.venueName || 'N/A'
-        }));
+        this.payments = data;
         this.loading = false;
       },
       error: (err) => {
-        console.error('Error loading payments:', err);
+        console.error('Error fetching payments', err);
         this.loading = false;
       }
     });
