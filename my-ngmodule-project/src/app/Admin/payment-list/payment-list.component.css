@@ -1,0 +1,33 @@
+.loading {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.payments-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-family: Arial, sans-serif;
+}
+
+.payments-table th,
+.payments-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.payments-table th {
+  background-color: #073550;
+  color: white;
+}
+
+.payments-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.payments-table tr:hover {
+  background-color: #ddd;
+}

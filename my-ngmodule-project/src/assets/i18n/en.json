@@ -127,17 +127,19 @@
       "text": "The System is used to allow applicants to view available halls, check availability, book their preferred hall, and make payments."
     },
 
-    "booking": {
-      "heading": "3. Hall Booking Terms",
-      "list": [
-        "Users must provide accurate information when using this system.",
-        "Applicants must submit hall booking requests through the system.",
-        "Hall availability will be confirmed once payment or a payment guarantee is received.",
-        "Applicants must specify if any special requests (chairs, tables, etc.) are required during the booking process. These requests may incur additional charges.",
-        "All rules must be followed, including the maximum number of people allowed in the hall, and all laws must be respected at all times.",
-        "The System allows a payment waiting period of 24 hours for hall booking requests, starting immediately after the request is made."
-      ]
-    },
+  "booking": {
+  "heading": "3. Booking Terms and Conditions",
+  "list": [
+    "The user must provide accurate information when using this system.",
+    "Applicants must request venue bookings through this system.",
+    "The availability of the venue will be confirmed once payment or proof of payment is received.",
+    "Applicants must specify if special requests (chairs, tables, etc.) are needed during the booking; such requests may incur additional costs.",
+    "All established terms must be followed, including the maximum capacity limit set for the venue, and all rules must be respected at all times.",
+    "The system will hold a booking request for 24 hours while waiting for payment, counted from the time the booking request is made.",
+    "The customer must pay at least 50% within 24 hours. If payment is not made within this period, the booking will be automatically canceled, the venue will become available to others, and any amount already paid will be forfeited."
+  ]
+},
+
 
     "payment": {
       "heading": "4. Payment Terms",
@@ -149,14 +151,14 @@
       ]
     },
 
-    "cancellation": {
-      "heading": "5. Cancellations and Refunds",
-      "list": [
-        "There are two types of cancellations:",
-        "1) If a user cancels immediately after paying 50%, a 25% cancellation fee will be deducted. The remaining 25% can be refunded by contacting the hall staff. Each hall shows the contact phone number of the responsible staff member.",
-        "2) If a user postpones (for example, due to an emergency) and changes the booking date, the system allows the first reschedule without any deduction. However, for the second reschedule, the system will deduct 25%. After that, the user must contact the hall’s responsible staff member directly, whose phone number is shown on the hall page."
-      ]
-    },
+  "cancellation": {
+    "heading": "5. Cancellations and Refunds",
+    "list": [
+    "There are two types of cancellations:",
+    "1) If a user cancels immediately after paying 50%, a 25% cancellation fee will be deducted. The remaining 25% can be refunded by contacting the hall staff. Each hall shows the contact phone number of the responsible staff member.",
+    "2) In the case of postponement (for example, due to an emergency), the customer will not be allowed to postpone until the full payment (100%) has been made. The system allows postponement only twice. After that, the customer must start a new booking process, and for refund or payment matters, they must contact the responsible hall staff whose phone number is shown on the hall page."
+  ]
+},
 
     "responsibilities": {
       "heading": "6. User Responsibilities",
@@ -368,7 +370,10 @@
 
    "Message": {
     "success": "Booking created successfully.",
-    "paymentReminder": "⚠️ Payment Reminder:\n\nYou are required to pay 50% of the total amount within 24 hours. Otherwise, your booking will expire and the venue may be booked by another person.\n\nPress OK to continue to your invoice."
+    "paymentReminder": "⚠️ Payment Reminder:\n\nYou are required to pay 50% of the total amount within 24 hours. Otherwise, your booking will expire and the venue may be booked by another person.\n\nPress OK to continue to your invoice.",
+    "halfPayment": "50% Upfront Payment Required",
+    "continueQuestion": "Do you want to continue?"
+
   },
 
 
