@@ -21,18 +21,19 @@ export class LayoutComponent {
   // Navigation items (icons from Material Icons)
   navItems = [
     { label: 'Dashboard', link: '/admin/dashboard', icon: 'dashboard' },
-    { label: 'Optional Service', link: '/admin/tableoptional', icon: 'spellcheck' },
+    { label: 'Optional Service', link: '/admin/tableoptional', icon: 'playlist_add_circle' },
     { label: 'Buildings', link: '/admin/buildings', icon: 'apartment' },
     { label: 'Venues', link: '/admin/venueView', icon: 'location_city' },
-    { label: 'Bookings', link: '/admin/bookinglist', icon: 'event_note' },
+   // { label: 'Bookings', link: '/admin/bookinglist', icon: 'event_note' },
     { label: 'Staff', link: '/admin/staff', icon: 'people' },
     { label: 'Activity', link: '/admin/activitytable', icon: 'event' },
-    { label: 'Report', link: '/admin/report', icon: 'report' },
+    { label: 'Report', link: '/admin/report', icon: 'summarize' },
     { label: 'Customer Feedback', link: '/admin/feedback', icon: 'feedback' },
     { label: 'Policy Settings', link: '/admin/policies-settings', icon: 'settings' },
-    { label: 'Admin Report', link: '/admin/admin-reports', icon: 'report' },
-     { label: 'Chart', link: '/admin/app-report', icon: 'bar-chart-2' },
-{ label: 'Payment', link: '/admin/payment-list', icon: 'credit-card' },
+    //{ label: 'Admin Report', link: '/admin/admin-reports', icon: 'report' },
+    { label: 'Payments', link: '/admin/payment-list', icon: 'payments' },
+    { label: 'Charts', link: '/admin/app-report', icon: 'bar_chart' },
+
 
      
   ];
