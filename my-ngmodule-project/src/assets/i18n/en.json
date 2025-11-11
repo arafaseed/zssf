@@ -370,7 +370,10 @@
 
    "Message": {
     "success": "Booking created successfully.",
-    "paymentReminder": "⚠️ Payment Reminder:\n\nYou are required to pay 50% of the total amount within 24 hours. Otherwise, your booking will expire and the venue may be booked by another person.\n\nPress OK to continue to your invoice."
+    "paymentReminder": "⚠️ Payment Reminder:\n\nYou are required to pay 50% of the total amount within 24 hours. Otherwise, your booking will expire and the venue may be booked by another person.\n\nPress OK to continue to your invoice.",
+    "halfPayment": "50% Upfront Payment Required",
+    "continueQuestion": "Do you want to continue?"
+
   },
 
 

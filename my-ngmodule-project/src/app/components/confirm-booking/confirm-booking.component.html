@@ -89,15 +89,14 @@
         <div class="text-lg text-left text-gray-600"><strong>{{ 'customer.address' | translate }}</strong></div>
         <div class="text-lg font-medium text-right text-blue-900">{{ data.booking.customer?.address }}</div>
       </div>
-<div class="flex items-center justify-between py-4">
-  <div class="text-lg text-left text-gray-600">
-    <strong>{{ 'customer.customerType' | translate }}</strong>
-  </div>
-  <div class="text-lg font-medium text-right text-blue-900">
-    {{ ('booking.' + (data.booking.customer?.customerType?.toLowerCase())) | translate }}
-  </div>
-</div>
-
+      <div class="flex items-center justify-between py-4">
+        <div class="text-lg text-left text-gray-600">
+          <strong>{{ 'customer.customerType' | translate }}</strong>
+        </div>
+        <div class="text-lg font-medium text-right text-blue-900">
+          {{ ('booking.' + (data.booking.customer?.customerType?.toLowerCase())) | translate }}
+        </div>
+      </div>
     </div>
   </div>
 
@@ -137,6 +136,16 @@
           <div class="text-lg font-medium text-right text-blue-900">{{ netAmount | number:'1.0-0' }} TZS</div>
         </div>
       </ng-container>
+
+      <!-- 🟢 50% upfront payment display -->
+      <div class="flex items-center justify-between py-4 bg-green-100 rounded-lg mt-3">
+        <div class="text-lg text-left text-green-800 font-semibold">
+          {{ 'Message.halfPayment' | translate }}
+        </div>
+        <div class="text-lg font-bold text-right text-green-900">
+          {{ halfPayment | number:'1.0-0' }} TZS
+        </div>
+      </div>
     </div>
   </div>
 

@@ -23,6 +23,7 @@ export class ConfirmBookingComponent implements OnInit {
   totalBookingPrice: number = 0;
   discountAmount: number = 0;
   netAmount: number = 0;
+  halfPayment: number = 0; // 🟢 50% upfront payment
 
   constructor(
     public dialogRef: MatDialogRef<ConfirmBookingComponent>,
@@ -60,8 +61,11 @@ export class ConfirmBookingComponent implements OnInit {
       this.netAmount = this.totalBookingPrice - this.discountAmount;
     } else {
       this.discountAmount = 0;
-      this.netAmount = 0;
+      this.netAmount = this.totalBookingPrice;
     }
+
+    // ✅ Calculate 50% upfront payment
+    this.halfPayment = this.netAmount * 0.5;
   }
 
   close(result: boolean) {
@@ -84,8 +88,13 @@ export class ConfirmBookingComponent implements OnInit {
       return;
     }
 
-    // 🟡 Show payment reminder BEFORE submitting
-    const message = this.translate.instant('Message.paymentReminder');
+    // 🟢 Show translated payment reminder BEFORE submitting
+    const message = `${this.translate.instant('Message.paymentReminder')}
+    
+${this.translate.instant('Message.halfPayment')}: Tsh ${this.halfPayment.toLocaleString()}.
+    
+${this.translate.instant('Message.continueQuestion') || 'Do you want to continue?'}`;
+
     const proceed = window.confirm(message);
     if (!proceed) {
       // If user cancels, stop submission and close the dialog
@@ -122,7 +131,7 @@ export class ConfirmBookingComponent implements OnInit {
         return;
       }
 
-      const friendlyMessage = resp?.friendlyMessage ?? 'Booking created but we did not receive a reference.';
+      const friendlyMessage = resp?.friendlyMessage ?? 'Booking created but no reference received.';
       this.snackBar.open(friendlyMessage, 'Close', {
         duration: 6000,
         horizontalPosition: 'right',
@@ -132,7 +141,8 @@ export class ConfirmBookingComponent implements OnInit {
       this.submitting = false;
     } catch (err: any) {
       console.error('Booking submission error:', err);
-      const friendlyError = err?.friendlyMessage ?? 'We could not complete your booking. Please try again later.';
+      const friendlyError =
+        err?.friendlyMessage ?? 'We could not complete your booking. Please try again later.';
       this.snackBar.open(friendlyError, 'Close', {
         duration: 6000,
         horizontalPosition: 'right',
