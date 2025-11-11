@@ -163,21 +163,23 @@ check() {
   }
 
   // continue enabled if either everything is available, or user selected a contiguous block of available days
-  get isContinueEnabled(): boolean {
-    if (this.allAvailable) return true;
+ get isContinueEnabled(): boolean {
+  // Allow continue only if there are selected items AND
+  // all of them are AVAILABLE_FOR_BOOKING.
+  if (!this.selectedItems || this.selectedItems.length === 0) return false;
 
-    if (!this.selectedItems || this.selectedItems.length === 0) return false;
+  // Ensure every selected slot is actually available for booking
+  const allSelectedAvailable = this.selectedItems.every(
+    it => it.flag === 'AVAILABLE_FOR_BOOKING'
+  );
+  if (!allSelectedAvailable) return false;
 
-    // every selected must be AVAILABLE_FOR_BOOKING
-    const allSelectedAvailable = this.selectedItems.every(it => it.flag === 'AVAILABLE_FOR_BOOKING');
-    if (!allSelectedAvailable) return false;
+  // Make sure selected items are contiguous (no gaps)
+  if (!this.selectedIndicesContiguous()) return false;
 
-    // selected items must form a contiguous block with no skipped days between them
-    if (!this.selectedIndicesContiguous()) return false;
+  return true;
+}
 
-    // passed all checks
-    return true;
-  }
 
   continueWithRange() {
     // user explicitly chooses to continue with full range (only enable if allAvailable or valid selection)
