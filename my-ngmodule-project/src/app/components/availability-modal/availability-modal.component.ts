@@ -93,11 +93,11 @@ check() {
       this.autoCheckEnabled = !hasBookedOrPending;
 
       // set selectedItems
-      if (this.autoCheckEnabled) {
-        this.selectedItems = this.availability.filter(it => it.flag === 'AVAILABLE_FOR_BOOKING');
-      } else {
-        this.selectedItems = [];
-      }
+      // inside check()
+    if (this.autoCheckEnabled && this.selectedItems.length === 0) {
+   this.selectedItems = this.availability.filter(it => it.flag === 'AVAILABLE_FOR_BOOKING');
+    }
+
 
       // sync selection with UI
       try {
