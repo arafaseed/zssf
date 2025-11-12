@@ -39,6 +39,8 @@ export class PaymentService {
   const venueName = booking?.venueName || 'N/A';
   const venueActivity = booking?.venueActivityName || 'N/A';
   const customerPhone = customer?.phoneNumber || 'N/A';
+   const bookingCode = booking?.bookingCode || 'N/A';
+    
 
   console.log('--- PAYMENT DEBUG ---');
   console.log('Payment ID:', payment.paymentId);
@@ -55,7 +57,8 @@ export class PaymentService {
     customer,
     venue: venueName,
     activity: venueActivity,
-    customerPhone
+    customerPhone,
+    bookingCode
   };
 });
 

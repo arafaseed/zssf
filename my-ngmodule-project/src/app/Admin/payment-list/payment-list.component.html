@@ -5,7 +5,8 @@
 <table *ngIf="!loading" class="payments-table" border="1" cellpadding="8">
   <thead>
     <tr>
-      <th>Payment ID</th>
+      <th>Booking Code</th> 
+      <!-- <th>Payment ID</th> -->
       <th>Amount Paid</th>
       <th>Customer Name</th>
       <th>Phone Number</th>
@@ -16,7 +17,8 @@
   </thead>
   <tbody>
     <tr *ngFor="let payment of payments">
-      <td>{{ payment.paymentId }}</td>
+      <td>{{ payment.booking?.bookingCode || 'N/A' }}</td> 
+      <!-- <td>{{ payment.paymentId }}</td> -->
       <td>{{ payment.amountPaid | currency:'TZS':'symbol' }}</td>
       <td>{{ payment.customer?.customerName || 'N/A' }}</td>
       <td>{{ payment.customerPhone || 'N/A' }}</td>
