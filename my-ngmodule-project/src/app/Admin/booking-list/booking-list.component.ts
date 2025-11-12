@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { BookingService, Booking, CustomerType } from '../../Services/booking.service';
 import { ViewVenueService } from '../../Services/view-venue.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PdfViewerOverlayComponent } from '../pdf-viewer-overlay/pdf-viewer-overlay.component';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-booking-list',
@@ -15,7 +16,7 @@ import jsPDF from 'jspdf';
   templateUrl: './booking-list.component.html',
   styleUrls: ['./booking-list.component.css']
 })
-export class BookingListComponent implements OnInit, AfterViewInit {
+export class BookingListComponent implements OnInit, AfterViewInit, OnDestroy {
   displayedColumns: string[] = [
     'bookingCode',
     'bookingDate',
@@ -60,6 +61,8 @@ export class BookingListComponent implements OnInit, AfterViewInit {
   pdfAuthToken?: string;
   @ViewChild('pdfOverlay') pdfOverlay?: PdfViewerOverlayComponent;
 
+  private refreshSub?: Subscription;
+
   constructor(
     private bookingService: BookingService,
     private viewVenueService: ViewVenueService,
@@ -69,6 +72,11 @@ export class BookingListComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.loadBookings();
     this.loadVenues();
+
+    // ✅ Auto-refresh every 1 minute (60000 ms)
+    this.refreshSub = interval(60000).subscribe(() => {
+      this.loadBookings(false); // false = do not reset filters unnecessarily
+    });
   }
 
   ngAfterViewInit(): void {
@@ -76,24 +84,36 @@ export class BookingListComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
-  loadBookings(): void {
-    this.loading = true;
-    this.bookingService.fetchBookings().subscribe({
-      next: (data) => {
-        this.bookings = data.sort((a, b) =>
-          new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
-        );
-        this.dataSource.data = [...this.bookings];
-        this.applyFilters();
-        this.loading = false;
-      },
-      error: (err) => {
-        this.errorMessage = 'Failed to load bookings';
-        console.error(err);
-        this.loading = false;
-      }
-    });
+  ngOnDestroy(): void {
+    this.refreshSub?.unsubscribe();
   }
+
+  // ✅ UPDATED loadBookings() with slice().sort() and safe null handling
+ loadBookings(resetFilters: boolean = true): void {
+  this.loading = true;
+  this.bookingService.fetchBookings().subscribe({
+    next: (data) => {
+      // Sort by bookingDate descending (most recent first)
+      const sortedBookings = data.slice().sort((a, b) => {
+        const dateA = a.bookingDate ? new Date(a.bookingDate).getTime() : 0;
+        const dateB = b.bookingDate ? new Date(b.bookingDate).getTime() : 0;
+        return dateB - dateA; // descending order
+      });
+
+      this.bookings = [...sortedBookings];
+      this.dataSource.data = [...this.bookings];
+
+      if (resetFilters) this.applyFilters();
+      this.loading = false;
+    },
+    error: (err) => {
+      this.errorMessage = 'Failed to load bookings';
+      console.error(err);
+      this.loading = false;
+    }
+  });
+}
+
 
   loadVenues(): void {
     this.viewVenueService.getAllVenues().subscribe({
@@ -148,23 +168,25 @@ export class BookingListComponent implements OnInit, AfterViewInit {
   }
 
   applyFilters() {
-    let filtered = [...this.bookings];
+  let filtered = [...this.bookings];
 
-    if (this.currentStatus !== 'ALL') filtered = filtered.filter(b => b.bookingStatus === this.currentStatus);
-    if (this.currentCustomerType !== 'ALL') filtered = filtered.filter(b => b.customer?.customerType === this.currentCustomerType);
-    if (this.searchDate) filtered = filtered.filter(b => b.startDate === this.searchDate);
-    if (this.searchPhone) filtered = filtered.filter(b => b.customer?.phoneNumber?.toString().includes(this.searchPhone));
-    if (this.venueId && this.venueId !== 0) filtered = filtered.filter(b => b.venueId === this.venueId);
+  if (this.currentStatus !== 'ALL') filtered = filtered.filter(b => b.bookingStatus === this.currentStatus);
+  if (this.currentCustomerType !== 'ALL') filtered = filtered.filter(b => b.customer?.customerType === this.currentCustomerType);
+  if (this.searchDate) filtered = filtered.filter(b => b.startDate === this.searchDate);
+  if (this.searchPhone) filtered = filtered.filter(b => b.customer?.phoneNumber?.toString().includes(this.searchPhone));
+  if (this.venueId && this.venueId !== 0) filtered = filtered.filter(b => b.venueId === this.venueId);
 
-    const cols = this.displayedColumns.filter(c => c !== 'customerType');
-    if (this.currentCustomerType === 'ALL') {
-      cols.splice(6, 0, 'customerType');
-    }
-    this.displayedColumns = [...cols];
+  // Sort filtered bookings by bookingDate descending
+  filtered.sort((a, b) => {
+    const dateA = a.bookingDate ? new Date(a.bookingDate).getTime() : 0;
+    const dateB = b.bookingDate ? new Date(b.bookingDate).getTime() : 0;
+    return dateB - dateA;
+  });
 
-    this.dataSource.data = filtered;
-    if (this.paginator) this.paginator.firstPage();
-  }
+  this.dataSource.data = filtered;
+  if (this.paginator) this.paginator.firstPage();
+}
+
 
   getStatusColor(status: string) {
     switch (status) {
