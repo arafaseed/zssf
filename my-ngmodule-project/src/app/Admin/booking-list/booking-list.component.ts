@@ -244,11 +244,86 @@ export class BookingListComponent implements OnInit, AfterViewInit, OnDestroy {
     return cols;
   }
 
-printTable() {
+  // ================= PRINT FUNCTION =================
+  printTable() {
+    const now = new Date();
+    const currentDateTime = `${now.getDate().toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getFullYear()} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+    const mainTitle = 'ZANZIBAR SOCIAL SECURITY FUND (ZSSF)'; // Main title
+    const heading = 'BOOKING REPORT'; // Subtitle
+    const columnsToShow = this.buildColumnsToShow();
+    const table = this.generateReportTable(columnsToShow);
+
+    // Remove unwanted rows
+    const filteredElements = table.querySelectorAll('.mat-mdc-no-data-row, .filtered, .no-data');
+    filteredElements.forEach(el => el.remove());
+
+    const printWindow = window.open('');
+    if (!printWindow) return;
+
+    const logoPath = window.location.origin + '/zssf.png';
+
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>${mainTitle}</title>
+          <style>
+            @page { margin: 60px 40px 100px 40px; }
+
+            body { font-family: Arial, sans-serif; margin: 0; }
+
+            .report-header { text-align: center; margin: 5px 0 20px 0; }
+            .report-header img { height: 100px; margin-top: -5px; }
+            .report-header h1 { margin: 5px 0; font-size: 26px; font-weight: bold; color: #004d00; text-transform: uppercase; }
+            .report-header h2 { margin: 2px 0 15px 0; font-size: 22px; font-weight: bold; text-transform: uppercase; color: #004d00; }
+
+            table { width: 100%; border-collapse: collapse; margin-bottom: 80px; }
+            th, td { border: 1px solid #000; padding: 7px; font-size: 13px; text-align: left; word-wrap: break-word; }
+            th { background-color: #f0f0f0; font-weight: bold; }
+
+            footer { position: fixed; bottom: 0; left: 0; right: 0; border-top: 2px solid #004d00; background: #f9f9f9; font-size: 14px; padding: 2px 0; display: flex; justify-content: space-between; align-items: center; color: #333; font-weight: 500; }
+            .footer-left { text-align: left; }
+            .footer-right { text-align: right; }
+
+            @media print { footer { position: fixed; bottom: 0; } .filtered, .mat-mdc-no-data-row, .no-data { display: none !important; } }
+          </style>
+        </head>
+        <body>
+          <div class="report-header">
+            <img src="${logoPath}" alt="ZSSF Logo">
+            <h1>${mainTitle}</h1>
+            <h2>${heading}</h2>
+          </div>
+
+          <main>
+            ${table.outerHTML}
+          </main>
+
+          <footer>
+            <div class="footer-left">Printed by: ${this.currentUser} | Generated on: ${currentDateTime}</div>
+            <div class="footer-right"></div>
+          </footer>
+        </body>
+      </html>
+    `);
+
+    printWindow.document.close();
+
+    printWindow.onload = () => {
+      printWindow.print();
+    };
+  }
+
+  // ================= DOWNLOAD PDF =================
+downloadTable() {
   const now = new Date();
-  const currentDateTime = `${now.getDate().toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getFullYear()} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
-  const mainTitle = 'ZANZIBAR SOCIAL SECURITY FUND'; // Main title
-  const heading = 'BOOKING REPORT'; // Subtitle
+  const currentDateTime = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1)
+    .toString()
+    .padStart(2, '0')}/${now.getFullYear()} ${now.getHours().toString().padStart(2, '0')}:${now
+    .getMinutes()
+    .toString()
+    .padStart(2, '0')}`;
+  const mainTitle = 'ZANZIBAR SOCIAL SECURITY FUND (ZSSF)';
+  const heading = 'BOOKING REPORT';
   const columnsToShow = this.buildColumnsToShow();
   const table = this.generateReportTable(columnsToShow);
 
@@ -256,178 +331,103 @@ printTable() {
   const filteredElements = table.querySelectorAll('.mat-mdc-no-data-row, .filtered, .no-data');
   filteredElements.forEach(el => el.remove());
 
-  const printWindow = window.open('');
-  if (!printWindow) return;
+  // Apply consistent table styles
+  table.style.width = '100%';
+  table.style.borderCollapse = 'collapse';
+  table.style.marginBottom = '50px';
+  table.querySelectorAll('th, td').forEach(cell => {
+    const el = cell as HTMLElement;
+    el.style.border = '1px solid #000';
+    el.style.padding = '6px';
+    el.style.fontSize = '12px';
+    el.style.textAlign = 'left';
+    el.style.wordWrap = 'break-word';
+  });
+  table.querySelectorAll('th').forEach(th => {
+    const el = th as HTMLElement;
+    el.style.backgroundColor = '#000';
+    el.style.color = '#fff';
+    el.style.fontWeight = 'bold';
+  });
+
+  const container = document.createElement('div');
+  container.style.background = '#fff';
+  container.style.fontFamily = 'Arial, sans-serif';
+  container.style.padding = '0';
+  container.style.margin = '0';
+  container.style.width = '100%';
 
   const logoPath = window.location.origin + '/zssf.png';
 
-  printWindow.document.write(`
-    <html>
-      <head>
-        <title>${mainTitle}</title>
-        <style>
-          @page { margin: 60px 40px 100px 40px; }
+  container.innerHTML = `
+    <div style="text-align:center; margin:10px 0 20px 0;">
+      <img src="${logoPath}" style="height:90px; display:block; margin:0 auto;">
+      <h1 style="margin:5px 0; font-size:26px; font-weight:bold; color:#004d00; text-transform:uppercase;">${mainTitle}</h1>
+      <h2 style="margin:2px 0 15px 0; font-size:22px; font-weight:bold; color:#004d00; text-transform:uppercase;">${heading}</h2>
+    </div>
+  `;
 
-          body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-          }
+  container.appendChild(table);
 
-          /* HEADER */
-          .report-header {
-            text-align: center;
-            margin: 5px 0 20px 0;
-          }
-          .report-header img {
-            height: 100px;
-            margin-top: -5px;
-          }
-          .report-header h1 {
-            margin: 5px 0;
-            font-size: 26px;
-            font-weight: bold;
-            color: #004d00;
-            text-transform: uppercase;
-          }
-          .report-header h2 {
-            margin: 2px 0 15px 0;
-            font-size: 22px;
-            font-weight: bold;
-            text-transform: uppercase;
-            color: #004d00;
-          }
+  // Footer section (like print)
+  const footer = document.createElement('div');
+  footer.style.borderTop = '2px solid #004d00';
+  footer.style.background = '#f9f9f9';
+  footer.style.fontSize = '13px';
+  footer.style.fontWeight = '500';
+  footer.style.color = '#333';
+  footer.style.padding = '5px 0';
+  footer.style.display = 'flex';
+  footer.style.justifyContent = 'space-between';
+  footer.style.alignItems = 'center';
+  footer.style.marginTop = '20px';
+  footer.innerHTML = `
+    <div>Printed by: ${this.currentUser} | Generated on: ${currentDateTime}</div>
+    <div></div>
+  `;
+  container.appendChild(footer);
 
-          /* TABLE */
-          table {
-            width: 100%;
-            // border-collapse: collapse;
-            margin-bottom: 80px; /* space above footer */
-          }
-          th, td {
-            border: 1px solid #000;
-            padding: 7px;
-            font-size: 13px;
-            text-align: left;
-            word-wrap: break-word;
-          }
-          th {
-            background-color: #f0f0f0;
-            font-weight: bold;
-          }
+  container.style.position = 'fixed';
+  container.style.left = '-9999px';
+  document.body.appendChild(container);
 
-          /* FOOTER */
-          footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            border-top: 2px solid #004d00;
-            background: #f9f9f9;
-            font-size: 14px; 
-            padding: 2px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #333;
-            font-weight: 500;
-          }
+  // Slightly higher scale (good clarity, smaller than before)
+  html2canvas(container, {
+    scale: 2,            // previously 1.5 → now sharper but not huge
+    useCORS: true,
+    backgroundColor: '#fff',
+    scrollX: 0,
+    scrollY: 0,
+    windowWidth: container.scrollWidth,
+    windowHeight: container.scrollHeight
+  }).then(canvas => {
+    const pdf = new jsPDF('p', 'mm', 'a3'); // A3 for better layout
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const imgData = canvas.toDataURL('image/jpeg', 0.8); // moderate compression
+    const imgWidth = pageWidth - 20;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-          .footer-left { text-align: left; }
-          .footer-right { text-align: right; }
+    let heightLeft = imgHeight;
+    let position = 10;
 
-          @media print {
-            footer { position: fixed; bottom: 0; }
-            /* Hide unwanted rows */
-            .filtered, .mat-mdc-no-data-row, .no-data { display: none !important; }
-          }
-        </style>
-      </head>
-      <body>
-        <div class="report-header">
-          <img src="${logoPath}" alt="ZSSF Logo">
-          <h1>${mainTitle}</h1>
-          <h2>${heading}</h2>
-        </div>
+    pdf.addImage(imgData, 'JPEG', 10, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
 
-        <main>
-          ${table.outerHTML}
-        </main>
+    // Add extra pages if needed
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight + 10;
+      pdf.addPage();
+      pdf.addImage(imgData, 'JPEG', 10, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
 
-        <footer>
-          <div class="footer-left">Printed by: ${this.currentUser} | Generated on: ${currentDateTime}</div>
-          <div class="footer-right"></div>
-        </footer>
-      </body>
-    </html>
-  `);
-
-  printWindow.document.close();
-
-  printWindow.onload = () => {
-    printWindow.print();
-  };
+    pdf.save('Booking_Report.pdf');
+    document.body.removeChild(container);
+  }).catch(err => console.error(err));
 }
 
 
-
-  // ✅ FIXED DOWNLOAD PDF FUNCTION (footer always visible)
-  downloadTable() {
-    const now = new Date();
-    const currentDateTime = `${now.getDate().toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getFullYear()} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
-    const reportTitle = 'ZANZIBAR SOCIAL SECURITY FUND (ZSSF)';
-    const heading = this.buildReportInfo();
-    const columnsToShow = this.buildColumnsToShow();
-
-    const container = document.createElement('div');
-    container.style.background = '#fff';
-    container.style.padding = '20px';
-    container.style.fontFamily = 'Arial, sans-serif';
-    container.innerHTML = `
-      <div style="text-align:center;">
-        <img src="zssf.png" style="height:70px; margin-top:10px;">
-        <h1 style="margin-bottom:5px;">${reportTitle}</h1>
-        <p style="font-size:14px; font-weight:500;">${heading}</p>
-      </div>
-    `;
-
-    const table = this.generateReportTable(columnsToShow);
-    container.appendChild(table);
-
-    const footer = document.createElement('div');
-    footer.innerHTML = `<p style="text-align:center; margin-top:2px; font-size:12px;">Generated on: ${currentDateTime} | Downloaded by: ${this.currentUser}</p>`;
-    container.appendChild(footer);
-
-    container.style.position = 'fixed';
-    container.style.left = '-9999px';
-    document.body.appendChild(container);
-
-    html2canvas(container, { scale: 3, useCORS: true, backgroundColor: '#fff' })
-      .then(canvas => {
-        const pdf = new jsPDF('p', 'mm', 'a3');
-        const imgData = canvas.toDataURL('zssf.png');
-        const pageWidth = pdf.internal.pageSize.getWidth();
-        const pageHeight = pdf.internal.pageSize.getHeight();
-        const imgWidth = pageWidth - 20;
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-        let heightLeft = imgHeight;
-        let position = 10;
-
-        pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-
-        while (heightLeft > 0) {
-          position = heightLeft - imgHeight + 10;
-          pdf.addPage();
-          pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-          heightLeft -= pageHeight;
-        }
-
-        pdf.save('Bookings_A3.pdf');
-        document.body.removeChild(container);
-      })
-      .catch(err => console.error(err));
-  }
 
   private generateReportTable(columnsToShow: string[]): HTMLTableElement {
     const table = document.createElement('table');
@@ -479,3 +479,12 @@ printTable() {
     return table;
   }
 }
+function autoTable(pdf: jsPDF, arg1: {
+  head: string[][]; body: string[][]; startY: number; theme: string; headStyles: {
+    fillColor: number[]; // black header background
+    textColor: number[]; fontSize: number; halign: string;
+  }; bodyStyles: { fontSize: number; cellPadding: number; textColor: number[]; }; styles: { lineColor: number[]; lineWidth: number; font: string; }; alternateRowStyles: { fillColor: number[]; }; margin: { top: number; left: number; right: number; }; didDrawPage: () => void;
+}) {
+  throw new Error('Function not implemented.');
+}
+
