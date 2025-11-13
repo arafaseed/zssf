@@ -44,7 +44,10 @@ export class BookingListComponent implements OnInit, AfterViewInit, OnDestroy {
   searchDate: string = '';
   venueId: number = 0;
   searchPhone: string = '';
+
+  // 👇 Updated: hold both name and role
   currentUser: string = 'System User';
+  currentUserRole: string = 'Viewer'; // default role
 
   venues: any[] = [];
 
@@ -73,9 +76,17 @@ export class BookingListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.loadBookings();
     this.loadVenues();
 
-    // ✅ Auto-refresh every 1 minute (60000 ms)
+    // 👇 Example: load current user info (replace with your actual login logic)
+    const userData = localStorage.getItem('loggedInUser');
+    if (userData) {
+      const user = JSON.parse(userData);
+      this.currentUser = user.name || 'System User';
+      this.currentUserRole = user.role || 'Viewer';
+    }
+
+    // ✅ Auto-refresh every 1 minute
     this.refreshSub = interval(60000).subscribe(() => {
-      this.loadBookings(false); // false = do not reset filters unnecessarily
+      this.loadBookings(false);
     });
   }
 
@@ -88,32 +99,29 @@ export class BookingListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.refreshSub?.unsubscribe();
   }
 
-  // ✅ UPDATED loadBookings() with slice().sort() and safe null handling
- loadBookings(resetFilters: boolean = true): void {
-  this.loading = true;
-  this.bookingService.fetchBookings().subscribe({
-    next: (data) => {
-      // Sort by bookingDate descending (most recent first)
-      const sortedBookings = data.slice().sort((a, b) => {
-        const dateA = a.bookingDate ? new Date(a.bookingDate).getTime() : 0;
-        const dateB = b.bookingDate ? new Date(b.bookingDate).getTime() : 0;
-        return dateB - dateA; // descending order
-      });
+  loadBookings(resetFilters: boolean = true): void {
+    this.loading = true;
+    this.bookingService.fetchBookings().subscribe({
+      next: (data) => {
+        const sortedBookings = data.slice().sort((a, b) => {
+          const dateA = a.bookingDate ? new Date(a.bookingDate).getTime() : 0;
+          const dateB = b.bookingDate ? new Date(b.bookingDate).getTime() : 0;
+          return dateB - dateA;
+        });
 
-      this.bookings = [...sortedBookings];
-      this.dataSource.data = [...this.bookings];
+        this.bookings = [...sortedBookings];
+        this.dataSource.data = [...this.bookings];
 
-      if (resetFilters) this.applyFilters();
-      this.loading = false;
-    },
-    error: (err) => {
-      this.errorMessage = 'Failed to load bookings';
-      console.error(err);
-      this.loading = false;
-    }
-  });
-}
-
+        if (resetFilters) this.applyFilters();
+        this.loading = false;
+      },
+      error: (err) => {
+        this.errorMessage = 'Failed to load bookings';
+        console.error(err);
+        this.loading = false;
+      }
+    });
+  }
 
   loadVenues(): void {
     this.viewVenueService.getAllVenues().subscribe({
@@ -168,25 +176,23 @@ export class BookingListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   applyFilters() {
-  let filtered = [...this.bookings];
+    let filtered = [...this.bookings];
 
-  if (this.currentStatus !== 'ALL') filtered = filtered.filter(b => b.bookingStatus === this.currentStatus);
-  if (this.currentCustomerType !== 'ALL') filtered = filtered.filter(b => b.customer?.customerType === this.currentCustomerType);
-  if (this.searchDate) filtered = filtered.filter(b => b.startDate === this.searchDate);
-  if (this.searchPhone) filtered = filtered.filter(b => b.customer?.phoneNumber?.toString().includes(this.searchPhone));
-  if (this.venueId && this.venueId !== 0) filtered = filtered.filter(b => b.venueId === this.venueId);
+    if (this.currentStatus !== 'ALL') filtered = filtered.filter(b => b.bookingStatus === this.currentStatus);
+    if (this.currentCustomerType !== 'ALL') filtered = filtered.filter(b => b.customer?.customerType === this.currentCustomerType);
+    if (this.searchDate) filtered = filtered.filter(b => b.startDate === this.searchDate);
+    if (this.searchPhone) filtered = filtered.filter(b => b.customer?.phoneNumber?.toString().includes(this.searchPhone));
+    if (this.venueId && this.venueId !== 0) filtered = filtered.filter(b => b.venueId === this.venueId);
 
-  // Sort filtered bookings by bookingDate descending
-  filtered.sort((a, b) => {
-    const dateA = a.bookingDate ? new Date(a.bookingDate).getTime() : 0;
-    const dateB = b.bookingDate ? new Date(b.bookingDate).getTime() : 0;
-    return dateB - dateA;
-  });
+    filtered.sort((a, b) => {
+      const dateA = a.bookingDate ? new Date(a.bookingDate).getTime() : 0;
+      const dateB = b.bookingDate ? new Date(b.bookingDate).getTime() : 0;
+      return dateB - dateA;
+    });
 
-  this.dataSource.data = filtered;
-  if (this.paginator) this.paginator.firstPage();
-}
-
+    this.dataSource.data = filtered;
+    if (this.paginator) this.paginator.firstPage();
+  }
 
   getStatusColor(status: string) {
     switch (status) {
@@ -245,76 +251,178 @@ export class BookingListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // ================= PRINT FUNCTION =================
-  printTable() {
-    const now = new Date();
-    const currentDateTime = `${now.getDate().toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getFullYear()} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
-    const mainTitle = 'ZANZIBAR SOCIAL SECURITY FUND (ZSSF)'; // Main title
-    const heading = 'BOOKING REPORT'; // Subtitle
-    const columnsToShow = this.buildColumnsToShow();
-    const table = this.generateReportTable(columnsToShow);
+ printTable() {
+  const now = new Date();
+  const currentDateTime = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1)
+    .toString()
+    .padStart(2, '0')}/${now.getFullYear()} ${now.getHours().toString().padStart(2, '0')}:${now
+    .getMinutes().toString().padStart(2, '0')}`;
+  const mainTitle = 'ZANZIBAR SOCIAL SECURITY FUND (ZSSF)';
+  const heading = 'BOOKING REPORT';
+  const columnsToShow = this.buildColumnsToShow();
+  const table = this.generateReportTable(columnsToShow);
 
-    // Remove unwanted rows
-    const filteredElements = table.querySelectorAll('.mat-mdc-no-data-row, .filtered, .no-data');
-    filteredElements.forEach(el => el.remove());
+  const filteredElements = table.querySelectorAll('.mat-mdc-no-data-row, .filtered, .no-data');
+  filteredElements.forEach(el => el.remove());
 
-    const printWindow = window.open('');
-    if (!printWindow) return;
+  const printWindow = window.open('');
+  if (!printWindow) return;
 
-    const logoPath = window.location.origin + '/zssf.png';
+  const logoPath = window.location.origin + '/zssf.png';
+  const printedByInfo = `${this.currentUser} (${this.currentUserRole})`;
 
-    printWindow.document.write(`
-      <html>
-        <head>
-          <title>${mainTitle}</title>
-          <style>
-            @page { margin: 60px 40px 100px 40px; }
+  printWindow.document.write(`
+    <html>
+      <head>
+        <title>${mainTitle}</title>
+        <style>
+          @page {
+            size: A4 landscape; /* ✅ ensures wide table fits */
+            margin: 60px 50px 100px 50px;
+          }
+          body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+          }
+          .report-header {
+            text-align: center;
+            margin: 5px 0 20px 0;
+          }
+          .report-header img {
+            height: 90px;
+            margin-top: -5px;
+          }
+          .report-header h1 {
+            margin: 5px 0;
+            font-size: 26px;
+            font-weight: bold;
+            color: #004d00;
+            text-transform: uppercase;
+          }
+          .report-header h2 {
+            margin: 2px 0 15px 0;
+            font-size: 22px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #004d00;
+          }
 
-            body { font-family: Arial, sans-serif; margin: 0; }
+          /* ✅ Table fixes */
+         /* Table fixes */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto; /* let columns grow with content */
+  word-wrap: break-word;
+}
 
-            .report-header { text-align: center; margin: 5px 0 20px 0; }
-            .report-header img { height: 100px; margin-top: -5px; }
-            .report-header h1 { margin: 5px 0; font-size: 26px; font-weight: bold; color: #004d00; text-transform: uppercase; }
-            .report-header h2 { margin: 2px 0 15px 0; font-size: 22px; font-weight: bold; text-transform: uppercase; color: #004d00; }
+th, td {
+  border: 1px solid #000;
+  padding: 10px; /* slightly larger for better spacing */
+  font-size: 18px;
+  text-align: left;
+  vertical-align: top;
+  min-width: 100px; /* ensures th/td don’t shrink too much */
+}
 
-            table { width: 100%; border-collapse: collapse; margin-bottom: 80px; }
-            th, td { border: 1px solid #000; padding: 7px; font-size: 13px; text-align: left; word-wrap: break-word; }
-            th { background-color: #f0f0f0; font-weight: bold; }
+th {
+  background-color: #000;
+  color: #fff;
+  font-weight: bold;
+}
 
-            footer { position: fixed; bottom: 0; left: 0; right: 0; border-top: 2px solid #004d00; background: #f9f9f9; font-size: 14px; padding: 2px 0; display: flex; justify-content: space-between; align-items: center; color: #333; font-weight: 500; }
-            .footer-left { text-align: left; }
-            .footer-right { text-align: right; }
+/* Prevent column cutoff */
+main {
+  width: 100%;
+  overflow-x: visible; /* allow table to expand horizontally in print */
+}
 
-            @media print { footer { position: fixed; bottom: 0; } .filtered, .mat-mdc-no-data-row, .no-data { display: none !important; } }
-          </style>
-        </head>
-        <body>
-          <div class="report-header">
-            <img src="${logoPath}" alt="ZSSF Logo">
-            <h1>${mainTitle}</h1>
-            <h2>${heading}</h2>
-          </div>
-
-          <main>
-            ${table.outerHTML}
-          </main>
-
-          <footer>
-            <div class="footer-left">Printed by: ${this.currentUser} | Generated on: ${currentDateTime}</div>
-            <div class="footer-right"></div>
-          </footer>
-        </body>
-      </html>
-    `);
-
-    printWindow.document.close();
-
-    printWindow.onload = () => {
-      printWindow.print();
-    };
+@media print {
+  thead {
+    display: table-header-group; /* repeats header on each page */
   }
+  tfoot {
+    display: table-footer-group;
+  }
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  table {
+    page-break-inside: auto; /* allows rows to break naturally across pages */
+  }
+  tr {
+    page-break-inside: avoid; /* prevents a row from being split */
+    page-break-after: auto;
+  }
+}
 
-  // ================= DOWNLOAD PDF =================
-downloadTable() {
+
+          footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            border-top: 2px solid #004d00;
+            background: #f9f9f9;
+            font-size: 14px;
+            padding: 4px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #333;
+            font-weight: 500;
+          }
+
+          .footer-left { text-align: left; }
+          .footer-right { text-align: right; }
+
+          @media print {
+            footer {
+              position: fixed;
+              bottom: 0;
+            }
+            thead {
+              display: table-header-group; /* ✅ ensures table header repeats each page */
+            }
+            tfoot {
+              display: table-footer-group;
+            }
+            body {
+              -webkit-print-color-adjust: exact; /* ✅ keeps header color */
+              print-color-adjust: exact;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="report-header">
+          <img src="${logoPath}" alt="ZSSF Logo">
+          <h1>${mainTitle}</h1>
+          <h2>${heading}</h2>
+        </div>
+
+        <main>
+          ${table.outerHTML}
+        </main>
+
+        <footer>
+          <div class="footer-left">
+            Printed by: ${printedByInfo} | Generated on: ${currentDateTime}
+          </div>
+          <div class="footer-right"></div>
+        </footer>
+      </body>
+    </html>
+  `);
+
+  printWindow.document.close();
+  printWindow.onload = () => printWindow.print();
+}
+
+
+  // ================= DOWNLOAD PDF (unchanged) =================
+  downloadTable() {
   const now = new Date();
   const currentDateTime = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1)
     .toString()
@@ -327,19 +435,16 @@ downloadTable() {
   const columnsToShow = this.buildColumnsToShow();
   const table = this.generateReportTable(columnsToShow);
 
-  // Remove unwanted rows
   const filteredElements = table.querySelectorAll('.mat-mdc-no-data-row, .filtered, .no-data');
   filteredElements.forEach(el => el.remove());
 
-  // Apply consistent table styles
   table.style.width = '100%';
   table.style.borderCollapse = 'collapse';
-  table.style.marginBottom = '50px';
   table.querySelectorAll('th, td').forEach(cell => {
     const el = cell as HTMLElement;
     el.style.border = '1px solid #000';
     el.style.padding = '6px';
-    el.style.fontSize = '12px';
+    el.style.fontSize = '16px';
     el.style.textAlign = 'left';
     el.style.wordWrap = 'break-word';
   });
@@ -358,6 +463,7 @@ downloadTable() {
   container.style.width = '100%';
 
   const logoPath = window.location.origin + '/zssf.png';
+  const printedByInfo = `${this.currentUser} (${this.currentUserRole})`;
 
   container.innerHTML = `
     <div style="text-align:center; margin:10px 0 20px 0;">
@@ -369,62 +475,84 @@ downloadTable() {
 
   container.appendChild(table);
 
-  // Footer section (like print)
   const footer = document.createElement('div');
   footer.style.borderTop = '2px solid #004d00';
   footer.style.background = '#f9f9f9';
-  footer.style.fontSize = '13px';
+  footer.style.fontSize = '15px';
   footer.style.fontWeight = '500';
   footer.style.color = '#333';
-  footer.style.padding = '5px 0';
+  footer.style.padding = '8px 5px';
   footer.style.display = 'flex';
   footer.style.justifyContent = 'space-between';
   footer.style.alignItems = 'center';
   footer.style.marginTop = '20px';
   footer.innerHTML = `
-    <div>Printed by: ${this.currentUser} | Generated on: ${currentDateTime}</div>
+    <div>Printed by: ${printedByInfo} | Generated on: ${currentDateTime}</div>
     <div></div>
   `;
   container.appendChild(footer);
 
-  container.style.position = 'fixed';
-  container.style.left = '-9999px';
+  container.style.position = 'absolute';
+  container.style.top = '-9999px';
+  container.style.left = '0';
   document.body.appendChild(container);
 
-  // Slightly higher scale (good clarity, smaller than before)
   html2canvas(container, {
-    scale: 2,            // previously 1.5 → now sharper but not huge
+    scale: 2.5,
     useCORS: true,
     backgroundColor: '#fff',
     scrollX: 0,
     scrollY: 0,
     windowWidth: container.scrollWidth,
     windowHeight: container.scrollHeight
-  }).then(canvas => {
-    const pdf = new jsPDF('p', 'mm', 'a3'); // A3 for better layout
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    const imgData = canvas.toDataURL('image/jpeg', 0.8); // moderate compression
-    const imgWidth = pageWidth - 20;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  })
+    .then(canvas => {
+      const pdf = new jsPDF('p', 'mm', 'a3');
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
 
-    let heightLeft = imgHeight;
-    let position = 10;
+      const imgWidth = pageWidth - 20;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const imgData = canvas.toDataURL('image/jpeg', 1.0);
 
-    pdf.addImage(imgData, 'JPEG', 10, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
+      let heightLeft = imgHeight;
+      let position = 10;
 
-    // Add extra pages if needed
-    while (heightLeft > 0) {
-      position = heightLeft - imgHeight + 10;
-      pdf.addPage();
       pdf.addImage(imgData, 'JPEG', 10, position, imgWidth, imgHeight);
       heightLeft -= pageHeight;
-    }
 
-    pdf.save('Booking_Report.pdf');
-    document.body.removeChild(container);
-  }).catch(err => console.error(err));
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight + 10;
+        pdf.addPage();
+
+        // ✅ Repeat header on each page
+        pdf.setFontSize(14);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text(mainTitle, pageWidth / 2, 20, { align: 'center' });
+        pdf.setFontSize(12);
+        pdf.text(heading, pageWidth / 2, 30, { align: 'center' });
+
+        // Add the same table slice again
+        pdf.addImage(imgData, 'JPEG', 10, position, imgWidth, imgHeight);
+
+        // ✅ Footer per page
+        pdf.setFontSize(10);
+        // pdf.text(
+        //   `Printed by: ${printedByInfo} | Generated on: ${currentDateTime}`,
+        //   14,
+        //   pageHeight - 10
+        // );
+
+        heightLeft -= pageHeight;
+      }
+
+      pdf.save('Booking_Report.pdf');
+      document.body.removeChild(container);
+    })
+    .catch(err => {
+      console.error(err);
+      document.body.removeChild(container);
+    });
 }
 
 
@@ -479,12 +607,23 @@ downloadTable() {
     return table;
   }
 }
+
 function autoTable(pdf: jsPDF, arg1: {
-  head: string[][]; body: string[][]; startY: number; theme: string; headStyles: {
-    fillColor: number[]; // black header background
-    textColor: number[]; fontSize: number; halign: string;
-  }; bodyStyles: { fontSize: number; cellPadding: number; textColor: number[]; }; styles: { lineColor: number[]; lineWidth: number; font: string; }; alternateRowStyles: { fillColor: number[]; }; margin: { top: number; left: number; right: number; }; didDrawPage: () => void;
+  head: string[][];
+  body: string[][];
+  startY: number;
+  theme: string;
+  headStyles: {
+    fillColor: number[];
+    textColor: number[];
+    fontSize: number;
+    halign: string;
+  };
+  bodyStyles: { fontSize: number; cellPadding: number; textColor: number[]; };
+  styles: { lineColor: number[]; lineWidth: number; font: string; };
+  alternateRowStyles: { fillColor: number[]; };
+  margin: { top: number; left: number; right: number; };
+  didDrawPage: () => void;
 }) {
   throw new Error('Function not implemented.');
 }
-
