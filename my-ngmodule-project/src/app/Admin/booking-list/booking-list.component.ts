@@ -9,6 +9,7 @@ import { PdfViewerOverlayComponent } from '../pdf-viewer-overlay/pdf-viewer-over
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { interval, Subscription } from 'rxjs';
+import { AuthService } from '../../Services/auth.service';
 
 @Component({
   selector: 'app-booking-list',
@@ -69,7 +70,8 @@ export class BookingListComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private bookingService: BookingService,
     private viewVenueService: ViewVenueService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -269,7 +271,9 @@ export class BookingListComponent implements OnInit, AfterViewInit, OnDestroy {
   if (!printWindow) return;
 
   const logoPath = window.location.origin + '/zssf.png';
-  const printedByInfo = `${this.currentUser} (${this.currentUserRole})`;
+  const adminId = this.authService.getUsername() || 'Unknown Admin';
+const printedByInfo = `${adminId}`;
+
 
   printWindow.document.write(`
     <html>
@@ -408,7 +412,7 @@ main {
 
         <footer>
           <div class="footer-left">
-            Printed by: ${printedByInfo} | Generated on: ${currentDateTime}
+           ${printedByInfo} | Generated on: ${currentDateTime}
           </div>
           <div class="footer-right"></div>
         </footer>
@@ -430,14 +434,17 @@ main {
     .getMinutes()
     .toString()
     .padStart(2, '0')}`;
+
   const mainTitle = 'ZANZIBAR SOCIAL SECURITY FUND (ZSSF)';
   const heading = 'BOOKING REPORT';
   const columnsToShow = this.buildColumnsToShow();
   const table = this.generateReportTable(columnsToShow);
 
+  // ✅ Remove extra rows
   const filteredElements = table.querySelectorAll('.mat-mdc-no-data-row, .filtered, .no-data');
   filteredElements.forEach(el => el.remove());
 
+  // ✅ Style table
   table.style.width = '100%';
   table.style.borderCollapse = 'collapse';
   table.querySelectorAll('th, td').forEach(cell => {
@@ -455,6 +462,7 @@ main {
     el.style.fontWeight = 'bold';
   });
 
+  // ✅ Container
   const container = document.createElement('div');
   container.style.background = '#fff';
   container.style.fontFamily = 'Arial, sans-serif';
@@ -463,8 +471,12 @@ main {
   container.style.width = '100%';
 
   const logoPath = window.location.origin + '/zssf.png';
-  const printedByInfo = `${this.currentUser} (${this.currentUserRole})`;
 
+  // ✅ Fetch admin credentials directly from AuthService
+  const adminId = this.authService.getUsername() || 'Unknown Admin';
+  const printedByInfo = `Admin ID: ${adminId} `;
+
+  // ✅ Header
   container.innerHTML = `
     <div style="text-align:center; margin:10px 0 20px 0;">
       <img src="${logoPath}" style="height:90px; display:block; margin:0 auto;">
@@ -475,6 +487,7 @@ main {
 
   container.appendChild(table);
 
+  // ✅ Footer
   const footer = document.createElement('div');
   footer.style.borderTop = '2px solid #004d00';
   footer.style.background = '#f9f9f9';
@@ -487,7 +500,7 @@ main {
   footer.style.alignItems = 'center';
   footer.style.marginTop = '20px';
   footer.innerHTML = `
-    <div>Printed by: ${printedByInfo} | Generated on: ${currentDateTime}</div>
+    <div>${printedByInfo} | Generated on: ${currentDateTime}</div>
     <div></div>
   `;
   container.appendChild(footer);
@@ -497,6 +510,7 @@ main {
   container.style.left = '0';
   document.body.appendChild(container);
 
+  // ✅ Capture and generate PDF
   html2canvas(container, {
     scale: 2.5,
     useCORS: true,
@@ -535,13 +549,9 @@ main {
         // Add the same table slice again
         pdf.addImage(imgData, 'JPEG', 10, position, imgWidth, imgHeight);
 
-        // ✅ Footer per page
+        // ✅ Footer on each page
         pdf.setFontSize(10);
-        // pdf.text(
-        //   `Printed by: ${printedByInfo} | Generated on: ${currentDateTime}`,
-        //   14,
-        //   pageHeight - 10
-        // );
+        pdf.text(`${printedByInfo} | Generated on: ${currentDateTime}`, 14, pageHeight - 10);
 
         heightLeft -= pageHeight;
       }
@@ -554,6 +564,7 @@ main {
       document.body.removeChild(container);
     });
 }
+
 
 
 
