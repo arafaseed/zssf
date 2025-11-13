@@ -248,7 +248,7 @@ export class BookingListComponent implements OnInit, AfterViewInit, OnDestroy {
   printTable() {
     const now = new Date();
     const currentDateTime = `${now.getDate().toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getFullYear()} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
-    const mainTitle = 'ZANZIBAR SOCIAL SECURITY FUND'; // Main title
+    const mainTitle = 'ZANZIBAR SOCIAL SECURITY FUND (ZSSF)'; // Main title
     const heading = 'BOOKING REPORT'; // Subtitle
     const columnsToShow = this.buildColumnsToShow();
     const table = this.generateReportTable(columnsToShow);
@@ -322,7 +322,7 @@ downloadTable() {
     .getMinutes()
     .toString()
     .padStart(2, '0')}`;
-  const mainTitle = 'ZANZIBAR SOCIAL SECURITY FUND';
+  const mainTitle = 'ZANZIBAR SOCIAL SECURITY FUND (ZSSF)';
   const heading = 'BOOKING REPORT';
   const columnsToShow = this.buildColumnsToShow();
   const table = this.generateReportTable(columnsToShow);
