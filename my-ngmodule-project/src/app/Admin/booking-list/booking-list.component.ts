@@ -425,14 +425,13 @@ main {
 }
 
 
-  // ================= DOWNLOAD PDF (unchanged) =================
-  downloadTable() {
+ // ================= UPDATED DOWNLOAD FUNCTION =================
+downloadTable() {
   const now = new Date();
   const currentDateTime = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1)
     .toString()
     .padStart(2, '0')}/${now.getFullYear()} ${now.getHours().toString().padStart(2, '0')}:${now
-    .getMinutes()
-    .toString()
+    .getMinutes().toString()
     .padStart(2, '0')}`;
 
   const mainTitle = 'ZANZIBAR SOCIAL SECURITY FUND (ZSSF)';
@@ -440,11 +439,11 @@ main {
   const columnsToShow = this.buildColumnsToShow();
   const table = this.generateReportTable(columnsToShow);
 
-  // ✅ Remove extra rows
+  // ✅ Remove no-data rows
   const filteredElements = table.querySelectorAll('.mat-mdc-no-data-row, .filtered, .no-data');
   filteredElements.forEach(el => el.remove());
 
-  // ✅ Style table
+  // ✅ Style table just like print view
   table.style.width = '100%';
   table.style.borderCollapse = 'collapse';
   table.querySelectorAll('th, td').forEach(cell => {
@@ -462,7 +461,7 @@ main {
     el.style.fontWeight = 'bold';
   });
 
-  // ✅ Container
+  // ✅ Container (identical to printTable)
   const container = document.createElement('div');
   container.style.background = '#fff';
   container.style.fontFamily = 'Arial, sans-serif';
@@ -471,12 +470,9 @@ main {
   container.style.width = '100%';
 
   const logoPath = window.location.origin + '/zssf.png';
-
-  // ✅ Fetch admin credentials directly from AuthService
   const adminId = this.authService.getUsername() || 'Unknown Admin';
-  const printedByInfo = `Admin ID: ${adminId} `;
+  const printedByInfo = `${adminId}`;
 
-  // ✅ Header
   container.innerHTML = `
     <div style="text-align:center; margin:10px 0 20px 0;">
       <img src="${logoPath}" style="height:90px; display:block; margin:0 auto;">
@@ -487,7 +483,6 @@ main {
 
   container.appendChild(table);
 
-  // ✅ Footer
   const footer = document.createElement('div');
   footer.style.borderTop = '2px solid #004d00';
   footer.style.background = '#f9f9f9';
@@ -505,12 +500,13 @@ main {
   `;
   container.appendChild(footer);
 
+  // Hide offscreen
   container.style.position = 'absolute';
   container.style.top = '-9999px';
   container.style.left = '0';
   document.body.appendChild(container);
 
-  // ✅ Capture and generate PDF
+  // ✅ Convert to PDF (A4 landscape)
   html2canvas(container, {
     scale: 2.5,
     useCORS: true,
@@ -521,7 +517,7 @@ main {
     windowHeight: container.scrollHeight
   })
     .then(canvas => {
-      const pdf = new jsPDF('p', 'mm', 'a3');
+      const pdf = new jsPDF('l', 'mm', 'a4');
       const pageWidth = pdf.internal.pageSize.getWidth();
       const pageHeight = pdf.internal.pageSize.getHeight();
 
@@ -529,42 +525,35 @@ main {
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
       const imgData = canvas.toDataURL('image/jpeg', 1.0);
 
-      let heightLeft = imgHeight;
+      let remainingHeight = imgHeight;
       let position = 10;
 
       pdf.addImage(imgData, 'JPEG', 10, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
+      remainingHeight -= pageHeight;
 
-      while (heightLeft > 0) {
-        position = heightLeft - imgHeight + 10;
+      while (remainingHeight > 0) {
         pdf.addPage();
-
-        // ✅ Repeat header on each page
+        // Repeat header on each page
         pdf.setFontSize(14);
         pdf.setFont('helvetica', 'bold');
-        pdf.text(mainTitle, pageWidth / 2, 20, { align: 'center' });
+        pdf.text(mainTitle, pageWidth / 2, 14, { align: 'center' });
         pdf.setFontSize(12);
-        pdf.text(heading, pageWidth / 2, 30, { align: 'center' });
+        pdf.text(heading, pageWidth / 2, 22, { align: 'center' });
 
-        // Add the same table slice again
-        pdf.addImage(imgData, 'JPEG', 10, position, imgWidth, imgHeight);
+        const offsetY = (imgHeight - remainingHeight) * -1 + 10;
+        pdf.addImage(imgData, 'JPEG', 10, offsetY, imgWidth, imgHeight);
 
-        // ✅ Footer on each page
-        pdf.setFontSize(10);
-        pdf.text(`${printedByInfo} | Generated on: ${currentDateTime}`, 14, pageHeight - 10);
-
-        heightLeft -= pageHeight;
+        remainingHeight -= pageHeight;
       }
 
       pdf.save('Booking_Report.pdf');
       document.body.removeChild(container);
     })
     .catch(err => {
-      console.error(err);
+      console.error('Error generating download PDF:', err);
       document.body.removeChild(container);
     });
 }
-
 
 
 
