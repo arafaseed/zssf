@@ -46,27 +46,35 @@ export class PoliciesSettingsComponent implements OnInit {
     });
   }
 
+
   ngOnInit(): void {
-    this.loadExpiry();
-    this.loadDiscountPolicy();
-  }
+  this.patchExpiryFormFromHours(this.expiryHours);
+  this.loadExpiry();
+  this.loadDiscountPolicy();
+}
+
 
   // --- expiry ---
   loadExpiry() {
-    this.expiryLoading = true;
-    this.expiryError = '';
-    this.svc.viewCurrentExpiry()
-      .pipe(finalize(() => this.expiryLoading = false))
-      .subscribe({
-        next: (r: ExpiryViewResp) => {
-          this.expiryHours = r.expiryHours ?? 24;
+  this.expiryLoading = true;
+  this.expiryError = '';
+
+  this.svc.viewCurrentExpiry()
+    .pipe(finalize(() => this.expiryLoading = false))
+    .subscribe({
+      next: (r: ExpiryViewResp) => {
+        // Only overwrite if backend returns a valid positive number
+        if (r.expiryHours && r.expiryHours > 0) {
+          this.expiryHours = r.expiryHours;
           this.patchExpiryFormFromHours(this.expiryHours);
-        },
-        error: (err) => {
-          this.expiryError = this.extractError(err, 'Failed to load expiry time');
         }
-      });
-  }
+      },
+      error: (err) => {
+        this.expiryError = this.extractError(err, 'Failed to load expiry time');
+      }
+    });
+}
+
 
   patchExpiryFormFromHours(hours: number) {
     this.expiryForm.patchValue({
