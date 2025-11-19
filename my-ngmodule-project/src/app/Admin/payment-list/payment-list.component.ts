@@ -11,7 +11,7 @@ export class PaymentListComponent implements OnInit {
   payments: any[] = [];
   venues: string[] = [];
   loading = true;
-
+  filterStatus: string = '';
   filterPhone: string = '';
   filterVenue: string = '';
   venueSearch: string = '';
@@ -40,7 +40,8 @@ export class PaymentListComponent implements OnInit {
       const matchesPhone = !this.filterPhone || payment.customerPhone?.includes(this.filterPhone);
       const matchesVenue = !this.filterVenue || payment.venue === this.filterVenue;
       const matchesDate = !this.filterDate || (new Date(payment.paymentDate).toISOString().split('T')[0] === this.filterDate);
-      return matchesPhone && matchesVenue && matchesDate;
+      const matchesStatus = !this.filterStatus || payment.status === this.filterStatus;
+      return matchesPhone && matchesVenue && matchesDate && matchesStatus;
     });
   }
 

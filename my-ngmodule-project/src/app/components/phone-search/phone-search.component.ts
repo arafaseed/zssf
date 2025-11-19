@@ -60,8 +60,13 @@ export class PhoneSearchComponent {
           const filtered = data.filter(
             (b) => b.bookingStatus && b.bookingStatus.toLowerCase() !== 'cancelled'
           );
-                // Make sure extendCount exists and is a number
-      filtered.forEach(b => b.extendCount = b.extendCount || 0);
+          filtered.forEach(b => {
+  // Keep backend value if present, otherwise default to 0
+  b.extendCount = (b.extendCount !== undefined && b.extendCount !== null)
+    ? b.extendCount
+    : 0;
+});
+
           this.bookings = this.sortByBookingDateDesc(filtered);
           this.noResults = this.bookings.length === 0;
           this.searching = false;
@@ -136,40 +141,63 @@ export class PhoneSearchComponent {
   }
 
   // ----------------- POSTPONE / AVAILABILITY -----------------
-  setCurrentBooking(booking: any) {
-    const now = new Date();
-    const bookingEnd = new Date(booking.endDate);
-
-    if (bookingEnd < now) {
-      this.snackBar.open(
-        this.translate.instant('phoneSearch.cannotPostponePast') || 
-        'You cannot postpone a booking whose date has already passed.',
-        this.translate.instant('Close'),
-        { duration: 4000 }
-      );
-      return;
-    }
-
-    if ((booking.extendCount || 0) >= 2) {
-      this.snackBar.open(
-        this.translate.instant('phoneSearch.limitReached') || 
-        'You cannot extend this booking more than two times.',
-        this.translate.instant('Close'),
-        { duration: 4000 }
-      );
-      return;
-    }
-
-    this.currentBooking =
-      this.currentBooking?.bookingId === booking.bookingId ? null : booking;
-
-    if (this.currentBooking) {
-      this.startDate = new Date(booking.startDate);
-      this.endDate = new Date(booking.endDate);
-      this.startTime = this.formatBookingTime(booking.startTime);
-      this.endTime = this.formatBookingTime(booking.endTime);
-    }
+ setCurrentBooking(booking: any) {
+  // If clicking same booking → close it
+  if (this.currentBooking?.bookingId === booking.bookingId) {
+    this.currentBooking = null;
+    return;
   }
+
+  // --- FETCH LATEST BOOKING BEFORE OPENING FORM ---
+  this.http.get<any>(`${environment.apiUrl}/api/bookings/${booking.bookingId}`)
+    .subscribe({
+      next: (latest) => {
+
+        // Store the latest version of booking
+        this.currentBooking = latest;
+
+        // Check if end date passed
+        const now = new Date();
+        const bookingEnd = new Date(latest.endDate);
+        if (bookingEnd < now) {
+          this.snackBar.open(
+            this.translate.instant('phoneSearch.cannotPostponePast'),
+            this.translate.instant('Close'),
+            { duration: 4000 }
+          );
+          this.currentBooking = null;
+          return;
+        }
+
+        // Check limit
+        if ((latest.extendCount || 0) >= 2) {
+          this.snackBar.open(
+            this.translate.instant('phoneSearch.limitReached'),
+            this.translate.instant('Close'),
+            { duration: 4000 }
+          );
+          this.currentBooking = null;
+          return;
+        }
+
+        // Now load dates into form
+        this.startDate = new Date(latest.startDate);
+        this.endDate = new Date(latest.endDate);
+        this.startTime = this.formatBookingTime(latest.startTime);
+        this.endTime = this.formatBookingTime(latest.endTime);
+      },
+
+      error: (err) => {
+        console.error('Error loading latest booking:', err);
+        this.snackBar.open(
+          'Error fetching latest booking details',
+          this.translate.instant('Close'),
+          { duration: 4000 }
+        );
+      }
+    });
+}
+
 
   formatBookingTime(time: any): string {
     if (!time) return '';

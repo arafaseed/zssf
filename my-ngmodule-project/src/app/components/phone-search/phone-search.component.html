@@ -73,6 +73,13 @@
                   'status-complete': booking.bookingStatus === 'COMPLETE'
                 }">{{ booking.bookingStatus }}</span>
               </p>
+             <p *ngIf="
+            booking.bookingStatus.toLowerCase() === 'complete' &&
+            !isDatePassed(booking.endDate) &&
+            booking.extendCount < 2
+            ">
+  <strong>Extend Count:</strong> {{ booking.extendCount || 0 }}
+</p>
               <p><strong>{{ 'phoneSearch.venue' | translate }}:</strong> {{ booking.venueName }}</p>
               <p><strong>{{ 'phoneSearch.activity' | translate }}:</strong> {{ booking.venueActivityName }}</p>
             </div>
@@ -112,11 +119,12 @@
 </div>
             <!-- ✅ Postpone Button BELOW Each Card -->
             <div
-  *ngIf="
-    booking.bookingStatus.toLowerCase() === 'complete' &&
-    !isDatePassed(booking.endDate) &&
-    (booking.extendCount || 0) < 2
-  "
+ *ngIf="
+  booking.bookingStatus.toLowerCase() === 'complete' &&
+  !isDatePassed(booking.endDate) &&
+  booking.extendCount < 2
+"
+
   class="mt-4 border-t pt-3"
 >
               <button
