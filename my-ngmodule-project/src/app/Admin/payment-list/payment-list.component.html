@@ -28,6 +28,19 @@
         <option *ngFor="let venue of venues" [value]="venue">{{ venue }}</option>
       </select>
     </div>
+<!-- Status Filter -->
+<div class="flex flex-col">
+  <label class="text-gray-700 text-sm mb-1">Status</label>
+  <select 
+    [(ngModel)]="filterStatus"
+    class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <option value="">All Statuses</option>
+    <option value="COMPLETE">COMPLETE</option>
+    <option value="IN_PROGRESS">IN_PROGRESS</option>
+    <option value="CANCELLED">CANCELLED</option>
+    <option value="EXPIRED">EXPIRED</option>
+  </select>
+</div>
 
     <!-- Payment Date Filter -->
     <div class="flex flex-col">
@@ -48,6 +61,7 @@
     <tr>
       <th class="border border-gray-300 px-4 py-2">Booking Code</th>
       <th class="border border-gray-300 px-4 py-2">Amount Paid</th>
+      <th class="border border-gray-300 px-4 py-2">Status</th>
       <th class="border border-gray-300 px-4 py-2">Customer Name</th>
       <th class="border border-gray-300 px-4 py-2">Phone Number</th>
       <th class="border border-gray-300 px-4 py-2">Venue</th>
@@ -59,6 +73,18 @@
     <tr *ngFor="let payment of filteredPayments()" class="hover:bg-gray-50">
       <td class="border border-gray-300 px-4 py-2">{{ payment.booking?.bookingCode || 'N/A' }}</td>
       <td class="border border-gray-300 px-4 py-2">{{ payment.amountPaid | currency:'TZS':'symbol' }}</td>
+      <td 
+  class="border border-gray-300 px-4 py-2 font-semibold"
+  [ngClass]="{
+    'text-green-600': payment.status === 'COMPLETE',
+    'text-blue-600': payment.status === 'IN_PROGRESS',
+    'text-red-600': payment.status === 'CANCELLED' || payment.status === 'EXPIRED'
+  }"
+>
+  {{ payment.status || 'N/A' }}
+</td>
+
+
       <td class="border border-gray-300 px-4 py-2">{{ payment.customer?.customerName || 'N/A' }}</td>
       <td class="border border-gray-300 px-4 py-2">{{ payment.customerPhone || 'N/A' }}</td>
       <td class="border border-gray-300 px-4 py-2">{{ payment.venue || 'N/A' }}</td>

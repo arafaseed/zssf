@@ -58,7 +58,9 @@ export class PaymentService {
     venue: venueName,
     activity: venueActivity,
     customerPhone,
-    bookingCode
+    bookingCode,
+    status: booking?.bookingStatus || invoice?.status || 'N/A'
+
   };
 });
 
