@@ -141,62 +141,57 @@ export class PhoneSearchComponent {
   }
 
   // ----------------- POSTPONE / AVAILABILITY -----------------
- setCurrentBooking(booking: any) {
-  // If clicking same booking → close it
+setCurrentBooking(booking: any) {
   if (this.currentBooking?.bookingId === booking.bookingId) {
     this.currentBooking = null;
     return;
   }
 
-  // --- FETCH LATEST BOOKING BEFORE OPENING FORM ---
-  this.http.get<any>(`${environment.apiUrl}/api/bookings/${booking.bookingId}`)
-    .subscribe({
-      next: (latest) => {
+  this.http.get<any>(`${environment.apiUrl}/api/bookings/${booking.bookingId}`).subscribe({
+    next: (latest) => {
+      this.currentBooking = latest;
 
-        // Store the latest version of booking
-        this.currentBooking = latest;
-
-        // Check if end date passed
-        const now = new Date();
-        const bookingEnd = new Date(latest.endDate);
-        if (bookingEnd < now) {
-          this.snackBar.open(
-            this.translate.instant('phoneSearch.cannotPostponePast'),
-            this.translate.instant('Close'),
-            { duration: 4000 }
-          );
-          this.currentBooking = null;
-          return;
-        }
-
-        // Check limit
-        if ((latest.extendCount || 0) >= 2) {
-          this.snackBar.open(
-            this.translate.instant('phoneSearch.limitReached'),
-            this.translate.instant('Close'),
-            { duration: 4000 }
-          );
-          this.currentBooking = null;
-          return;
-        }
-
-        // Now load dates into form
-        this.startDate = new Date(latest.startDate);
-        this.endDate = new Date(latest.endDate);
-        this.startTime = this.formatBookingTime(latest.startTime);
-        this.endTime = this.formatBookingTime(latest.endTime);
-      },
-
-      error: (err) => {
-        console.error('Error loading latest booking:', err);
+      // Only allow future bookings to postpone
+      if (new Date(latest.endDate) < new Date()) {
         this.snackBar.open(
-          'Error fetching latest booking details',
+          this.translate.instant('phoneSearch.cannotPostponePast'),
           this.translate.instant('Close'),
           { duration: 4000 }
         );
+        this.currentBooking = null;
+        return;
       }
-    });
+
+      // Limit of 2
+      if ((latest.extendCount || 0) >= 2) {
+        this.snackBar.open(
+          this.translate.instant('phoneSearch.limitReached'),
+          this.translate.instant('Close'),
+          { duration: 4000 }
+        );
+        this.currentBooking = null;
+        return;
+      }
+
+      // **Increment extendCountPreview for UI only**
+      this.currentBooking.extendCountPreview = (latest.extendCount || 0) + 1;
+
+      this.startDate = new Date(latest.startDate);
+      this.endDate = new Date(latest.endDate);
+      this.startTime = this.formatBookingTime(latest.startTime);
+      this.endTime = this.formatBookingTime(latest.endTime);
+    },
+    error: (err) => {
+      console.error('Error loading latest booking:', err);
+      this.snackBar.open(
+        'Error fetching latest booking details',
+        this.translate.instant('Close'),
+        { duration: 4000 }
+      );
+    }
+  });
 }
+
 
 
   formatBookingTime(time: any): string {
@@ -336,11 +331,14 @@ export class PhoneSearchComponent {
                   this.currentBooking.startTime = this.startTime;
                   this.currentBooking.endTime = this.endTime;
 
-                  this.currentBooking.extendCount = (this.currentBooking.extendCount || 0) + 1;
-                  const index = this.bookings.findIndex(b => b.bookingId === this.currentBooking.bookingId);
-                  if (index !== -1) {
-                    this.bookings[index].extendCount = this.currentBooking.extendCount;
-                  }
+                  // Use the value returned by backend
+this.currentBooking.extendCount = response.extendCount; 
+
+const index = this.bookings.findIndex(b => b.bookingId === this.currentBooking.bookingId);
+if (index !== -1) {
+  this.bookings[index].extendCount = this.currentBooking.extendCount;
+}
+
 
                   this.currentBooking = null;
                   this.onSubmit();
