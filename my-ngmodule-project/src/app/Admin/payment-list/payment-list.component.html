@@ -48,6 +48,7 @@
     <tr>
       <th class="border border-gray-300 px-4 py-2">Booking Code</th>
       <th class="border border-gray-300 px-4 py-2">Amount Paid</th>
+      <th class="border border-gray-300 px-4 py-2">Status</th>
       <th class="border border-gray-300 px-4 py-2">Customer Name</th>
       <th class="border border-gray-300 px-4 py-2">Phone Number</th>
       <th class="border border-gray-300 px-4 py-2">Venue</th>
@@ -59,6 +60,7 @@
     <tr *ngFor="let payment of filteredPayments()" class="hover:bg-gray-50">
       <td class="border border-gray-300 px-4 py-2">{{ payment.booking?.bookingCode || 'N/A' }}</td>
       <td class="border border-gray-300 px-4 py-2">{{ payment.amountPaid | currency:'TZS':'symbol' }}</td>
+      <td class="border border-gray-300 px-4 py-2"> {{ payment.status || 'N/A' }}</td>
       <td class="border border-gray-300 px-4 py-2">{{ payment.customer?.customerName || 'N/A' }}</td>
       <td class="border border-gray-300 px-4 py-2">{{ payment.customerPhone || 'N/A' }}</td>
       <td class="border border-gray-300 px-4 py-2">{{ payment.venue || 'N/A' }}</td>
