@@ -32,7 +32,7 @@ export class LayoutComponent {
     { label: 'Policy Setting', link: '/admin/policies-settings', icon: 'settings' },
     //{ label: 'Admin Report', link: '/admin/admin-reports', icon: 'report' },
     { label: 'Payment', link: '/admin/payment-list', icon: 'payments' },
-    { label: 'Chart', link: '/admin/app-report', icon: 'bar_chart' },
+    // { label: 'Chart', link: '/admin/app-report', icon: 'bar_chart' },
 
 
      
