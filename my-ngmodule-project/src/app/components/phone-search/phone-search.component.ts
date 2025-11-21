@@ -291,46 +291,58 @@ export class PhoneSearchComponent {
     });
   }
 
-  private extendBooking() {
-    this.http.put<any>(
-      `${environment.apiUrl}/api/bookings/extend/${this.currentBooking.bookingId}`,
-      {
-        startDate: this.formatDate(this.startDate),
-        endDate: this.formatDate(this.endDate),
-        startTime: this.startTime,
-        endTime: this.endTime
-      }
-    ).subscribe({
-      next: (response) => {
-        this.snackBar.open(
-          this.translate.instant('phoneSearch.postponeSuccess') || 'Booking extended successfully!',
-          this.translate.instant('Close'),
-          { duration: 3000 }
-        );
+private extendBooking() {
+  if (!this.currentBooking) {
+    return; // Safety check
+  }
 
-        // Update current booking and main list from backend response
-        this.currentBooking = { ...this.currentBooking, ...response };
-        const index = this.bookings.findIndex(b => b.bookingId === this.currentBooking.bookingId);
-        if (index !== -1) this.bookings[index] = this.currentBooking;
+  this.http.put<any>(
+    `${environment.apiUrl}/api/bookings/extend/${this.currentBooking.bookingId}`,
+    {
+      startDate: this.formatDate(this.startDate),
+      endDate: this.formatDate(this.endDate),
+      startTime: this.startTime,
+      endTime: this.endTime
+    }
+  ).subscribe({
+    next: (response) => {
+      this.snackBar.open(
+        this.translate.instant('phoneSearch.postponeSuccess') || 'Booking extended successfully!',
+        this.translate.instant('Close'),
+        { duration: 3000 }
+      );
 
-        this.currentBooking = null;
-      },
-      error: (err) => {
-        if (err.status === 400 && err.error?.includes('two times')) {
+      // Update current booking and main list from backend response
+      this.currentBooking = { ...this.currentBooking, ...response };
+      const index = this.bookings.findIndex(b => b.bookingId === this.currentBooking.bookingId);
+      if (index !== -1) this.bookings[index] = this.currentBooking;
+
+      this.currentBooking = null;
+    },
+    error: (err) => {
+      // Safely get error message as string
+      const errorMessage: string = typeof err.error === 'string' 
+        ? err.error 
+        : err.error?.message || '';
+
+      if (err.status === 400 && errorMessage.includes('two times')) {
+        if (this.currentBooking) {
           this.currentBooking.extendCount = 2;
           const index = this.bookings.findIndex(b => b.bookingId === this.currentBooking.bookingId);
           if (index !== -1) this.bookings[index].extendCount = 2;
           this.currentBooking = null;
         }
-
-        const errorMsg = err.error?.includes('two times')
-          ? this.translate.instant('phoneSearch.limitReached') || 'You cannot extend more than twice.'
-          : this.translate.instant('phoneSearch.postponeError') || 'Error extending booking.';
-
-        this.snackBar.open(errorMsg, this.translate.instant('Close'), { duration: 4000 });
       }
-    });
-  }
+
+      const displayMsg = errorMessage.includes('two times')
+        ? this.translate.instant('phoneSearch.limitReached') || 'You cannot extend more than twice.'
+        : this.translate.instant('phoneSearch.postponeError') || 'Error extending booking.';
+
+      this.snackBar.open(displayMsg, this.translate.instant('Close'), { duration: 4000 });
+    }
+  });
+}
+
 
   private formatDate(date: Date): string {
     const yyyy = date.getFullYear();
