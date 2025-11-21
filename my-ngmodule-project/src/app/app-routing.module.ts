@@ -31,7 +31,7 @@ import { StaffTableComponent } from './Admin/staff-table/staff-table.component';
 import { AdminFeedbacksComponent } from './Admin/admin-feedbacks/admin-feedbacks.component';
 import { ReportsComponent } from './Admin/reports/reports.component';
 import { AdminReportComponent } from './Admin/admin-report/admin-report.component';
-import { ReportComponent } from './report/report.component';
+// import { ReportComponent } from './report/report.component';
 import { PaymentListComponent } from './Admin/payment-list/payment-list.component';
 
 
@@ -89,7 +89,7 @@ const routes: Routes = [
       { path: 'tableoptional', component: OptionalServiceTableComponent },
       { path: 'report', component: ReportsComponent},
        { path: 'addstaff', component: StaffFormComponent },
-      { path: 'app-report', component: ReportComponent },
+      // { path: 'app-report', component: ReportComponent },
 
       { path: 'payment-list', component: PaymentListComponent },
   

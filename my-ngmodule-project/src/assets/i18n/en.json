@@ -374,8 +374,28 @@
     "halfPayment": "50% Upfront Payment Required",
     "continueQuestion": "Do you want to continue?"
     
-
   },
+
+  "postpone": {
+  "title": "Postpone Booking",
+  "youArePostponing": "You are postponing",
+  "for": "for",
+  "venue": "Venue",
+  "activity": "Activity",
+  "oldStartDate": "Old Start Date",
+  "oldStartTime": "Old Start Time",
+  "oldEndDate": "Old End Date",
+  "oldEndTime": "Old End Time",
+  "newDetails": "New Postpone Details",
+  "newStartDate": "New Start Date",
+  "newStartTime": "New Start Time",
+  "newEndDate": "New End Date",
+  "newEndTime": "New End Time"
+},
+"common": {
+  "cancel": "Cancel",
+  "confirm": "Confirm"
+},
 
 
   "datesTimes": {
