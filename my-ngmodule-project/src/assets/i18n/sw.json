@@ -70,6 +70,7 @@
     "statusLabel": "Hali",
     "pendingexpires": "Jaribu tena Inasubiri na itaisha baada ya dakika {{minutes}}",
     "pendingExpires": "Inaisha baada ya saa {{hours}} na dakika {{minutes}}",
+    "pendingExpiresMinutesOnly": "Inaisha baada ya dakika {{minutes}}",
     "bookedTime": "Muda uliowekwa: {{start}} - {{end}}",
     "noData": "Hakuna taarifa za upatikanaji zilizopatikana kwa kipindi hiki.",
     "back": "Rudi nyuma",
