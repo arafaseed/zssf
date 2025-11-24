@@ -330,15 +330,16 @@ private extendBooking() {
           this.currentBooking.extendCount = 2;
           const index = this.bookings.findIndex(b => b.bookingId === this.currentBooking.bookingId);
           if (index !== -1) this.bookings[index].extendCount = 2;
+          this.onSubmit();  // <--- AUTO REFRESH FIX
           this.currentBooking = null;
         }
       }
 
-      const displayMsg = errorMessage.includes('two times')
-        ? this.translate.instant('phoneSearch.limitReached') || 'You cannot extend more than twice.'
-        : this.translate.instant('phoneSearch.postponeError') || 'Error extending booking.';
+      // const displayMsg = errorMessage.includes('two times')
+      //   ? this.translate.instant('phoneSearch.limitReached') || 'You cannot extend more than twice.'
+      //   : this.translate.instant('phoneSearch.postponeError') || 'Error extending booking.';
 
-      this.snackBar.open(displayMsg, this.translate.instant('Close'), { duration: 4000 });
+      // this.snackBar.open(displayMsg, this.translate.instant('Close'), { duration: 4000 });
     }
   });
 }
