@@ -21,6 +21,12 @@ module.exports = {
       primary: '#4F46E5',
       secondary: '#ef4444'
     },
+     safelist: [
+    'rounded-md',
+    'rounded-t-2xl',
+    'rounded-b-2xl'
+    // add any other dynamic classes here
+  ],
     extend: {},
   },
   plugins: [],

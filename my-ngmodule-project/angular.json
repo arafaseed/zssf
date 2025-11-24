@@ -40,6 +40,13 @@
                 "output": "/assets/"
               }
             ],
+            "allowedCommonJsDependencies": [
+            "canvg",
+            "html2canvas",
+             "qrcode",
+            "core-js"
+        ],
+
 
             "styles": [
               "@angular/material/prebuilt-themes/azure-blue.css",
@@ -52,8 +59,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2MB",
-                  "maximumError": "3MB"
+                  "maximumWarning": "4MB",
+                  "maximumError": "5MB"
                 },
                 {
                   "type": "anyComponentStyle",
