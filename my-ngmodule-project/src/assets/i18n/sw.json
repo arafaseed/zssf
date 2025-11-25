@@ -68,7 +68,9 @@
     "booked": "Tayari imewekwa nafasi"
     },
     "statusLabel": "Hali",
-    "pendingExpires": "Jaribu tena Inasubiri na itaisha baada ya dakika {{minutes}}",
+    "pendingexpires": "Jaribu tena Inasubiri na itaisha baada ya dakika {{minutes}}",
+    "pendingExpires": "Inaisha baada ya saa {{hours}} na dakika {{minutes}}",
+    "pendingExpiresMinutesOnly": "Inaisha baada ya dakika {{minutes}}",
     "bookedTime": "Muda uliowekwa: {{start}} - {{end}}",
     "noData": "Hakuna taarifa za upatikanaji zilizopatikana kwa kipindi hiki.",
     "back": "Rudi nyuma",
@@ -364,6 +366,26 @@
     "continueQuestion": "Ungependa kuendelea?"
   },
 
+  "postpone": {
+  "title": "Ghairisha Booking",
+  "youArePostponing": "Unaghirisha",
+  "for": "kwa ajili ya",
+  "venue": "Ukumbi",
+  "activity": "Shughuli",
+  "oldStartDate": "Tarehe ya Mwanzo ya Zamani",
+  "oldStartTime": "Muda wa Mwanzo wa Zamani",
+  "oldEndDate": "Tarehe ya Mwisho ya Zamani",
+  "oldEndTime": "Muda wa Mwisho wa Zamani",
+  "newDetails": "Taarifa Mpya za Kughairisha",
+  "newStartDate": "Tarehe Mpya ya Kuanza",
+  "newStartTime": "Muda Mpya wa Kuanza",
+  "newEndDate": "Tarehe Mpya ya Kumaliza",
+  "newEndTime": "Muda Mpya wa Kumaliza"
+},
+"common": {
+  "cancel": "Ghairi",
+  "confirm": "Thibitisha"
+},
 
   "datesTimes": {
     "heading": "Tarehe na Muda",

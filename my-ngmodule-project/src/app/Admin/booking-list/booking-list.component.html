@@ -1,22 +1,7 @@
-<span class="text-lg font-semibold m-5">Bookings</span>
-<span class="spacer"></span>
-<mat-form-field appearance="fill">
-  <mat-label>Filter by Venue</mat-label>
-  <mat-select [(value)]="venueId" (selectionChange)="setVenueFilter($event.value)">
-    <mat-option [value]="0">All Venues</mat-option>
-    <mat-option *ngFor="let v of venues" [value]="v.venueId">{{ v.venueName }}</mat-option>
-  </mat-select>
-</mat-form-field>
 
-
-<mat-form-field class="filter-field min-w-[180px]">
-  <mat-label>Filter by Phone Number</mat-label>
-  <input matInput type="text" [value]="searchPhone" (input)="onPhoneChange($event)" placeholder="Enter phone number">
-  <button mat-icon-button matSuffix *ngIf="searchPhone" aria-label="Clear" (click)="clearPhone()">
-    <mat-icon>clear</mat-icon>
-  </button>
-</mat-form-field>
-
+<h3 class="text-lg font-semibold text-slate-800 mb-3 ml-4" id="bookings">
+  Bookings
+</h3>
 
 <mat-card class="booking-card m-5 ">
   <div class="controls flex flex-wrap gap-3 p-4 items-center">
@@ -43,13 +28,41 @@
         <mat-icon>clear</mat-icon>
       </button>
     </mat-form-field>
+
+    <mat-form-field appearance="fill">
+  <mat-label>Filter by Venue</mat-label>
+  <mat-select [(value)]="venueId" (selectionChange)="setVenueFilter($event.value)">
+    <mat-option [value]="0">All Venues</mat-option>
+    <mat-option *ngFor="let v of venues" [value]="v.venueId">{{ v.venueName }}</mat-option>
+  </mat-select>
+</mat-form-field>
+
+
+<mat-form-field class="filter-field min-w-[180px]">
+  <mat-label>Filter by Phone Number</mat-label>
+  <input matInput type="text" [value]="searchPhone" (input)="onPhoneChange($event)" placeholder="Enter phone number">
+  <button mat-icon-button matSuffix *ngIf="searchPhone" aria-label="Clear" (click)="clearPhone()">
+    <mat-icon>clear</mat-icon>
+  </button>
+</mat-form-field>
+
   </div>
 </mat-card>
 
 <div class="table-wrapper" *ngIf="!loading">
   <div class="flex justify-end gap-3 mb-3">
-  <button mat-raised-button color="primary" (click)="printTable()">Print</button>
-  <button mat-raised-button color="accent" (click)="downloadTable()">Download PDF</button>
+
+ <button
+  (click)="printTable()"
+  class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2.5 rounded-lg shadow-md transition-all duration-200"
+  style="font-family: 'Inter', 'Roboto', 'Segoe UI', sans-serif;"
+>
+  <mat-icon class="!text-[22px]">print</mat-icon>
+  <span class="tracking-wide text-[15px]">Print</span>
+</button>
+
+
+  <!-- <button mat-raised-button color="accent" (click)="downloadTable()">Download PDF</button> -->
 </div>
 
   <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z2 w-full table-auto">

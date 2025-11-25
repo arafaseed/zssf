@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { Router, NavigationEnd } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { filter } from 'rxjs';
-import 'flag-icons/css/flag-icons.min.css';
+// import 'flag-icons/css/flag-icons.min.css';
 
 
 

@@ -1,30 +1,95 @@
-<div *ngIf="loading" class="loading">
-  Loading payments...
+<div *ngIf="loading" class="text-center py-8">
+  <div class="mx-auto w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" aria-label="Loading payments spinner"></div>
+  <p class="mt-2 text-gray-500">Loading payments…</p>
 </div>
 
-<table *ngIf="!loading" class="payments-table" border="1" cellpadding="8">
-  <thead>
+<!-- Filters Section -->
+<div class="bg-white shadow rounded p-4 m-5">
+  <div class="flex flex-col md:flex-row gap-4 items-end">
+
+    <!-- Phone Number Filter -->
+    <div class="flex flex-col">
+      <label class="text-gray-700 text-sm mb-1">Phone Number</label>
+      <input 
+        type="text" 
+        placeholder="Enter phone number"
+        [(ngModel)]="filterPhone"
+        class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+
+    <!-- Venue Filter -->
+    <div class="flex flex-col">
+      <label class="text-gray-700 text-sm mb-1">Venue</label>
+      <select 
+        [(ngModel)]="filterVenue"
+        class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <option value="">All Venues</option>
+        <option *ngFor="let venue of venues" [value]="venue">{{ venue }}</option>
+      </select>
+    </div>
+<!-- Status Filter -->
+<div class="flex flex-col">
+  <label class="text-gray-700 text-sm mb-1">Status</label>
+  <select 
+    [(ngModel)]="filterStatus"
+    class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <option value="">All Statuses</option>
+    <option value="COMPLETE">COMPLETE</option>
+    <option value="IN_PROGRESS">IN_PROGRESS</option>
+    <option value="CANCELLED">CANCELLED</option>
+    <option value="EXPIRED">EXPIRED</option>
+  </select>
+</div>
+
+    <!-- Payment Date Filter -->
+    <div class="flex flex-col">
+      <label class="text-gray-700 text-sm mb-1">Payment Date</label>
+      <input 
+        type="date" 
+        [(ngModel)]="filterDate"
+        class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+
+  </div>
+</div>
+
+<!-- Payments Table -->
+<table *ngIf="!loading" class="min-w-full border-collapse border border-gray-300">
+  <thead class="bg-blue-100">
     <tr>
-      <th>Booking Code</th> 
-      <!-- <th>Payment ID</th> -->
-      <th>Amount Paid</th>
-      <th>Customer Name</th>
-      <th>Phone Number</th>
-      <th>Venue</th>
-      <th>Activity</th>
-      <th>Payment Date</th>
+      <th class="border border-gray-300 px-4 py-2">Booking Code</th>
+      <th class="border border-gray-300 px-4 py-2">Amount Paid</th>
+      <th class="border border-gray-300 px-4 py-2">Status</th>
+      <th class="border border-gray-300 px-4 py-2">Customer Name</th>
+      <th class="border border-gray-300 px-4 py-2">Phone Number</th>
+      <th class="border border-gray-300 px-4 py-2">Venue</th>
+      <th class="border border-gray-300 px-4 py-2">Activity</th>
+      <th class="border border-gray-300 px-4 py-2">Payment Date</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let payment of payments">
-      <td>{{ payment.booking?.bookingCode || 'N/A' }}</td> 
-      <!-- <td>{{ payment.paymentId }}</td> -->
-      <td>{{ payment.amountPaid | currency:'TZS':'symbol' }}</td>
-      <td>{{ payment.customer?.customerName || 'N/A' }}</td>
-      <td>{{ payment.customerPhone || 'N/A' }}</td>
-      <td>{{ payment.venue || 'N/A' }}</td>
-      <td>{{ payment.activity || 'N/A' }}</td>
-      <td>{{ payment.paymentDate | date:'short' }}</td>
+    <tr *ngFor="let payment of filteredPayments()" class="hover:bg-gray-50">
+      <td class="border border-gray-300 px-4 py-2">{{ payment.booking?.bookingCode || 'N/A' }}</td>
+      <td class="border border-gray-300 px-4 py-2">{{ payment.amountPaid | currency:'TZS':'symbol' }}</td>
+      <td 
+  class="border border-gray-300 px-4 py-2 font-semibold"
+  [ngClass]="{
+    'text-green-600': payment.status === 'COMPLETE',
+    'text-blue-600': payment.status === 'IN_PROGRESS',
+    'text-red-600': payment.status === 'CANCELLED' || payment.status === 'EXPIRED'
+  }"
+>
+  {{ payment.status || 'N/A' }}
+</td>
+
+
+      <td class="border border-gray-300 px-4 py-2">{{ payment.customer?.customerName || 'N/A' }}</td>
+      <td class="border border-gray-300 px-4 py-2">{{ payment.customerPhone || 'N/A' }}</td>
+      <td class="border border-gray-300 px-4 py-2">{{ payment.venue || 'N/A' }}</td>
+      <td class="border border-gray-300 px-4 py-2">{{ payment.activity || 'N/A' }}</td>
+      <td class="border border-gray-300 px-4 py-2">{{ payment.paymentDate | date:'short' }}</td>
     </tr>
   </tbody>
 </table>
