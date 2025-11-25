@@ -1,51 +1,22 @@
-/* booking-list.component.css */
-
-/* Tailwind utilities are used in template; below are targeted overrides to ensure header background and text color win over Material theme */
-
-/* 1) Strong override for header row and header cells */
-/* Use :host ::ng-deep to make sure Angular's view encapsulation does not block the rule */
 :host ::ng-deep .mat-header-row,
 :host ::ng-deep .mat-header-cell {
-  background-color: #0c1429 !important; /* your requested color */
+  background-color: #0c1429 !important;
   color: #ffffff !important;
-  border-bottom: none !important;
-}
-
-/* make sure header text is slightly heavier and uppercase-ish */
-:host ::ng-deep .mat-header-cell {
   font-weight: 600;
-  text-transform: none; /* keep labels readable; change if you want uppercase */
 }
 
-/* add subtle separation line for body rows */
-:host ::ng-deep .mat-row, :host ::ng-deep .mat-cell {
-  border-bottom: 1px solid rgba(15, 23, 42, 0.04);
-}
-
-/* improved padding for cells (tailwind sets but ensure consistency) */
-:host ::ng-deep .mat-cell, :host ::ng-deep .mat-header-cell {
-  padding: 0.75rem 1rem !important;
-  vertical-align: middle;
-}
-
-/* hover style for rows (mix Tailwind-like look) */
 :host ::ng-deep .mat-row:hover {
-  background-color: rgba(14, 165, 233, 0.03); /* subtle cyan tint on hover */
+  background-color: rgba(14, 165, 233, 0.05);
+  transition: background-color 0.3s ease;
 }
 
-/* make paginator spacing nicer */
-.table-wrapper ::ng-deep .mat-paginator {
-  padding-top: 0.75rem;
+:host ::ng-deep .mat-form-field {
+  font-size: 0.95rem;
 }
 
-/* spinner center */
-.loading-wrap {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* maintain mat-toolbar spacing */
-mat-toolbar.spacer {
-  flex: 1 1 auto;
+:host ::ng-deep .mat-raised-button,
+:host ::ng-deep .mat-stroked-button {
+  border-radius: 0.75rem;
+  text-transform: none;
+  font-weight: 500;
 }
