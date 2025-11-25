@@ -296,14 +296,16 @@ private extendBooking() {
     return; // Safety check
   }
 
-  this.http.put<any>(
+  this.http.put(
     `${environment.apiUrl}/api/bookings/extend/${this.currentBooking.bookingId}`,
     {
       startDate: this.formatDate(this.startDate),
       endDate: this.formatDate(this.endDate),
       startTime: this.startTime,
       endTime: this.endTime
-    }
+    },
+    
+    { responseType: 'text' }
   ).subscribe({
     next: (response) => {
       this.snackBar.open(
@@ -313,11 +315,12 @@ private extendBooking() {
       );
 
       // Update current booking and main list from backend response
-      this.currentBooking = { ...this.currentBooking, ...response };
+      this.currentBooking = { ...this.currentBooking};
       const index = this.bookings.findIndex(b => b.bookingId === this.currentBooking.bookingId);
       if (index !== -1) this.bookings[index] = this.currentBooking;
 
       this.currentBooking = null;
+      this.onSubmit();
     },
     error: (err) => {
       // Safely get error message as string
@@ -335,11 +338,6 @@ private extendBooking() {
         }
       }
 
-      // const displayMsg = errorMessage.includes('two times')
-      //   ? this.translate.instant('phoneSearch.limitReached') || 'You cannot extend more than twice.'
-      //   : this.translate.instant('phoneSearch.postponeError') || 'Error extending booking.';
-
-      // this.snackBar.open(displayMsg, this.translate.instant('Close'), { duration: 4000 });
     }
   });
 }
