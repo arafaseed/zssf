@@ -143,15 +143,17 @@
 },
 
 
-    "payment": {
-      "heading": "4. Payment Terms",
-      "list": [
-        "You must make payments using the Payment Control Number provided by the System.",
-        "You are required to pay an advance payment of 50% of the hall booking fee.",
-        "Accepted payment methods include mobile money services (M-Pesa, Mixx by YAS, Airtel Money), bank transfers, and direct bank payments.",
-        "The Fund will not be responsible for any loss of money before the payment is confirmed by the System."
-      ]
-    },
+   "payment": {
+  "heading": "4. Payment Terms",
+  "list": [
+    "You must make payments using the Payment Control Number provided by the System.",
+    "Government customers are required to pay the full amount (100%) within the specified payment time.",
+    "Individual or private institution customers are required to pay an advance payment of 50% of the hall booking fee.",
+    "Accepted payment methods include mobile money services (M-Pesa, Mixx by YAS, Airtel Money), bank transfers, and direct bank payments.",
+    "The Fund will not be responsible for any loss of money before the payment is confirmed by the System."
+  ]
+},
+
 
   "cancellation": {
     "heading": "5. Cancellations and Refunds",
