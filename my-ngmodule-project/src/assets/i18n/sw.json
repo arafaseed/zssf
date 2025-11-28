@@ -141,15 +141,17 @@
   ]
 },
 
-    "payment": {
-      "heading": "4. Masharti ya Malipo",
-      "list": [
-       "Unatakiwa ufanye malipo kwa kutumia nambari ya Malipo (Control Number) ambayo utapatiwa kutoka kwenye mfumo huo.",
-	     "Unatakiwa ulipe malipo ya mapema (Advance) ya asilimia 50% ya bei ya gharama ya ukumbi.",
-	     "Njia za malipo zinazokubaliwa ni pamoja na Malipo kwa njia za Miamala ya simu za ndani (M-Pesa, Mixx by YAS, Airtel Money), uhamisho kutoka benki, na kwa njia ya Benki",
-	     "Taasisi haitohusika na upoteaji wa fedha wakati wa malipo kabla ya kuthibitishwa na Mfumo."
-      ]
-    },
+  "payment": {
+  "heading": "4. Masharti ya Malipo",
+  "list": [
+    "Unatakiwa ufanye malipo kwa kutumia nambari ya Malipo (Control Number) ambayo utapatiwa kutoka kwenye mfumo.",
+    "Kwa wateja wa Serikali, wanatakiwa kulipa kiwango chote (100%) ndani ya muda uliowekwa.",
+    "Kwa mtu binafsi au taasisi binafsi, wanatakiwa kulipa malipo ya awali (Advance) ya asilimia 50% ya gharama ya ukumbi.",
+    "Njia za malipo zinazokubalika ni pamoja na malipo kwa njia za miamala ya simu (M-Pesa, Mixx by YAS, Airtel Money), uhamisho wa benki, na malipo ya moja kwa moja benki.",
+    "Taasisi haitahusika na upotevu wa fedha kabla ya malipo kuthibitishwa na Mfumo."
+  ]
+},
+
     
     
   "cancellation": {
@@ -224,7 +226,7 @@
     "phoneVerified": "Namba imehakikiwa — unaweza kuendelea kuandika ujumbe wako.",
     "phoneNotRegistered": "Hatuipati namba yako ya simu. Tafadhali kodi ukumbi kwanza kabla ya kutuma maoni au malalamiko.",
     "phoneCheckFailed": "Haiwezekani kuhakiki namba sasa. Tafadhali jaribu tena baadae.",
-    "errors": {
+  "errors": {
       "nameRequired": "Jina lako linahitajika",
       "phoneRequired": "Namba ya simu lazima iwe na tarakimu 10",
       "emailInvalid": "Ingiza barua pepe sahihi",
