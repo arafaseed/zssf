@@ -157,5 +157,4 @@ export class ConfirmBookingComponent implements OnInit {
     this.submitting = false;
   }
 }
-
 }
