@@ -1,15 +1,18 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { MatSelectionList, MatSelectionListChange } from '@angular/material/list';
+import { takeUntil } from 'rxjs/operators';
+import { Subject, interval } from 'rxjs';
 
 @Component({
   selector: 'app-availability-modal',
   standalone: false,
   templateUrl: './availability-modal.component.html',
 })
-export class AvailabilityModalComponent implements OnInit {
+export class AvailabilityModalComponent implements OnInit, OnDestroy{
+  private destroy$ = new Subject<void>();
   loading = true;
   availability: any[] = [];
   errorMsg = '';
@@ -32,8 +35,15 @@ it: any;
   ) {}
 
   ngOnInit() {
-    this.check();
+    this.check(); // initial load
+
+  // auto refresh every 2 seconds
+ 
   }
+  ngOnDestroy() {
+  this.destroy$.next();
+  this.destroy$.complete();
+}
 
   private formatDate(d: Date | string | null) {
     if (!d) return null;
