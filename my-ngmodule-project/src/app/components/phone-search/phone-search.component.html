@@ -78,7 +78,7 @@
   !isDatePassed(booking.endDate) 
   
 ">
-  <strong>Extend Count:</strong>
+ <strong>{{ 'phoneSearch.extendedTimes' | translate }}:</strong>
   {{ booking.bookingId === currentBooking?.bookingId 
       ? currentBooking.extendCount 
       : booking.extendCount || 0 }}

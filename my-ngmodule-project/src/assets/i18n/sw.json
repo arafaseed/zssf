@@ -292,6 +292,7 @@
     "venueNotAvailable": "Ukumbi haupatikani kwa tarehe/muda uliyochagua.",
     "venueAvailable": "Ukumbi unapatikana.",
     "checkError": "Tatizo wakati wa kukagua upatikanaji wa ukumbi.",
+    "extendedTimes": "Imesogezwa mara",
     "onlyOriginalBookingDays": "Unaweza kuahirisha kutokana na  idadi ya siku za asili za booking.",
     "errors": {
       "required": "Nambari ya simu ni lazima.",
