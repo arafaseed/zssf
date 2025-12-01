@@ -71,7 +71,6 @@
       "booked": "Already booked"
     },
     "statusLabel": "Status",
-    "pendingexpires": "Pending expires after {{minutes}} minutes please try again later",
     "pendingExpires": "Pending expires in {{hours}} hour {{minutes}} minutes",
     "pendingExpiresMinutesOnly": "Expires in {{minutes}} minutes",
     "bookedTime": "Booked time: {{start}} - {{end}}",
