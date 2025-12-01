@@ -12,6 +12,11 @@
     "rights": "All rights reserved."
   },
 
+  "confirm":{
+    "yes": "Yes",
+    "no": "No"
+  },
+
   "home": {
     "searchPlaceholder": "Search by city, building, venue, or location address",
     "loading": "Loading buildings…",

@@ -11,6 +11,11 @@
   "footer": {
     "rights": "Haki zote zimehifadhiwa."
   },
+  
+  "confirm":{
+    "yes": "Ndio",
+    "no": "Hapana"
+  },
 
   "home": {
     "searchPlaceholder": "Tafuta kwa mji, jengo, ukumbi, au anuani ya eneo",

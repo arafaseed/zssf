@@ -3,6 +3,6 @@
   <p>{{ data.message }}</p>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button (click)="onDismiss()">No</button>
-  <button mat-flat-button color="warn" (click)="onConfirm()" cdkFocusInitial>Yes</button>
+  <button mat-button (click)="onDismiss()">{{ 'confirm.no' | translate }}</button>
+  <button mat-flat-button color="warn" (click)="onConfirm()" cdkFocusInitial>{{ 'confirm.yes' | translate }}</button>
 </mat-dialog-actions>
