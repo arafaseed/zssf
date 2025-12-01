@@ -301,6 +301,7 @@
     "venueNotAvailable": "Venue not available for selected date/time.",
     "venueAvailable": "Venue is available for postpone.",
     "checkError": "Error checking venue availability.",
+    "extendedTimes": "Extended Count",
     "onlyOriginalBookingDays": "You can only postpone for up to the original booking duration.",
     "errors": {
       "required": "Phone number is required.",
