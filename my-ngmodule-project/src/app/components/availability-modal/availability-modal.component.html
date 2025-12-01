@@ -1,9 +1,9 @@
 <!-- Title -->
 <h2 mat-dialog-title class="flex items-center justify-between gap-3">
   <span class="font-semibold">{{ 'availability.title' | translate }} — {{ data?.venueName }}</span>
-  <button mat-icon-button aria-label="close" (click)="cancel()">
+  <!-- <button mat-icon-button aria-label="close" (click)="cancel()">
     <i-lucide-x class="w-5 h-5"></i-lucide-x>
-  </button>
+  </button> -->
 </h2>
 
 <mat-dialog-content class="px-4 py-3 max-h-[70vh] overflow-auto">
@@ -16,7 +16,7 @@
   <!-- Results -->
   <div *ngIf="!loading && availability?.length">
     <!-- All Available -->
-    <div *ngIf="allAvailable" class="flex items-center gap-3 p-3 mb-3 border rounded-lg bg-emerald-50 border-emerald-100">
+    <div *ngIf="allAvailable" class="flex items-center gap-0 p-3 mb-3 border rounded-lg bg-emerald-50 border-emerald-100">
       <i-lucide-check-circle class="w-5 h-5 text-emerald-600"></i-lucide-check-circle>
       <div>
         <div class="font-medium">{{ 'availability.allAvailable' | translate }}</div>
@@ -25,7 +25,7 @@
     </div>
 
     <!-- Some Not Available -->
-    <div *ngIf="!allAvailable" class="flex items-center gap-3 p-3 mb-3 border border-red-100 rounded-lg bg-yellow-50">
+    <div *ngIf="!allAvailable" class="flex items-center gap-0 p-3 mb-3 border border-red-100 rounded-lg bg-yellow-50">
       <p class="mb-2 text-sm text-slate-600">
         {{ 'availability.someUnavailable' | translate }}
       </p>

@@ -62,8 +62,8 @@
   },
   "availability": {
     "title": "Check availability",
-    "allAvailable": "All days in your range are available",
-    "allAvailableHint": "You may continue with the full range or inspect individual days below.",
+    "allAvailable": "All days in your range are available.",
+    "allAvailableHint": "You may continue.",
     "someUnavailable": "One or more days in your range are not available. Please check or adjust for a new date range.",
     "status": {
       "available": "Available",

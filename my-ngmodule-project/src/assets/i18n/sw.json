@@ -64,8 +64,8 @@
 
   "availability": {
     "title": "Angalia upatikanaji",
-    "allAvailable": "Siku zote ulizochagua zinapatikana",
-    "allAvailableHint": "Unaweza kuendelea na siku zote ulizochagua au kukagua siku moja moja hapa chini.",
+    "allAvailable": "Siku ulizochagua zinapatikana.",
+    "allAvailableHint": "Unaweza kuendelea.",
     "someUnavailable": "Siku moja au zaidi ulizochagua hazipatikani. Tafadhali kagua au badilisha tarehe.",
     "status": {
     "available": "Inapatikana",
