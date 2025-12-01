@@ -147,5 +147,9 @@ getActivityNameById(activityId: number): Observable<string> {
   placeReservation(formData: FormData): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/place-reservation`, formData);
   }
+getBookingExpiry() {
+  return this.http.get<{ expiryHours: number }>(`${environment.apiUrl}/api/booking-expiry/view-current-time`);
+}
+
 
 }

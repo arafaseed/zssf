@@ -83,9 +83,17 @@ export class ConfirmBookingComponent implements OnInit {
   }
 
   const customerType = booking.customer?.customerType;
-   const pendingMinutes = booking.pendingExpiresInMinutes ?? 24 * 60; // fallback to 24 hours if not provided
+   let pendingMinutes = booking.pendingExpiresInMinutes ?? 24 * 60;
+  try {
+    const expiryResp: any = await firstValueFrom(this.api.getBookingExpiry());
+    if (expiryResp?.expiryHours) {
+      pendingMinutes = booking.pendingExpiresInMinutes ?? expiryResp.expiryHours * 60;
+    }
+  } catch (err) {
+    console.warn('Could not fetch expiry, using fallback', err);
+  }
+
   const hours = Math.floor(pendingMinutes / 60);
-  const minutes = pendingMinutes % 60;
   const attachedFile: File | null = this.data?.attachedFile ?? null;
 
   if (customerType === 'ORGANIZATION' && !attachedFile) {
