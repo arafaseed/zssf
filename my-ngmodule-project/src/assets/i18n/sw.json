@@ -363,10 +363,20 @@
 
   "Message": {
     "success": "Booking imefanikiwa.",
-    "paymentReminder": "⚠️ Kumbusho la Malipo:\n\nUnatakiwa kulipa 50% ya jumla ya gharama ndani ya saa 24. Vinginevyo, booking yako itafutwa na mtu mwingine ataweza kufanya booking.",
+    "paymentReminder": "⚠️ Kumbusho la Malipo:\n\nUnatakiwa kulipa 50% ya jumla ya gharama ndani ya {{hours}}. Vinginevyo, booking yako itafutwa na mtu mwingine ataweza kufanya booking.",
     "halfPayment": "Malipo ya Awali ya 50% Yanahitajika",
     "continueQuestion": "Ungependa kuendelea?"
   },
+  "Payment": {
+  "titleIndividual": "⚠️ Kumbusho la Malipo: ",
+  "titleGovernment": "⚠️ Kumbusho la Malipo:",
+
+  "msgIndividual": "\n\n Unatakiwa kulipa 50% ya jumla ya gharama ndani ya saa {{hours}}. Vinginevyo, booking yako itafutwa na mtu mwingine ataweza kufanya booking.",
+  "msgGovernment": "\n\n Unatakiwa kulipa malipo yote ndani ya saa {{hours}}. Vinginevyo, booking yako itafutwa na mtu mwingine ataweza kufanya booking.",
+
+  "continue": "Je, ungependa kuendelea?"
+},
+
 
   "postpone": {
   "title": "Ghairisha Booking",

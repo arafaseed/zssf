@@ -374,11 +374,21 @@
 
    "Message": {
     "success": "Booking created successfully.",
-    "paymentReminder": "⚠️ Payment Reminder:\n\nYou are required to pay 50% of the total amount within 24 hours. Otherwise, your booking will expire and the venue may be booked by another person.",
+    "paymentReminder": "⚠️ Payment Reminder:\n\nYou are required to pay 50% of the total amount within  {{hours}} hours. Otherwise, your booking will expire and the venue may be booked by another person.",
     "halfPayment": "50% Upfront Payment Required",
     "continueQuestion": "Do you want to continue?"
     
   },
+  "Payment": {
+  "titleIndividual": "⚠️ Payment Reminder:",
+  "titleGovernment": "⚠️ Payment Reminder:",
+
+  "msgIndividual": "You are required to pay 50% advance  of the total amount within  {{hours}} hours. Otherwise, your booking will expire and the venue may be booked by another person.",
+  "msgGovernment": "You are required to pay the full amount  of the total amount within  {{hours}} hours. Otherwise, your booking will expire and the venue may be booked by another person.",
+
+  "continue": "\n\nDo you want to continue?"
+},
+
 
   "postpone": {
   "title": "Postpone Booking",

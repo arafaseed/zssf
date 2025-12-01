@@ -72,9 +72,7 @@ export class ConfirmBookingComponent implements OnInit {
 
   close(result: boolean) {
     this.dialogRef.close(result);
-  }
-
- async confirmAndSubmit() {
+  }async confirmAndSubmit() {
   if (!this.accepted) return;
   this.errorMessage = null;
 
@@ -84,21 +82,40 @@ export class ConfirmBookingComponent implements OnInit {
     return;
   }
 
+  const customerType = booking.customer?.customerType;
+   const pendingMinutes = booking.pendingExpiresInMinutes ?? 24 * 60; // fallback to 24 hours if not provided
+  const hours = Math.floor(pendingMinutes / 60);
+  const minutes = pendingMinutes % 60;
   const attachedFile: File | null = this.data?.attachedFile ?? null;
-  if (booking.customer?.customerType === 'ORGANIZATION' && !attachedFile) {
+
+  if (customerType === 'ORGANIZATION' && !attachedFile) {
     this.errorMessage = 'Organization bookings require a PDF reference document.';
     return;
   }
 
-  // 🟢 Use Angular Material dialog instead of window.confirm
-  const message = `${this.translate.instant('Message.halfPayment')}: Tsh ${this.halfPayment.toLocaleString()}\n\n${this.translate.instant('Message.continueQuestion') || 'Do you want to continue?'}`;
+  // 🟢 Choose translation keys based on customer type
+  let titleKey = '';
+  let messageKey = '';
+
+  if (customerType === 'INDIVIDUAL') {
+    titleKey = 'Payment.titleIndividual';
+    messageKey = 'Payment.msgIndividual';
+  } else if (customerType === 'ORGANIZATION') {
+    titleKey = 'Payment.titleGovernment';
+    messageKey = 'Payment.msgGovernment';
+  }
+
+  // 🟢 Final formatted message with spacing + continue question
+  const messageHtml =
+    `${this.translate.instant(messageKey)}` +
+    `${this.translate.instant('Payment.continue')}`;
 
   const dialogRef = this.matDialog.open(ConfirmDialogComponent, {
-    width: '400px',
+    width: '420px',
     data: {
-      title: this.translate.instant('Message.paymentReminder'),
-      message: message,
-    },
+      title: this.translate.instant(titleKey),
+      message: this.translate.instant(messageKey, { hours })
+    }
   });
 
   const proceed = await dialogRef.afterClosed().toPromise();
@@ -107,7 +124,7 @@ export class ConfirmBookingComponent implements OnInit {
     return;
   }
 
-  // ✅ Proceed with submission if user clicked OK
+  // 🟢 Submit booking
   const fd = new FormData();
   fd.append('booking', new Blob([JSON.stringify(booking)], { type: 'application/json' }));
   if (attachedFile) {
@@ -128,7 +145,6 @@ export class ConfirmBookingComponent implements OnInit {
         verticalPosition: 'top',
       });
 
-      // ✅ Redirect to invoice page automatically after success
       setTimeout(() => {
         this.router.navigate(['/invoice', bookingId]);
       }, 1000);
@@ -144,10 +160,10 @@ export class ConfirmBookingComponent implements OnInit {
     });
     this.errorMessage = friendlyMessage;
     this.submitting = false;
+
   } catch (err: any) {
     console.error('Booking submission error:', err);
-    const friendlyError =
-      err?.friendlyMessage ?? 'We could not complete your booking. Please try again later.';
+    const friendlyError = err?.friendlyMessage ?? 'We could not complete your booking. Please try again later.';
     this.snackBar.open(friendlyError, 'Close', {
       duration: 6000,
       horizontalPosition: 'right',
@@ -157,4 +173,5 @@ export class ConfirmBookingComponent implements OnInit {
     this.submitting = false;
   }
 }
+
 }
