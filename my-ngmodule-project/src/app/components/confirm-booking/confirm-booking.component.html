@@ -150,30 +150,30 @@
 
 </div>
 
+<!-- Terms & Actions Card -->
+<div class="p-4 shadow-sm rounded-2xl bg-green-50 mt-6">
 
   <!-- Terms Checkbox -->
-  <mat-checkbox [(ngModel)]="accepted" class="mt-3 text-gray-700">
+  <mat-checkbox [(ngModel)]="accepted" class="text-gray-700">
     {{ 'terms.acceptText' | translate }}
     <a href="/agreeterms" target="_blank" class="text-blue-600 underline">
       <strong>{{ 'terms.termsLinkText' | translate }}</strong>
     </a>
   </mat-checkbox>
 
-  <!-- Actions -->
-  <mat-dialog-actions align="end" class="mt-6 space-x-3">
-    <div class="flex items-center justify-between w-full gap-3">
-      <button mat-stroked-button (click)="close(false)" [disabled]="submitting"
-        class="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-100">
-        {{ 'actions.back' | translate }}
-      </button>
-      <button mat-flat-button color="primary" (click)="confirmAndSubmit()" 
-        [disabled]="!accepted || submitting"
-        class="px-4 py-2 font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600">
-        <span *ngIf="!submitting">{{ 'actions.confirmSubmit' | translate }}</span>
-        <span *ngIf="submitting" class="flex items-center">
-          <mat-progress-spinner diameter="18" mode="indeterminate"></mat-progress-spinner>
-          &nbsp;{{ 'actions.submitting' | translate }}
-        </span>
-      </button>
-    </div>
-  </mat-dialog-actions>
+  <!-- Buttons -->
+  <div class="mt-4 flex justify-end gap-4">
+    <button mat-stroked-button (click)="close(false)" [disabled]="submitting"
+     class="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-100">
+      {{ 'actions.back' | translate }}
+    </button>
+    <button mat-flat-button color="primary" (click)="confirmAndSubmit()" 
+      [disabled]="!accepted || submitting"
+        class="px-4 py-2 font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 flex items-center justify-center">
+      <span *ngIf="!submitting">{{ 'actions.confirmSubmit' | translate }}</span>
+      <span *ngIf="submitting" class="flex items-center gap-2">
+        <mat-progress-spinner diameter="18" mode="indeterminate"></mat-progress-spinner>
+        {{ 'actions.submitting' | translate }}
+      </span>
+    </button>
+  </div>
