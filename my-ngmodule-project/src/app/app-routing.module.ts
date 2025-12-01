@@ -40,7 +40,7 @@ const routes: Routes = [
   
   { path: '', component: HomeComponent },
   { path: 'venue/:id', component: VenueExplorerComponent },
-  { path: 'venue', component: VenueViewComponent },
+  // { path: 'venue', component: VenueViewComponent },
 
    
   { path: 'dash', component: DashboardComponent },
