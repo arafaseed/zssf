@@ -20,6 +20,8 @@ export class AvailabilityModalComponent implements OnInit, OnDestroy{
 
   // whether we should auto-check AVAILABLE_FOR_BOOKING items
   autoCheckEnabled = false;
+  userHasInteracted = false;
+
 
   // track selected items (objects from availability)
   selectedItems: any[] = [];
@@ -96,18 +98,23 @@ check() {
         this.availability.every(it => it.flag === 'AVAILABLE_FOR_BOOKING' || it.flag === 'ALREADY_BOOKED');
         
 
-      // compute autoCheckEnabled
-      const hasBookedOrPending = this.availability.some(it =>
-        it.flag === 'ALREADY_BOOKED' || Boolean(it.pendingExpiresInMinutes)
-      );
-      this.autoCheckEnabled = !hasBookedOrPending;
+ // compute autoCheckEnabled
+          const hasBookedOrPending = this.availability.some(it =>
+            it.flag === 'ALREADY_BOOKED' || Boolean(it.pendingExpiresInMinutes)
+          );
+          this.autoCheckEnabled = !hasBookedOrPending;
+
+         if (!this.userHasInteracted && this.autoCheckEnabled) {
+  this.selectedItems = this.availability.filter(it => it.flag === 'AVAILABLE_FOR_BOOKING');
+}
 
       // set selectedItems
-      if (this.autoCheckEnabled) {
-        this.selectedItems = this.availability.filter(it => it.flag === 'AVAILABLE_FOR_BOOKING');
-      } else {
-        this.selectedItems = [];
-      }
+     if (!this.userHasInteracted && this.autoCheckEnabled) {
+  // only auto-select before the user touches anything
+  this.selectedItems = this.availability.filter(it => it.flag === 'AVAILABLE_FOR_BOOKING');
+} 
+// else: do NOT overwrite selectedItems — respect user's manual choices
+
 
       // sync selection with UI
       try {
@@ -136,11 +143,15 @@ check() {
 
 
   // Called by mat-selection-list (selectionChange)
-  onSelectionChange(event: MatSelectionListChange) {
-    const selected = event.source.selectedOptions.selected.map((opt: any) => opt.value);
-    this.selectedItems = selected || [];
-    // Note: isContinueEnabled getter will reflect the updated selectedItems
-  }
+onSelectionChange(event: MatSelectionListChange) {
+  this.userHasInteracted = true;
+  // Only include AVAILABLE_FOR_BOOKING days
+  this.selectedItems = event.source.selectedOptions.selected
+    .map(opt => opt.value)
+    .filter(it => it.flag === 'AVAILABLE_FOR_BOOKING') || [];
+}
+
+
 
   // single-item shortcut (keeps your old API; you can still call selectItem to return a single day)
   selectItem(item: any) {
@@ -191,27 +202,9 @@ check() {
 }
 
 
-  continueWithRange() {
-    // user explicitly chooses to continue with full range (only enable if allAvailable or valid selection)
-    if (this.allAvailable) {
-      this.ref.close({
-        mode: 'range',
-        start: this.data.start,
-        end: this.data.end,
-        startTime: this.data.startTime,
-        endTime: this.data.endTime,
-        activityId: this.data.activityId,
-        activityName: this.data.activityName,
-        activityPrice: this.data.price
-      });
-      return;
-    }
-
-    // if manual selection is used, ensure it's valid and build new start/end from selected days
-    if (!this.selectedItems || this.selectedItems.length === 0) return;
-    if (!this.isContinueEnabled) return; // safety
-
-    // compute new start and end dates from selected items (they are contiguous by isContinueEnabled)
+continueWithRange() {
+  // If user has manually selected items, use them
+  if (this.selectedItems && this.selectedItems.length > 0 && this.isContinueEnabled) {
     const selectedDates = this.selectedItems
       .map(it => new Date(it.date))
       .sort((a, b) => a.getTime() - b.getTime());
@@ -230,7 +223,22 @@ check() {
       activityPrice: this.data.price,
       selectedDays: this.selectedItems
     });
+    return;
   }
+
+  // fallback: if nothing selected, use the full range
+  this.ref.close({
+    mode: 'range',
+    start: this.data.start,
+    end: this.data.end,
+    startTime: this.data.startTime,
+    endTime: this.data.endTime,
+    activityId: this.data.activityId,
+    activityName: this.data.activityName,
+    activityPrice: this.data.price
+  });
+}
+
 
   cancel() {
     this.ref.close(null);
