@@ -75,7 +75,7 @@ import { EmployeeVerifyComponent } from './components/employee-verify/employee-v
 import { ConfirmBookingComponent } from './components/confirm-booking/confirm-booking.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
-import { AvailabilityModalComponent } from './components/availability-modal/availability-modal.component';
+import { AvailabilityModalComponent, FloorPipe } from './components/availability-modal/availability-modal.component';
 import { OptionalServiceTableComponent } from './Admin/optional-service-table/optional-service-table.component';
 import { OptionalServiceEditFormComponent } from './Admin/optional-service-edit-form/optional-service-edit-form.component';
 import { OptionalServiceAddFormComponent } from './Admin/optional-service-add-form/optional-service-add-form.component';
@@ -211,18 +211,15 @@ export function createTranslateLoader(http: HttpClient) {
     MatButtonToggleModule,
     PdfViewerModule,
     MatExpansionModule,
-
-
- TranslateModule.forRoot({
-  loader: {
-    provide: TranslateLoader,
-    useFactory: createTranslateLoader,
-    deps: [HttpClient]
-  },
-
-})
-
-  ],
+    TranslateModule.forRoot({
+        loader: {
+            provide: TranslateLoader,
+            useFactory: createTranslateLoader,
+            deps: [HttpClient]
+        },
+    }),
+    FloorPipe
+],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     provideAnimationsAsync(),

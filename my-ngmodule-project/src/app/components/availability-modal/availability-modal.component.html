@@ -56,19 +56,20 @@
               </div>
             </div>
 <div *ngIf="it.pendingExpiresInMinutes" class="mt-2 text-xs text-amber-600">
-  <ng-container *ngIf="(it.pendingExpiresInMinutes / 60) >= 1">
+  <ng-container *ngIf="it.pendingExpiresInMinutes >= 60">
     {{ 'availability.pendingExpires' | translate:{
-      hours: (it.pendingExpiresInMinutes / 60) | number:'1.0-0',
+      hours: (it.pendingExpiresInMinutes / 60) | floor,
       minutes: (it.pendingExpiresInMinutes % 60) | number:'1.0-0'
     } }}
   </ng-container>
 
-  <ng-container *ngIf="(it.pendingExpiresInMinutes / 60) < 1">
+  <ng-container *ngIf="it.pendingExpiresInMinutes < 60">
     {{ 'availability.pendingExpiresMinutesOnly' | translate:{
-      minutes: (it.pendingExpiresInMinutes % 60) | number:'1.0-0'
+      minutes: it.pendingExpiresInMinutes | number:'1.0-0'
     } }}
   </ng-container>
 </div>
+
 
 
 

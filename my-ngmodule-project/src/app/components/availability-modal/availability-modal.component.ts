@@ -5,6 +5,14 @@ import { environment } from '../../../environments/environment';
 import { MatSelectionList, MatSelectionListChange } from '@angular/material/list';
 import { takeUntil } from 'rxjs/operators';
 import { Subject, interval } from 'rxjs';
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({ name: 'floor' })
+export class FloorPipe implements PipeTransform {
+  transform(value: number): number {
+    return Math.floor(value);
+  }
+}
 
 @Component({
   selector: 'app-availability-modal',
@@ -243,4 +251,5 @@ continueWithRange() {
   cancel() {
     this.ref.close(null);
   }
+  
 }
