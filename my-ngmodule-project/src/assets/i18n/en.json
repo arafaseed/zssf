@@ -472,6 +472,19 @@
     "heading" : "Venue",
     "label" : " Venue name"
     
+  },
+    "formErrors": {
+    "startDateBeforeToday": "Start date cannot be before today.",
+    "endDateBeforeStart": "End date cannot be before start date.",
+    "bothDatesRequired": "Both start and end date must be selected.",
+    "datesInPast": "Selected dates cannot be in the past.",
+    "timesRequired": "Please enter start and end times.",
+    "invalidTimeFormat": "Invalid start or end time format.",
+   "startTimeOutOfRange": "Start time must be between 06:00 and 23:59.",
+    "endTimeOutOfRange": "End time must be between 06:00 and 23:59.",
+    "startTimeTooSoon": "For events starting today, start time must be at least 1 hour from now.",
+    "endTimeTooShort": "End time must be at least 30 minutes after start time.",
+    "invalidDateTime": "Invalid start or end date/time."
   }
 
 }

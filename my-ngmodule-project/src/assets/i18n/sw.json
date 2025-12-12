@@ -461,6 +461,19 @@
     "heading" : "Ukumbi",
     "label" : "Jina la ukumbi"
     
+  },
+   "formErrors": {
+    "startDateBeforeToday": "Tarehe ya kuanza haiwezi kuwa kabla ya leo.",
+    "endDateBeforeStart": "Tarehe ya mwisho haiwezi kuwa kabla ya tarehe ya kuanza.",
+    "bothDatesRequired": "Tarehe ya kuanza na ya mwisho zote lazima zichaguliwe.",
+    "datesInPast": "Tarehe zilizochaguliwa haiwezi kuwa za zamani.",
+    "timesRequired": "Tafadhali ingiza muda wa kuanza na kumaliza.",
+    "invalidTimeFormat": "Muundo wa muda wa kuanza au kumaliza si sahihi.",
+    "startTimeOutOfRange": "Muda wa kuanza lazima uwe kati ya 06:00 na 23:59.",
+    "endTimeOutOfRange": "Muda wa kumaliza lazima uwe kati ya 06:00 na 23:59.",
+    "startTimeTooSoon": "Kwa shughuli inayoanza leo, muda wa kuanza lazima uwe angalau saa 1 kutoka sasa.",
+    "endTimeTooShort": "Muda wa kumaliza lazima uwe angalau dakika 30 baada ya muda wa kuanza.",
+    "invalidDateTime": "Tarehe au muda wa kuanza/kumaliza si sahihi."
   }
 }
 
