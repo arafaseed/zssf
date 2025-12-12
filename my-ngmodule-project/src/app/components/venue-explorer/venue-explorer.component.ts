@@ -10,6 +10,8 @@ import { BookingModalComponent } from '../booking-modal/booking-modal.component'
 import { trigger, style, animate, transition } from '@angular/animations';
 import { AvailabilityModalComponent } from '../availability-modal/availability-modal.component';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { TranslateService } from '@ngx-translate/core';
+
 
 @Component({
   selector: 'app-venue-explorer',
@@ -62,8 +64,10 @@ export class VenueExplorerComponent implements OnInit {
     private buildingSvc: BuildingService,
     private activitySvc: ActivityService,
     private optionalSvc: OptionalServiceService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private translate: TranslateService
   ) {}
+
 
   private toMinutes(time: string): number {
     const [hh, mm] = time.split(':').map(s => Number(s));
@@ -168,13 +172,16 @@ loadAll(venueId: number) {
       // don't accept
       this.startDateInvalid = true;
       this.startDate = null;
-      this.formError = 'Start date cannot be before today.';
+      // this.formError = 'Start date cannot be before today.';
+     this.formError = 'formErrors.startDateBeforeToday';
+
+
       return;
     }
     this.startDate = selected;
     // if endDate is set, ensure end >= start
     if (this.endDate && this.isBeforeDate(this.normalizeDate(this.endDate), selected)) {
-      this.formError = 'End date cannot be before start date.';
+       this.formError = 'formErrors.endDateBeforeStart';
     } else {
       this.formError = '';
       this.endDateInvalid = false;
@@ -197,13 +204,15 @@ loadAll(venueId: number) {
       // don't accept
       this.endDateInvalid = true;
       this.endDate = null;
-      this.formError = 'End date cannot be before today.';
+      // this.formError = 'End date cannot be before today.';
+        this.formError = 'formErrors.endDateBeforeStart';
       return;
     }
     this.endDate = selected;
     // if startDate is set, ensure end >= start
     if (this.startDate && this.isBeforeDate(selected, this.normalizeDate(this.startDate))) {
-      this.formError = 'End date cannot be before start date.';
+      // this.formError = 'End date cannot be before start date.';
+      this.formError = 'formErrors.endDateBeforeStart';
     } else {
       this.formError = '';
       this.startDateInvalid = false;
@@ -398,12 +407,13 @@ loadAll(venueId: number) {
     }
 
     if (this.isBeforeDate(eNorm, sNorm)) {
-      this.formError = 'End date cannot be before start date.';
+      // this.formError = 'End date cannot be before start date.';
+       this.formError = 'formErrors.endDateBeforeStart';
       return;
     }
 
     if (!this.startTime || !this.endTime) {
-      this.formError = 'Please enter start and end times.';
+      this.formError = 'formErrors.bothDatesRequired';
       return;
     }
 
@@ -414,7 +424,7 @@ loadAll(venueId: number) {
     const parsedEnd = this.parseTimeString(this.endTime as any);
 
     if (!parsedStart || !parsedEnd) {
-      this.formError = 'Invalid start or end time format.';
+      this.formError = 'formErrors.invalidTimeFormat';
       return;
     }
 
