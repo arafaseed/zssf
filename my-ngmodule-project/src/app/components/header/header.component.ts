@@ -20,7 +20,7 @@ import { filter } from 'rxjs';
     MatButtonModule,
     MatIconModule,
     CommonModule,
-    TranslateModule
+    TranslateModule,
     
    
   ],
