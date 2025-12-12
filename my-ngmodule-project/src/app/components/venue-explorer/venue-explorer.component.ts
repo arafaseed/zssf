@@ -394,7 +394,7 @@ loadAll(venueId: number) {
     this.formError = '';
 
     if (!this.startDate || !this.endDate) {
-      this.formError = 'Both start and end date must be selected.';
+        this.formError = 'formErrors.bothDatesRequired';
       return;
     }
     // normalized comparisons
@@ -402,7 +402,8 @@ loadAll(venueId: number) {
     const eNorm = this.normalizeDate(this.endDate);
 
     if (this.isBeforeDate(sNorm, this.minDate) || this.isBeforeDate(eNorm, this.minDate)) {
-      this.formError = 'Selected dates cannot be in the past.';
+      // this.formError = 'Selected dates cannot be in the past.';
+      this.formError = 'formErrors.datesInPast';
       return;
     }
 
@@ -424,7 +425,8 @@ loadAll(venueId: number) {
     const parsedEnd = this.parseTimeString(this.endTime as any);
 
     if (!parsedStart || !parsedEnd) {
-      this.formError = 'formErrors.invalidTimeFormat';
+       this.formError = 'formErrors.invalidTimeFormat';
+
       return;
     }
 
@@ -432,11 +434,14 @@ loadAll(venueId: number) {
     const endM = parsedEnd.hh * 60 + parsedEnd.mm;
 
     if (startM < minAllowed || startM > maxAllowed) {
-      this.formError = 'Start time must be between 06:00 and 23:59.';
+      // this.formError = 'Start time must be between 06:00 and 23:59.';
+       this.formError = 'formErrors.startTimeOutOfRange';
       return;
     }
     if (endM < minAllowed || endM > maxAllowed) {
-      this.formError = 'End time must be between 06:00 and 23:59.';
+      // this.formError = 'End time must be between 06:00 and 23:59.';
+      this.formError = 'formErrors.endTimeOutOfRange';
+
       return;
     }
 
@@ -447,14 +452,17 @@ loadAll(venueId: number) {
       const nowM = now.getHours() * 60 + now.getMinutes();
       const requiredStart = nowM + 60; // at least +1 hour
       if (startM < requiredStart) {
-        this.formError = 'For events starting today, start time must be at least 1 hour from now.';
+        // this.formError = 'For events starting today, start time must be at least 1 hour from now.';
+       this.formError = 'formErrors.startTimeTooSoon';
         return;
       }
     }
 
     // Always require end time to be at least 30 minutes after start time
     if (endM < startM + 30) {
-      this.formError = 'End time must be at least 30 minutes after start time.';
+      // this.formError = 'End time must be at least 30 minutes after start time.';
+      this.formError = 'formErrors.endTimeTooShort';
+
       return;
     }
 
@@ -462,7 +470,7 @@ loadAll(venueId: number) {
     const start = this.combineDateTime(this.startDate, this.startTime);
     const end = this.combineDateTime(this.endDate, this.endTime);
     if (!start || !end) {
-      this.formError = 'Invalid start or end date/time.';
+       this.formError = 'formErrors.invalidTimeFormat';
       return;
     }
 
